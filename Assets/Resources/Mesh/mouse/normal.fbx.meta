@@ -1,0 +1,187 @@
+fileFormatVersion: 2
+guid: 827fb521c9c6a40788a356ba54fdfa6a
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: body
+    100004: head
+    100006: leftarm1
+    100008: leftarm2
+    100010: leftarm3
+    100012: leftarm3_end
+    100014: leftear1
+    100016: leftear2
+    100018: leftear2_end
+    100020: leftfoot1
+    100022: leftfoot2
+    100024: leftfoot3
+    100026: leftfoot3_end
+    100028: leftfoot4
+    100030: leftfoot4_end
+    100032: leftfoot4lock
+    100034: master
+    100036: Mouse
+    100038: neck
+    100040: //RootNode
+    100042: rightarm1
+    100044: rightarm2
+    100046: rightarm3
+    100048: rightarm3_end
+    100050: rightear1
+    100052: rightear2
+    100054: rightear2_end
+    100056: rightfoot1
+    100058: rightfoot2
+    100060: rightfoot3
+    100062: rightfoot3_end
+    100064: rightfoot4
+    100066: rightfoot4_end
+    100068: rightfoot4lock
+    100070: tail1
+    100072: tail2
+    100074: tail3
+    100076: tail4
+    100078: tail5
+    100080: tail5_end
+    400000: Armature
+    400002: body
+    400004: head
+    400006: leftarm1
+    400008: leftarm2
+    400010: leftarm3
+    400012: leftarm3_end
+    400014: leftear1
+    400016: leftear2
+    400018: leftear2_end
+    400020: leftfoot1
+    400022: leftfoot2
+    400024: leftfoot3
+    400026: leftfoot3_end
+    400028: leftfoot4
+    400030: leftfoot4_end
+    400032: leftfoot4lock
+    400034: master
+    400036: Mouse
+    400038: neck
+    400040: //RootNode
+    400042: rightarm1
+    400044: rightarm2
+    400046: rightarm3
+    400048: rightarm3_end
+    400050: rightear1
+    400052: rightear2
+    400054: rightear2_end
+    400056: rightfoot1
+    400058: rightfoot2
+    400060: rightfoot3
+    400062: rightfoot3_end
+    400064: rightfoot4
+    400066: rightfoot4_end
+    400068: rightfoot4lock
+    400070: tail1
+    400072: tail2
+    400074: tail3
+    400076: tail4
+    400078: tail5
+    400080: tail5_end
+    2100000: mainTexture
+    4300000: Mouse
+    7400000: Armature|Action
+    7400002: Armature|ArmatureAction
+    7400004: Armature|ArmatureAction.001
+    7400006: Armature|ArmatureAction.002
+    7400008: Armature|idle
+    7400010: Armature|Idle.001
+    7400012: Armature|Idle.002
+    7400014: Armature|run
+    7400016: Armature|run.001
+    7400018: Armature|run.002
+    9500000: //RootNode
+    13700000: Mouse
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

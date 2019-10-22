@@ -1,22 +1,14 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Mono
-/// - ものに必ずついている
-/// - ほかからのアクションで成長する
-/// - 最終的にはどこかで、ものをすべて管理できるのが望ましい
-/// </summary>
-public class Mono : MonoBehaviour
+namespace NL
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// モノの情報を持っている
+    /// </summary>
+    public class Mono
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public GameObject monoPrefab;
     }
 }

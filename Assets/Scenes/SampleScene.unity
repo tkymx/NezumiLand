@@ -474,11 +474,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2403674f2a7d401ca428466b3b36667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 407268383}
   sampleTarget: {fileID: 1887271051}
   makingPrefab: {fileID: 2174446825909306301, guid: d83b06114663d43cfb013e8e8311f848,
     type: 3}
   monoPrefab: {fileID: 6978641911287193789, guid: a1d77891009d84c67875811bc849ff5c,
     type: 3}
+  rootObject: {fileID: 1841631378}
   mouse: {fileID: 5776075025695554319}
 --- !u!4 &1590532058
 Transform:

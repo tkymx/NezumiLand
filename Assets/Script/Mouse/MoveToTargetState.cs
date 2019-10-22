@@ -5,7 +5,7 @@ namespace NL
 {
     public class MoveToTarget : IState
     {
-        private Mouse context;
+        private Mouse context;        
         private GameObject targetObject;
 
         public MoveToTarget(Mouse context, GameObject targetObject)
@@ -21,7 +21,7 @@ namespace NL
 
         private bool isAlivable()
         {
-            return ObjectComparison.Distance(context.transform.position,targetObject.transform.position) < 10.0;
+            return ObjectComparison.Distance(context.transform.position,targetObject.transform.position) < 1.0f;
         }
 
         public IState onUpdate()

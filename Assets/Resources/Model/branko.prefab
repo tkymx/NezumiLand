@@ -625,7 +625,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6070138696457813996}
-  - component: {fileID: 3074545857407124405}
   m_Layer: 0
   m_Name: branko
   m_TagString: Untagged
@@ -642,7 +641,7 @@ Transform:
   m_GameObject: {fileID: 6978641911287193789}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15, y: 15, z: 15}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 3862827957678296015}
   - {fileID: 4884637327923377160}
@@ -659,18 +658,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3074545857407124405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6978641911287193789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ddc75b956edc434fac0bb298f968951, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7721295796073570447
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,12 +7,21 @@ namespace NL
     public class TestuserInputManager
     {
         private Camera mainCamera;
-        private ArrangementAnnotater arrangementAnnotater;
+        private Mouse mouse;
+        public Mono makingMono;
 
-        public TestuserInputManager(Camera mainCamera, GameObject rootObject)
+        private ArrangementAnnotater arrangementAnnotater;
+        public GameObject makingPrefab;
+
+
+        public TestuserInputManager(Camera mainCamera, Mouse mouse, Mono makingMono, GameObject rootObject)
         {
             this.mainCamera = mainCamera;
+            this.mouse = mouse;
+            this.makingMono = makingMono;
+
             this.arrangementAnnotater = new ArrangementAnnotater(rootObject);
+            this.makingPrefab = ResourceLoader.LoadPrefab("Model/Making");
         }
 
         // Update is called once per frame
@@ -25,13 +34,11 @@ namespace NL
                 RaycastHit Hit;
                 if (Physics.Raycast(ray, out Hit))
                 {
-                    Debug.Log(Hit.transform.gameObject.name);//デバッグログにヒットした場所を出す
-
-                    var arrangementX = Mathf.FloorToInt(Hit.point.x / ArrangementAnnotater.ArrangementWidth) * ArrangementAnnotater.ArrangementWidth;
-                    var arrangementZ = Mathf.FloorToInt(Hit.point.z / ArrangementAnnotater.ArrangementHeight) * ArrangementAnnotater.ArrangementHeight;
-
                     arrangementAnnotater.RemoveAllAnnotation();
-                    arrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(arrangementX, arrangementZ));
+                    arrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(Hit.point, makingMono));
+
+                    // 押した地点に移動して作成する
+                    mouse.OrderMaking(arrangementAnnotater.GetCurrentTarget(), new PreMono(mouse, makingPrefab, makingMono));
                 }
             }
         }

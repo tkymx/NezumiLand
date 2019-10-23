@@ -7,9 +7,6 @@ namespace NL
     public class GameManager : MonoBehaviour
     {
         public Camera mainCamera;
-        public GameObject sampleTarget;
-        public GameObject makingPrefab;
-        public GameObject monoPrefab;
         public GameObject rootObject;
         public Mouse mouse;
 
@@ -17,17 +14,17 @@ namespace NL
 
         private void Start()
         {
-            testInputManager = new TestuserInputManager(mainCamera, rootObject);
+            var mono = new Mono()
+            {
+                Width = 2,
+                Height = 2,
+                monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
+            };
+            testInputManager = new TestuserInputManager(mainCamera, mouse, mono, rootObject);
         }
 
         private void Update()
         {
-            // テスト用。キャラに移動を養成する
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                mouse.OrderMaking(sampleTarget, new PreMono(mouse, makingPrefab, monoPrefab));
-            }
-
             testInputManager.UpdateByFrame();
         }
     }

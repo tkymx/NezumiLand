@@ -6,9 +6,9 @@ namespace NL
     public class MoveToTarget : IState
     {
         private Mouse context;        
-        private GameObject targetObject;
+        private IArrangementTarget targetObject;
 
-        public MoveToTarget(Mouse context, GameObject targetObject)
+        public MoveToTarget(Mouse context, IArrangementTarget targetObject)
         {
             this.context = context;
             this.targetObject = targetObject;
@@ -21,12 +21,12 @@ namespace NL
 
         private bool isAlivable()
         {
-            return ObjectComparison.Distance(context.transform.position,targetObject.transform.position) < 1.0f;
+            return ObjectComparison.Distance(context.transform.position,targetObject.GetCenterPosition()) < targetObject.GetRange();
         }
 
         public IState onUpdate()
         {
-            context.MoveTimeTo(targetObject.transform.position);
+            context.MoveTimeTo(targetObject.GetCenterPosition());
 
             // 到着したとき
             if (isAlivable())
@@ -34,7 +34,7 @@ namespace NL
                 // 物があれば作成する
                 if (context.HasPreMono)
                 {
-                    return new MakingState(context, targetObject.transform.position);
+                    return new MakingState(context, targetObject.GetCenterPosition());
                 }
 
                 return new EmptyState();

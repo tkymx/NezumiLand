@@ -94,7 +94,7 @@ namespace NL
             moveVector = ObjectComparison.Direction(target,transform.position) * this.mouseParameter.speed;
         }
 
-        public void OrderMaking(GameObject targetObject, PreMono preMono)
+        public void OrderMaking(IArrangementTarget targetObject, PreMono preMono)
         {
             this.currentPreMono = preMono;
             stateManager.Interrupt(new MoveToTarget(this, targetObject));

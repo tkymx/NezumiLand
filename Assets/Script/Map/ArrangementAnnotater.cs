@@ -10,7 +10,10 @@ namespace NL
         public static readonly int ArrangementHeight = 6;
 
         private GameObject annotationPrefab;
+
+        private ArrangementInfo currentArrangemtnInfo;
         private List<GameObject> currentAnnotation;
+
         private GameObject objectParent;
 
         public ArrangementAnnotater(GameObject objectParent)
@@ -22,6 +25,7 @@ namespace NL
 
         public void Annotate(ArrangementInfo arrangementInfo)
         {
+            this.currentArrangemtnInfo = arrangementInfo;
             currentAnnotation.Clear();
             int offsetX = 0;// arrangementInfo.mono.Width * ArrangementWidth / 2;
             int offsetZ = 0;// arrangementInfo.mono.Height * ArrangementHeight / 2;
@@ -40,11 +44,17 @@ namespace NL
         }
         public void RemoveAllAnnotation()
         {
-            foreach(var appearObject in currentAnnotation)
+            currentArrangemtnInfo = null;
+            foreach (var appearObject in currentAnnotation)
             {
                 Object.DisAppear(appearObject);
             }
             currentAnnotation.Clear();
+        }
+
+        public ArrangementTarget GetCurrentTarget()
+        {
+            return new ArrangementTarget(this.currentAnnotation, currentArrangemtnInfo);
         }
     }
 }

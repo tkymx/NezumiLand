@@ -6,18 +6,16 @@ namespace NL
 {
     public class ArrangementInfoGenerator
     {
-        static public ArrangementInfo Generate(int x, int z)
+        static public ArrangementInfo Generate(Vector3 position, Mono mono)
         {
+            var arrangementX = Mathf.FloorToInt(position.x / ArrangementAnnotater.ArrangementWidth) * ArrangementAnnotater.ArrangementWidth;
+            var arrangementZ = Mathf.FloorToInt(position.z / ArrangementAnnotater.ArrangementHeight) * ArrangementAnnotater.ArrangementHeight;
+
             var info = new ArrangementInfo()
             {
-                x = x,
-                z = z,
-                mono = new Mono()
-                {
-                    Width = 2,
-                    Height = 2,
-                    monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
-                }
+                x = arrangementX,
+                z = arrangementZ,
+                mono = mono
             };
 
             return info;

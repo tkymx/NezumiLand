@@ -9,15 +9,15 @@ namespace NL
     {
         private Mouse mouse;
         private GameObject makingPrefab;
-        private GameObject monoPrefab;
+        private Mono mono;
 
         private GameObject makingInstane;
 
-        public PreMono(Mouse mouse, GameObject makingPrefab, GameObject monoPrefab)
+        public PreMono(Mouse mouse, GameObject makingPrefab, Mono mono)
         {
             this.mouse = mouse;
             this.makingPrefab = makingPrefab;
-            this.monoPrefab = monoPrefab;
+            this.mono = mono;
         }
 
         public void StartMaking(Vector3 position)
@@ -28,7 +28,7 @@ namespace NL
         public void FinishMaking(Vector3 position)
         {
             Object.DisAppear(this.makingInstane);
-            Object.Appear(monoPrefab, mouse.transform.parent.gameObject, position);
+            Object.Appear(mono.monoPrefab, mouse.transform.parent.gameObject, position);
         }
     }
 }

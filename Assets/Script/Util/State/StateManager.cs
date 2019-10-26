@@ -6,6 +6,7 @@ namespace NL
     public class StateManager
     {
         IState currentState = null;
+        public IState CurrentState => currentState;
 
         public StateManager(IState currentState)
         {

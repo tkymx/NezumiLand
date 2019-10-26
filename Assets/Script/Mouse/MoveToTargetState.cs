@@ -21,12 +21,12 @@ namespace NL
 
         private bool isAlivable()
         {
-            return ObjectComparison.Distance(context.transform.position,targetObject.GetCenterPosition()) < targetObject.GetRange();
+            return ObjectComparison.Distance(context.transform.position,targetObject.CenterPosition) < targetObject.Range;
         }
 
         public IState onUpdate()
         {
-            context.MoveTimeTo(targetObject.GetCenterPosition());
+            context.MoveTimeTo(targetObject.CenterPosition);
 
             // 到着したとき
             if (isAlivable())
@@ -34,7 +34,7 @@ namespace NL
                 // 物があれば作成する
                 if (context.HasPreMono)
                 {
-                    return new MakingState(context, targetObject.GetCenterPosition());
+                    return new MakingState(context, targetObject);
                 }
 
                 return new EmptyState();

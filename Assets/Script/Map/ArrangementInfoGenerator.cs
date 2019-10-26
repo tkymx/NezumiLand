@@ -6,10 +6,10 @@ namespace NL
 {
     public class ArrangementInfoGenerator
     {
-        static public ArrangementInfo Generate(Vector3 position, Mono mono)
+        static public ArrangementInfo Generate(Vector3 position, MonoInfo mono)
         {
-            var arrangementX = Mathf.FloorToInt(position.x / ArrangementAnnotater.ArrangementWidth) * ArrangementAnnotater.ArrangementWidth;
-            var arrangementZ = Mathf.FloorToInt(position.z / ArrangementAnnotater.ArrangementHeight) * ArrangementAnnotater.ArrangementHeight;
+            var arrangementX = Mathf.FloorToInt(position.x / ArrangementAnnotater.ArrangementWidth);
+            var arrangementZ = Mathf.FloorToInt(position.z / ArrangementAnnotater.ArrangementHeight);
 
             var info = new ArrangementInfo()
             {

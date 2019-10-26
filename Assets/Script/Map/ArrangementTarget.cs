@@ -9,29 +9,30 @@ namespace NL
     {
         Vector3 centerPosition;
         float range;
+        List<ArrangementPosition> arrangementPositions;
 
-        public ArrangementTarget(List<GameObject> gameObjectList, ArrangementInfo arrangementInfo)
+        public ArrangementTarget(List<GameObject> gameObjectList, List<ArrangementPosition> arrangementPositions, ArrangementInfo arrangementInfo)
         {
             // 中心座標
-            centerPosition = new Vector3();
+            this.centerPosition = new Vector3();
             foreach (var gameObject in gameObjectList)
             {
-                centerPosition += gameObject.transform.position;
+                this.centerPosition += gameObject.transform.position;
             }
-            centerPosition = centerPosition / gameObjectList.Count();
+            this.centerPosition = centerPosition / gameObjectList.Count();
 
             // 半径
-            range = (arrangementInfo.mono.Height * ArrangementAnnotater.ArrangementHeight + arrangementInfo.mono.Width * ArrangementAnnotater.ArrangementWidth) / 2 / 2;
+            this.range = (arrangementInfo.mono.Height * ArrangementAnnotater.ArrangementHeight + arrangementInfo.mono.Width * ArrangementAnnotater.ArrangementWidth) / 2 / 2;
+
+            // 配列位置
+            this.arrangementPositions = new List<ArrangementPosition>(arrangementPositions);
         }
 
-        public float GetRange()
-        {
-            return range;
-        }
+        // プレイヤー
+        public Vector3 CenterPosition => centerPosition;
+        public float Range => range;
 
-        public Vector3 GetCenterPosition()
-        {
-            return centerPosition;
-        }
+        // 位置情報
+        public List<ArrangementPosition> ArrangementPositions => arrangementPositions;
     }
 }

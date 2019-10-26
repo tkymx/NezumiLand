@@ -13,6 +13,7 @@ namespace NL
 
         private ArrangementInfo currentArrangemtnInfo;
         private List<GameObject> currentAnnotation;
+        private List<ArrangementPosition> currentArrangementPositions;
 
         private GameObject objectParent;
 
@@ -20,6 +21,8 @@ namespace NL
         {
             this.objectParent = objectParent;
             this.currentAnnotation = new List<GameObject>();
+            this.currentArrangementPositions = new List<ArrangementPosition>();
+
             annotationPrefab = ResourceLoader.LoadPrefab("Model/arrangement_annotation");
         }
 
@@ -27,18 +30,23 @@ namespace NL
         {
             this.currentArrangemtnInfo = arrangementInfo;
             currentAnnotation.Clear();
-            int offsetX = 0;// arrangementInfo.mono.Width * ArrangementWidth / 2;
-            int offsetZ = 0;// arrangementInfo.mono.Height * ArrangementHeight / 2;
+            currentArrangementPositions.Clear();
+
             for (int x = 0; x < arrangementInfo.mono.Width; x++ )
             {
                 for (int z = 0; z < arrangementInfo.mono.Height; z++)
                 {
                     var appear = Object.Appear(annotationPrefab, objectParent, new Vector3(
-                        arrangementInfo.x + x * ArrangementWidth - offsetX,
+                        (arrangementInfo.x + x) * ArrangementWidth,
                         0,
-                        arrangementInfo.z + z * ArrangementHeight - offsetZ));
+                        (arrangementInfo.z + z) * ArrangementHeight));
 
                     currentAnnotation.Add(appear);
+                    currentArrangementPositions.Add(new ArrangementPosition()
+                    {
+                        x = arrangementInfo.x + x,
+                        z = arrangementInfo.z + z
+                    });
                 }
             }
         }
@@ -54,7 +62,7 @@ namespace NL
 
         public ArrangementTarget GetCurrentTarget()
         {
-            return new ArrangementTarget(this.currentAnnotation, currentArrangemtnInfo);
+            return new ArrangementTarget(this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
         }
     }
 }

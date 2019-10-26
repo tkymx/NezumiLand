@@ -18,6 +18,7 @@ namespace NL
         /// ネズミの行動の状態遷移
         /// </summary>
         private StateManager stateManager;
+        public StateManager StateManager => stateManager;
 
         private MouseParameter mouseParameter;
 
@@ -69,22 +70,23 @@ namespace NL
             }
         }
 
-        public void StartMake(Vector3 position)
+        public void StartMake(IArrangementTarget arrangementTarget)
         {
             if (!HasPreMono)
             {
                 Debug.LogError("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.StartMaking(position);
+            currentPreMono.StartMaking(arrangementTarget.CenterPosition);
+            GameManager.Instance.ArrangementManager.AddArrangement(arrangementTarget);
         }
 
-        public void FinishMaking(Vector3 position)
+        public void FinishMaking(IArrangementTarget arrangementTarget)
         {
             if (!HasPreMono)
             {
                 Debug.LogError("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.FinishMaking(position);
+            currentPreMono.FinishMaking(arrangementTarget.CenterPosition);
             currentPreMono = null;
         }
 
@@ -96,8 +98,15 @@ namespace NL
 
         public void OrderMaking(IArrangementTarget targetObject, PreMono preMono)
         {
+            Debug.Assert(!IsMaking(), "現在作成中のため追加で作成を行うことができません。");
+
             this.currentPreMono = preMono;
             stateManager.Interrupt(new MoveToTarget(this, targetObject));
+        }
+
+        public bool IsMaking()
+        {
+            return stateManager.CurrentState is MakingState;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace NL
     {
         public int x;
         public int z;
-        public Mono mono;
+        public MonoInfo mono;
     }
 }

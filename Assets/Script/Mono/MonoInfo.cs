@@ -5,7 +5,7 @@ namespace NL
     /// <summary>
     /// モノの情報を持っている
     /// </summary>
-    public class Mono
+    public class MonoInfo
     {
         public int Width { get; set; }
         public int Height { get; set; }

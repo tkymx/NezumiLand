@@ -4,23 +4,37 @@ using UnityEngine;
 
 namespace NL
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         public Camera mainCamera;
         public GameObject rootObject;
-        public Mouse mouse;
+        public ArrangementPresenter arrangementPresenter;
 
-        private TestuserInputManager testInputManager;
+        [SerializeField]
+        private Mouse mouse = null;
+        public Mouse Mouse => mouse;
+
+        private ArrangementManager arrangementManager;
+        public ArrangementManager ArrangementManager
+        {
+            get
+            {
+                return arrangementManager;
+            }
+        }
+
+        private TestuserInputPresenter testInputManager;
 
         private void Start()
         {
-            var mono = new Mono()
+            var mono = new MonoInfo()
             {
                 Width = 2,
                 Height = 2,
                 monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
             };
-            testInputManager = new TestuserInputManager(mainCamera, mouse, mono, rootObject);
+            testInputManager = new TestuserInputPresenter(mainCamera, mouse, mono, rootObject);
+            arrangementManager = new ArrangementManager(arrangementPresenter);
         }
 
         private void Update()

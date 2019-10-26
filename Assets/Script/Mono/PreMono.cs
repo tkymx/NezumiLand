@@ -9,11 +9,11 @@ namespace NL
     {
         private Mouse mouse;
         private GameObject makingPrefab;
-        private Mono mono;
+        private MonoInfo mono;
 
         private GameObject makingInstane;
 
-        public PreMono(Mouse mouse, GameObject makingPrefab, Mono mono)
+        public PreMono(Mouse mouse, GameObject makingPrefab, MonoInfo mono)
         {
             this.mouse = mouse;
             this.makingPrefab = makingPrefab;

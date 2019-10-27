@@ -24,7 +24,7 @@ namespace NL
         {
             foreach (var arrangementView in this.arrangementViews)
             {
-                GameObject.Destroy(arrangementView.gameObject);
+                Object.DisAppear(arrangementView.gameObject);
             }
 
             this.arrangementViews.Clear();

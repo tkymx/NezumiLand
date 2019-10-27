@@ -20,15 +20,17 @@ namespace NL
             this.mono = mono;
         }
 
-        public void StartMaking(Vector3 position)
+        public void StartMaking(IArrangementTarget arrangementTarget)
         {
-            this.makingInstane = Object.Appear(makingPrefab, mouse.transform.parent.gameObject, position);
+            this.makingInstane = Object.Appear(makingPrefab, mouse.transform.parent.gameObject, arrangementTarget.CenterPosition);
         }
 
-        public void FinishMaking(Vector3 position)
+        public void FinishMaking(IArrangementTarget arrangementTarget)
         {
+            Debug.Assert(!arrangementTarget.HasMono, "モノがセットされています。");
+
             Object.DisAppear(this.makingInstane);
-            Object.Appear(mono.monoPrefab, mouse.transform.parent.gameObject, position);
+            arrangementTarget.Mono = Object.Appear(mono.monoPrefab, mouse.transform.parent.gameObject, arrangementTarget.CenterPosition);
         }
     }
 }

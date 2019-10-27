@@ -76,7 +76,7 @@ namespace NL
             {
                 Debug.LogError("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.StartMaking(arrangementTarget.CenterPosition);
+            currentPreMono.StartMaking(arrangementTarget);
             GameManager.Instance.ArrangementManager.AddArrangement(arrangementTarget);
         }
 
@@ -86,7 +86,7 @@ namespace NL
             {
                 Debug.LogError("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.FinishMaking(arrangementTarget.CenterPosition);
+            currentPreMono.FinishMaking(arrangementTarget);
             currentPreMono = null;
         }
 

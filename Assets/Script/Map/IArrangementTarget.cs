@@ -18,5 +18,9 @@ namespace NL
 
         // 位置情報として使用する
         List<ArrangementPosition> ArrangementPositions { get; }
+
+        // 設定されているモノ
+        GameObject Mono { get; set; }
+        bool HasMono { get; }
     }
 }

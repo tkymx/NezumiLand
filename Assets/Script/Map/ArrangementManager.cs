@@ -18,13 +18,17 @@ namespace NL
         /// </summary>
         private IArrangementTarget selectedArrangementTarget;
 
-        private ArrangementPresenter arrangementPresenter;
+        /// <summary>
+        /// 選択状況
+        /// </summary>
+        private ArrangementAnnotater arrangementAnnotater;
+        public ArrangementAnnotater ArrangementAnnotater => arrangementAnnotater;
 
-        public ArrangementManager(ArrangementPresenter arrangementPresenter)
+        public ArrangementManager(GameObject root)
         {
             this.arrangementTargetStore = new List<IArrangementTarget>();
-            this.arrangementPresenter = arrangementPresenter;
             this.selectedArrangementTarget = null;
+            this.arrangementAnnotater = new ArrangementAnnotater(root);
         }
 
         /// <summary>
@@ -34,7 +38,35 @@ namespace NL
         {
             Debug.Assert(IsSetArrangement(arrangementTarget), "セットできない arrangementPosition が選択されています。");
             this.arrangementTargetStore.Add(arrangementTarget);
-            this.arrangementPresenter.ReLoad();
+            GameManager.Instance.ArrangementPresenter.ReLoad();
+        }
+
+        /// <summary>
+        /// 選択を外す
+        /// </summary>
+        public void RemoveSelection()
+        {
+            this.selectedArrangementTarget = null;
+            GameManager.Instance.ArrangementPresenter.ReLoad();
+        }
+
+        /// <summary>
+        /// 選択されているターゲットが消去できるかを確認
+        /// </summary>
+        /// <returns></returns>
+        public bool IsRemoveSelectArrangement()
+        {
+            return this.selectedArrangementTarget.HasMono;
+        }
+
+        /// <summary>
+        /// 選択されている配置ターゲットを消す
+        /// </summary>
+        public void RemoveSelectArrangement()
+        {
+            this.RemoveArranement(this.selectedArrangementTarget);
+            this.selectedArrangementTarget = null;
+            GameManager.Instance.ArrangementPresenter.ReLoad();
         }
 
         /// <summary>
@@ -46,8 +78,9 @@ namespace NL
             if(arrangementTargetStore.Contains(arrangementTarget))
             {
                 arrangementTargetStore.Remove(arrangementTarget);
+                Object.DisAppear(arrangementTarget.Mono);
             }
-            this.arrangementPresenter.ReLoad();
+            GameManager.Instance.ArrangementPresenter.ReLoad();
         }
 
         /// <summary>
@@ -73,6 +106,7 @@ namespace NL
         {
             Debug.Assert(arrangementTargetStore.Contains(arrangementTarget), "管理されていないターゲットです。");
             selectedArrangementTarget = arrangementTarget;
+            GameManager.Instance.ArrangementUIPresenter.Show();
         }
 
         /// <summary>

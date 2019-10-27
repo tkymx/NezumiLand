@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5671762131060175809}
   - component: {fileID: 114727928156208568}
   - component: {fileID: 65240233772380862}
+  - component: {fileID: 114985275986001196}
   m_Layer: 9
   m_Name: arrangement_select
   m_TagString: Untagged
@@ -104,3 +105,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114985275986001196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5671762131060175810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab10f2feacc844dab87d91fd3a50bb8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrangementView: {fileID: 114727928156208568}

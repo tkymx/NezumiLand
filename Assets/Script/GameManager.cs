@@ -8,7 +8,14 @@ namespace NL
     {
         public Camera mainCamera;
         public GameObject rootObject;
-        public ArrangementPresenter arrangementPresenter;
+
+        [SerializeField]
+        private ArrangementPresenter arrangementPresenter = null;
+        public ArrangementPresenter ArrangementPresenter => arrangementPresenter;
+
+        [SerializeField]
+        private ArrangementUIPresenter arrangementUIPresenter = null;
+        public ArrangementUIPresenter ArrangementUIPresenter => arrangementUIPresenter;
 
         [SerializeField]
         private Mouse mouse = null;
@@ -27,19 +34,17 @@ namespace NL
 
         private void Start()
         {
-            var mono = new MonoInfo()
-            {
-                Width = 2,
-                Height = 2,
-                monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
-            };
-            testInputManager = new TestuserInputPresenter(mainCamera, mouse, mono, rootObject);
-            arrangementManager = new ArrangementManager(arrangementPresenter);
+            // instance
+            this.testInputManager = new TestuserInputPresenter(this.mainCamera);
+            this.arrangementManager = new ArrangementManager(this.rootObject);
+
+            // initialize
+            this.arrangementUIPresenter.Close();
         }
 
         private void Update()
         {
-            testInputManager.UpdateByFrame();
+            this.testInputManager.UpdateByFrame();
         }
     }
 }

@@ -34,5 +34,9 @@ namespace NL
 
         // 位置情報
         public List<ArrangementPosition> ArrangementPositions => arrangementPositions;
+
+        // モノ
+        public GameObject Mono { get; set; }
+        public bool HasMono => Mono != null;
     }
 }

@@ -36,7 +36,7 @@ namespace NL
             {
                 for (int z = 0; z < arrangementInfo.mono.Height; z++)
                 {
-                    var appear = Object.Appear(annotationPrefab, objectParent, new Vector3(
+                    var appear = Object.AppearToFloor(annotationPrefab, objectParent, new Vector3(
                         (arrangementInfo.x + x) * ArrangementWidth,
                         0,
                         (arrangementInfo.z + z) * ArrangementHeight));

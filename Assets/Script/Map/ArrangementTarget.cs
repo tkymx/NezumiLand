@@ -36,7 +36,7 @@ namespace NL
         public List<ArrangementPosition> ArrangementPositions => arrangementPositions;
 
         // モノ
-        public GameObject Mono { get; set; }
-        public bool HasMono => Mono != null;
+        public MonoViewModel MonoViewModel { get; set; }
+        public bool HasMonoViewModel => MonoViewModel != null;
     }
 }

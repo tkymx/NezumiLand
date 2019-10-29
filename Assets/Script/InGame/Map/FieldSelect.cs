@@ -15,6 +15,7 @@ namespace NL
             {
                 Width = 2,
                 Height = 2,
+                makingFee = new Currency(10),
                 monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
             };
         }
@@ -33,9 +34,20 @@ namespace NL
             if (GameManager.Instance.ArrangementManager.IsSetArrangement(currentTarget))
             {
                 // 押した地点に移動して作成する
-                if (!GameManager.Instance.Mouse.IsMaking())
+                if (!GameManager.Instance.Mouse.IsOrder())
                 {
-                    GameManager.Instance.Mouse.OrderMaking(GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget(), new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
+                    // この辺は販売関連のクラスでまとめたほうが良さげ
+                    if (GameManager.Instance.Wallet.IsPay(makingMono.makingFee))
+                    {
+                        var arrangementTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget();
+                        GameManager.Instance.Wallet.Pay(makingMono.makingFee);
+                        GameManager.Instance.EffectManager.PlayRemoveMonoEffect(makingMono.makingFee, arrangementTarget.CenterPosition);
+                        GameManager.Instance.Mouse.OrderMaking(arrangementTarget, new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
+                    }
+                    else
+                    {
+                        Debug.Log("お金が足りません");
+                    }
                 }
             }
         }

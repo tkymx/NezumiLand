@@ -20,7 +20,7 @@ namespace NL
         List<ArrangementPosition> ArrangementPositions { get; }
 
         // 設定されているモノ
-        GameObject Mono { get; set; }
-        bool HasMono { get; }
+        MonoViewModel MonoViewModel { get; set; }
+        bool HasMonoViewModel { get; }
     }
 }

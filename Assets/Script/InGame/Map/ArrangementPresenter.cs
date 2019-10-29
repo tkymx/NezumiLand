@@ -47,7 +47,7 @@ namespace NL
         {
             arrangementTarget.ArrangementPositions.ForEach(arrangementPosition =>
             {
-                var instance = Object.Appear(prefab, gameObject, new Vector3(
+                var instance = Object.AppearToFloor(prefab, gameObject, new Vector3(
                     arrangementPosition.x * ArrangementAnnotater.ArrangementWidth,
                     0,
                     arrangementPosition.z * ArrangementAnnotater.ArrangementHeight

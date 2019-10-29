@@ -17,6 +17,7 @@ namespace NL
         /// 選択されている 配置ターゲット
         /// </summary>
         private IArrangementTarget selectedArrangementTarget;
+        public IArrangementTarget SelectedArrangementTarget => selectedArrangementTarget;
 
         /// <summary>
         /// 選択状況
@@ -56,7 +57,11 @@ namespace NL
         /// <returns></returns>
         public bool IsRemoveSelectArrangement()
         {
-            return this.selectedArrangementTarget.HasMono;
+            if (this.selectedArrangementTarget==null)
+            {
+                return false;
+            }
+            return this.selectedArrangementTarget.HasMonoViewModel;
         }
 
         /// <summary>
@@ -78,7 +83,7 @@ namespace NL
             if(arrangementTargetStore.Contains(arrangementTarget))
             {
                 arrangementTargetStore.Remove(arrangementTarget);
-                Object.DisAppear(arrangementTarget.Mono);
+                GameManager.Instance.MonoManager.RemoveMono(arrangementTarget.MonoViewModel);
             }
             GameManager.Instance.ArrangementPresenter.ReLoad();
         }

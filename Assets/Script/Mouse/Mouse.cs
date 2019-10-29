@@ -98,15 +98,15 @@ namespace NL
 
         public void OrderMaking(IArrangementTarget targetObject, PreMono preMono)
         {
-            Debug.Assert(!IsMaking(), "現在作成中のため追加で作成を行うことができません。");
+            Debug.Assert(!IsOrder(), "現在作成中のため追加で作成を行うことができません。");
 
             this.currentPreMono = preMono;
             stateManager.Interrupt(new MoveToTarget(this, targetObject));
         }
 
-        public bool IsMaking()
+        public bool IsOrder()
         {
-            return stateManager.CurrentState is MakingState;
+            return this.currentPreMono != null;
         }
     }
 }

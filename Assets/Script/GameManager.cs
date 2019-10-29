@@ -8,6 +8,7 @@ namespace NL
     {
         public Camera mainCamera;
         public GameObject rootObject;
+        public GameObject rootEffectUI;
 
         [SerializeField]
         private ArrangementPresenter arrangementPresenter = null;
@@ -22,21 +23,28 @@ namespace NL
         public Mouse Mouse => mouse;
 
         private ArrangementManager arrangementManager;
-        public ArrangementManager ArrangementManager
-        {
-            get
-            {
-                return arrangementManager;
-            }
-        }
+        public ArrangementManager ArrangementManager => arrangementManager;
 
-        private TestuserInputPresenter testInputManager;
+        private MonoManager monoManager;
+        public MonoManager MonoManager => monoManager;
+
+        private Wallet wallet;
+        public Wallet Wallet => wallet;
+
+        private EffectManager effectManager;
+        public EffectManager EffectManager => effectManager;
+
+        private GameModeManager gameModeManager;
+        public GameModeManager GameModeManager => gameModeManager;
 
         private void Start()
         {
             // instance
-            this.testInputManager = new TestuserInputPresenter(this.mainCamera);
             this.arrangementManager = new ArrangementManager(this.rootObject);
+            this.monoManager = new MonoManager(this.rootObject);
+            this.wallet = new Wallet(new Currency(100));
+            this.effectManager = new EffectManager(mainCamera, rootEffectUI);
+            this.gameModeManager = new GameModeManager(GameModeGenerator.GenerateArrangementMode(mainCamera));
 
             // initialize
             this.arrangementUIPresenter.Close();
@@ -44,7 +52,8 @@ namespace NL
 
         private void Update()
         {
-            this.testInputManager.UpdateByFrame();
+            this.gameModeManager.UpdateByFrame();
+            this.monoManager.UpdateByFrame();
         }
     }
 }

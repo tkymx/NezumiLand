@@ -10,8 +10,7 @@ namespace NL
         [SerializeField]
         Text text = null;
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             text.text = GameManager.Instance.Wallet.CurrentCurrency.Value.ToString();
         }

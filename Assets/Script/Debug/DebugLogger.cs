@@ -16,6 +16,7 @@ namespace NL
         {
             text.text = "";
             text.text += "MouseState : " + GameManager.Instance.Mouse.StateManager.CurrentState.ToString() + LR;
+            text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString() + LR;
         }
     }
 }

@@ -6,7 +6,10 @@ namespace NL
 {
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
-        public Camera mainCamera;
+        [SerializeField]
+        private Camera mainCamera = null;
+        public Camera MainCamera => mainCamera;
+
         public GameObject rootObject;
         public GameObject rootEffectUI;
 
@@ -15,8 +18,8 @@ namespace NL
         public ArrangementPresenter ArrangementPresenter => arrangementPresenter;
 
         [SerializeField]
-        private ArrangementUIPresenter arrangementUIPresenter = null;
-        public ArrangementUIPresenter ArrangementUIPresenter => arrangementUIPresenter;
+        private GameUIManager gameUIManager = null;
+        public GameUIManager GameUIManager => gameUIManager;
 
         [SerializeField]
         private Mouse mouse = null;
@@ -37,23 +40,33 @@ namespace NL
         private GameModeManager gameModeManager;
         public GameModeManager GameModeManager => gameModeManager;
 
+        private FieldRaycastManager fieldRaycastManager;
+        public FieldRaycastManager FieldRaycastManager => fieldRaycastManager; 
+
         private void Start()
         {
+            // コンテキストマップ
+            ContextMap.Initialize();
+            GameContextMap.Initialize();
+
             // instance
             this.arrangementManager = new ArrangementManager(this.rootObject);
             this.monoManager = new MonoManager(this.rootObject);
             this.wallet = new Wallet(new Currency(100));
             this.effectManager = new EffectManager(mainCamera, rootEffectUI);
-            this.gameModeManager = new GameModeManager(GameModeGenerator.GenerateArrangementMode(mainCamera));
+            this.gameModeManager = new GameModeManager();
+            this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateMenuSelectMode());
+            this.fieldRaycastManager = new FieldRaycastManager(this.mainCamera);
 
             // initialize
-            this.arrangementUIPresenter.Close();
+            this.gameUIManager.Initialize();
         }
 
         private void Update()
         {
             this.gameModeManager.UpdateByFrame();
             this.monoManager.UpdateByFrame();
+            this.fieldRaycastManager.UpdateByFrame();
         }
     }
 }

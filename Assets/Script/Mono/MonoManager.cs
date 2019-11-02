@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace NL
 {
+    /// <summary>
+    /// 存在しているMonoの存在を管理するクラス
+    /// </summary>
     public class MonoManager
     {
         GameObject root;
@@ -25,11 +28,11 @@ namespace NL
 
         public MonoViewModel CreateMono(MonoInfo monoInfo, Vector3 position)
         {
-            var instance = Object.AppearToFloor(monoInfo.monoPrefab, root, position);
+            var instance = Object.AppearToFloor(monoInfo.MonoPrefab, root, position);
             var monoView = instance.GetComponent<MonoView>();
             Debug.Assert(monoView != null, "monoViewではありません");
 
-            var monoViewModel = new MonoViewModel(monoView);
+            var monoViewModel = new MonoViewModel(monoView, monoInfo);
             monoViewModels.Add(monoViewModel);
 
             return monoViewModel;

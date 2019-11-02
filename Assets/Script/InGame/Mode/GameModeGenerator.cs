@@ -6,13 +6,19 @@ namespace NL
 {
     public class GameModeGenerator
     {
-        public static ArrangementMode GenerateArrangementMode(Camera mainCamera)
+        public static ArrangementMode GenerateArrangementMode()
         {
-            return new ArrangementMode(mainCamera);
+            var arrangementModeContext = GameContextMap.DefaultMap.ArrangementModeContext;
+            var menuSelectModeContext = GameContextMap.DefaultMap.MenuSelectModeContext;
+
+            // コンバート
+            arrangementModeContext.SetTagetMonoInfo(menuSelectModeContext.SelectedMonoInfo);
+
+            return new ArrangementMode(GameManager.Instance.MainCamera, GameContextMap.DefaultMap.ArrangementModeContext);
         }
         public static MenuSelectMode GenerateMenuSelectMode()
         {
-            return new MenuSelectMode();
+            return new MenuSelectMode(GameContextMap.DefaultMap.MenuSelectModeContext);
         }
     }
 }

@@ -40,5 +40,16 @@ namespace NL
                 this.observers.Remove(observer);
             });
         }
+
+        // ちょっと特殊
+        public IDisposable Subscribe(Action<T> action)
+        {
+            IObserver<T> observer = new TypeObserver<T>(action);
+            observers.Add(observer);
+            return new ActionDisposer(() =>
+            {
+                this.observers.Remove(observer);
+            });
+        }
     }
 }

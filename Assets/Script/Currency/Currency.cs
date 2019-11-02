@@ -45,5 +45,9 @@ namespace NL
         }
 
         // 掛け算は存在しない
+        public override string ToString()
+        {
+            return value.ToString() + "yen";
+        }
     }
 }

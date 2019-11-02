@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace NL
 {
+    /// <summary>
+    /// 配置した際の配置していることがわかるオブジェクトの表示
+    /// </summary>
     public class ArrangementPresenter : MonoBehaviour
     {
         [SerializeField]
@@ -59,11 +62,12 @@ namespace NL
                 var arrangementView = instance.GetComponent<ArrangementView>();
 
                 // 選択時の挙動を追加
-                arrangementView.OnSelect.Subscribe(new TypeObserver<int>(_ =>
-                {
-                    GameManager.Instance.ArrangementManager.Select(arrangementTarget);
-                    this.ReLoad();
-                }));
+                arrangementView.OnSelect
+                    .Subscribe(_ =>
+                    {
+                        GameManager.Instance.ArrangementManager.Select(arrangementTarget);
+                        this.ReLoad();
+                    });
 
                 this.arrangementViews.Add(arrangementView);
             });

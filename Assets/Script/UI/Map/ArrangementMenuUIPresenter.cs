@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 namespace NL
 {
-	public class ArrangementUIPresenter : MonoBehaviour
+    /// <summary>
+    /// ものを選択したときのメニュー
+    /// </summary>
+	public class ArrangementMenuUIPresenter : MonoBehaviour
 	{
         [SerializeField]
         private GameObject arrangementUI = null;
@@ -14,14 +17,17 @@ namespace NL
         private Button deleteButton = null;
 
         [SerializeField]
+        private Text deleteFee = null;
+
+        [SerializeField]
         private Button closeButton = null;
 
         // Start is called before the first frame update
-        void Start()
+        public void Initialize()
 		{
             deleteButton.onClick.AddListener(() =>
             {
-                var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveCurrency;
+                var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
                 if (GameManager.Instance.Wallet.IsPay(removeFee))
                 {
                     GameManager.Instance.Wallet.Pay(removeFee);
@@ -36,11 +42,15 @@ namespace NL
                 GameManager.Instance.ArrangementManager.RemoveSelection();
                 this.Close();
             });
+
+            // 初めは閉じておく
+            this.Close();
         }
 
         private void Update()
         {
             UpdateRemoveButtonEnable();
+            UpdateRemoveFee();
         }
 
         public void Show()
@@ -58,19 +68,32 @@ namespace NL
         {
             if (!GameManager.Instance.ArrangementManager.IsRemoveSelectArrangement())
             {
-                deleteButton.gameObject.SetActive(false);
+                deleteButton.interactable = false;
                 return;
             }
 
-            var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveCurrency;
-            var isEnableRemoveMono = GameManager.Instance.Wallet.IsPay(removeFee);
-            if (!isEnableRemoveMono)
+            var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
+            if (!GameManager.Instance.Wallet.IsPay(removeFee))
             {
-                deleteButton.gameObject.SetActive(false);
+                deleteButton.interactable = false;
                 return;
             }
 
-            deleteButton.gameObject.SetActive(true);
+            deleteButton.interactable = true;
+        }
+
+        private void UpdateRemoveFee()
+        {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
+            {
+                return;
+            }
+            if (!GameManager.Instance.ArrangementManager.IsRemoveSelectArrangement())
+            {
+                return;
+            }
+            var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
+            deleteFee.text = removeFee.ToString();
         }
     }
 }

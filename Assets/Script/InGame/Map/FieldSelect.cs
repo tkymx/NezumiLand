@@ -6,27 +6,25 @@ namespace NL
 {
     public class FieldSelect : SelectBase
     {
-        private MonoInfo makingMono = null;
-
-        private void Awake()
-        {
-            // これは後で別から取得できるようにしたい
-            makingMono = new MonoInfo()
-            {
-                Width = 2,
-                Height = 2,
-                makingFee = new Currency(10),
-                monoPrefab = ResourceLoader.LoadPrefab("Model/branko"),
-            };
-        }
-
         public override void OnOver(RaycastHit hit)
         {
+            if (!GameManager.Instance.ArrangementManager.IsEnable)
+            {
+                return;
+            }
+
+            var makingMono = GameManager.Instance.ArrangementManager.ArrangementMonoInfo;
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(hit.point, makingMono));
         }
 
         public override void OnSelect(RaycastHit hit)
         {
+            if (!GameManager.Instance.ArrangementManager.IsEnable)
+            {
+                return;
+            }
+
+            var makingMono = GameManager.Instance.ArrangementManager.ArrangementMonoInfo;
             var makingPrefab = ResourceLoader.LoadPrefab("Model/Making");
 
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(hit.point, makingMono));
@@ -37,16 +35,15 @@ namespace NL
                 if (!GameManager.Instance.Mouse.IsOrder())
                 {
                     // この辺は販売関連のクラスでまとめたほうが良さげ
-                    if (GameManager.Instance.Wallet.IsPay(makingMono.makingFee))
+                    if (GameManager.Instance.Wallet.IsPay(makingMono.MakingFee))
                     {
-                        var arrangementTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget();
-                        GameManager.Instance.Wallet.Pay(makingMono.makingFee);
-                        GameManager.Instance.EffectManager.PlayRemoveMonoEffect(makingMono.makingFee, arrangementTarget.CenterPosition);
-                        GameManager.Instance.Mouse.OrderMaking(arrangementTarget, new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
+                        GameManager.Instance.Wallet.Pay(makingMono.MakingFee);
+                        GameManager.Instance.EffectManager.PlayRemoveMonoEffect(makingMono.MakingFee, currentTarget.CenterPosition);
+                        GameManager.Instance.Mouse.OrderMaking(currentTarget, new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
                     }
                     else
                     {
-                        Debug.Log("お金が足りません");
+                        GameManager.Instance.EffectManager.PlayError("お金がありません。", currentTarget.CenterPosition);
                     }
                 }
             }

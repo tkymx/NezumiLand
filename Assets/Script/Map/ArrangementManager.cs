@@ -18,6 +18,7 @@ namespace NL
         /// </summary>
         private IArrangementTarget selectedArrangementTarget;
         public IArrangementTarget SelectedArrangementTarget => selectedArrangementTarget;
+        public bool HasSelectedArrangementTarget => selectedArrangementTarget != null;
 
         /// <summary>
         /// 選択状況
@@ -25,11 +26,36 @@ namespace NL
         private ArrangementAnnotater arrangementAnnotater;
         public ArrangementAnnotater ArrangementAnnotater => arrangementAnnotater;
 
+        // 配置に使用するMonoInfo
+        private MonoInfo arrangementMonoInfo = null;
+        public MonoInfo ArrangementMonoInfo => arrangementMonoInfo;
+
+        public bool IsEnable
+        {
+            get
+            {
+                return arrangementMonoInfo != null;
+            }
+        }
+
+        // 配置可能にする
+        public void Enable(MonoInfo arrangementMonoInfo)
+        {
+            this.arrangementMonoInfo = arrangementMonoInfo;
+        }
+
+        // 配置不可能にする
+        public void Disable()
+        {
+            this.arrangementMonoInfo = null;
+        }
+
         public ArrangementManager(GameObject root)
         {
             this.arrangementTargetStore = new List<IArrangementTarget>();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater(root);
+            this.arrangementMonoInfo = null;
         }
 
         /// <summary>
@@ -49,6 +75,7 @@ namespace NL
         {
             this.selectedArrangementTarget = null;
             GameManager.Instance.ArrangementPresenter.ReLoad();
+            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Close();
         }
 
         /// <summary>
@@ -72,6 +99,7 @@ namespace NL
             this.RemoveArranement(this.selectedArrangementTarget);
             this.selectedArrangementTarget = null;
             GameManager.Instance.ArrangementPresenter.ReLoad();
+            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Close();
         }
 
         /// <summary>
@@ -111,7 +139,7 @@ namespace NL
         {
             Debug.Assert(arrangementTargetStore.Contains(arrangementTarget), "管理されていないターゲットです。");
             selectedArrangementTarget = arrangementTarget;
-            GameManager.Instance.ArrangementUIPresenter.Show();
+            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Show();
         }
 
         /// <summary>

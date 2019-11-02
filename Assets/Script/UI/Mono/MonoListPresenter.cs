@@ -2,17 +2,86 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonoListPresenter : MonoBehaviour
+namespace NL
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MonoListPresenter : MonoBehaviour
     {
-        
-    }
+        [SerializeField]
+        private GameObject cellPrefab = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField]
+        private GameObject monoListRoot = null;
+
+        [SerializeField]
+        private GameObject cellViewRoot = null;
+
+        private IMonoInfoRepository monoInfoRepository = null;
+        private MenuSelectModeContext menuSelectModeContext;
+        private Dictionary<MonoInfo, MonoListCellView> displayMonoCellDictionary;
+
+        public void Initialize(MenuSelectModeContext menuSelectModeContext)
+        {
+            this.menuSelectModeContext = menuSelectModeContext;
+            this.monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
+            this.displayMonoCellDictionary = new Dictionary<MonoInfo, MonoListCellView>();
+            this.ReLoad();
+        }
+
+        public void ReLoad()
+        {
+            // 寄贈の要素を消去
+            foreach (Transform child in cellViewRoot.transform)
+            {
+                Object.DisAppear(child.gameObject);
+            }
+
+            this.displayMonoCellDictionary.Clear();
+
+            // 要素の追加を行う
+            foreach (var monoInfo in monoInfoRepository.GetAll())
+            {
+                var instance = Object.Appear2D(cellPrefab, cellViewRoot, Vector2.zero);
+                var cellView = instance.GetComponent<MonoListCellView>();
+                cellView.Initialize();
+                cellView.UpdateCell(monoInfo.Name, monoInfo.MakingFee);
+                cellView.OnClick
+                    .Subscribe(_ =>
+                    {
+                        this.menuSelectModeContext.SelectMonoInfo(monoInfo);
+                    });
+                this.displayMonoCellDictionary.Add(monoInfo, cellView);
+            }
+        }
+
+        public void Update()
+        {
+            var currentCurrency = GameManager.Instance.Wallet.CurrentCurrency;
+
+            foreach (var pair in this.displayMonoCellDictionary)
+            {
+                var monoInfo = pair.Key;
+                var cellView = pair.Value;
+
+                if (monoInfo.MakingFee > currentCurrency)
+                {
+                    cellView.DiasbleForLowFee();
+                }
+                else
+                {
+                    cellView.Enable();
+                }
+            }
+        }
+
+        public void Show()
+        {
+            this.monoListRoot.gameObject.SetActive(true);
+            this.ReLoad();
+        }
+
+        public void Close()
+        {
+            this.monoListRoot.gameObject.SetActive(false);
+        }
     }
 }

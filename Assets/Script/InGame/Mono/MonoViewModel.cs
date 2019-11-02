@@ -10,12 +10,42 @@ namespace NL
         private MonoView monoView = null;
         public MonoView MonoView => monoView;
 
-        // 消去に必要な通貨
-        public Currency RemoveCurrency => new Currency(100);
+        // private
+        private MonoInfo monoInfo;
+        private uint currentLevel = 1;
 
-        public MonoViewModel(MonoView monoView)
+        public Currency RemoveFee => monoInfo.RemoveFee;
+
+        public MonoViewModel(MonoView monoView, MonoInfo monoInfo)
         {
+            this.currentLevel = 1;
             this.monoView = monoView;
+            this.monoInfo = monoInfo;
+        }
+
+        public bool ExistNextLevelUp()
+        {
+            return monoInfo.LevelUpFee.Length >= this.currentLevel;     // ５レベルまでなら、配列数は6
+        }
+
+        public Currency GetCurrentLevelUpFee()
+        {
+            Debug.Assert(ExistNextLevelUp(),"次のレベルがありません");
+            return monoInfo.LevelUpEarn[this.currentLevel];
+        }
+
+        public Currency GetCurrentEarn()
+        {
+            return monoInfo.LevelUpEarn[this.currentLevel-1];
+        }
+
+        public void LevelUp()
+        {
+            this.currentLevel++;
+            if (!this.ExistNextLevelUp())
+            {
+                this.currentLevel = (uint)monoInfo.LevelUpFee.Length;
+            }
         }
 
         private float elapsedTime = 0;

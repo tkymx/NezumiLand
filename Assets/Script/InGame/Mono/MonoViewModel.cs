@@ -12,7 +12,9 @@ namespace NL
 
         // private
         private MonoInfo monoInfo;
-        private uint currentLevel = 1;
+
+        private uint currentLevel;
+        public uint CurrentLevel => currentLevel;
 
         public Currency RemoveFee => monoInfo.RemoveFee;
 
@@ -25,7 +27,7 @@ namespace NL
 
         public bool ExistNextLevelUp()
         {
-            return monoInfo.LevelUpFee.Length >= this.currentLevel;     // ５レベルまでなら、配列数は6
+            return monoInfo.LevelUpFee.Length > this.currentLevel;     // ５レベルまでなら、配列数は6
         }
 
         public Currency GetCurrentLevelUpFee()
@@ -53,11 +55,11 @@ namespace NL
 
         public void UpdateByFrame()
         {
+            // 別クラスにするでも良い
             elapsedTime += Time.deltaTime;
             if (elapsedTime > earnTime)
             {
-                // ここはMonoInfo から取りたい
-                var currency = new Currency(10);
+                var currency = this.GetCurrentEarn();
                 GameManager.Instance.Wallet.Push(currency);
                 GameManager.Instance.EffectManager.PlayEarnEffect(currency, monoView.transform.position);
                 elapsedTime = 0;

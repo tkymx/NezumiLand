@@ -79,19 +79,6 @@ namespace NL
         }
 
         /// <summary>
-        /// 選択されているターゲットが消去できるかを確認
-        /// </summary>
-        /// <returns></returns>
-        public bool IsRemoveSelectArrangement()
-        {
-            if (this.selectedArrangementTarget==null)
-            {
-                return false;
-            }
-            return this.selectedArrangementTarget.HasMonoViewModel;
-        }
-
-        /// <summary>
         /// 選択されている配置ターゲットを消す
         /// </summary>
         public void RemoveSelectArrangement()

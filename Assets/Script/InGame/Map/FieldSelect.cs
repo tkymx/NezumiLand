@@ -38,7 +38,7 @@ namespace NL
                     if (GameManager.Instance.Wallet.IsPay(makingMono.MakingFee))
                     {
                         GameManager.Instance.Wallet.Pay(makingMono.MakingFee);
-                        GameManager.Instance.EffectManager.PlayRemoveMonoEffect(makingMono.MakingFee, currentTarget.CenterPosition);
+                        GameManager.Instance.EffectManager.PlayConsumeEffect(makingMono.MakingFee, currentTarget.CenterPosition);
                         GameManager.Instance.Mouse.OrderMaking(currentTarget, new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
                     }
                     else

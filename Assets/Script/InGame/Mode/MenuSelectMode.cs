@@ -15,6 +15,7 @@ namespace NL
 
         public void OnEnter()
         {
+            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show();
             GameManager.Instance.GameUIManager.MonoListPresenter.Show();
             this.context.RemoveSelectMonoInfo();
         }
@@ -27,6 +28,7 @@ namespace NL
         }
         public void OnExit()
         {
+            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close();
             GameManager.Instance.GameUIManager.MonoListPresenter.Close();
             this.context.RemoveSelectMonoInfo();
         }

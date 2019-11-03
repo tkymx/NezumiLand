@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace NL
 {
-    public class ArrangementModeUIPresenter : UiWindowPresenterBase
+    public class FieldActionUIPresenter : UiWindowPresenterBase
     {
         [SerializeField]
         private Button backButton = null;
@@ -15,8 +15,7 @@ namespace NL
             // バックボタンを押した時
             backButton.onClick.AddListener(() =>
             {
-                // モードを戻す
-                GameManager.Instance.GameModeManager.Back();
+                GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
             });
 
             this.Close();

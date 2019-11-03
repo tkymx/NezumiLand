@@ -18,7 +18,7 @@ namespace NL
 
         public void OnEnter()
         {
-            GameManager.Instance.GameUIManager.ArrangementModeUIPresenter.Show();
+            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show();
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation();
             GameManager.Instance.ArrangementManager.Enable(context.TargetMonoInfo);
         }
@@ -29,7 +29,7 @@ namespace NL
 
         public void OnExit()
         {
-            GameManager.Instance.GameUIManager.ArrangementModeUIPresenter.Close();
+            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close();
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation();
             GameManager.Instance.ArrangementManager.Disable();
         }

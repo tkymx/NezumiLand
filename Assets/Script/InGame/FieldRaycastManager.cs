@@ -20,7 +20,7 @@ namespace NL
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit Hit;
-            if (Physics.Raycast(ray, out Hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "SelectLayer", "Floor" })))
+            if (Physics.Raycast(ray, out Hit, Mathf.Infinity, LayerMask.GetMask(new string[] { "SelectLayer", "Floor", "Mouse" })))
             {
                 var select = Hit.transform.GetComponent<SelectBase>();
                 Debug.Assert(select != null, "選択したオブジェクトに ISelect がありません");

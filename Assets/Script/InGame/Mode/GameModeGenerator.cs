@@ -20,5 +20,13 @@ namespace NL
         {
             return new MenuSelectMode(GameContextMap.DefaultMap.MenuSelectModeContext);
         }
+        public static ArrangementMenuSelectMode GenerateArrangementMenuSelectMode(IArrangementTarget arrangementTarget)
+        {
+            return new ArrangementMenuSelectMode(arrangementTarget);
+        }
+        public static SelectMode GenerateSelectMode()
+        {
+            return new SelectMode();
+        }
     }
 }

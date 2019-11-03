@@ -19,14 +19,14 @@ namespace NL
         public WalletPresenter WalletPresenter => walletPresenter;
 
         [SerializeField]
-        private ArrangementModeUIPresenter arrangementModeUIPresenter = null;
-        public ArrangementModeUIPresenter ArrangementModeUIPresenter => arrangementModeUIPresenter;
+        private FieldActionUIPresenter fieldActionUIPresenter = null;
+        public FieldActionUIPresenter FieldActionUIPresenter => fieldActionUIPresenter;
 
         public void Initialize()
         {
             this.monoListPresenter.Initialize(GameContextMap.DefaultMap.MenuSelectModeContext);
             this.arrangementMenuUIPresenter.Initialize();
-            this.arrangementModeUIPresenter.Initialize();
+            this.fieldActionUIPresenter.Initialize();
         }
     }
 }

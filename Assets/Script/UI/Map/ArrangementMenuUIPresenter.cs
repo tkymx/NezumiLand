@@ -42,7 +42,7 @@ namespace NL
                     GameManager.Instance.Wallet.Pay(removeFee);
                     GameManager.Instance.EffectManager.PlayConsumeEffect(removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
                     GameManager.Instance.ArrangementManager.RemoveSelectArrangement();
-                    this.Close();
+                    this.DoFinishProcess();
                 }
             });
 
@@ -60,10 +60,16 @@ namespace NL
             closeButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.ArrangementManager.RemoveSelection();
-                this.Close();
+                this.DoFinishProcess();
             });
 
             // 初めは閉じておく
+            this.Close();
+        }
+
+        private void DoFinishProcess()
+        {
+            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
             this.Close();
         }
 

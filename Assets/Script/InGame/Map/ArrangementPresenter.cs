@@ -65,8 +65,8 @@ namespace NL
                 arrangementView.OnSelect
                     .Subscribe(_ =>
                     {
-                        GameManager.Instance.ArrangementManager.Select(arrangementTarget);
-                        this.ReLoad();
+                        // メニューを変更する
+                        GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateArrangementMenuSelectMode(arrangementTarget));
                     });
 
                 this.arrangementViews.Add(arrangementView);

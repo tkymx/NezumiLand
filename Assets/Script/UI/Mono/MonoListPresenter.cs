@@ -25,6 +25,7 @@ namespace NL
             this.monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             this.displayMonoCellDictionary = new Dictionary<MonoInfo, MonoListCellView>();
             this.ReLoad();
+            this.Close();
         }
 
         public void ReLoad()

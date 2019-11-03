@@ -55,7 +55,7 @@ namespace NL
             this.wallet = new Wallet(new Currency(100));
             this.effectManager = new EffectManager(mainCamera, rootEffectUI);
             this.gameModeManager = new GameModeManager();
-            this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateMenuSelectMode());
+            this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateSelectMode());
             this.fieldRaycastManager = new FieldRaycastManager(this.mainCamera);
 
             // initialize

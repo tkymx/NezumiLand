@@ -17,20 +17,27 @@ namespace NL
         {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show();
             GameManager.Instance.GameUIManager.MonoListPresenter.Show();
-            this.context.RemoveSelectMonoInfo();
+            GameManager.Instance.TimeManager.Pause();
         }
         public void OnUpdate()
         {
-            if (this.context.HasMonoInfo)
+            if (!GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo)
             {
-                GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateArrangementMode());
+                return;
             }
+
+            Debug.Assert(GameManager.Instance.MouseStockManager.IsOrderMouse, "オーダーできないのにモノが選択されました。");
+
+            // なんかここで入れてあげるのは違う気もする
+            this.context.SelectMonoInfo(GameManager.Instance.MonoSelectManager.SelectedMonoInfo);
+
+            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateArrangementMode());
         }
         public void OnExit()
         {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close();
             GameManager.Instance.GameUIManager.MonoListPresenter.Close();
-            this.context.RemoveSelectMonoInfo();
+            GameManager.Instance.TimeManager.Play();
         }
     }
 }

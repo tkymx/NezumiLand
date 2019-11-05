@@ -7,6 +7,8 @@ namespace NL
     public class GameModeManager
     {
         private IGameMode currentGameMode = null;
+        public IGameMode CurrentGameMode => currentGameMode;
+
         private Queue<IGameMode> nextGameModeQueue = null;
         private Queue<IGameMode> nextGameModeWithHistoryQueue = null;
         private Stack<IGameMode> gameModeHistory = null;

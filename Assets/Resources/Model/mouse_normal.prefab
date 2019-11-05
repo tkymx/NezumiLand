@@ -669,6 +669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleAnimation: {fileID: 5078358994823075725}
+  mouseSelect: {fileID: 851483991189994491}
 --- !u!114 &851483991189994491
 MonoBehaviour:
   m_ObjectHideFlags: 0

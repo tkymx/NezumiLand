@@ -8,8 +8,9 @@ namespace NL
     {
         public static ArrangementMode GenerateArrangementMode()
         {
-            var arrangementModeContext = GameContextMap.DefaultMap.ArrangementModeContext;
+            // コンテキストがある前提なのだとしたら、それでも。。。
             var menuSelectModeContext = GameContextMap.DefaultMap.MenuSelectModeContext;
+            var arrangementModeContext = GameContextMap.DefaultMap.ArrangementModeContext;
 
             // コンバート
             arrangementModeContext.SetTagetMonoInfo(menuSelectModeContext.SelectedMonoInfo);
@@ -18,11 +19,17 @@ namespace NL
         }
         public static MenuSelectMode GenerateMenuSelectMode()
         {
-            return new MenuSelectMode(GameContextMap.DefaultMap.MenuSelectModeContext);
+            var menuSelectModeContext = GameContextMap.DefaultMap.MenuSelectModeContext;
+            return new MenuSelectMode(menuSelectModeContext);
         }
         public static ArrangementMenuSelectMode GenerateArrangementMenuSelectMode(IArrangementTarget arrangementTarget)
         {
-            return new ArrangementMenuSelectMode(arrangementTarget);
+            var arrangementMenuSelectModeContext = GameContextMap.DefaultMap.ArrangementMenuSelectModeContext;
+
+            // コンバート
+            arrangementMenuSelectModeContext.SetArrangementTarget(arrangementTarget);
+
+            return new ArrangementMenuSelectMode(arrangementMenuSelectModeContext);
         }
         public static SelectMode GenerateSelectMode()
         {

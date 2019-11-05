@@ -21,10 +21,6 @@ namespace NL
         private GameUIManager gameUIManager = null;
         public GameUIManager GameUIManager => gameUIManager;
 
-        [SerializeField]
-        private Mouse mouse = null;
-        public Mouse Mouse => mouse;
-
         private ArrangementManager arrangementManager;
         public ArrangementManager ArrangementManager => arrangementManager;
 
@@ -41,7 +37,23 @@ namespace NL
         public GameModeManager GameModeManager => gameModeManager;
 
         private FieldRaycastManager fieldRaycastManager;
-        public FieldRaycastManager FieldRaycastManager => fieldRaycastManager; 
+        public FieldRaycastManager FieldRaycastManager => fieldRaycastManager;
+
+// 使用意図から外れたので一旦消す
+//        private MouseSelectManager mouseSelectManager;
+//        public MouseSelectManager MouseSelectManager => mouseSelectManager;
+
+        private MonoSelectManager monoSelectManager;
+        public MonoSelectManager MonoSelectManager => monoSelectManager;
+
+        private TimeManager timeManager;
+        public TimeManager TimeManager => timeManager;
+
+        private MouseHomeManager mouseHomeManager;
+        public MouseHomeManager MouseHomeManager => mouseHomeManager;
+
+        private MouseStockManager mouseStockManager;
+        public MouseStockManager MouseStockManager => mouseStockManager;
 
         private void Start()
         {
@@ -57,9 +69,15 @@ namespace NL
             this.gameModeManager = new GameModeManager();
             this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateSelectMode());
             this.fieldRaycastManager = new FieldRaycastManager(this.mainCamera);
+//            this.mouseSelectManager = new MouseSelectManager();
+            this.monoSelectManager = new MonoSelectManager();
+            this.timeManager = new TimeManager();
+            this.mouseHomeManager = new MouseHomeManager(this.rootObject);
+            this.mouseStockManager = new MouseStockManager(this.rootObject);
 
             // initialize
             this.gameUIManager.Initialize();
+            this.mouseHomeManager.Initialize();
         }
 
         private void Update()
@@ -67,6 +85,7 @@ namespace NL
             this.gameModeManager.UpdateByFrame();
             this.monoManager.UpdateByFrame();
             this.fieldRaycastManager.UpdateByFrame();
+            this.timeManager.UpdateByFrame();
         }
     }
 }

@@ -34,10 +34,14 @@ namespace NL
         private ArrangementModeContext arrangementModeContext = null;
         public ArrangementModeContext ArrangementModeContext => arrangementModeContext;
 
+        private ArrangementMenuSelectModeContext arrangementMenuSelectModeContext = null;
+        public ArrangementMenuSelectModeContext ArrangementMenuSelectModeContext => arrangementMenuSelectModeContext;
+
         public GameContextMap()
         {
             this.menuSelectModeContext = new MenuSelectModeContext();
             this.arrangementModeContext = new ArrangementModeContext();
+            this.arrangementMenuSelectModeContext = new ArrangementMenuSelectModeContext();
         }
     }
 }

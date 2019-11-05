@@ -32,13 +32,13 @@ namespace NL
         public bool HasPreMono => currentPreMono != null;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
+            // 初期化
             mouseParameter = new MouseParameter()
             {
-                speed = 0.1f,
+                speed = 4.0f,
             };
-
             stateManager = new StateManager(new EmptyState());
             currentPreMono = null;
         }
@@ -77,7 +77,6 @@ namespace NL
                 Debug.LogError("プレモノを持っていないのにMakeが呼ばれました");
             }
             currentPreMono.StartMaking(arrangementTarget);
-            GameManager.Instance.ArrangementManager.AddArrangement(arrangementTarget);
         }
 
         public void FinishMaking(IArrangementTarget arrangementTarget)
@@ -93,18 +92,19 @@ namespace NL
         // 移動のみを行う
         public void MoveTimeTo(Vector3 target)
         {
-            moveVector = ObjectComparison.Direction(target,transform.position) * this.mouseParameter.speed;
+            moveVector = ObjectComparison.Direction(target,transform.position) * this.mouseParameter.speed * GameManager.Instance.TimeManager.DeltaTime();
         }
 
-        public void OrderMaking(IArrangementTarget targetObject, PreMono preMono)
+        public void OrderMaking(IArrangementTarget arrangementTarget, PreMono preMono)
         {
-            Debug.Assert(!IsOrder(), "現在作成中のため追加で作成を行うことができません。");
+            Debug.Assert(!IsOrdered(), "現在作成中のため追加で作成を行うことができません。");
 
+            GameManager.Instance.ArrangementManager.AddArrangement(arrangementTarget);
             this.currentPreMono = preMono;
-            stateManager.Interrupt(new MoveToTarget(this, targetObject));
+            stateManager.Interrupt(new MoveToTarget(this, arrangementTarget));
         }
 
-        public bool IsOrder()
+        public bool IsOrdered()
         {
             return this.currentPreMono != null;
         }

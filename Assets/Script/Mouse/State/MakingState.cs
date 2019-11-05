@@ -25,11 +25,11 @@ namespace NL
 
         public IState onUpdate()
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += GameManager.Instance.TimeManager.DeltaTime();
             if (elapsedTime > 2.0f)
             {
                 context.FinishMaking(arrangementTarget);
-                return new EmptyState();
+                return new BackToHomeState(this.context);
             }
 
             return null;

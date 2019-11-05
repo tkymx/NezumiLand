@@ -6,6 +6,7 @@ namespace NL
 {
     public class MenuSelectModeContext
     {
+        // select
         private MonoInfo selecetedMonoInfo = null;
         public MonoInfo SelectedMonoInfo => selecetedMonoInfo;
 

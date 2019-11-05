@@ -24,7 +24,7 @@ namespace NL
 
         public void Initialize()
         {
-            this.monoListPresenter.Initialize(GameContextMap.DefaultMap.MenuSelectModeContext);
+            this.monoListPresenter.Initialize();
             this.arrangementMenuUIPresenter.Initialize();
             this.fieldActionUIPresenter.Initialize();
         }

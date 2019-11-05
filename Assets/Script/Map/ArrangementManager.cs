@@ -26,28 +26,12 @@ namespace NL
         private ArrangementAnnotater arrangementAnnotater;
         public ArrangementAnnotater ArrangementAnnotater => arrangementAnnotater;
 
-        // 配置に使用するMonoInfo
-        private MonoInfo arrangementMonoInfo = null;
-        public MonoInfo ArrangementMonoInfo => arrangementMonoInfo;
-
         public bool IsEnable
         {
             get
             {
-                return arrangementMonoInfo != null;
+                return GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo;
             }
-        }
-
-        // 配置可能にする
-        public void Enable(MonoInfo arrangementMonoInfo)
-        {
-            this.arrangementMonoInfo = arrangementMonoInfo;
-        }
-
-        // 配置不可能にする
-        public void Disable()
-        {
-            this.arrangementMonoInfo = null;
         }
 
         public ArrangementManager(GameObject root)
@@ -55,7 +39,6 @@ namespace NL
             this.arrangementTargetStore = new List<IArrangementTarget>();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater(root);
-            this.arrangementMonoInfo = null;
         }
 
         /// <summary>

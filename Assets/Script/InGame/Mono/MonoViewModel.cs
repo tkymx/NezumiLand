@@ -56,7 +56,7 @@ namespace NL
         public void UpdateByFrame()
         {
             // 別クラスにするでも良い
-            elapsedTime += Time.deltaTime;
+            elapsedTime += GameManager.Instance.TimeManager.DeltaTime();
             if (elapsedTime > earnTime)
             {
                 var currency = this.GetCurrentEarn();

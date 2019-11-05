@@ -42,7 +42,7 @@ namespace NL
 
         public void PlayError(string errorMessage, Vector3 position)
         {
-            var effectPrefab = ResourceLoader.LoadPrefab("UI/remove_mono_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab("UI/consume_effect");
             var screenPoint = camera.WorldToScreenPoint(position);
             var instance = Object.Appear2D(effectPrefab, root, screenPoint);
             var text = instance.GetComponent<Text>();
@@ -51,7 +51,7 @@ namespace NL
 
         public void PlayErrorFrom2D(string errorMessage, Vector2 screenPoint)
         {
-            var effectPrefab = ResourceLoader.LoadPrefab("UI/remove_mono_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab("UI/consume_effect");
             var instance = Object.Appear2D(effectPrefab, root, screenPoint);
             var text = instance.GetComponent<Text>();
             text.text = errorMessage;

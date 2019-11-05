@@ -16,12 +16,10 @@ namespace NL
         private GameObject cellViewRoot = null;
 
         private IMonoInfoRepository monoInfoRepository = null;
-        private MenuSelectModeContext menuSelectModeContext;
         private Dictionary<MonoInfo, MonoListCellView> displayMonoCellDictionary;
 
-        public void Initialize(MenuSelectModeContext menuSelectModeContext)
+        public void Initialize()
         {
-            this.menuSelectModeContext = menuSelectModeContext;
             this.monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             this.displayMonoCellDictionary = new Dictionary<MonoInfo, MonoListCellView>();
             this.ReLoad();
@@ -48,7 +46,7 @@ namespace NL
                 cellView.OnClick
                     .Subscribe(_ =>
                     {
-                        this.menuSelectModeContext.SelectMonoInfo(monoInfo);
+                        GameManager.Instance.MonoSelectManager.SelectMonoInfo(monoInfo);
                     });
                 this.displayMonoCellDictionary.Add(monoInfo, cellView);
             }

@@ -13,7 +13,7 @@ namespace NL
                 return;
             }
 
-            var makingMono = GameManager.Instance.ArrangementManager.ArrangementMonoInfo;
+            var makingMono = GameManager.Instance.MonoSelectManager.SelectedMonoInfo;
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(hit.point, makingMono));
         }
 
@@ -24,29 +24,10 @@ namespace NL
                 return;
             }
 
-            var makingMono = GameManager.Instance.ArrangementManager.ArrangementMonoInfo;
-            var makingPrefab = ResourceLoader.LoadPrefab("Model/Making");
+            var makingMono = GameManager.Instance.MonoSelectManager.SelectedMonoInfo;
 
+            GameManager.Instance.ArrangementManager.ArrangementAnnotater.Select();
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.Annotate(ArrangementInfoGenerator.Generate(hit.point, makingMono));
-            var currentTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget();
-            if (GameManager.Instance.ArrangementManager.IsSetArrangement(currentTarget))
-            {
-                // 押した地点に移動して作成する
-                if (!GameManager.Instance.Mouse.IsOrder())
-                {
-                    // この辺は販売関連のクラスでまとめたほうが良さげ
-                    if (GameManager.Instance.Wallet.IsPay(makingMono.MakingFee))
-                    {
-                        GameManager.Instance.Wallet.Pay(makingMono.MakingFee);
-                        GameManager.Instance.EffectManager.PlayConsumeEffect(makingMono.MakingFee, currentTarget.CenterPosition);
-                        GameManager.Instance.Mouse.OrderMaking(currentTarget, new PreMono(GameManager.Instance.Mouse, makingPrefab, makingMono));
-                    }
-                    else
-                    {
-                        GameManager.Instance.EffectManager.PlayError("お金がありません。", currentTarget.CenterPosition);
-                    }
-                }
-            }
         }
     }
 }

@@ -6,18 +6,19 @@ namespace NL
 {
     public class ArrangementMenuSelectMode : IGameMode
     {
-        private IArrangementTarget arrangementTarget;
+        private ArrangementMenuSelectModeContext context;
 
-        public ArrangementMenuSelectMode(IArrangementTarget arrangementTarget)
+        public ArrangementMenuSelectMode(ArrangementMenuSelectModeContext context)
         {
-            this.arrangementTarget = arrangementTarget;
+            this.context = context;
         }
 
         public void OnEnter()
         {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show();
-            GameManager.Instance.ArrangementManager.Select(arrangementTarget);
+            GameManager.Instance.ArrangementManager.Select(context.ArrangementTarget);
             GameManager.Instance.ArrangementPresenter.ReLoad();
+            GameManager.Instance.TimeManager.Pause();
         }
         public void OnUpdate()
         {
@@ -27,6 +28,7 @@ namespace NL
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close();
             GameManager.Instance.ArrangementManager.RemoveSelection();
             GameManager.Instance.ArrangementPresenter.ReLoad();
+            GameManager.Instance.TimeManager.Play();
         }
     }
 }

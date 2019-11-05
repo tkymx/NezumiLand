@@ -15,7 +15,16 @@ namespace NL
         private void Update()
         {
             text.text = "";
-            text.text += "MouseState : " + GameManager.Instance.Mouse.StateManager.CurrentState.ToString() + LR;
+/*
+            if (GameManager.Instance.MouseSelectManager.HasSelectedMouse)
+            {
+                text.text += "MouseState : " + GameManager.Instance.MouseSelectManager.SelectedMouse.StateManager.CurrentState.ToString() + LR;
+            }
+*/
+            if (GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo)
+            {
+                text.text += "MonoState : " + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Id.ToString() + ":" + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Name.ToString() + LR;
+            }
             text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString() + LR;
         }
     }

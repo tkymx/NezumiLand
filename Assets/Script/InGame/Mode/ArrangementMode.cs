@@ -47,6 +47,7 @@ namespace NL
             if (!GameManager.Instance.Wallet.IsPay(makingMono.MakingFee))
             {
                 GameManager.Instance.EffectManager.PlayError("お金がありません。", currentTarget.CenterPosition);
+                return;
             }
 
             GameManager.Instance.Wallet.Pay(makingMono.MakingFee);

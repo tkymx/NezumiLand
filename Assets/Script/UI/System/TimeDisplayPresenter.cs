@@ -8,7 +8,10 @@ namespace NL
     public class TimeDisplayPresenter : MonoBehaviour
     {
         [SerializeField]
-        private Text timeValue = null;
+        private Text remainValue = null;
+
+        [SerializeField]
+        private Text dayValue = null;
 
         // Start is called before the first frame update
         void Start()
@@ -19,7 +22,8 @@ namespace NL
         // Update is called once per frame
         void Update()
         {
-            timeValue.text = GameManager.Instance.TimeManager.ElapsedTime.ToString("F0");
+            remainValue.text = GameManager.Instance.DailyActionManager.RemainOverSecond.ToString("F0");
+            dayValue.text = GameManager.Instance.DailyActionManager.DaySecond.ToString("F0");
         }
     }
 }

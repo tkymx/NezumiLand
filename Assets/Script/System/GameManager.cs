@@ -55,6 +55,9 @@ namespace NL
         private MouseStockManager mouseStockManager;
         public MouseStockManager MouseStockManager => mouseStockManager;
 
+        private DailyActionManager dailyActionManager;
+        public DailyActionManager DailyActionManager => dailyActionManager;
+
         private void Start()
         {
             // コンテキストマップ
@@ -62,9 +65,9 @@ namespace NL
             GameContextMap.Initialize();
 
             // instance
+            this.wallet = new Wallet(new Currency(100));    // 所持金の初期値も外出ししたい
             this.arrangementManager = new ArrangementManager(this.rootObject);
             this.monoManager = new MonoManager(this.rootObject);
-            this.wallet = new Wallet(new Currency(100));
             this.effectManager = new EffectManager(mainCamera, rootEffectUI);
             this.gameModeManager = new GameModeManager();
             this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateSelectMode());
@@ -74,6 +77,7 @@ namespace NL
             this.timeManager = new TimeManager();
             this.mouseHomeManager = new MouseHomeManager(this.rootObject);
             this.mouseStockManager = new MouseStockManager(this.rootObject);
+            this.dailyActionManager = new DailyActionManager();
 
             // initialize
             this.gameUIManager.Initialize();
@@ -82,6 +86,7 @@ namespace NL
 
         private void Update()
         {
+            this.dailyActionManager.UpdateByFrame();
             this.gameModeManager.UpdateByFrame();
             this.monoManager.UpdateByFrame();
             this.fieldRaycastManager.UpdateByFrame();

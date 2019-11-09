@@ -1,24 +1,26 @@
 [
-        {
-                "Id": 1,
-                "Name": "ブランコ",
-                "Width": 2,
-                "Height": 2,
-                "RemoveFee": 20,
-                "MakingFee": 10,
-                "ModelName": "branko",
-                "LevelUpFee": [0,10,20,30,40,50,60],
-                "LevelUpEarn": [10,20,30,40,50,60,70]
-        },
-        {
-                "Id": 2,
-                "Name": "ブランコ",
-                "Width": 3,
-                "Height": 3,
-                "RemoveFee": 40,
-                "MakingFee": 100,
-                "ModelName": "branko",
-                "LevelUpFee": [0,10,20,30,40,50,60],
-                "LevelUpEarn": [10,20,30,40,50,60,70]
-        }
+    {
+        "Id": 1,
+        "Name": "ブランコ",
+        "Width": 2,
+        "Height": 2,
+        "RemoveFee": 20,
+        "MakingFee": 10,
+        "ModelName": "branko",
+        "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
+        "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
+        "BaseSatisfaction":  10,
+    },
+    {
+        "Id": 2,
+        "Name": "ブランコ",
+        "Width": 3,
+        "Height": 3,
+        "RemoveFee": 40,
+        "MakingFee": 100,
+        "ModelName": "branko",
+        "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
+        "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
+        "BaseSatisfaction": 100
+    }
 ]

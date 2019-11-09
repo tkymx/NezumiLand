@@ -32,7 +32,10 @@ namespace NL
         public long[] LevelUpFee { get; set; }
 
         [DataMember]
-        public long[] LevelUpEarn { get; set; }
+        public long[] LevelUpSatisfaction { get; set; }
+
+        [DataMember]
+        public long BaseSatisfaction { get; set; }
     }
 
     public interface IMonoInfoRepository
@@ -50,18 +53,17 @@ namespace NL
         {
             return entrys.Select(entry =>
             {
-                return new MonoInfo()
-                {
-                    Id = entry.Id,
-                    Name = entry.Name,
-                    Width = entry.Width,
-                    Height = entry.Height,
-                    MakingFee = new Currency(entry.MakingFee),
-                    RemoveFee = new Currency(entry.RemoveFee),
-                    MonoPrefab = ResourceLoader.LoadModel(entry.ModelName),
-                    LevelUpFee = entry.LevelUpFee.Select(fee => new Currency(fee)).ToArray(),
-                    LevelUpEarn = entry.LevelUpEarn.Select(fee => new Currency(fee)).ToArray()
-                };
+                return new MonoInfo(
+                    entry.Id,
+                    entry.Name,
+                    entry.Width,
+                    entry.Height,
+                    entry.MakingFee,
+                    entry.RemoveFee,
+                    entry.ModelName,
+                    entry.LevelUpFee,
+                    entry.LevelUpSatisfaction,
+                    entry.BaseSatisfaction);
             });
         }
     }

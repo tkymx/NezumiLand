@@ -9,8 +9,8 @@ namespace NL
     /// </summary>
     public class MonoManager
     {
-        GameObject root;
-        List<MonoViewModel> monoViewModels;
+        private GameObject root;
+        private List<MonoViewModel> monoViewModels;
 
         public MonoManager(GameObject root)
         {
@@ -24,6 +24,16 @@ namespace NL
             {
                 monoViewModel.UpdateByFrame();
             }
+        }
+
+        public Satisfaction GetAllSatisfaction()
+        {
+            Satisfaction satisfaction = new Satisfaction(0);
+            foreach (var monoViewModel in monoViewModels)
+            {
+                satisfaction += monoViewModel.GetCurrentSatisfaction();
+            }
+            return satisfaction;
         }
 
         public MonoViewModel CreateMono(MonoInfo monoInfo, Vector3 position)

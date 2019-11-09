@@ -33,12 +33,7 @@ namespace NL
         public Currency GetCurrentLevelUpFee()
         {
             Debug.Assert(ExistNextLevelUp(),"次のレベルがありません");
-            return monoInfo.LevelUpEarn[this.currentLevel];
-        }
-
-        public Currency GetCurrentEarn()
-        {
-            return monoInfo.LevelUpEarn[this.currentLevel-1];
+            return monoInfo.LevelUpFee[this.currentLevel];
         }
 
         public void LevelUp()
@@ -50,20 +45,13 @@ namespace NL
             }
         }
 
-        private float elapsedTime = 0;
-        private float earnTime = 1;
+        public Satisfaction GetCurrentSatisfaction()
+        {
+            return monoInfo.BaseSatisfaction + monoInfo.LevelUpSatisfaction[this.currentLevel - 1];
+        }
 
         public void UpdateByFrame()
         {
-            // 別クラスにするでも良い
-            elapsedTime += GameManager.Instance.TimeManager.DeltaTime();
-            if (elapsedTime > earnTime)
-            {
-                var currency = this.GetCurrentEarn();
-                GameManager.Instance.Wallet.Push(currency);
-                GameManager.Instance.EffectManager.PlayEarnEffect(currency, monoView.transform.position);
-                elapsedTime = 0;
-            }
         }
     }
 }

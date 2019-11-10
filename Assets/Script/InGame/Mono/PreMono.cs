@@ -29,7 +29,7 @@ namespace NL
         {
             Debug.Assert(!arrangementTarget.HasMonoViewModel, "モノがセットされています。");
 
-            Object.DisAppear(this.makingInstane);        
+            Object.DisAppear(this.makingInstane);
             arrangementTarget.MonoViewModel = GameManager.Instance.MonoManager.CreateMono(mono, arrangementTarget.CenterPosition);
         }
     }

@@ -25,8 +25,6 @@ namespace NL
 
         private void SetState(IState state)
         {
-            Debug.Log("状態を遷移しました。 : " +  state.ToString());
-
             this.currentState.onExit();
             this.currentState = state;
             this.currentState.onEnter();

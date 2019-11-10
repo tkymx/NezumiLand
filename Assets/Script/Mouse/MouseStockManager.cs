@@ -50,6 +50,9 @@ namespace NL
             var makingPrefab = ResourceLoader.LoadPrefab("Model/Making");
             mouse.OrderMaking(arrangementTarget, new PreMono(mouse, makingPrefab, monoInfo));
             orderedMouse.Add(mouse);
+
+            //オーダーをセットする
+            arrangementTarget.MonoInfo = monoInfo;
         }
 
         public void BackMouse(Mouse mouse)

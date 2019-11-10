@@ -1,0 +1,18 @@
+[
+    {
+        "Id": 1,
+        "TriggerMonoInfoId": 1,
+        "Title": "ブランコサンプル",
+        "Detail": "ブランコ小と大を近くに配置しよう",
+        "OnegaiCondition": "Near",
+        "OnegaiConditionArg": "2"
+    },
+    {
+        "Id": 1,
+        "TriggerMonoInfoId": 1,
+        "Title": "ブランコサンプル",
+        "Detail": "ブランコ小と道を近くに配置しよう",
+        "OnegaiCondition": "Near",
+        "OnegaiConditionArg": "3"
+    }
+]

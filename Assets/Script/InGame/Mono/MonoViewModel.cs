@@ -12,6 +12,7 @@ namespace NL
 
         // private
         private MonoInfo monoInfo;
+        public MonoInfo MonoInfo => monoInfo;
 
         private uint currentLevel;
         public uint CurrentLevel => currentLevel;

@@ -12,20 +12,14 @@ namespace NL
         private ArrangementItemAmount arrangementItemAmount;
         public ArrangementItemAmount ArrangementItemAmount => arrangementItemAmount;
 
-        public ArrangementResourceAmount(Currency currency, ArrangementItemAmount arrangementItemAmount)
+        private ArrangementCount arrangementCount;
+        public ArrangementCount ArrangementCount => arrangementCount;
+
+        public ArrangementResourceAmount(Currency currency, ArrangementItemAmount arrangementItemAmount, ArrangementCount arrangementCount)
         {
             this.currency = currency;
             this.arrangementItemAmount = arrangementItemAmount;
-        }
-
-        public static ArrangementResourceAmount operator +(ArrangementResourceAmount left, ArrangementResourceAmount right)
-        {
-            return new ArrangementResourceAmount(left.currency + right.currency, left.arrangementItemAmount + right.arrangementItemAmount);
-        }
-
-        public static ArrangementResourceAmount operator -(ArrangementResourceAmount left, ArrangementResourceAmount right)
-        {
-            return new ArrangementResourceAmount(left.currency - right.currency, left.arrangementItemAmount - right.arrangementItemAmount);
+            this.arrangementCount = arrangementCount;
         }
 
         public override string ToString()

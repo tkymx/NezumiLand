@@ -38,5 +38,9 @@ namespace NL
         // モノ
         public MonoViewModel MonoViewModel { get; set; }
         public bool HasMonoViewModel => MonoViewModel != null;
+
+        // 配置されるモノ
+        public MonoInfo MonoInfo { get; set; }
+        public bool HasMonoInfo => MonoInfo != null;
     }
 }

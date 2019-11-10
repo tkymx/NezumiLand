@@ -29,7 +29,14 @@ namespace NL
         private Text levelUpFeeText = null;
 
         [SerializeField]
+        private Button onegaiListButton = null;
+
+        [SerializeField]
+        private OnegaiPresenter onegaiPresenter = null;
+
+        [SerializeField]
         private Button closeButton = null;
+
 
         // Start is called before the first frame update
         public void Initialize()
@@ -63,6 +70,13 @@ namespace NL
                 this.DoFinishProcess();
             });
 
+            onegaiListButton.onClick.AddListener(() =>
+            {
+                this.onegaiPresenter.Show();
+            });
+
+            this.onegaiPresenter.Initialize();
+
             // 初めは閉じておく
             this.Close();
         }
@@ -80,6 +94,7 @@ namespace NL
             UpdateRemoveFee();
             UpdateLevelUpButtonEnable();
             UpdateLevelUpFee();
+            UpdateOnegaiButtonEnable();
         }
 
         public void Show()
@@ -91,6 +106,7 @@ namespace NL
         public void Close()
         {
             arrangementUI.SetActive(false);
+            onegaiPresenter.Close();
         }
 
         private void UpdateDetail()
@@ -204,6 +220,23 @@ namespace NL
 
             var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee();
             levelUpFeeText.text = levelUpFee.ToString();
+        }
+
+        private void UpdateOnegaiButtonEnable()
+        {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
+            {
+                onegaiListButton.interactable = false;
+                return;
+            }
+
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
+            {
+                onegaiListButton.interactable = false;
+                return;
+            }
+
+            onegaiListButton.interactable = true;
         }
     }
 }

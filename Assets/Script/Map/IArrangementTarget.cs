@@ -12,15 +12,25 @@ namespace NL
     /// </summary>
     public interface IArrangementTarget
     {
-        // プレイヤーが移動に使用する
+        // 配置の中心
         Vector3 CenterPosition { get; }
+
+        // 配置中心から外径
         float Range { get; }
 
-        // 位置情報として使用する
+        // 配置位置
         List<ArrangementPosition> ArrangementPositions { get; }
+
+        // 今後配置されるもの
+        MonoInfo MonoInfo { get; set; }
+
+        // 今後設置されているかどうか？
+        bool HasMonoInfo { get; }
 
         // 設定されているモノ
         MonoViewModel MonoViewModel { get; set; }
+
+        // 設置されているかどうか？
         bool HasMonoViewModel { get; }
     }
 }

@@ -14,6 +14,9 @@ namespace NL
         public string Name { get; set; }
 
         [DataMember]
+        public string Type { get; set; }
+
+        [DataMember]
         public int Width { get; set; }
 
         [DataMember]
@@ -39,6 +42,9 @@ namespace NL
 
         [DataMember]
         public long BaseSatisfaction { get; set; }
+
+        [DataMember]
+        public long ArrangementCount { get; set; }
     }
 
     public interface IMonoInfoRepository
@@ -59,6 +65,7 @@ namespace NL
                 return new MonoInfo(
                     entry.Id,
                     entry.Name,
+                    entry.Type,
                     entry.Width,
                     entry.Height,
                     entry.MakingFee,
@@ -67,8 +74,15 @@ namespace NL
                     entry.ModelName,
                     entry.LevelUpFee,
                     entry.LevelUpSatisfaction,
-                    entry.BaseSatisfaction);
+                    entry.BaseSatisfaction,
+                    entry.ArrangementCount);
             });
+        }
+
+        public IEnumerable<MonoInfo> GetByType(MonoType type)
+        {
+            return GetAll()
+                .Where(monoInfo => monoInfo.Type == type);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace NL
         }
 
         public IList<MonoInfoEntry> MonoInfoEntrys { get; private set; }
+        public IList<OnegaiEntry> OnegaiEntrys { get; private set; }
 
         public static void Initialize()
         {
@@ -28,6 +29,7 @@ namespace NL
         public void Load()
         {
             this.MonoInfoEntrys = LoadEntryFromJson<MonoInfoEntry>(ResourceLoader.LoadData("MonoInfoEntry"));
+            this.OnegaiEntrys = LoadEntryFromJson<OnegaiEntry>(ResourceLoader.LoadData("OnegaiEntry"));
         }
 
         private static IList<T> LoadEntryFromJson<T>(string json)

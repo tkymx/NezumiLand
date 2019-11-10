@@ -16,7 +16,7 @@ namespace NL
         public void OnEnter()
         {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show();
-            GameManager.Instance.GameUIManager.MonoListPresenter.Show();
+            GameManager.Instance.GameUIManager.MonoTabPresenter.Show();
             GameManager.Instance.TimeManager.Pause();
         }
         public void OnUpdate()
@@ -36,7 +36,7 @@ namespace NL
         public void OnExit()
         {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close();
-            GameManager.Instance.GameUIManager.MonoListPresenter.Close();
+            GameManager.Instance.GameUIManager.MonoTabPresenter.Close();
             GameManager.Instance.TimeManager.Play();
         }
     }

@@ -21,6 +21,11 @@ namespace NL
                 return false;
             }
 
+            if (GameManager.Instance.ArrangementManager.GetAppearMonoCountById(amount.ArrangementCount.MonoInfoId) >= amount.ArrangementCount.Count)
+            {
+                return false;
+            }
+
             return true;
         }
 

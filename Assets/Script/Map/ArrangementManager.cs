@@ -42,6 +42,20 @@ namespace NL
         }
 
         /// <summary>
+        /// id 指定して今どのくらい出現しているのかを調べる
+        /// ※都度計算しており低速なので後でテーブル化はしたい。
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>出現数</returns>
+        public int GetAppearMonoCountById(uint id)
+        {
+            return this.arrangementTargetStore
+                .Where(target => target.HasMonoInfo)
+                .Where(target => target.MonoInfo.Id == id)
+                .Count();
+        }
+
+        /// <summary>
         /// 配置位置を追加する
         /// </summary>
         public void AddArrangement(IArrangementTarget arrangementTarget)

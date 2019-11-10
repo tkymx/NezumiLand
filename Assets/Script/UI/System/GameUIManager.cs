@@ -7,16 +7,12 @@ namespace NL
     public class GameUIManager : MonoBehaviour
     {
         [SerializeField]
-        private MonoListPresenter monoListPresenter = null;
-        public MonoListPresenter MonoListPresenter => monoListPresenter;
+        private MonoTabPresenter monoTabPresenter = null;
+        public MonoTabPresenter MonoTabPresenter => monoTabPresenter;
 
         [SerializeField]
         private ArrangementMenuUIPresenter arrangementMenuUIPresenter = null;
         public ArrangementMenuUIPresenter ArrangementMenuUIPresenter => arrangementMenuUIPresenter;
-
-        [SerializeField]
-        private WalletPresenter walletPresenter = null;
-        public WalletPresenter WalletPresenter => walletPresenter;
 
         [SerializeField]
         private FieldActionUIPresenter fieldActionUIPresenter = null;
@@ -24,7 +20,7 @@ namespace NL
 
         public void Initialize()
         {
-            this.monoListPresenter.Initialize();
+            this.monoTabPresenter.Initialize();
             this.arrangementMenuUIPresenter.Initialize();
             this.fieldActionUIPresenter.Initialize();
         }

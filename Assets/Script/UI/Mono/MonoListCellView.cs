@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace NL
 {
-    public class MonoListCellView : MonoBehaviour
+    public class MonoListCellView : ListCellViewBase
     {
         [SerializeField]
         private Text monoName = null;
@@ -14,33 +14,17 @@ namespace NL
         private Text makingFree = null;
 
         [SerializeField]
-        private Button cellButton = null;
+        private Text appearCount = null;
 
-        public TypeObservable<int> OnClick { get; private set; }
+        [SerializeField]
+        private Text appearMaxCount = null;
 
-        public void Initialize()
-        {
-            OnClick = new TypeObservable<int>();
-            cellButton.onClick.AddListener(() =>
-            {
-                OnClick.Execute(0);
-            });
-        }
-
-        public void UpdateCell(string name, Currency free)
+        public void UpdateCell(string name, Currency free, long appearCount, long appearMaxCount)
         {
             this.monoName.text = name;
-            this.makingFree.text = free.Value.ToString() + "yen";
-        }
-
-        public void Enable()
-        {
-            this.cellButton.interactable = true;
-        }
-
-        public void DiasbleForLowFee()
-        {
-            this.cellButton.interactable = false;
+            this.makingFree.text = free.ToString();
+            this.appearCount.text = appearCount.ToString();
+            this.appearMaxCount.text = appearMaxCount.ToString();
         }
     }
 }

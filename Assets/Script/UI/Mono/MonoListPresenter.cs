@@ -61,7 +61,7 @@ namespace NL
                 var monoInfo = pair.Key;
                 var cellView = pair.Value;
 
-                if (monoInfo.MakingFee > currentCurrency)
+                if (!ArrangementResourceHelper.IsConsume(monoInfo.ArrangementResourceAmount))
                 {
                     cellView.DiasbleForLowFee();
                 }

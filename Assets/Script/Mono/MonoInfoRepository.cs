@@ -23,6 +23,9 @@ namespace NL
         public long MakingFee { get; set; }
 
         [DataMember]
+        public long MakingItemAmount { get; set; }
+
+        [DataMember]
         public long RemoveFee { get; set; }
 
         [DataMember]
@@ -59,6 +62,7 @@ namespace NL
                     entry.Width,
                     entry.Height,
                     entry.MakingFee,
+                    entry.MakingItemAmount,
                     entry.RemoveFee,
                     entry.ModelName,
                     entry.LevelUpFee,

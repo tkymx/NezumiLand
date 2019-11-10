@@ -58,6 +58,9 @@ namespace NL
         private DailyActionManager dailyActionManager;
         public DailyActionManager DailyActionManager => dailyActionManager;
 
+        private ArrangementItemStore arrangementItemStore;
+        public ArrangementItemStore ArrangementItemStore => arrangementItemStore;
+
         private void Start()
         {
             // コンテキストマップ
@@ -65,7 +68,8 @@ namespace NL
             GameContextMap.Initialize();
 
             // instance
-            this.wallet = new Wallet(new Currency(100));    // 所持金の初期値も外出ししたい
+            this.wallet = new Wallet(new Currency(100));                                            // 所持金の初期値も外出ししたい
+            this.arrangementItemStore = new ArrangementItemStore(new ArrangementItemAmount(100));   // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager(this.rootObject);
             this.monoManager = new MonoManager(this.rootObject);
             this.effectManager = new EffectManager(mainCamera, rootEffectUI);

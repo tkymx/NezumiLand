@@ -18,6 +18,7 @@ namespace NL
         public Currency[] LevelUpFee { get; private set; }
         public Satisfaction[] LevelUpSatisfaction { get; private set; }
         public Satisfaction BaseSatisfaction { get; private set; }
+        public ArrangementItemAmount ArrangementItemAmount { get; private set; }
 
         public MonoInfo(
             uint Id,
@@ -25,6 +26,7 @@ namespace NL
             int Width,
             int Height,
             long MakingFee,
+            long MakingItemAmount,
             long RemoveFee,
             string ModelName,
             long[] LevelUpFee,
@@ -36,11 +38,20 @@ namespace NL
             this.Width = Width;
             this.Height = Height;
             this.MakingFee = new Currency(MakingFee);
+            this.ArrangementItemAmount = new ArrangementItemAmount(MakingItemAmount);
             this.RemoveFee = new Currency(RemoveFee);
             this.MonoPrefab = ResourceLoader.LoadModel(ModelName);
             this.LevelUpFee = LevelUpFee.Select(fee => new Currency(fee)).ToArray();
             this.LevelUpSatisfaction = LevelUpSatisfaction.Select(satisfaction => new Satisfaction(satisfaction)).ToArray();
             this.BaseSatisfaction = new Satisfaction(BaseSatisfaction);
+        }
+
+        public ArrangementResourceAmount ArrangementResourceAmount
+        {
+            get
+            {
+                return new ArrangementResourceAmount(this.MakingFee, this.ArrangementItemAmount);
+            }
         }
     }
 }

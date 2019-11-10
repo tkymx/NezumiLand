@@ -44,13 +44,14 @@ namespace NL
             }
 
             var makingMono = GameManager.Instance.MonoSelectManager.SelectedMonoInfo;
-            if (!GameManager.Instance.Wallet.IsPay(makingMono.MakingFee))
+            var makingArrangementResourceAmount = makingMono.ArrangementResourceAmount;
+            if (!ArrangementResourceHelper.IsConsume(makingArrangementResourceAmount))
             {
-                GameManager.Instance.EffectManager.PlayError("お金がありません。", currentTarget.CenterPosition);
+                GameManager.Instance.EffectManager.PlayError("素材が足りません。", currentTarget.CenterPosition);
                 return;
             }
 
-            GameManager.Instance.Wallet.Pay(makingMono.MakingFee);
+            ArrangementResourceHelper.Consume(makingArrangementResourceAmount);
             GameManager.Instance.EffectManager.PlayConsumeEffect(makingMono.MakingFee, currentTarget.CenterPosition);
             GameManager.Instance.MouseStockManager.OrderMouse(currentTarget, makingMono);
         }

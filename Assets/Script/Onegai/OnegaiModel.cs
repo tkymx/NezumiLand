@@ -23,9 +23,9 @@ namespace NL
         public OnegaiModel(
             uint id,
             uint triggetMonoInfoId,
-            string onegaiCondition,
             string title,
             string detail,
+            string onegaiCondition,
             string onegaiConditionArg)
         {
             this.Id = id;

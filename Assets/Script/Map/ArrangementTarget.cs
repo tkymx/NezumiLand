@@ -42,5 +42,41 @@ namespace NL
         // 配置されるモノ
         public MonoInfo MonoInfo { get; set; }
         public bool HasMonoInfo => MonoInfo != null;
+
+        // エッジを取得
+        public List<ArrangementPosition> GetEdgePositions()
+        {
+            var edgePositions = new List<ArrangementPosition>();
+            var diffs = new List<ArrangementDiff>() {
+                new ArrangementDiff(){dx=-1,dz=-1},
+                new ArrangementDiff(){dx=1,dz=1},
+                new ArrangementDiff(){dx=-1,dz=1},
+                new ArrangementDiff(){dx=1,dz=-1}
+            };
+
+            foreach (var arrangementPosition in arrangementPositions)
+            {
+                foreach (var diff in diffs)
+                {
+                    var diffPosition = new ArrangementPosition() {
+                        x = arrangementPosition.x + diff.dx,
+                        z = arrangementPosition.z + diff.dz
+                    };
+
+                    var foundOwnIndex = arrangementPositions.FindIndex(position => position == diffPosition);
+                    if (foundOwnIndex >= 0) {
+                        continue;
+                    }
+
+                    var foundEdgeIndex = edgePositions.FindIndex(position => position == diffPosition);
+                    if (foundEdgeIndex >= 0) {
+                        continue;
+                    }
+
+                    edgePositions.Add(diffPosition);                    
+                }
+            }
+            return edgePositions;
+        }
     }
 }

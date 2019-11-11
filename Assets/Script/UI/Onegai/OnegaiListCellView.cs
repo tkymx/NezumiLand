@@ -13,10 +13,14 @@ namespace NL
         [SerializeField]
         private Text detailText = null;
 
-        public void UpdateCell(string title, string detail)
+        [SerializeField]
+        private GameObject clearBadge = null;
+
+        public void UpdateCell(string title, string detail, bool isClear)
         {
             this.titleText.text = title;
             this.detailText.text = detail;
+            this.clearBadge.SetActive(isClear);
         }
     }
 }

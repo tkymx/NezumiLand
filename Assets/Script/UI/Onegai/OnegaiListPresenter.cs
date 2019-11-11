@@ -8,7 +8,10 @@ namespace NL
     {
         protected override void onReloadCell(PlayerOnegaiModel element, OnegaiListCellView cellView)
         {
-            cellView.UpdateCell(element.OnegaiModel.Title, element.OnegaiModel.Detail);
+            cellView.UpdateCell(
+                element.OnegaiModel.Title,
+                element.OnegaiModel.Detail,
+                element.OnegaiState == OnegaiState.Clear);
         }
     }
 }

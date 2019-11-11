@@ -7,7 +7,7 @@ namespace NL
 {
     public enum OnegaiState
     {
-        Lock,
+        Lock,   // 基本的にロックはされない認識、変なのが入らないためのセーフティ
         UnLock,
         Clear
     }
@@ -17,6 +17,11 @@ namespace NL
         public uint Id { get; private set; }
         public OnegaiModel OnegaiModel { get; private set; }
         public OnegaiState OnegaiState { get; private set; }
+
+        public void ToClear()
+        {
+            this.OnegaiState = OnegaiState.Clear;
+        }
 
         public PlayerOnegaiModel(
             uint id,

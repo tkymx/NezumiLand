@@ -56,6 +56,31 @@ namespace NL
         }
 
         /// <summary>
+        /// 近くの配置物を取得
+        /// </summary>
+        /// <param name="arrangementTarget">モデル</param>
+        /// <returns></returns>
+        public List<IArrangementTarget> GetNearArrangement(IArrangementTarget arrangementTarget)
+        {
+            var nearArrangementTargets = new List<IArrangementTarget>();
+            foreach (var arrangementPosition in arrangementTarget.GetEdgePositions())
+            {
+                var findArrangementTarget = this.Find(arrangementPosition);
+                if (findArrangementTarget == null) {
+                    continue;
+                }
+                if (nearArrangementTargets.IndexOf(findArrangementTarget) >= 0) {
+                    continue;
+                }
+                if (!findArrangementTarget.HasMonoViewModel) {
+                    continue;
+                }
+                nearArrangementTargets.Add(findArrangementTarget);
+            }
+            return nearArrangementTargets;
+        }
+
+        /// <summary>
         /// 配置位置を追加する
         /// </summary>
         public void AddArrangement(IArrangementTarget arrangementTarget)
@@ -105,7 +130,11 @@ namespace NL
         /// </summary>
         public bool IsSetArrangement(IArrangementTarget arrangementTarget)
         {
-            foreach (var arrangementPosition in arrangementTarget.ArrangementPositions)
+            return IsSetArrangement(arrangementTarget.ArrangementPositions);
+        }
+        public bool IsSetArrangement(List<ArrangementPosition> arrangementPositions)
+        {
+            foreach (var arrangementPosition in arrangementPositions)
             {
                 if (Find(arrangementPosition) != null)
                 {
@@ -136,21 +165,29 @@ namespace NL
             return selectedArrangementTarget == arrangementTarget;
         }
 
-        private ArrangementPosition Find(ArrangementPosition arrangementPosition)
+        private IArrangementTarget Find(ArrangementPosition arrangementPosition)
         {
-            var findResult = this.arrangementTargetStore.SelectMany(arrangementTarget => arrangementTarget.ArrangementPositions).ToList().Find(targetArrangementPosition =>
+            foreach (var arrangemetTarget in this.arrangementTargetStore)
             {
-                if (targetArrangementPosition.x != arrangementPosition.x)
+                var findIndex = arrangemetTarget.ArrangementPositions.FindIndex(targetArrangementPosition =>
                 {
-                    return false;
+                    if (targetArrangementPosition.x != arrangementPosition.x)
+                    {
+                        return false;
+                    }
+                    if (targetArrangementPosition.z != arrangementPosition.z)
+                    {
+                        return false;
+                    }
+                    return true;
+                });
+
+                // 見つかったら返却
+                if (findIndex >= 0) {
+                    return arrangemetTarget;
                 }
-                if (targetArrangementPosition.z != arrangementPosition.z)
-                {
-                    return false;
-                }
-                return true;
-            });
-            return findResult;
+            }
+            return null;
         }
     }
 }

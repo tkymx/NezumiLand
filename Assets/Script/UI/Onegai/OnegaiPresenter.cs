@@ -13,12 +13,14 @@ namespace NL
 
         [SerializeField]
         private Button closeButton = null;
+        private IOnegaiRepository onegaiRepository;
+        private IPlayerOnegaiRepository playerOnegaiRepository;
 
         public void Initialize()
         {
-            // todo 本当は開くタイミングでmono info id で絞った結果を出したい
-            var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
-            var playerOnegaiRepository = new PlayerOnegaiRepository(onegaiRepository);
+            onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
+            playerOnegaiRepository = new PlayerOnegaiRepository(onegaiRepository);
+
             this.onegaiListPresenter.Initialize(playerOnegaiRepository.GetAll().ToList());
             this.Close();
 
@@ -31,6 +33,22 @@ namespace NL
         public override void onPrepareShow()
         {
             base.onPrepareShow();
+
+            // 表示するターゲットの判定を行う
+            var targetMonoInfoId = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.Id;
+
+            // 隣接オブジェクトの比較用データの作成
+            var onegaiMediater = new OnegaiMediater(onegaiRepository, playerOnegaiRepository);
+
+            // 近接に関するお願いのクリア可否を確認する
+            var nearMonoInfoIds = GameManager.Instance.ArrangementManager
+                .GetNearArrangement(GameManager.Instance.ArrangementManager.SelectedArrangementTarget)
+                .Select(arrangementTarget => arrangementTarget.MonoInfo.Id)
+                .ToList();
+            onegaiMediater.Mediate(new Near(nearMonoInfoIds), targetMonoInfoId);
+
+            // 選択されているターゲットのお願いを取得
+            this.onegaiListPresenter.Initialize(playerOnegaiRepository.GetByTriggerMonoInfoId(targetMonoInfoId).ToList());
             onegaiListPresenter.ReLoad();
         }
     }

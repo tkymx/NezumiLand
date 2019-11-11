@@ -32,5 +32,8 @@ namespace NL
 
         // 設置されているかどうか？
         bool HasMonoViewModel { get; }
+
+        // エッジを取得
+        List<ArrangementPosition> GetEdgePositions();
     }
 }

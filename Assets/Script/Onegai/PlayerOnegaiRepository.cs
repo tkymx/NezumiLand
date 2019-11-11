@@ -8,6 +8,10 @@ namespace NL
     public interface IPlayerOnegaiRepository
     {
         IEnumerable<PlayerOnegaiModel> GetAll();
+        IEnumerable<PlayerOnegaiModel> GetById(uint id);
+        IEnumerable<PlayerOnegaiModel> GetByTriggerMonoInfoId(uint triggerMonoInfoId);
+        IEnumerable<PlayerOnegaiModel> GetMediatable(OnegaiCondition onegaiCondition, uint targetMonoInfoId);
+        void Store(PlayerOnegaiModel playerOnegaiModel);
     }
 
     /// <summary>
@@ -21,15 +25,37 @@ namespace NL
         public PlayerOnegaiRepository(IOnegaiRepository onegaiRepository)
         {
             this.playerOnegaiModels = onegaiRepository.GetAll()
-                .Select(model => new PlayerOnegaiModel(model.Id, model, OnegaiState.Lock.ToString()))
+                .Select(model => new PlayerOnegaiModel(model.Id, model, OnegaiState.UnLock.ToString()))
                 .ToList();
         }
 
         public IEnumerable<PlayerOnegaiModel> GetAll()
         {
             return this.playerOnegaiModels
-                .Select(model => new PlayerOnegaiModel(model.Id, model.OnegaiModel, model.OnegaiState.ToString()))
-                .ToList();
+                .Select(model => new PlayerOnegaiModel(model.Id, model.OnegaiModel, model.OnegaiState.ToString()));
+        }
+
+        public IEnumerable<PlayerOnegaiModel> GetById(uint id)
+        {
+            return this.playerOnegaiModels
+                .Where(model => model.Id == id)
+                .Select(model => new PlayerOnegaiModel(model.Id, model.OnegaiModel, model.OnegaiState.ToString()));
+        }
+
+        public IEnumerable<PlayerOnegaiModel> GetByTriggerMonoInfoId(uint triggerMonoInfoId)
+        {
+            return this.playerOnegaiModels
+                .Where(model => model.OnegaiModel.TriggerMonoInfoId == triggerMonoInfoId)
+                .Select(model => new PlayerOnegaiModel(model.Id, model.OnegaiModel, model.OnegaiState.ToString()));
+        }
+
+        public IEnumerable<PlayerOnegaiModel> GetMediatable(OnegaiCondition onegaiCondition, uint targetMonoInfoId) 
+        {
+            return this.playerOnegaiModels
+                .Where(model => model.OnegaiState == OnegaiState.UnLock)
+                .Where(model => model.OnegaiModel.OnegaiCondition == onegaiCondition)
+                .Where(model => model.OnegaiModel.TriggerMonoInfoId ==  targetMonoInfoId)
+                .Select(model => new PlayerOnegaiModel(model.Id, model.OnegaiModel, model.OnegaiState.ToString()));
         }
 
         public void Store(PlayerOnegaiModel playerOnegaiModel)

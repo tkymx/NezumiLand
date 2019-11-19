@@ -18,6 +18,7 @@ namespace NL
         }
 
         public IList<PlayerOnegaiEntry> PlayerOnegaiEntrys { get; private set; }
+        public IList<PlayerEventEntry> PlayerEventEntrys { get; private set; }
 
         public static void Initialize()
         {
@@ -28,6 +29,7 @@ namespace NL
         public void Load()
         {
             this.PlayerOnegaiEntrys = LoadEntryFromJson<PlayerOnegaiEntry>(ResourceLoader.LoadPlayerEntry("PlayerOnegaiEntry"));
+            this.PlayerEventEntrys = LoadEntryFromJson<PlayerEventEntry>(ResourceLoader.LoadPlayerEntry("PlayerEventEntry"));
         }
 
         private static IList<T> LoadEntryFromJson<T>(string json)

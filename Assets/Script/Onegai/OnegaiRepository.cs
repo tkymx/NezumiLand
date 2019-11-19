@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
+using UnityEngine;
 
 namespace NL
 {
@@ -24,11 +25,15 @@ namespace NL
 
         [DataMember]
         public string OnegaiConditionArg { get; set; }
+
+        [DataMember]
+        public long Satisfaction { get; set; }
     }
 
     public interface IOnegaiRepository
     {
         IEnumerable<OnegaiModel> GetAll();
+        OnegaiModel Get(uint id);        
     }
 
     public class OnegaiRepository : RepositoryBase<OnegaiEntry>, IOnegaiRepository
@@ -47,8 +52,23 @@ namespace NL
                     entry.Title,
                     entry.Detail,
                     entry.OnegaiCondition,
-                    entry.OnegaiConditionArg);
+                    entry.OnegaiConditionArg,
+                    entry.Satisfaction);
             });
+        }
+
+        public OnegaiModel Get(uint id)
+        {
+            var entry = this.entrys.Where(e => e.Id == id).First();
+            Debug.Assert(entry != null, "ファイルが見つかりません : " + id.ToString());
+            return new OnegaiModel(
+                    entry.Id,
+                    entry.TriggerMonoInfoId,
+                    entry.Title,
+                    entry.Detail,
+                    entry.OnegaiCondition,
+                    entry.OnegaiConditionArg,
+                    entry.Satisfaction);
         }
     }
 }

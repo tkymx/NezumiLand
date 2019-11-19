@@ -39,7 +39,7 @@ namespace NL
 
 
         // Start is called before the first frame update
-        public void Initialize()
+        public void Initialize(IPlayerOnegaiRepository playerOnegaiRepository)
 		{
             deleteButton.onClick.AddListener(() =>
             {
@@ -75,7 +75,8 @@ namespace NL
                 this.onegaiPresenter.Show();
             });
 
-            this.onegaiPresenter.Initialize();
+            // おねがいのリストを表示
+            this.onegaiPresenter.Initialize(playerOnegaiRepository);
 
             // 初めは閉じておく
             this.Close();

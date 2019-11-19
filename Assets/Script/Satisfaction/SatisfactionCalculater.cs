@@ -6,10 +6,18 @@ namespace NL
 {
     public class SatisfactionCalculater
     {
-        public static Satisfaction CalcFieldSatisfaction()
+        private readonly IPlayerOnegaiRepository playerOnegaiRepository;
+
+        public SatisfactionCalculater(IPlayerOnegaiRepository playerOnegaiRepository)
+        {
+            this.playerOnegaiRepository = playerOnegaiRepository;
+        }
+
+        public Satisfaction CalcFieldSatisfaction()
         {
             Satisfaction satisfaction = new Satisfaction(0);
             satisfaction += GameManager.Instance.MonoManager.GetAllSatisfaction();
+            satisfaction += playerOnegaiRepository.GetAllSatisfaction();
             return satisfaction;
         }
     }

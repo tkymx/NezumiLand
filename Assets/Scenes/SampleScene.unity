@@ -1472,6 +1472,7 @@ MonoBehaviour:
   monoTabPresenter: {fileID: 650360789}
   arrangementMenuUIPresenter: {fileID: 650360788}
   fieldActionUIPresenter: {fileID: 1265075525}
+  satisfactionPresenter: {fileID: 91909932}
 --- !u!1 &510407419
 GameObject:
   m_ObjectHideFlags: 0

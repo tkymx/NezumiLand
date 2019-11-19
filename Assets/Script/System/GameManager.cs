@@ -65,7 +65,12 @@ namespace NL
         {
             // コンテキストマップ
             ContextMap.Initialize();
+            PlayerContextMap.Initialize();
             GameContextMap.Initialize();
+
+            // レポジトリ
+            var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
+            var playerOnegaiRepository = new PlayerOnegaiRepository(onegaiRepository, PlayerContextMap.DefaultMap);
 
             // instance
             this.wallet = new Wallet(new Currency(100));                                            // 所持金の初期値も外出ししたい
@@ -81,10 +86,10 @@ namespace NL
             this.timeManager = new TimeManager();
             this.mouseHomeManager = new MouseHomeManager(this.rootObject);
             this.mouseStockManager = new MouseStockManager(this.rootObject);
-            this.dailyActionManager = new DailyActionManager();
+            this.dailyActionManager = new DailyActionManager(playerOnegaiRepository);
 
             // initialize
-            this.gameUIManager.Initialize();
+            this.gameUIManager.Initialize(playerOnegaiRepository);
             this.mouseHomeManager.Initialize();
         }
 

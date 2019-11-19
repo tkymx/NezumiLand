@@ -7,12 +7,10 @@ namespace NL
 {
     public class OnegaiMediater
     {
-        private readonly IOnegaiRepository onegaiRepository;
         private readonly IPlayerOnegaiRepository playerOnegaiRepository;
 
-        public OnegaiMediater(IOnegaiRepository onegaiRepository, IPlayerOnegaiRepository playerOnegaiRepository)
+        public OnegaiMediater(IPlayerOnegaiRepository playerOnegaiRepository)
         {
-            this.onegaiRepository = onegaiRepository;
             this.playerOnegaiRepository = playerOnegaiRepository;            
         }
 

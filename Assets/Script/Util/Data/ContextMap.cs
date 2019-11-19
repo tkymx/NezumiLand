@@ -19,6 +19,9 @@ namespace NL
 
         public IList<MonoInfoEntry> MonoInfoEntrys { get; private set; }
         public IList<OnegaiEntry> OnegaiEntrys { get; private set; }
+        public IList<EventConditionEntry> EventConditionEntrys { get; private set; }
+        public IList<EventContentsEntry> EventContentsEntrys { get; private set; }
+       public IList<EventEntry> EventEntrys { get; private set; }
 
         public static void Initialize()
         {
@@ -30,6 +33,9 @@ namespace NL
         {
             this.MonoInfoEntrys = LoadEntryFromJson<MonoInfoEntry>(ResourceLoader.LoadData("MonoInfoEntry"));
             this.OnegaiEntrys = LoadEntryFromJson<OnegaiEntry>(ResourceLoader.LoadData("OnegaiEntry"));
+            this.EventConditionEntrys = LoadEntryFromJson<EventConditionEntry>(ResourceLoader.LoadData("EventConditionEntry"));
+            this.EventContentsEntrys = LoadEntryFromJson<EventContentsEntry>(ResourceLoader.LoadData("EventContentsEntry"));
+            this.EventEntrys = LoadEntryFromJson<EventEntry>(ResourceLoader.LoadData("EventEntry"));
         }
 
         private static IList<T> LoadEntryFromJson<T>(string json)

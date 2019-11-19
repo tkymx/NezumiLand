@@ -18,11 +18,15 @@ namespace NL
         private FieldActionUIPresenter fieldActionUIPresenter = null;
         public FieldActionUIPresenter FieldActionUIPresenter => fieldActionUIPresenter;
 
-        public void Initialize()
+        [SerializeField]
+        private SatisfactionPresenter satisfactionPresenter = null;
+
+        public void Initialize(IPlayerOnegaiRepository playerOnegaiRepository)
         {
             this.monoTabPresenter.Initialize();
-            this.arrangementMenuUIPresenter.Initialize();
+            this.arrangementMenuUIPresenter.Initialize(playerOnegaiRepository);
             this.fieldActionUIPresenter.Initialize();
+            this.satisfactionPresenter.Initialize(playerOnegaiRepository);
         }
     }
 }

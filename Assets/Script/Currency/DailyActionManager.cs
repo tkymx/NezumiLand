@@ -6,6 +6,8 @@ namespace NL
 {
     public class DailyActionManager
     {
+        private readonly DailyEarnCalculater dailyEarnCalculater;
+
         private float prevEarnTime = 0;
         public float PrevEarnTime => prevEarnTime;
 
@@ -24,11 +26,16 @@ namespace NL
             }
         }
 
+        public DailyActionManager(IPlayerOnegaiRepository playerOnegaiRepository)
+        {
+            this.dailyEarnCalculater = new DailyEarnCalculater(playerOnegaiRepository);
+        }
+
         public void UpdateByFrame()
         {
             if (this.IsOverDay())
             {
-                var dailyEarn = DailyEarnCalculater.CalcEarnFromSatisfaction();
+                var dailyEarn = dailyEarnCalculater.CalcEarnFromSatisfaction();
                 GameManager.Instance.Wallet.Push(dailyEarn);
                 GameManager.Instance.EffectManager.PlayEarnEffect(dailyEarn, GameManager.Instance.MouseHomeManager.HomePostion);
 

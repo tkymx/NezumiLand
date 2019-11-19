@@ -19,6 +19,7 @@ namespace NL
         public string Detail { get; private set; }
         public OnegaiCondition OnegaiCondition { get; private set; }
         public OnegaiConditionArg OnegaiConditionArg { get; private set; }
+        public Satisfaction Satisfaction { get; private set; }
 
         public OnegaiModel(
             uint id,
@@ -26,7 +27,8 @@ namespace NL
             string title,
             string detail,
             string onegaiCondition,
-            string onegaiConditionArg)
+            string onegaiConditionArg,
+            long satisfaction)
         {
             this.Id = id;
             this.TriggerMonoInfoId = triggetMonoInfoId;
@@ -40,6 +42,7 @@ namespace NL
             }
 
             this.OnegaiConditionArg = new OnegaiConditionArg(onegaiConditionArg);
+            this.Satisfaction = new Satisfaction(satisfaction);
         }
     }
 }

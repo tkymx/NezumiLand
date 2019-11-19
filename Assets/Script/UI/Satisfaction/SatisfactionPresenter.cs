@@ -10,9 +10,17 @@ namespace NL
         [SerializeField]
         Text text = null;
 
+        private IPlayerOnegaiRepository playerOnegaiRepository;
+
+        public void Initialize(IPlayerOnegaiRepository playerOnegaiRepository)
+        {
+            this.playerOnegaiRepository = playerOnegaiRepository;
+        }
+
         private void Update()
         {
-            text.text = SatisfactionCalculater.CalcFieldSatisfaction().ToString();
+            SatisfactionCalculater satisfactionCalculater = new SatisfactionCalculater(playerOnegaiRepository);
+            text.text = satisfactionCalculater.CalcFieldSatisfaction().ToString();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace NL {
 
         private void Update () {
             text.text = "";
-            text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContentsType.ToString () + LR;
+            text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContents.ToString () + LR;
             if (GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo) {
                 text.text += "MonoState : " + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Id.ToString () + ":" + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Name.ToString () + LR;
             }

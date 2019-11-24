@@ -23,7 +23,7 @@ namespace NL.EventCondition {
         public List<EventConditionModel> Detect (List<EventConditionModel> eventConditionModels) {
 
             var outputEventConditionModels = new List<EventConditionModel> ();
-            foreach (var eventConditionModel in outputEventConditionModels) {
+            foreach (var eventConditionModel in eventConditionModels) {
                 // 条件の取得
                 var args = new TimeArgs (eventConditionModel.Arg);
 

@@ -41,7 +41,7 @@ namespace NL {
             return entrys.Select (entry => {
                 return new EventModel (
                     entry.Id,
-                    entry.EventConditionIds.Select (id => this.eventConditionRepository.Get (id)).ToArray (),
+                    entry.EventConditionIds.Select (id => this.eventConditionRepository.Get (id)).ToList(),
                     this.eventContentsRepository.Get (entry.EventContentsId),
                     this.parceEventRepeatType (entry.EventRepeatType));
             });
@@ -52,7 +52,7 @@ namespace NL {
             Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
             return new EventModel (
                 entry.Id,
-                entry.EventConditionIds.Select (eventConditionId => this.eventConditionRepository.Get (eventConditionId)).ToArray (),
+                entry.EventConditionIds.Select (eventConditionId => this.eventConditionRepository.Get (eventConditionId)).ToList (),
                 this.eventContentsRepository.Get (entry.EventContentsId),
                 this.parceEventRepeatType (entry.EventRepeatType));
         }

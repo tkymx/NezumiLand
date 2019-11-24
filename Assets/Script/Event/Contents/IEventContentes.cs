@@ -10,6 +10,7 @@ namespace NL {
     /// </summary>
     public interface IEventContents {
         EventContentsType EventContentsType { get; }
+        PlayerEventModel TargetPlayerEventModel { get; }
         void OnEnter();
         void OnUpdate();
         void OnExit();

@@ -18,7 +18,7 @@ namespace NL {
         public EventState EventState { get; private set; }
         public List<EventConditionModel> doneEventConditionModels { get; private set; }
 
-        public void ToDone (EventConditionModel eventConditionModel) {
+        public void ToClear (EventConditionModel eventConditionModel) {
             if (this.doneEventConditionModels.IndexOf (eventConditionModel) >= 0) {
                 return;
             }
@@ -26,14 +26,28 @@ namespace NL {
             this.doneEventConditionModels.Add (eventConditionModel);
 
             // すべてがDoneになったらクリア
-            if (this.doneEventConditionModels.Count >= EventModel.EventConditionModels.Length) {
+            if (this.doneEventConditionModels.Count >= EventModel.EventConditionModels.Count) {
                 EventState = EventState.Clear;
             }
         }
 
+        public void ToDone () {
+            this.EventState = EventState.Done;
+        }
+
+        /// <summary>
+        /// 検証に使用する条件があるかを検査する
+        /// done になっていない条件の中から該当の条件を抜き出す
+        /// </summary>
+        /// <param name="eventConditionType"></param>
+        /// <returns></returns>
         public bool HasDetectableCondition (EventConditionType eventConditionType) {
-            foreach (var eventConditionMoel in this.doneEventConditionModels) {
-                if (eventConditionMoel.EventConditionType == eventConditionType) {
+            foreach (var eventConditionModel in this.EventModel.EventConditionModels) {
+                // done に該当のモデルがあれば見ない
+                if (this.doneEventConditionModels.IndexOf(eventConditionModel) >= 0) {
+                    continue;
+                }
+                if (eventConditionModel.EventConditionType == eventConditionType) {
                     return true;
                 }
             }

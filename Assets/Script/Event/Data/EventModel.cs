@@ -11,18 +11,18 @@ namespace NL {
 
     public class EventModel {
         public uint Id { get; private set; }
-        public EventConditionModel[] EventConditionModels { get; private set; }
+        public List<EventConditionModel> EventConditionModels { get; private set; }
         public EventContentsModel EventContentsModel { get; private set; }
         public EventRepeatType EventRepeatType { get; private set; }
 
         public EventModel (
             uint id,
-            EventConditionModel[] eventConditionModels,
+            List<EventConditionModel> eventConditionModels,
             EventContentsModel eventContentsModel,
             EventRepeatType eventRepeatType
         ) {
             this.Id = id;
-            this.EventConditionModels = EventConditionModels;
+            this.EventConditionModels = eventConditionModels;
             this.EventContentsModel = eventContentsModel;
             this.EventRepeatType = eventRepeatType;
         }

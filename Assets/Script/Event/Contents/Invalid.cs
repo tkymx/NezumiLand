@@ -6,6 +6,8 @@ namespace NL.EventContents {
     public class Invalid : IEventContents {
         public EventContentsType EventContentsType => EventContentsType.InValid;
 
+        public PlayerEventModel TargetPlayerEventModel => null;
+
         public void OnEnter() {
 
         }
@@ -17,6 +19,10 @@ namespace NL.EventContents {
         }
         public bool IsAvilve() {
             return true;
+        }
+
+        public override string ToString() {
+            return this.EventContentsType.ToString();
         }
     }
 }

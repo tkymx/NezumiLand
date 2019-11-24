@@ -17,7 +17,6 @@ namespace NL {
 
         public static void WritePlayerEntry (string name, string json) {
             string path = PlayerDataPath(name);
-            Debug.Assert (File.Exists (path), "ファイルが存在しません : " + path);
             File.WriteAllText (path, json);
         }
         private static string PlayerDataPath (string name) {

@@ -40,7 +40,8 @@ namespace NL {
             this.eventConditionRepository = eventConditionRepository;
 
             // 現在あるイベントで登録されていないものを登録
-            foreach (var eventModel in this.eventRepository.GetAll ()) {
+            var models = this.eventRepository.GetAll ().ToList();
+            foreach (var eventModel in models) {
                 if (this.entrys.Any (entry => entry.EventId == eventModel.Id)) {
                     continue;
                 }
@@ -98,7 +99,8 @@ namespace NL {
             this.entrys[index] = new PlayerEventEntry () {
                 Id = playerEventModel.Id,
                 EventId = playerEventModel.EventModel.Id,
-                EventState = playerEventModel.EventState.ToString ()
+                EventState = playerEventModel.EventState.ToString (),
+                doneEventConditionIds = playerEventModel.doneEventConditionModels.Select(model => model.Id).ToArray()
             };
             PlayerContextMap.WriteEntry (this.entrys);
         }

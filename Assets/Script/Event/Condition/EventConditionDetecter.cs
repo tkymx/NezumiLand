@@ -28,7 +28,7 @@ namespace NL {
                 var detectedEventConditionModels = condition.Detect (targetEventConditionModels);
 
                 // それぞれをDone にする
-                detectedEventConditionModels.ForEach (model => targetPlayerEventModel.ToDone (model));
+                detectedEventConditionModels.ForEach (model => targetPlayerEventModel.ToClear (model));
 
                 // もし変更があれば更新する
                 if (detectedEventConditionModels.Count > 0) {

@@ -10,7 +10,7 @@ namespace NL {
     public class EventManager {        
         private EventConditionDetecter eventConditionDetecter = null;
         private EventContentsExecuter eventContentsExecuter = null;
-        public EventContentsType CurrentEventContentsType => eventContentsExecuter.CurrentEventContentsType;
+        public IEventContents CurrentEventContents => eventContentsExecuter.CurrentEventContents;
         public EventManager(IPlayerEventRepository playerEventRepository) {
             this.eventConditionDetecter = new EventConditionDetecter(playerEventRepository);
             this.eventContentsExecuter = new EventContentsExecuter(playerEventRepository);

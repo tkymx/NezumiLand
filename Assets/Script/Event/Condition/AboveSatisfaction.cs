@@ -4,25 +4,25 @@ using UnityEngine;
 
 namespace NL.EventCondition
 {
-    public struct TimeArgs {
-        public float elapsedTime { get; private set; }
-        public TimeArgs(string[] args)
+    public struct SatisfactionArgs {
+        public Satisfaction Satisfaction { get; private set; }
+        public SatisfactionArgs(string[] args)
         {
             Debug.Assert(args[0]!="", "第一要素がありません");
-            this.elapsedTime = float.Parse(args[0]);
+            this.Satisfaction = new Satisfaction(long.Parse(args[0]));
         }
     }
 
-    public class Time : IEventCondtion
+    public class AboveSatisfaction : IEventCondtion
     {
-        float elapsedTime = 0;
+        Satisfaction currentSatisfaction = new Satisfaction(0);
 
-        public Time(float elapsedTime)
+        public AboveSatisfaction(Satisfaction currentSatisfaction)
         {
-            this.elapsedTime = elapsedTime;            
+            this.currentSatisfaction = currentSatisfaction;            
         }
 
-        public EventConditionType EventConditionType => EventConditionType.Time;
+        public EventConditionType EventConditionType => EventConditionType.AboveSatisfaction;
 
         public List<EventConditionModel> Detect(List<EventConditionModel> eventConditionModels) {
 
@@ -30,10 +30,10 @@ namespace NL.EventCondition
             foreach (var eventConditionModel in outputEventConditionModels)
             {
                 // 条件の取得
-                var args = new TimeArgs(eventConditionModel.Arg);
+                var args = new SatisfactionArgs(eventConditionModel.Arg);
 
-                // 経過時間以下だったら条件を満たさない
-                if (elapsedTime < args.elapsedTime) {
+                // 一定満足度以下だったら条件を満たさない
+                if (currentSatisfaction < args.Satisfaction) {
                     continue;
                 }
 

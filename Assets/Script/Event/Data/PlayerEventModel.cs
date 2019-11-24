@@ -18,35 +18,40 @@ namespace NL
         public uint Id { get; private set; }
         public EventModel EventModel { get; private set; }
         public EventState EventState { get; private set; }
-        public bool[] IsConditionDone { get; private set; }
+        public List<EventConditionModel> doneEventConditionModels { get; private set; }
 
-        public void ToDone(int eventIndex) {
-            this.IsConditionDone[eventIndex] = true;
+        public void ToDone(EventConditionModel eventConditionModel) {
+            if (this.doneEventConditionModels.IndexOf(eventConditionModel) >= 0) {
+                return;
+            }
+
+            this.doneEventConditionModels.Add(eventConditionModel);
 
             // すべてがDoneになったらクリア
-            if (this.IsConditionDone.All(isDone => isDone == true)) {
+            if (this.doneEventConditionModels.Count >= EventModel.EventConditionModels.Length) {
                 EventState = EventState.Clear;
             }
         }
 
         public bool HasDetectableCondition(EventConditionType eventConditionType) {
-            for (int i = 0; i < this.IsConditionDone.Length; i++)
-            {
-                if (this.IsConditionDone[i]) {
-                    continue;
-                }
-                if (this.EventModel.EventConditionModels[i].EventConditionType == eventConditionType) {
+            foreach (var eventConditionMoel in this.doneEventConditionModels)
+            {                
+                if (eventConditionMoel.EventConditionType == eventConditionType) {
                     return true;
-                }    
+                }
             }
             return false;
+        }
+
+        public List<EventConditionModel> Yets() {
+            return this.EventModel.EventConditionModels.Where(model => this.doneEventConditionModels.IndexOf(model) < 0).ToList();
         }
 
         public PlayerEventModel(
             uint id,
             EventModel eventModel,
             string eventState,
-            bool[] isConditionDone)
+            List<EventConditionModel> doneEventConditionModels)
         {
             this.Id = id;
             this.EventModel = eventModel;
@@ -57,7 +62,7 @@ namespace NL
                 this.EventState = outEventState;
             }
 
-            this.IsConditionDone = isConditionDone;
+            this.doneEventConditionModels = doneEventConditionModels;
         }
     }
 }

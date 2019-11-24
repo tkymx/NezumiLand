@@ -18,7 +18,7 @@ namespace NL
         public string EventState { get; set; }
 
         [DataMember]
-        public bool[] isConditionDone { get; set; }
+        public uint[] doneEventConditionIds { get; set; }
     }
 
     public interface IPlayerEventRepository
@@ -36,10 +36,14 @@ namespace NL
     public class PlayerEventRepository : PlayerRepositoryBase<PlayerEventEntry>, IPlayerEventRepository
     {
         private readonly IEventRepository eventRepository;
+        private readonly IEventConditionRepository eventConditionRepository;
 
-        public PlayerEventRepository(IEventRepository eventRepository, PlayerContextMap playerContextMap) : base(playerContextMap.PlayerEventEntrys)
+        public PlayerEventRepository(IEventRepository eventRepository, IEventConditionRepository eventConditionRepository, PlayerContextMap playerContextMap) : base(playerContextMap.PlayerEventEntrys)
         {
             this.eventRepository = eventRepository;
+            this.eventConditionRepository = eventConditionRepository;
+
+            // 現在あるイベントで登録されていないものを登録
             foreach (var eventModel in this.eventRepository.GetAll())
             {
                 if (this.entrys.Any(entry => entry.EventId == eventModel.Id)) {
@@ -49,7 +53,8 @@ namespace NL
                 this.entrys.Add(new PlayerEventEntry(){
                     Id = eventModel.Id,
                     EventId = eventModel.Id,
-                    EventState = EventState.UnLock.ToString()
+                    EventState = EventState.UnLock.ToString(),
+                    doneEventConditionIds = new uint[0]
                 });
             }
         }
@@ -59,13 +64,17 @@ namespace NL
             IEventConditionRepository eventConditionRepository = new EventConditionRepository(contextMap);
             IEventContentsRepository eventContentsRepository = new EventContentsRepository(contextMap);
             IEventRepository eventRepository = new EventRepository(contextMap, eventConditionRepository, eventContentsRepository);
-            return new PlayerEventRepository(eventRepository, playerContextMap);
+            return new PlayerEventRepository(eventRepository, eventConditionRepository, playerContextMap);
         }
 
         public IEnumerable<PlayerEventModel> GetAll()
         {
             return this.entrys
-                .Select(entry => new PlayerEventModel(entry.Id, eventRepository.Get(entry.Id), entry.EventState.ToString(), entry.isConditionDone));
+                .Select(entry => new PlayerEventModel(
+                    entry.Id, 
+                    eventRepository.Get(entry.Id), 
+                    entry.EventState.ToString(), 
+                    entry.doneEventConditionIds.Select(eventConditionId => eventConditionRepository.Get(eventConditionId)).ToList()));
         }
 
         public IEnumerable<PlayerEventModel> GetDetectable(EventConditionType eventConditionType)
@@ -79,7 +88,11 @@ namespace NL
         {
             return this.entrys
                 .Where(entry => entry.Id == id)
-                .Select(entry => new PlayerEventModel(entry.Id, eventRepository.Get(entry.Id), entry.EventState.ToString(), entry.isConditionDone));
+                .Select(entry => new PlayerEventModel(
+                    entry.Id, 
+                    eventRepository.Get(entry.Id), 
+                    entry.EventState.ToString(), 
+                    entry.doneEventConditionIds.Select(eventConditionId => eventConditionRepository.Get(eventConditionId)).ToList()));
         }
 
         public void Store(PlayerEventModel playerEventModel)

@@ -13,10 +13,10 @@ namespace NL
         EventConditionType EventConditionType { get; }
 
         /// <summary>
-        /// イベントに対して条件の判定を行って、もし変化があれば返却する
+        /// イベントに対して条件の判定を行って、もし達成していたら達成した条件を返す
         /// </summary>
         /// <param name="targetEventConditionModel"></param>
         /// <returns></returns>
-        List<PlayerEventModel> Detect(List<PlayerEventModel> targetEventConditionModel);
+        List<EventConditionModel> Detect(List<EventConditionModel> targetEventConditionModel);
     }
 }

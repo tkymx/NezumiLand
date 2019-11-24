@@ -47,7 +47,7 @@ namespace NL {
             if (Enum.TryParse (type, out EventContentsType outEventContentsType)) {
                 return outEventContentsType;
             }
-            return EventContentsType.None;
+            return EventContentsType.InValid;
         }
     }
 }

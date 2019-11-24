@@ -1,0 +1,11 @@
+[
+    {
+        "Id": 1,
+        "EventConditionIds": [
+            "1",
+            "2"
+        ],
+        "EventContentsId": "1",
+        "EventRepeatType": "Once"
+    }
+]

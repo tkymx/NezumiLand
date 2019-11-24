@@ -47,9 +47,9 @@ namespace NL {
             }
         }
 
-        public static PlayerOnegaiRepository GetRepository () {
-            IOnegaiRepository onegaiRepository = new OnegaiRepository (ContextMap.DefaultMap);
-            return new PlayerOnegaiRepository (onegaiRepository, PlayerContextMap.DefaultMap);
+        public static PlayerOnegaiRepository GetRepository (ContextMap contextMap, PlayerContextMap playerContextMap) {
+            IOnegaiRepository onegaiRepository = new OnegaiRepository (contextMap);
+            return new PlayerOnegaiRepository (onegaiRepository, playerContextMap);
         }
 
         public IEnumerable<PlayerOnegaiModel> GetAll () {

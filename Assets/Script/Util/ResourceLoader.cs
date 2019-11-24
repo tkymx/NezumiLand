@@ -4,17 +4,24 @@ using UnityEngine;
 
 namespace NL {
     public class ResourceLoader {
+        public static bool ExistsPlayerEntry (string name) {
+            string path = PlayerDataPath(name);
+            return File.Exists (path);
+        }
         public static string LoadPlayerEntry (string name) {
-            string path = Application.dataPath + "/PlayerData/" + name + ".json";
+            string path = PlayerDataPath(name);
             Debug.Assert (File.Exists (path), "ファイルが存在しません : " + path);
             string json = File.ReadAllText (path);
             return json;
         }
 
         public static void WritePlayerEntry (string name, string json) {
-            string path = Application.dataPath + "/PlayerData/" + name + ".json";
+            string path = PlayerDataPath(name);
             Debug.Assert (File.Exists (path), "ファイルが存在しません : " + path);
             File.WriteAllText (path, json);
+        }
+        private static string PlayerDataPath (string name) {
+            return Application.dataPath + "/PlayerData/" + name + ".json";
         }
 
         public static string LoadText (string path) {

@@ -1,0 +1,16 @@
+[
+    {
+        "Id": 1,
+        "EventConditionType": "Time",
+        "Arg": [
+            "5"
+        ]
+    },
+    {
+        "Id": 2,
+        "EventConditionType": "AboveSatisfaction",
+        "Arg": [
+            "100"
+        ]
+    }
+]

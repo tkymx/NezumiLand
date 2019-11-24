@@ -12,12 +12,7 @@ namespace NL {
 
         private void Update () {
             text.text = "";
-            /*
-                        if (GameManager.Instance.MouseSelectManager.HasSelectedMouse)
-                        {
-                            text.text += "MouseState : " + GameManager.Instance.MouseSelectManager.SelectedMouse.StateManager.CurrentState.ToString() + LR;
-                        }
-            */
+            text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContentsType.ToString () + LR;
             if (GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo) {
                 text.text += "MonoState : " + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Id.ToString () + ":" + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Name.ToString () + LR;
             }

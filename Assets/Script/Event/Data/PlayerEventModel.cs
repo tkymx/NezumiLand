@@ -8,7 +8,8 @@ namespace NL {
     public enum EventState {
         Lock,
         UnLock,
-        Clear
+        Clear,
+        Done
     }
 
     public class PlayerEventModel {

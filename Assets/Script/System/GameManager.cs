@@ -59,6 +59,12 @@ namespace NL {
         private ArrangementItemStore arrangementItemStore;
         public ArrangementItemStore ArrangementItemStore => arrangementItemStore;
 
+        private EventManager eventManager;
+        public EventManager EventManager => eventManager;
+
+        private ConstantlyEventPusher constantlyEventPusher;
+        public ConstantlyEventPusher ConstantlyEventPusher => constantlyEventPusher;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -66,8 +72,8 @@ namespace NL {
             GameContextMap.Initialize ();
 
             // レポジトリ
-            var onegaiRepository = new OnegaiRepository (ContextMap.DefaultMap);
-            var playerOnegaiRepository = new PlayerOnegaiRepository (onegaiRepository, PlayerContextMap.DefaultMap);
+            var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
+            var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
 
             // instance
             this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
@@ -84,6 +90,8 @@ namespace NL {
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.mouseStockManager = new MouseStockManager (this.rootObject);
             this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
+            this.eventManager = new EventManager(playerEventRepository);
+            this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
 
             // initialize
             this.gameUIManager.Initialize (playerOnegaiRepository);
@@ -96,6 +104,10 @@ namespace NL {
             this.monoManager.UpdateByFrame ();
             this.fieldRaycastManager.UpdateByFrame ();
             this.timeManager.UpdateByFrame ();
+
+            // イベント関連
+            this.constantlyEventPusher.PushConstantlyEventParameter();
+            this.eventManager.UpdateByFrame ();
         }
     }
 }

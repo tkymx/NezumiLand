@@ -33,7 +33,7 @@ namespace NL {
             targetArrangementTargets.Add (arrangementTarget);
 
             // 隣接オブジェクトに対してNearの判断を行う
-            var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository ();
+            var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository (ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var onegaiMediater = new OnegaiMediater (playerOnegaiRepository);
             foreach (var targetArrangementTarget in targetArrangementTargets) {
                 var targetMonoInfoId = targetArrangementTarget.MonoInfo.Id;

@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IEventContentes : MonoBehaviour {
-    // Start is called before the first frame update
-    void Start () {
-
-    }
-
-    // Update is called once per frame
-    void Update () {
-
+namespace NL {
+    /// <summary>
+    /// イベント内容のインターフェース
+    /// すぐ終わるのもあれば続くものもある。
+    /// 内部でウィンドウを開いたり、場の内容が変わったりすることを想定している
+    /// </summary>
+    public interface IEventContents {
+        EventContentsType EventContentsType { get; }
+        void OnEnter();
+        void OnUpdate();
+        void OnExit();
+        bool IsAvilve();
     }
 }

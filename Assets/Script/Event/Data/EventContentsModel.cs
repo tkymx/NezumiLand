@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NL {
     public enum EventContentsType {
-        None,
+        InValid,
         ForceConversation,
         TapCharacterConversation
     }

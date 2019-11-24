@@ -23,6 +23,7 @@ namespace NL {
         IEnumerable<PlayerEventModel> GetDetectable (EventConditionType eventConditionType);
         IEnumerable<PlayerEventModel> GetAll ();
         IEnumerable<PlayerEventModel> Get (uint id);
+        IEnumerable<PlayerEventModel> GetClearEvent ();
         void Store (PlayerEventModel playerEventModel);
     }
 
@@ -73,6 +74,11 @@ namespace NL {
             return GetAll ()
                 .Where (model => model.EventState == EventState.UnLock)
                 .Where (model => model.HasDetectableCondition (eventConditionType));
+        }
+
+        public IEnumerable<PlayerEventModel> GetClearEvent () {
+            return GetAll()
+                .Where (model => model.EventState == EventState.Clear);        
         }
 
         public IEnumerable<PlayerEventModel> Get (uint id) {

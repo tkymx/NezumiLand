@@ -23,8 +23,15 @@ namespace NL {
         }
 
         public void Load () {
-            this.PlayerOnegaiEntrys = LoadEntryFromJson<PlayerOnegaiEntry> (ResourceLoader.LoadPlayerEntry ("PlayerOnegaiEntry"));
-            this.PlayerEventEntrys = LoadEntryFromJson<PlayerEventEntry> (ResourceLoader.LoadPlayerEntry ("PlayerEventEntry"));
+            this.PlayerOnegaiEntrys = LoadEntryFromJsonFromName<PlayerOnegaiEntry> ("PlayerOnegaiEntry");
+            this.PlayerEventEntrys = LoadEntryFromJsonFromName<PlayerEventEntry> ("PlayerEventEntry");
+        }
+
+        private static IList<T> LoadEntryFromJsonFromName<T> (string name) {
+            if (!ResourceLoader.ExistsPlayerEntry(name)) {
+                return new List<T>();
+            }
+            return LoadEntryFromJson<T>(ResourceLoader.LoadPlayerEntry (name));
         }
 
         private static IList<T> LoadEntryFromJson<T> (string json) {

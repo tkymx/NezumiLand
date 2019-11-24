@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Linq;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using UnityEngine;
 
-namespace NL
-{
+namespace NL {
     [DataContract]
-    public class EventConditionEntry
-    {
+    public class EventConditionEntry {
         [DataMember]
         public uint Id { get; set; }
 
@@ -19,42 +17,34 @@ namespace NL
         public string[] Arg { get; set; }
     }
 
-    public interface IEventConditionRepository
-    {
-        IEnumerable<EventConditionModel> GetAll();
-        EventConditionModel Get(uint id);        
+    public interface IEventConditionRepository {
+        IEnumerable<EventConditionModel> GetAll ();
+        EventConditionModel Get (uint id);
     }
 
-    public class EventConditionRepository : RepositoryBase<EventConditionEntry>, IEventConditionRepository
-    {
-        public EventConditionRepository(ContextMap contextMap) : base(contextMap.EventConditionEntrys)
-        {
-        }
+    public class EventConditionRepository : RepositoryBase<EventConditionEntry>, IEventConditionRepository {
+        public EventConditionRepository (ContextMap contextMap) : base (contextMap.EventConditionEntrys) { }
 
-        public IEnumerable<EventConditionModel> GetAll()
-        {
-            return entrys.Select(entry =>
-            {
-                return new EventConditionModel(
+        public IEnumerable<EventConditionModel> GetAll () {
+            return entrys.Select (entry => {
+                return new EventConditionModel (
                     entry.Id,
-                    parceEventConditionType(entry.EventConditionType),
+                    parceEventConditionType (entry.EventConditionType),
                     entry.Arg);
             });
         }
 
-        public EventConditionModel Get(uint id)
-        {
-            var entry = this.entrys.Where(e => e.Id == id).First();
-            Debug.Assert(entry != null, "ファイルが見つかりません : " + id.ToString());
-            return new EventConditionModel(
+        public EventConditionModel Get (uint id) {
+            var entry = this.entrys.Where (e => e.Id == id).First ();
+            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
+            return new EventConditionModel (
                 entry.Id,
-                parceEventConditionType(entry.EventConditionType),
+                parceEventConditionType (entry.EventConditionType),
                 entry.Arg);
         }
 
-        private EventConditionType parceEventConditionType(string type) {
-            if (Enum.TryParse(type, out EventConditionType outEventConditionType))
-            {
+        private EventConditionType parceEventConditionType (string type) {
+            if (Enum.TryParse (type, out EventConditionType outEventConditionType)) {
                 return outEventConditionType;
             }
             return EventConditionType.None;

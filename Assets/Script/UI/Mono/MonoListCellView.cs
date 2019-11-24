@@ -1,12 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NL
-{
-    public class MonoListCellView : ListCellViewBase
-    {
+namespace NL {
+    public class MonoListCellView : ListCellViewBase {
         [SerializeField]
         private Text monoName = null;
 
@@ -19,12 +17,11 @@ namespace NL
         [SerializeField]
         private Text appearMaxCount = null;
 
-        public void UpdateCell(string name, Currency free, long appearCount, long appearMaxCount)
-        {
+        public void UpdateCell (string name, Currency free, long appearCount, long appearMaxCount) {
             this.monoName.text = name;
-            this.makingFree.text = free.ToString();
-            this.appearCount.text = appearCount.ToString();
-            this.appearMaxCount.text = appearMaxCount.ToString();
+            this.makingFree.text = free.ToString ();
+            this.appearCount.text = appearCount.ToString ();
+            this.appearMaxCount.text = appearMaxCount.ToString ();
         }
     }
 }

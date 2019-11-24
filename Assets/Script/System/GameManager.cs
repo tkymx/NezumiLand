@@ -1,11 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public class GameManager : SingletonMonoBehaviour<GameManager>
-    {
+namespace NL {
+    public class GameManager : SingletonMonoBehaviour<GameManager> {
         [SerializeField]
         private Camera mainCamera = null;
         public Camera MainCamera => mainCamera;
@@ -39,9 +37,9 @@ namespace NL
         private FieldRaycastManager fieldRaycastManager;
         public FieldRaycastManager FieldRaycastManager => fieldRaycastManager;
 
-// 使用意図から外れたので一旦消す
-//        private MouseSelectManager mouseSelectManager;
-//        public MouseSelectManager MouseSelectManager => mouseSelectManager;
+        // 使用意図から外れたので一旦消す
+        //        private MouseSelectManager mouseSelectManager;
+        //        public MouseSelectManager MouseSelectManager => mouseSelectManager;
 
         private MonoSelectManager monoSelectManager;
         public MonoSelectManager MonoSelectManager => monoSelectManager;
@@ -61,45 +59,43 @@ namespace NL
         private ArrangementItemStore arrangementItemStore;
         public ArrangementItemStore ArrangementItemStore => arrangementItemStore;
 
-        private void Start()
-        {
+        private void Start () {
             // コンテキストマップ
-            ContextMap.Initialize();
-            PlayerContextMap.Initialize();
-            GameContextMap.Initialize();
+            ContextMap.Initialize ();
+            PlayerContextMap.Initialize ();
+            GameContextMap.Initialize ();
 
             // レポジトリ
-            var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
-            var playerOnegaiRepository = new PlayerOnegaiRepository(onegaiRepository, PlayerContextMap.DefaultMap);
+            var onegaiRepository = new OnegaiRepository (ContextMap.DefaultMap);
+            var playerOnegaiRepository = new PlayerOnegaiRepository (onegaiRepository, PlayerContextMap.DefaultMap);
 
             // instance
-            this.wallet = new Wallet(new Currency(100));                                            // 所持金の初期値も外出ししたい
-            this.arrangementItemStore = new ArrangementItemStore(new ArrangementItemAmount(100));   // 所持アイテムの初期値も外出ししたい
-            this.arrangementManager = new ArrangementManager(this.rootObject);
-            this.monoManager = new MonoManager(this.rootObject);
-            this.effectManager = new EffectManager(mainCamera, rootEffectUI);
-            this.gameModeManager = new GameModeManager();
-            this.gameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateSelectMode());
-            this.fieldRaycastManager = new FieldRaycastManager(this.mainCamera);
-//            this.mouseSelectManager = new MouseSelectManager();
-            this.monoSelectManager = new MonoSelectManager();
-            this.timeManager = new TimeManager();
-            this.mouseHomeManager = new MouseHomeManager(this.rootObject);
-            this.mouseStockManager = new MouseStockManager(this.rootObject);
-            this.dailyActionManager = new DailyActionManager(playerOnegaiRepository);
+            this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
+            this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (100)); // 所持アイテムの初期値も外出ししたい
+            this.arrangementManager = new ArrangementManager (this.rootObject);
+            this.monoManager = new MonoManager (this.rootObject);
+            this.effectManager = new EffectManager (mainCamera, rootEffectUI);
+            this.gameModeManager = new GameModeManager ();
+            this.gameModeManager.EnqueueChangeModeWithHistory (GameModeGenerator.GenerateSelectMode ());
+            this.fieldRaycastManager = new FieldRaycastManager (this.mainCamera);
+            //            this.mouseSelectManager = new MouseSelectManager();
+            this.monoSelectManager = new MonoSelectManager ();
+            this.timeManager = new TimeManager ();
+            this.mouseHomeManager = new MouseHomeManager (this.rootObject);
+            this.mouseStockManager = new MouseStockManager (this.rootObject);
+            this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
 
             // initialize
-            this.gameUIManager.Initialize(playerOnegaiRepository);
-            this.mouseHomeManager.Initialize();
+            this.gameUIManager.Initialize (playerOnegaiRepository);
+            this.mouseHomeManager.Initialize ();
         }
 
-        private void Update()
-        {
-            this.dailyActionManager.UpdateByFrame();
-            this.gameModeManager.UpdateByFrame();
-            this.monoManager.UpdateByFrame();
-            this.fieldRaycastManager.UpdateByFrame();
-            this.timeManager.UpdateByFrame();
+        private void Update () {
+            this.dailyActionManager.UpdateByFrame ();
+            this.gameModeManager.UpdateByFrame ();
+            this.monoManager.UpdateByFrame ();
+            this.fieldRaycastManager.UpdateByFrame ();
+            this.timeManager.UpdateByFrame ();
         }
     }
 }

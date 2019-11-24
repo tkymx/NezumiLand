@@ -1,11 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public interface IEventCondtion
-    {
+namespace NL {
+    public interface IEventCondtion {
         /// <summary>
         /// 自分のイベント条件のタイプを返す
         /// </summary>
@@ -17,6 +15,6 @@ namespace NL
         /// </summary>
         /// <param name="targetEventConditionModel"></param>
         /// <returns></returns>
-        List<EventConditionModel> Detect(List<EventConditionModel> targetEventConditionModel);
+        List<EventConditionModel> Detect (List<EventConditionModel> targetEventConditionModel);
     }
 }

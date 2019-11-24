@@ -1,17 +1,15 @@
-﻿using System;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace NL
-{
+namespace NL {
     /// <summary>
     /// 配置のターゲット
     /// 配置には２つの座標系がある
     /// - １つ目はプレイヤーが移動するときの目指すべき座標と範囲
     /// - ２つ目はマップの配置が可能かどうかの範囲
     /// </summary>
-    public interface IArrangementTarget
-    {
+    public interface IArrangementTarget {
         // 配置の中心
         Vector3 CenterPosition { get; }
 
@@ -34,6 +32,6 @@ namespace NL
         bool HasMonoViewModel { get; }
 
         // エッジを取得
-        List<ArrangementPosition> GetEdgePositions();
+        List<ArrangementPosition> GetEdgePositions ();
     }
 }

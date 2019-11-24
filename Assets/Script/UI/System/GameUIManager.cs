@@ -1,11 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public class GameUIManager : MonoBehaviour
-    {
+namespace NL {
+    public class GameUIManager : MonoBehaviour {
         [SerializeField]
         private MonoTabPresenter monoTabPresenter = null;
         public MonoTabPresenter MonoTabPresenter => monoTabPresenter;
@@ -21,12 +19,11 @@ namespace NL
         [SerializeField]
         private SatisfactionPresenter satisfactionPresenter = null;
 
-        public void Initialize(IPlayerOnegaiRepository playerOnegaiRepository)
-        {
-            this.monoTabPresenter.Initialize();
-            this.arrangementMenuUIPresenter.Initialize(playerOnegaiRepository);
-            this.fieldActionUIPresenter.Initialize();
-            this.satisfactionPresenter.Initialize(playerOnegaiRepository);
+        public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
+            this.monoTabPresenter.Initialize ();
+            this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
+            this.fieldActionUIPresenter.Initialize ();
+            this.satisfactionPresenter.Initialize (playerOnegaiRepository);
         }
     }
 }

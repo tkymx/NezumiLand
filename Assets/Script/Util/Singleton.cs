@@ -1,18 +1,16 @@
-﻿using UnityEngine;
 using System;
+using UnityEngine;
 
-namespace NL
-{
-    public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour{
+namespace NL {
+    public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour {
 
         private static T instance;
-        public static T Instance
-        {
-            get{
+        public static T Instance {
+            get {
                 if (instance == null) {
-                    Type t = typeof(T);
+                    Type t = typeof (T);
 
-                    instance = (T)FindObjectOfType (t);
+                    instance = (T) FindObjectOfType (t);
                     if (instance == null) {
                         Debug.LogError (t + " をアタッチしているGameObjectはありません");
                     }
@@ -22,13 +20,13 @@ namespace NL
             }
         }
 
-        virtual protected void Awake(){
+        virtual protected void Awake () {
             // 他のゲームオブジェクトにアタッチされているか調べる
             // アタッチされている場合は破棄する。
-            CheckInstance();
+            CheckInstance ();
         }
 
-        protected bool CheckInstance(){
+        protected bool CheckInstance () {
             if (instance == null) {
                 instance = this as T;
                 return true;

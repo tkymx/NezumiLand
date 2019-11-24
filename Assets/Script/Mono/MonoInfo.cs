@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-using System.Linq;
 using System;
+using System.Linq;
+using UnityEngine;
 
-namespace NL
-{
-    public enum MonoType
-    {
+namespace NL {
+    public enum MonoType {
         None,
         Equipment,
         Tool
@@ -14,8 +12,7 @@ namespace NL
     /// <summary>
     /// モノの情報を持っている
     /// </summary>
-    public class MonoInfo
-    {
+    public class MonoInfo {
         public uint Id { get; private set; }
         public string Name { get; private set; }
         public MonoType Type { get; private set; }
@@ -30,7 +27,7 @@ namespace NL
         public ArrangementItemAmount ArrangementItemAmount { get; private set; }
         public ArrangementCount ArrangementCount { get; private set; }
 
-        public MonoInfo(
+        public MonoInfo (
             uint Id,
             string Name,
             string Type,
@@ -43,34 +40,30 @@ namespace NL
             long[] LevelUpFee,
             long[] LevelUpSatisfaction,
             long BaseSatisfaction,
-            long ArrangementCount)
-        {
+            long ArrangementCount) {
             this.Id = Id;
             this.Name = Name;
 
             this.Type = MonoType.None;
-            if (Enum.TryParse(Type, out MonoType outMonoType))
-            {
+            if (Enum.TryParse (Type, out MonoType outMonoType)) {
                 this.Type = outMonoType;
             }
 
             this.Width = Width;
             this.Height = Height;
-            this.MakingFee = new Currency(MakingFee);
-            this.ArrangementItemAmount = new ArrangementItemAmount(MakingItemAmount);
-            this.RemoveFee = new Currency(RemoveFee);
-            this.MonoPrefab = ResourceLoader.LoadModel(ModelName);
-            this.LevelUpFee = LevelUpFee.Select(fee => new Currency(fee)).ToArray();
-            this.LevelUpSatisfaction = LevelUpSatisfaction.Select(satisfaction => new Satisfaction(satisfaction)).ToArray();
-            this.BaseSatisfaction = new Satisfaction(BaseSatisfaction);
-            this.ArrangementCount = new ArrangementCount(this.Id, ArrangementCount);
+            this.MakingFee = new Currency (MakingFee);
+            this.ArrangementItemAmount = new ArrangementItemAmount (MakingItemAmount);
+            this.RemoveFee = new Currency (RemoveFee);
+            this.MonoPrefab = ResourceLoader.LoadModel (ModelName);
+            this.LevelUpFee = LevelUpFee.Select (fee => new Currency (fee)).ToArray ();
+            this.LevelUpSatisfaction = LevelUpSatisfaction.Select (satisfaction => new Satisfaction (satisfaction)).ToArray ();
+            this.BaseSatisfaction = new Satisfaction (BaseSatisfaction);
+            this.ArrangementCount = new ArrangementCount (this.Id, ArrangementCount);
         }
 
-        public ArrangementResourceAmount ArrangementResourceAmount
-        {
-            get
-            {
-                return new ArrangementResourceAmount(this.MakingFee, this.ArrangementItemAmount, this.ArrangementCount);
+        public ArrangementResourceAmount ArrangementResourceAmount {
+            get {
+                return new ArrangementResourceAmount (this.MakingFee, this.ArrangementItemAmount, this.ArrangementCount);
             }
         }
     }

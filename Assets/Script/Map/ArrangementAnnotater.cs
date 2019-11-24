@@ -1,11 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public class ArrangementAnnotater
-    {
+namespace NL {
+    public class ArrangementAnnotater {
         public static readonly int ArrangementWidth = 6; // prefabからとってこれるようにする
         public static readonly int ArrangementHeight = 6;
 
@@ -21,60 +19,51 @@ namespace NL
         private bool isSelectByFrame;
         public bool IsSelectByFrame => isSelectByFrame;
 
-        public void Select()
-        {
+        public void Select () {
             this.isSelectByFrame = true;
         }
 
-        public ArrangementAnnotater(GameObject objectParent)
-        {
+        public ArrangementAnnotater (GameObject objectParent) {
             this.objectParent = objectParent;
-            this.currentAnnotation = new List<GameObject>();
-            this.currentArrangementPositions = new List<ArrangementPosition>();
+            this.currentAnnotation = new List<GameObject> ();
+            this.currentArrangementPositions = new List<ArrangementPosition> ();
             this.isSelectByFrame = false;
 
-            this.annotationPrefab = ResourceLoader.LoadPrefab("Model/arrangement_annotation");
+            this.annotationPrefab = ResourceLoader.LoadPrefab ("Model/arrangement_annotation");
         }
 
-        public void Annotate(ArrangementInfo arrangementInfo)
-        {
+        public void Annotate (ArrangementInfo arrangementInfo) {
             this.currentArrangemtnInfo = arrangementInfo;
-            currentAnnotation.Clear();
-            currentArrangementPositions.Clear();
+            currentAnnotation.Clear ();
+            currentArrangementPositions.Clear ();
 
-            for (int x = 0; x < arrangementInfo.mono.Width; x++ )
-            {
-                for (int z = 0; z < arrangementInfo.mono.Height; z++)
-                {
-                    var appear = Object.AppearToFloor(annotationPrefab, objectParent, new Vector3(
+            for (int x = 0; x < arrangementInfo.mono.Width; x++) {
+                for (int z = 0; z < arrangementInfo.mono.Height; z++) {
+                    var appear = Object.AppearToFloor (annotationPrefab, objectParent, new Vector3 (
                         (arrangementInfo.x + x) * ArrangementWidth,
                         0,
                         (arrangementInfo.z + z) * ArrangementHeight));
 
-                    currentAnnotation.Add(appear);
-                    currentArrangementPositions.Add(new ArrangementPosition()
-                    {
+                    currentAnnotation.Add (appear);
+                    currentArrangementPositions.Add (new ArrangementPosition () {
                         x = arrangementInfo.x + x,
-                        z = arrangementInfo.z + z
+                            z = arrangementInfo.z + z
                     });
                 }
             }
         }
-        public void RemoveAllAnnotation()
-        {
+        public void RemoveAllAnnotation () {
             this.currentArrangemtnInfo = null;
-            foreach (var appearObject in currentAnnotation)
-            {
-                Object.DisAppear(appearObject);
+            foreach (var appearObject in currentAnnotation) {
+                Object.DisAppear (appearObject);
             }
-            this.currentAnnotation.Clear();
+            this.currentAnnotation.Clear ();
 
             this.isSelectByFrame = false;
         }
 
-        public ArrangementTarget GetCurrentTarget()
-        {
-            return new ArrangementTarget(this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
+        public ArrangementTarget GetCurrentTarget () {
+            return new ArrangementTarget (this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
         }
     }
 }

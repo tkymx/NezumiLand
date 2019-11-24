@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
-namespace NL
-{
+namespace NL {
     [DataContract]
-    public class MonoInfoEntry
-    {
+    public class MonoInfoEntry {
         [DataMember]
         public uint Id { get; set; }
 
@@ -47,22 +45,16 @@ namespace NL
         public long ArrangementCount { get; set; }
     }
 
-    public interface IMonoInfoRepository
-    {
-        IEnumerable<MonoInfo> GetAll();
+    public interface IMonoInfoRepository {
+        IEnumerable<MonoInfo> GetAll ();
     }
 
-    public class MonoInfoRepository : RepositoryBase<MonoInfoEntry>, IMonoInfoRepository
-    {
-        public MonoInfoRepository(ContextMap contextMap) : base(contextMap.MonoInfoEntrys)
-        {
-        }
+    public class MonoInfoRepository : RepositoryBase<MonoInfoEntry>, IMonoInfoRepository {
+        public MonoInfoRepository (ContextMap contextMap) : base (contextMap.MonoInfoEntrys) { }
 
-        public IEnumerable<MonoInfo> GetAll()
-        {
-            return entrys.Select(entry =>
-            {
-                return new MonoInfo(
+        public IEnumerable<MonoInfo> GetAll () {
+            return entrys.Select (entry => {
+                return new MonoInfo (
                     entry.Id,
                     entry.Name,
                     entry.Type,
@@ -79,10 +71,9 @@ namespace NL
             });
         }
 
-        public IEnumerable<MonoInfo> GetByType(MonoType type)
-        {
-            return GetAll()
-                .Where(monoInfo => monoInfo.Type == type);
+        public IEnumerable<MonoInfo> GetByType (MonoType type) {
+            return GetAll ()
+                .Where (monoInfo => monoInfo.Type == type);
         }
     }
 }

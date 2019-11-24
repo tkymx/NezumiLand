@@ -1,47 +1,39 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
+namespace NL {
     /// <summary>
     /// 経過時間を管理する。ポーズなどを考慮
     /// </summary>
-    public class TimeManager
-    {
+    public class TimeManager {
         private float elapsedTime;
         public float ElapsedTime => elapsedTime;
 
         private bool isPause;
 
-        public TimeManager()
-        {
+        public TimeManager () {
             this.elapsedTime = 0;
             this.isPause = false;
         }
 
-        public void Pause()
-        {
+        public void Pause () {
             this.isPause = true;
         }
 
-        public void Play()
-        {
+        public void Play () {
             this.isPause = false;
         }
 
-        public float DeltaTime()
-        {
-            if(this.isPause)
-            {
+        public float DeltaTime () {
+            if (this.isPause) {
                 return 0;
             }
             return Time.deltaTime;
         }
 
-        public void UpdateByFrame()
-        {
-            this.elapsedTime += DeltaTime();
+        public void UpdateByFrame () {
+            this.elapsedTime += DeltaTime ();
         }
     }
 }

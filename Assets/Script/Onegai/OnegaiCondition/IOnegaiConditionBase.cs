@@ -1,11 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public interface IOnegaiConditionBase
-    {
+namespace NL {
+    public interface IOnegaiConditionBase {
         OnegaiCondition OnegaiCondition { get; }
 
         /// <summary>
@@ -13,6 +11,6 @@ namespace NL
         /// </summary>
         /// <param name="playerOnegaiModels">変化のあったモデル</param>
         /// <returns></returns>
-        List<PlayerOnegaiModel> Mediate(List<PlayerOnegaiModel> playerOnegaiModels);
+        List<PlayerOnegaiModel> Mediate (List<PlayerOnegaiModel> playerOnegaiModels);
     }
 }

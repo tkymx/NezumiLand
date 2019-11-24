@@ -1,27 +1,24 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
+namespace NL {
     public enum EventContentsType {
         None,
         ForceConversation,
         TapCharacterConversation
     }
 
-    public class EventContentsModel
-    {
-        public uint Id { get; private set; } 
+    public class EventContentsModel {
+        public uint Id { get; private set; }
         public EventContentsType EventContentsType { get; private set; }
         public string[] Arg { get; private set; }
 
-        public EventContentsModel(
+        public EventContentsModel (
             uint id,
             EventContentsType eventContentsType,
             string[] arg
-        )
-        {
+        ) {
             this.Id = id;
             this.EventContentsType = eventContentsType;
             this.Arg = arg;

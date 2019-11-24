@@ -1,15 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NL
-{
+namespace NL {
     /// <summary>
     /// ものを選択したときのメニュー
     /// </summary>
-	public class ArrangementMenuUIPresenter : MonoBehaviour
-	{
+    public class ArrangementMenuUIPresenter : MonoBehaviour {
         [SerializeField]
         private GameObject arrangementUI = null;
 
@@ -37,89 +35,74 @@ namespace NL
         [SerializeField]
         private Button closeButton = null;
 
-
         // Start is called before the first frame update
-        public void Initialize(IPlayerOnegaiRepository playerOnegaiRepository)
-		{
-            deleteButton.onClick.AddListener(() =>
-            {
+        public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
+            deleteButton.onClick.AddListener (() => {
                 var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-                if (GameManager.Instance.Wallet.IsPay(removeFee))
-                {
-                    GameManager.Instance.Wallet.Pay(removeFee);
-                    GameManager.Instance.EffectManager.PlayConsumeEffect(removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
-                    GameManager.Instance.ArrangementManager.RemoveSelectArrangement();
-                    this.DoFinishProcess();
+                if (GameManager.Instance.Wallet.IsPay (removeFee)) {
+                    GameManager.Instance.Wallet.Pay (removeFee);
+                    GameManager.Instance.EffectManager.PlayConsumeEffect (removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
+                    GameManager.Instance.ArrangementManager.RemoveSelectArrangement ();
+                    this.DoFinishProcess ();
                 }
             });
 
-            levelUpButton.onClick.AddListener(() =>
-            {
-                var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee();
-                if (GameManager.Instance.Wallet.IsPay(levelUpFee))
-                {
-                    GameManager.Instance.Wallet.Pay(levelUpFee);
-                    GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.LevelUp();
-                    GameManager.Instance.EffectManager.PlayConsumeEffect(levelUpFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
+            levelUpButton.onClick.AddListener (() => {
+                var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+                if (GameManager.Instance.Wallet.IsPay (levelUpFee)) {
+                    GameManager.Instance.Wallet.Pay (levelUpFee);
+                    GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.LevelUp ();
+                    GameManager.Instance.EffectManager.PlayConsumeEffect (levelUpFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
                 }
             });
 
-            closeButton.onClick.AddListener(() =>
-            {
-                GameManager.Instance.ArrangementManager.RemoveSelection();
-                this.DoFinishProcess();
+            closeButton.onClick.AddListener (() => {
+                GameManager.Instance.ArrangementManager.RemoveSelection ();
+                this.DoFinishProcess ();
             });
 
-            onegaiListButton.onClick.AddListener(() =>
-            {
-                this.onegaiPresenter.Show();
+            onegaiListButton.onClick.AddListener (() => {
+                this.onegaiPresenter.Show ();
             });
 
             // おねがいのリストを表示
-            this.onegaiPresenter.Initialize(playerOnegaiRepository);
+            this.onegaiPresenter.Initialize (playerOnegaiRepository);
 
             // 初めは閉じておく
-            this.Close();
+            this.Close ();
         }
 
-        private void DoFinishProcess()
-        {
-            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
-            this.Close();
+        private void DoFinishProcess () {
+            GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateSelectMode ());
+            this.Close ();
         }
 
-        private void Update()
-        {
-            UpdateDetail();
-            UpdateRemoveButtonEnable();
-            UpdateRemoveFee();
-            UpdateLevelUpButtonEnable();
-            UpdateLevelUpFee();
-            UpdateOnegaiButtonEnable();
+        private void Update () {
+            UpdateDetail ();
+            UpdateRemoveButtonEnable ();
+            UpdateRemoveFee ();
+            UpdateLevelUpButtonEnable ();
+            UpdateLevelUpFee ();
+            UpdateOnegaiButtonEnable ();
         }
 
-        public void Show()
-        {
-            arrangementUI.SetActive(true);
-            Update();
+        public void Show () {
+            arrangementUI.SetActive (true);
+            Update ();
         }
 
-        public void Close()
-        {
-            arrangementUI.SetActive(false);
-            onegaiPresenter.Close();
+        public void Close () {
+            arrangementUI.SetActive (false);
+            onegaiPresenter.Close ();
         }
 
-        private void UpdateDetail()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateDetail () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 detail.text = "未選択状態";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 detail.text = "建築中";
                 return;
             }
@@ -128,23 +111,19 @@ namespace NL
             return;
         }
 
-        private void UpdateRemoveButtonEnable()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateRemoveButtonEnable () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 deleteButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 deleteButton.interactable = false;
                 return;
             }
 
             var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-            if (!GameManager.Instance.Wallet.IsPay(removeFee))
-            {
+            if (!GameManager.Instance.Wallet.IsPay (removeFee)) {
                 deleteButton.interactable = false;
                 return;
             }
@@ -152,47 +131,39 @@ namespace NL
             deleteButton.interactable = true;
         }
 
-        private void UpdateRemoveFee()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateRemoveFee () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 deleteFee.text = "";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 deleteFee.text = "";
                 return;
             }
 
             var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-            deleteFee.text = removeFee.ToString();
+            deleteFee.text = removeFee.ToString ();
         }
 
-        private void UpdateLevelUpButtonEnable()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateLevelUpButtonEnable () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp())
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee();
-            if (!GameManager.Instance.Wallet.IsPay(levelUpFee))
-            {
+            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+            if (!GameManager.Instance.Wallet.IsPay (levelUpFee)) {
                 levelUpButton.interactable = false;
                 return;
             }
@@ -200,39 +171,32 @@ namespace NL
             levelUpButton.interactable = true;
         }
 
-        private void UpdateLevelUpFee()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateLevelUpFee () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 levelUpFeeText.text = "";
                 return;
             }
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 levelUpFeeText.text = "";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp())
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
                 levelUpFeeText.text = "最大レベルです";
                 return;
             }
 
-            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee();
-            levelUpFeeText.text = levelUpFee.ToString();
+            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+            levelUpFeeText.text = levelUpFee.ToString ();
         }
 
-        private void UpdateOnegaiButtonEnable()
-        {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget)
-            {
+        private void UpdateOnegaiButtonEnable () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
                 onegaiListButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel)
-            {
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
                 onegaiListButton.interactable = false;
                 return;
             }

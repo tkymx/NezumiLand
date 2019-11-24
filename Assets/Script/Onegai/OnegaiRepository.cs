@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using UnityEngine;
 
-namespace NL
-{
+namespace NL {
     [DataContract]
-    public class OnegaiEntry
-    {
+    public class OnegaiEntry {
         [DataMember]
         public uint Id { get; set; }
 
@@ -30,23 +28,17 @@ namespace NL
         public long Satisfaction { get; set; }
     }
 
-    public interface IOnegaiRepository
-    {
-        IEnumerable<OnegaiModel> GetAll();
-        OnegaiModel Get(uint id);        
+    public interface IOnegaiRepository {
+        IEnumerable<OnegaiModel> GetAll ();
+        OnegaiModel Get (uint id);
     }
 
-    public class OnegaiRepository : RepositoryBase<OnegaiEntry>, IOnegaiRepository
-    {
-        public OnegaiRepository(ContextMap contextMap) : base(contextMap.OnegaiEntrys)
-        {
-        }
+    public class OnegaiRepository : RepositoryBase<OnegaiEntry>, IOnegaiRepository {
+        public OnegaiRepository (ContextMap contextMap) : base (contextMap.OnegaiEntrys) { }
 
-        public IEnumerable<OnegaiModel> GetAll()
-        {
-            return entrys.Select(entry =>
-            {
-                return new OnegaiModel(
+        public IEnumerable<OnegaiModel> GetAll () {
+            return entrys.Select (entry => {
+                return new OnegaiModel (
                     entry.Id,
                     entry.TriggerMonoInfoId,
                     entry.Title,
@@ -57,18 +49,17 @@ namespace NL
             });
         }
 
-        public OnegaiModel Get(uint id)
-        {
-            var entry = this.entrys.Where(e => e.Id == id).First();
-            Debug.Assert(entry != null, "ファイルが見つかりません : " + id.ToString());
-            return new OnegaiModel(
-                    entry.Id,
-                    entry.TriggerMonoInfoId,
-                    entry.Title,
-                    entry.Detail,
-                    entry.OnegaiCondition,
-                    entry.OnegaiConditionArg,
-                    entry.Satisfaction);
+        public OnegaiModel Get (uint id) {
+            var entry = this.entrys.Where (e => e.Id == id).First ();
+            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
+            return new OnegaiModel (
+                entry.Id,
+                entry.TriggerMonoInfoId,
+                entry.Title,
+                entry.Detail,
+                entry.OnegaiCondition,
+                entry.OnegaiConditionArg,
+                entry.Satisfaction);
         }
     }
 }

@@ -1,26 +1,21 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NL
-{
-    public class MenuSelectModeContext
-    {
+namespace NL {
+    public class MenuSelectModeContext {
         // select
         private MonoInfo selecetedMonoInfo = null;
         public MonoInfo SelectedMonoInfo => selecetedMonoInfo;
 
         public bool HasMonoInfo => selecetedMonoInfo != null;
 
-        public void SelectMonoInfo(MonoInfo monoInfo)
-        {
+        public void SelectMonoInfo (MonoInfo monoInfo) {
             this.selecetedMonoInfo = monoInfo;
         }
 
-        public void RemoveSelectMonoInfo()
-        {
+        public void RemoveSelectMonoInfo () {
             this.selecetedMonoInfo = null;
         }
     }
 }
-

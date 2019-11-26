@@ -1,38 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL.EventContents {
     public class ForceConversation : IEventContents {
-        private PlayerEventModel playerEventModel;
-        private uint conversationId;
+        private readonly PlayerEventModel playerEventModel = null;
+        private readonly ConversationModel conversationModel = null;
+        private Boolean isAlive = true;
+        private IDisposable conversationDisposable = null;
+
         public ForceConversation(PlayerEventModel playerEventModel)
         {
             this.playerEventModel = playerEventModel;
-            this.conversationId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
+
+            var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
+            var conversationId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
+            this.conversationModel = conversationRepository.Get(conversationId);
+
+            this.isAlive = true;
+            this.conversationDisposable = null;
         }
 
         public EventContentsType EventContentsType => EventContentsType.ForceConversation;
 
         public PlayerEventModel TargetPlayerEventModel => this.playerEventModel;
 
-        private float elapsedTime = 0;
-
         public void OnEnter() {
-            this.elapsedTime = 0;
+            this.isAlive = true;
+            this.conversationDisposable = ConversationStarter.StartConversation(this.conversationModel).Subscribe(_ => {
+                this.isAlive = false;
+            });
         }
         public void OnUpdate() {
-            this.elapsedTime += GameManager.Instance.TimeManager.DeltaTime();
         }
         public void OnExit() {
-
+            this.conversationDisposable.Dispose();
         }
         public bool IsAvilve() {
-            return this.elapsedTime < 10;
+            return isAlive;
         }
 
         public override string ToString() {
-            return this.EventContentsType.ToString() + " " + elapsedTime.ToString();
+            return this.EventContentsType.ToString() + " " + conversationModel.Id.ToString();
         }
     }
 }

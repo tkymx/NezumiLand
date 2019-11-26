@@ -19,6 +19,7 @@ namespace NL {
         public IList<EventConditionEntry> EventConditionEntrys { get; private set; }
         public IList<EventContentsEntry> EventContentsEntrys { get; private set; }
         public IList<EventEntry> EventEntrys { get; private set; }
+        public IList<ConversationEntry> ConversationEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -31,6 +32,7 @@ namespace NL {
             this.EventConditionEntrys = LoadEntryFromJson<EventConditionEntry> (ResourceLoader.LoadData ("EventConditionEntry"));
             this.EventContentsEntrys = LoadEntryFromJson<EventContentsEntry> (ResourceLoader.LoadData ("EventContentsEntry"));
             this.EventEntrys = LoadEntryFromJson<EventEntry> (ResourceLoader.LoadData ("EventEntry"));
+            this.ConversationEntrys = LoadEntryFromJson<ConversationEntry> (ResourceLoader.LoadData ("ConversationEntry"));
         }
 
         private static IList<T> LoadEntryFromJson<T> (string json) {

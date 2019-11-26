@@ -19,11 +19,16 @@ namespace NL {
         [SerializeField]
         private SatisfactionPresenter satisfactionPresenter = null;
 
+        [SerializeField]
+        private ConversationPresenter conversationPresenter = null;
+        public ConversationPresenter ConversationPresenter => conversationPresenter;
+
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.monoTabPresenter.Initialize ();
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
             this.fieldActionUIPresenter.Initialize ();
             this.satisfactionPresenter.Initialize (playerOnegaiRepository);
+            this.conversationPresenter.Initialize();
         }
     }
 }

@@ -32,6 +32,10 @@ namespace NL {
             return Time.deltaTime;
         }
 
+        public float DeltaTimeWithoutPause () {
+            return Time.deltaTime;
+        }        
+
         public void UpdateByFrame () {
             this.elapsedTime += DeltaTime ();
         }

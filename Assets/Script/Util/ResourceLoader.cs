@@ -38,6 +38,15 @@ namespace NL {
             return prefab;
         }
 
+        public static Sprite LoadCharacterSprite (string characterName) {
+            var path = "CharacterImage/" + characterName;
+            Sprite sprite = Resources.Load<Sprite> (path);
+            if (sprite == null) {
+                Debug.LogError (path + "が存在しません。");
+            }
+            return sprite;
+        }        
+
         public static string LoadData (string modelName) {
             return LoadText ("Data/" + modelName);
         }

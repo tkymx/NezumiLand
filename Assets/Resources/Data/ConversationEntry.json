@@ -1,0 +1,15 @@
+[
+    {
+        "Id": 1,
+        "ConversationTexts": [
+            "こんにちは、これから始まるネズミの物語",
+            "きみはついてくれるかな？",
+            "まずは、ブランコを立ててみよう"
+        ],
+        "ConversationCharacterNames": [
+            "Nezumi",
+            "Nezumi",
+            "Nezumi"
+        ]
+    }
+]

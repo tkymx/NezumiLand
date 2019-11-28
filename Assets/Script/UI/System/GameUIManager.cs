@@ -23,12 +23,17 @@ namespace NL {
         private ConversationPresenter conversationPresenter = null;
         public ConversationPresenter ConversationPresenter => conversationPresenter;
 
+        [SerializeField]
+        private RewardPresenter rewardPresenter = null;
+        public RewardPresenter RewardPresenter => rewardPresenter;
+
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.monoTabPresenter.Initialize ();
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
             this.fieldActionUIPresenter.Initialize ();
             this.satisfactionPresenter.Initialize (playerOnegaiRepository);
             this.conversationPresenter.Initialize();
+            this.rewardPresenter.Initialize();
         }
     }
 }

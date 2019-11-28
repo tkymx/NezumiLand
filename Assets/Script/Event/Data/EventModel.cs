@@ -14,17 +14,20 @@ namespace NL {
         public List<EventConditionModel> EventConditionModels { get; private set; }
         public EventContentsModel EventContentsModel { get; private set; }
         public EventRepeatType EventRepeatType { get; private set; }
+        public RewardModel RewardModel { get; private set; }
 
         public EventModel (
             uint id,
             List<EventConditionModel> eventConditionModels,
             EventContentsModel eventContentsModel,
-            EventRepeatType eventRepeatType
+            EventRepeatType eventRepeatType,
+            RewardModel rewardModel
         ) {
             this.Id = id;
             this.EventConditionModels = eventConditionModels;
             this.EventContentsModel = eventContentsModel;
             this.EventRepeatType = eventRepeatType;
+            this.RewardModel = rewardModel;
         }
     }
 }

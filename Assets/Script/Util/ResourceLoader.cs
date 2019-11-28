@@ -45,7 +45,16 @@ namespace NL {
                 Debug.LogError (path + "が存在しません。");
             }
             return sprite;
-        }        
+        }
+
+        public static Sprite LoadItemSprite (string characterName) {
+            var path = "ItemImage/" + characterName;
+            Sprite sprite = Resources.Load<Sprite> (path);
+            if (sprite == null) {
+                Debug.LogError (path + "が存在しません。");
+            }
+            return sprite;
+        }          
 
         public static string LoadData (string modelName) {
             return LoadText ("Data/" + modelName);

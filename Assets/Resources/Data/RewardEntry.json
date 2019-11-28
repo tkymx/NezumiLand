@@ -1,0 +1,12 @@
+[
+    {
+        "Id": 1,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Currency",
+                "Amount": 1000,
+                "Args":[]
+            }
+        ]
+    }
+]

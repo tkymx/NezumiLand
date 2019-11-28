@@ -18,6 +18,9 @@ namespace NL {
 
         [DataMember]
         public string EventRepeatType { get; set; }
+
+        [DataMember]
+        public uint rewardId { get; set; }
     }
 
     public interface IEventRepository {
@@ -28,13 +31,17 @@ namespace NL {
     public class EventRepository : RepositoryBase<EventEntry>, IEventRepository {
         private readonly IEventConditionRepository eventConditionRepository;
         private readonly IEventContentsRepository eventContentsRepository;
+        private readonly IRewardRepository rewardRepository;
 
         public EventRepository (
             ContextMap contextMap,
             IEventConditionRepository eventConditionRepository,
-            IEventContentsRepository eventContentsRepository) : base (contextMap.EventEntrys) {
+            IEventContentsRepository eventContentsRepository,
+            IRewardRepository rewardRepository) : base (contextMap.EventEntrys) 
+        {
             this.eventConditionRepository = eventConditionRepository;
             this.eventContentsRepository = eventContentsRepository;
+            this.rewardRepository = rewardRepository;
         }
 
         public IEnumerable<EventModel> GetAll () {
@@ -43,7 +50,8 @@ namespace NL {
                     entry.Id,
                     entry.EventConditionIds.Select (id => this.eventConditionRepository.Get (id)).ToList(),
                     this.eventContentsRepository.Get (entry.EventContentsId),
-                    this.parceEventRepeatType (entry.EventRepeatType));
+                    this.parceEventRepeatType (entry.EventRepeatType),
+                    this.rewardRepository.Get(entry.rewardId));
             });
         }
 
@@ -54,7 +62,8 @@ namespace NL {
                 entry.Id,
                 entry.EventConditionIds.Select (eventConditionId => this.eventConditionRepository.Get (eventConditionId)).ToList (),
                 this.eventContentsRepository.Get (entry.EventContentsId),
-                this.parceEventRepeatType (entry.EventRepeatType));
+                this.parceEventRepeatType (entry.EventRepeatType),
+                this.rewardRepository.Get(entry.rewardId));
         }
 
         private EventRepeatType parceEventRepeatType (string type) {

@@ -34,9 +34,6 @@ namespace NL {
             Debug.Assert (gameMode != null, "GameMode が nullです");
 
             if (this.currentGameMode != null) {
-                if (this.currentGameMode.UniqueKey() == gameMode.UniqueKey()) {
-                    return;
-                }
                 this.currentGameMode.OnExit ();
             }
             this.currentGameMode = gameMode;
@@ -70,7 +67,7 @@ namespace NL {
             this.currentGameMode.OnUpdate ();
         }
 
-        public bool IsEventMode => this.currentGameMode.UniqueKey() == "EventMode";
+        public bool IsEventMode => this.currentGameMode is EventMode;
 
         public override string ToString () {
             if (this.currentGameMode == null) {

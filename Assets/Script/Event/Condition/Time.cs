@@ -11,7 +11,7 @@ namespace NL.EventCondition {
         }
     }
 
-    public class Time : IEventCondtion {
+    public class Time : IEventCondition {
         float elapsedTime = 0;
 
         public Time (float elapsedTime) {

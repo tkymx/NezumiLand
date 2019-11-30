@@ -6,7 +6,8 @@ namespace NL {
     public enum EventConditionType {
         None,
         Time,
-        AboveSatisfaction
+        AboveSatisfaction,
+        ClearOnegai
     }
 
     public class EventConditionModel: ModelBase {

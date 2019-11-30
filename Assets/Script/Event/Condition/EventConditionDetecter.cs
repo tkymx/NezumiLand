@@ -11,7 +11,7 @@ namespace NL {
             this.playerEventRepository = playerEventRepository;
         }
 
-        public void Detect (IEventCondtion condition) {
+        public void Detect (IEventCondition condition) {
             // 条件のクリア判定
             var targetPlayerEventModels = playerEventRepository.GetDetectable (condition.EventConditionType).ToList ();
             var updatePlayerEventModels = new List<PlayerEventModel> ();

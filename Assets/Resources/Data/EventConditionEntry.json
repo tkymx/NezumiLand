@@ -12,5 +12,19 @@
         "Arg": [
             "100"
         ]
+    },
+    {
+        "Id": 3,
+        "EventConditionType": "ClearOnegai",
+        "Arg": [
+            "2"
+        ]
+    },
+    {
+        "Id": 4,
+        "EventConditionType": "ClearOnegai",
+        "Arg": [
+            "1"
+        ]
     }
 ]

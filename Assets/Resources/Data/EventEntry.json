@@ -12,11 +12,19 @@
     {
         "Id": 2,
         "EventConditionIds": [
-            1,
-            2
+            3
         ],
         "EventContentsId": 2,
         "EventRepeatType": "Once",
         "RewardId": 1
-    }    
+    },
+    {
+        "Id": 3,
+        "EventConditionIds": [
+            4
+        ],
+        "EventContentsId": 3,
+        "EventRepeatType": "Once",
+        "RewardId": 1
+    }  
 ]

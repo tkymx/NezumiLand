@@ -10,10 +10,6 @@ namespace NL {
             this.context = context;
         }
 
-        public string UniqueKey() {
-            return "ArrangementMenuSelectMode";
-        }
-
         public void OnEnter () {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.ArrangementManager.Select (context.ArrangementTarget);

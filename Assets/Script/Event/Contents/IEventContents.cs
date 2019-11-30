@@ -14,6 +14,6 @@ namespace NL {
         void OnEnter();
         void OnUpdate();
         void OnExit();
-        bool IsAvilve();
+        bool IsAlive();
     }
 }

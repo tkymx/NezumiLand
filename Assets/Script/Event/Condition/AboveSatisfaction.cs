@@ -11,7 +11,7 @@ namespace NL.EventCondition {
         }
     }
 
-    public class AboveSatisfaction : IEventCondtion {
+    public class AboveSatisfaction : IEventCondition {
         Satisfaction currentSatisfaction = new Satisfaction (0);
 
         public AboveSatisfaction (Satisfaction currentSatisfaction) {

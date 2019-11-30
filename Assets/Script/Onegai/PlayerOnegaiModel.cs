@@ -17,6 +17,7 @@ namespace NL {
 
         public void ToClear () {
             this.OnegaiState = OnegaiState.Clear;
+            GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.ClearOnegai(OnegaiModel));
         }
 
         public PlayerOnegaiModel (

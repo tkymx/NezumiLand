@@ -31,7 +31,7 @@ namespace NL {
         /// <summary>
         /// コンテンツが実行中かどうか？
         /// </summary>
-        public bool IsPlayingContentsFinish => !currentEventContents.IsAvilve();
+        public bool IsPlayingContentsFinish => !currentEventContents.IsAlive();
 
         public void UpdateByFrame() {
             switch(currentEventContentsExecuterState) {

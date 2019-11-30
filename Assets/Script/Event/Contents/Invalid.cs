@@ -3,22 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL.EventContents {
-    public class Invalid : IEventContents {
-        public EventContentsType EventContentsType => EventContentsType.InValid;
+    public class Invalid : EventContentsBase {
+        
+        public override EventContentsType EventContentsType => EventContentsType.InValid;
 
-        public PlayerEventModel TargetPlayerEventModel => null;
-
-        public void OnEnter() {
-
-        }
-        public void OnUpdate() {
-
-        }
-        public void OnExit() {
-
-        }
-        public bool IsAvilve() {
-            return false;
+        public Invalid() : base(null) {            
         }
 
         public override string ToString() {

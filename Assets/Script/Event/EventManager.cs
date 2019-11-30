@@ -29,7 +29,7 @@ namespace NL {
             this.eventContentsExecuter.PlayNext();
         }
 
-        public void PushEventParameter(IEventCondtion eventCondtion) {
+        public void PushEventParameter(IEventCondition eventCondtion) {
             this.eventConditionDetecter.Detect(eventCondtion);
             this.ChangeEventModeIfNessesary();
         }

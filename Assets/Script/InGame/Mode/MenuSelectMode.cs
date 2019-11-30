@@ -10,10 +10,6 @@ namespace NL {
             this.context = context;
         }
 
-        public string UniqueKey() {
-            return "MenuSelectMode";
-        }
-
         public void OnEnter () {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.GameUIManager.MonoTabPresenter.Show ();

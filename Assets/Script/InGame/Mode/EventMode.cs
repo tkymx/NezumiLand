@@ -12,11 +12,7 @@ namespace NL {
 
         public EventMode () {
         }
-
-        public string UniqueKey() {
-            return "EventMode";
-        }
-
+        
         public void OnEnter () {
             GameManager.Instance.TimeManager.Pause ();
             GameManager.Instance.EventManager.PlayEventContents();

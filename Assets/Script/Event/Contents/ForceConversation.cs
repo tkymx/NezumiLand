@@ -4,16 +4,13 @@ using UnityEngine;
 using System;
 
 namespace NL.EventContents {
-    public class ForceConversation : IEventContents {
-        private readonly PlayerEventModel playerEventModel = null;
+    public class ForceConversation : EventContentsBase {
         private readonly ConversationModel conversationModel = null;
         private Boolean isAlive = true;
         private IDisposable conversationDisposable = null;
 
-        public ForceConversation(PlayerEventModel playerEventModel)
+        public ForceConversation(PlayerEventModel playerEventModel) : base(playerEventModel)
         {
-            this.playerEventModel = playerEventModel;
-
             var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
             var conversationId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
             this.conversationModel = conversationRepository.Get(conversationId);
@@ -22,22 +19,20 @@ namespace NL.EventContents {
             this.conversationDisposable = null;
         }
 
-        public EventContentsType EventContentsType => EventContentsType.ForceConversation;
+        public override EventContentsType EventContentsType => EventContentsType.ForceConversation;
 
-        public PlayerEventModel TargetPlayerEventModel => this.playerEventModel;
-
-        public void OnEnter() {
+        public override void OnEnter() {
             this.isAlive = true;
             this.conversationDisposable = ConversationStarter.StartConversation(this.conversationModel).Subscribe(_ => {
                 this.isAlive = false;
             });
         }
-        public void OnUpdate() {
+        public override void OnUpdate() {
         }
-        public void OnExit() {
+        public override void OnExit() {
             this.conversationDisposable.Dispose();
         }
-        public bool IsAvilve() {
+        public override bool IsAlive() {
             return isAlive;
         }
 

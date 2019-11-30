@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public interface IEventCondtion {
+    public interface IEventCondition {
         /// <summary>
         /// 自分のイベント条件のタイプを返す
         /// </summary>

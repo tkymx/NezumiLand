@@ -13,10 +13,6 @@ namespace NL {
             this.context = context;
         }
 
-        public string UniqueKey() {
-            return "ArrangementMode";
-        }
-
         public void OnEnter () {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation ();

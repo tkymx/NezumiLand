@@ -51,14 +51,16 @@ namespace NL {
         public void UpdateByFrame () {
             // 履歴を考慮してモードを変更する
             if (this.nextGameModeWithHistory != null) {
-                ChangeModeWithHistory (this.nextGameModeWithHistory);
+                var tempNextGameModeWithHistory = this.nextGameModeWithHistory;
                 this.nextGameModeWithHistory = null;
+                ChangeModeWithHistory (tempNextGameModeWithHistory);
             }
 
             // 履歴を考慮せずにモードを変更する
             if (this.nextGameMode != null) {
-                ChangeMode (this.nextGameMode);
+                var tempNextGameMode = this.nextGameMode;
                 this.nextGameMode = null;
+                ChangeMode (tempNextGameMode);
             }
 
             if (this.currentGameMode == null) {

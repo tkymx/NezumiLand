@@ -11,10 +11,14 @@ namespace NL {
     public class EventManager {        
         private EventConditionDetecter eventConditionDetecter = null;
         private EventContentsExecuter eventContentsExecuter = null;
+
         public IEventContents CurrentEventContents => eventContentsExecuter.CurrentEventContents;
+        public bool IsToEvent { get; private set; } 
+
         public EventManager(IPlayerEventRepository playerEventRepository) {
             this.eventConditionDetecter = new EventConditionDetecter(playerEventRepository);
             this.eventContentsExecuter = new EventContentsExecuter(playerEventRepository);
+            this.IsToEvent = false;
         }
         
         public void UpdateByFrame() {
@@ -27,6 +31,11 @@ namespace NL {
 
         public void PlayEventContents() {
             this.eventContentsExecuter.PlayNext();
+        }
+
+        public void GoToEvent() {            
+            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateEventMode());    
+            this.IsToEvent = false;
         }
 
         public void PushEventParameter(IEventCondition eventCondtion) {
@@ -44,7 +53,7 @@ namespace NL {
             if (!this.eventContentsExecuter.HasPlayableEvent()) {
                 return;
             }
-            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateEventMode());    
+            this.IsToEvent = true;
         }
     }
 }

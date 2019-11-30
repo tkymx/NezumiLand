@@ -7,7 +7,6 @@ namespace NL.EventContents {
     public class ForceConversation : EventContentsBase {
         private readonly ConversationModel conversationModel = null;
         private Boolean isAlive = true;
-        private IDisposable conversationDisposable = null;
 
         public ForceConversation(PlayerEventModel playerEventModel) : base(playerEventModel)
         {
@@ -16,21 +15,20 @@ namespace NL.EventContents {
             this.conversationModel = conversationRepository.Get(conversationId);
 
             this.isAlive = true;
-            this.conversationDisposable = null;
         }
 
         public override EventContentsType EventContentsType => EventContentsType.ForceConversation;
 
         public override void OnEnter() {
             this.isAlive = true;
-            this.conversationDisposable = ConversationStarter.StartConversation(this.conversationModel).Subscribe(_ => {
+            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateConversationMode(this.conversationModel,()=>{
+                GameManager.Instance.GameModeManager.Back();
                 this.isAlive = false;
-            });
+            }));
         }
         public override void OnUpdate() {
         }
         public override void OnExit() {
-            this.conversationDisposable.Dispose();
         }
         public override bool IsAlive() {
             return isAlive;

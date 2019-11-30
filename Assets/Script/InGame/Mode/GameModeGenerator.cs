@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL {
     public class GameModeGenerator {
@@ -30,6 +31,13 @@ namespace NL {
 
         public static EventMode GenerateEventMode () {
             return new EventMode();
+        }
+
+        public static ConversationMode GenerateConversationMode (ConversationModel conversationModel, Action conversationEndCallBack = null) {
+            if ( conversationEndCallBack == null ) {
+                conversationEndCallBack = () => {};
+            }
+            return new ConversationMode(conversationModel, conversationEndCallBack);
         }
 
         public static SelectMode GenerateSelectMode () {

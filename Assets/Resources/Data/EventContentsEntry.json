@@ -5,5 +5,12 @@
         "Arg": [
             "1"
         ]
+    },
+    {
+        "Id": 2,
+        "EventContentsType": "ForceConversation",
+        "Arg": [
+            "2"
+        ]
     }
 ]

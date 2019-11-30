@@ -8,24 +8,37 @@ namespace NL {
         [SerializeField]
         private GameObject mainWindowGameObject = null;
 
-        private TypeObservable<int> onShow = new TypeObservable<int>();
-        public TypeObservable<int> OnShow => onShow;
+        private TypeObservable<int> onShow = null;
+        public TypeObservable<int> OnShow {
+            get {
+                if (this.onShow == null) {
+                    this.onShow = new TypeObservable<int>();
+                }
+                return this.onShow;
+            }
+        }
 
-        private TypeObservable<int> onClose = new TypeObservable<int>();
-        public TypeObservable<int> OnClose => onClose;
-
+        private TypeObservable<int> onClose = null;
+        public TypeObservable<int> OnClose {
+            get {
+                if (this.onClose == null) {
+                    this.onClose = new TypeObservable<int>();
+                }
+                return this.onClose;
+            }
+        }
         public virtual void onPrepareShow () { }
         public void Show () {
             this.onPrepareShow ();
             this.mainWindowGameObject.SetActive (true);
-            this.onShow.Execute(0);
+            this.OnShow.Execute(0);
         }
 
         public virtual void onPrepareClose () { }
         public void Close () {
             this.onPrepareClose ();
             this.mainWindowGameObject.SetActive (false);
-            this.onClose.Execute(0);
+            this.OnClose.Execute(0);
         }
     }
 }

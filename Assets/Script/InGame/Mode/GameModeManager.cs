@@ -7,18 +7,16 @@ namespace NL {
         private IGameMode currentGameMode = null;
         public IGameMode CurrentGameMode => currentGameMode;
 
-        private Queue<IGameMode> nextGameModeQueue = null;
-        private Queue<IGameMode> nextGameModeWithHistoryQueue = null;
+        private IGameMode nextGameMode = null;
+        private IGameMode nextGameModeWithHistory = null;
         private Stack<IGameMode> gameModeHistory = null;
 
         public GameModeManager () {
-            this.nextGameModeQueue = new Queue<IGameMode> ();
-            this.nextGameModeWithHistoryQueue = new Queue<IGameMode> ();
             this.gameModeHistory = new Stack<IGameMode> ();
         }
 
         public void EnqueueChangeModeWithHistory (IGameMode gameMode) {
-            nextGameModeWithHistoryQueue.Enqueue (gameMode);
+            nextGameModeWithHistory = gameMode;
         }
 
         private void ChangeModeWithHistory (IGameMode gameMode) {
@@ -29,13 +27,16 @@ namespace NL {
         }
 
         public void EnqueueChangeMode (IGameMode gameMode) {
-            nextGameModeQueue.Enqueue (gameMode);
+            nextGameMode = gameMode;
         }
 
         private void ChangeMode (IGameMode gameMode) {
             Debug.Assert (gameMode != null, "GameMode が nullです");
 
             if (this.currentGameMode != null) {
+                if (this.currentGameMode.UniqueKey() == gameMode.UniqueKey()) {
+                    return;
+                }
                 this.currentGameMode.OnExit ();
             }
             this.currentGameMode = gameMode;
@@ -52,15 +53,15 @@ namespace NL {
 
         public void UpdateByFrame () {
             // 履歴を考慮してモードを変更する
-            if (nextGameModeWithHistoryQueue.Count > 0) {
-                var nextGameModeWithHistory = nextGameModeWithHistoryQueue.Dequeue ();
-                ChangeModeWithHistory (nextGameModeWithHistory);
+            if (this.nextGameModeWithHistory != null) {
+                ChangeModeWithHistory (this.nextGameModeWithHistory);
+                this.nextGameModeWithHistory = null;
             }
 
             // 履歴を考慮せずにモードを変更する
-            if (nextGameModeQueue.Count > 0) {
-                var nextGameMode = nextGameModeQueue.Dequeue ();
-                ChangeMode (nextGameMode);
+            if (this.nextGameMode != null) {
+                ChangeMode (this.nextGameMode);
+                this.nextGameMode = null;
             }
 
             if (this.currentGameMode == null) {
@@ -68,6 +69,8 @@ namespace NL {
             }
             this.currentGameMode.OnUpdate ();
         }
+
+        public bool IsEventMode => this.currentGameMode.UniqueKey() == "EventMode";
 
         public override string ToString () {
             if (this.currentGameMode == null) {

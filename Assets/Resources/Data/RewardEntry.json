@@ -6,6 +6,11 @@
                 "Type": "Currency",
                 "Amount": 1000,
                 "Args":[]
+            },
+            {
+                "Type": "Item",
+                "Amount": 10,
+                "Args":[]
             }
         ]
     }

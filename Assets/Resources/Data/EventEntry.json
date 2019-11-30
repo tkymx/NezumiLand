@@ -2,10 +2,21 @@
     {
         "Id": 1,
         "EventConditionIds": [
-            "1",
-            "2"
+            1,
+            2
         ],
-        "EventContentsId": "1",
-        "EventRepeatType": "Once"
-    }
+        "EventContentsId": 1,
+        "EventRepeatType": "Once",
+        "RewardId": 1
+    },
+    {
+        "Id": 2,
+        "EventConditionIds": [
+            1,
+            2
+        ],
+        "EventContentsId": 2,
+        "EventRepeatType": "Once",
+        "RewardId": 1
+    }    
 ]

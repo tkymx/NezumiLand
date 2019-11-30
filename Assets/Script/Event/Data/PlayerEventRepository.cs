@@ -58,7 +58,8 @@ namespace NL {
         public static PlayerEventRepository GetRepository (ContextMap contextMap, PlayerContextMap playerContextMap) {
             IEventConditionRepository eventConditionRepository = new EventConditionRepository (contextMap);
             IEventContentsRepository eventContentsRepository = new EventContentsRepository (contextMap);
-            IEventRepository eventRepository = new EventRepository (contextMap, eventConditionRepository, eventContentsRepository);
+            IRewardRepository rewardRepository = new RewardRepository(contextMap);
+            IEventRepository eventRepository = new EventRepository (contextMap, eventConditionRepository, eventContentsRepository, rewardRepository);
             return new PlayerEventRepository (eventRepository, eventConditionRepository, playerContextMap);
         }
 

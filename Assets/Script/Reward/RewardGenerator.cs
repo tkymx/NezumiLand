@@ -18,7 +18,14 @@ namespace NL {
                 return new CurrencyRewardAmount(amount);
             }
 
+            if (rewardType == RewardType.Item) {
+                return new ItemRewardAmount(amount);
+            }
+            
+            Debug.Assert(false, "無効な報酬が設定されいています。 : " + type);
             return new InvalidRewardAmount();
         }
+
+        public static IRewardAmount InValidReward => new InvalidRewardAmount();
     }
 }

@@ -6,6 +6,7 @@ namespace NL {
     /// <summary>
     /// イベントの管理
     /// - なにか動作が起こるたびにイベントの判定を行う
+    /// - コンテンツの実行を行う
     /// </summary>
     public class EventManager {        
         private EventConditionDetecter eventConditionDetecter = null;
@@ -15,17 +16,35 @@ namespace NL {
             this.eventConditionDetecter = new EventConditionDetecter(playerEventRepository);
             this.eventContentsExecuter = new EventContentsExecuter(playerEventRepository);
         }
+        
         public void UpdateByFrame() {
             this.eventContentsExecuter.UpdateByFrame();
         }
 
+        public bool IsEventContentsPlaying() {
+            return this.eventContentsExecuter.HasPlayingContents;
+        }
+
+        public void PlayEventContents() {
+            this.eventContentsExecuter.PlayNext();
+        }
+
         public void PushEventParameter(IEventCondtion eventCondtion) {
             this.eventConditionDetecter.Detect(eventCondtion);
+            this.ChangeEventModeIfNessesary();
+        }
 
-            // 実行中のイベントが無ければ実行する
-            if (!this.eventContentsExecuter.HasContents) {
-                this.eventContentsExecuter.PlayNext();
+        private void ChangeEventModeIfNessesary () {
+            if (GameManager.Instance.GameModeManager.IsEventMode) {
+                return;
             }
+            if (this.eventContentsExecuter.HasPlayingContents) {       
+                return;
+            }
+            if (!this.eventContentsExecuter.HasPlayableEvent()) {
+                return;
+            }
+            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateEventMode());    
         }
     }
 }

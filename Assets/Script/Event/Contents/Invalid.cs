@@ -18,7 +18,7 @@ namespace NL.EventContents {
 
         }
         public bool IsAvilve() {
-            return true;
+            return false;
         }
 
         public override string ToString() {

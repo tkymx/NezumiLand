@@ -11,5 +11,14 @@
             "Nezumi",
             "Nezumi"
         ]
+    },
+    {
+        "Id": 2,
+        "ConversationTexts": [
+            "一行のみテスト"
+        ],
+        "ConversationCharacterNames": [
+            "Nezumi",
+        ]
     }
 ]

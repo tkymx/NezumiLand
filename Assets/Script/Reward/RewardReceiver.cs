@@ -20,6 +20,10 @@ namespace NL {
             this.rewardModel = rewardModel;
         }
 
+        public RewardReceiver (PlayerEventModel playerEventModel) {
+            this.rewardModel = playerEventModel.EventModel.RewardModel;
+        }
+
         public void ReceiveRewardAndShowModel() {
 
             // 報酬を受け取り

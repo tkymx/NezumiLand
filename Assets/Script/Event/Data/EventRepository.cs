@@ -20,7 +20,7 @@ namespace NL {
         public string EventRepeatType { get; set; }
 
         [DataMember]
-        public uint rewardId { get; set; }
+        public uint RewardId { get; set; }
     }
 
     public interface IEventRepository {
@@ -51,7 +51,7 @@ namespace NL {
                     entry.EventConditionIds.Select (id => this.eventConditionRepository.Get (id)).ToList(),
                     this.eventContentsRepository.Get (entry.EventContentsId),
                     this.parceEventRepeatType (entry.EventRepeatType),
-                    this.rewardRepository.Get(entry.rewardId));
+                    this.rewardRepository.Get(entry.RewardId));
             });
         }
 
@@ -63,7 +63,7 @@ namespace NL {
                 entry.EventConditionIds.Select (eventConditionId => this.eventConditionRepository.Get (eventConditionId)).ToList (),
                 this.eventContentsRepository.Get (entry.EventContentsId),
                 this.parceEventRepeatType (entry.EventRepeatType),
-                this.rewardRepository.Get(entry.rewardId));
+                this.rewardRepository.Get(entry.RewardId));
         }
 
         private EventRepeatType parceEventRepeatType (string type) {

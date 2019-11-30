@@ -22,7 +22,11 @@ namespace NL {
         }
 
         public void Execute (T value) {
-            this.observers.ForEach (observer => observer.OnNext (value));
+            var tempObservers = this.observers.ToArray();
+            foreach (var observer in tempObservers)
+            {
+                observer.OnNext (value);
+            }
         }
 
         public IDisposable Subscribe (IObserver<T> observer) {

@@ -9,7 +9,13 @@ namespace NL {
         private RewardItemView rewardItemView = null;
 
         private IRewardAmount rewardAmount = null;
+
+        private void Awake() {
+            this.rewardAmount = RewardGenerator.InValidReward;
+        }
+
         public void SetRewardAmount(IRewardAmount rewardAmount) {
+            Debug.Assert(rewardAmount != null, "報酬がありません");
             this.rewardAmount = rewardAmount;
         }
 
@@ -27,7 +33,7 @@ namespace NL {
         }
 
         public override void onPrepareClose() {
-            Debug.Assert(this.rewardAmount != null, "報酬がありません");
+            Debug.Assert(rewardAmount != null, "報酬がありません");
             this.rewardAmount = null;
         }
     }

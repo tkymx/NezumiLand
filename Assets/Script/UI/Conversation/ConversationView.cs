@@ -65,6 +65,7 @@ namespace NL {
             this.speakerName.text = speakerName;
             this.allContents = contents;
             this.elapsedTimeFromStart = 0;
+            this.Update();
         }
     }
 }

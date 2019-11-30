@@ -5,6 +5,7 @@ using UnityEngine;
 namespace NL {
     public class GameModeGenerator {
         public static ArrangementMode GenerateArrangementMode () {
+            
             // コンテキストがある前提なのだとしたら、それでも。。。
             var menuSelectModeContext = GameContextMap.DefaultMap.MenuSelectModeContext;
             var arrangementModeContext = GameContextMap.DefaultMap.ArrangementModeContext;
@@ -26,6 +27,11 @@ namespace NL {
 
             return new ArrangementMenuSelectMode (arrangementMenuSelectModeContext);
         }
+
+        public static EventMode GenerateEventMode () {
+            return new EventMode();
+        }
+
         public static SelectMode GenerateSelectMode () {
             return new SelectMode ();
         }

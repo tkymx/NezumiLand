@@ -65,6 +65,9 @@ namespace NL {
         private ConstantlyEventPusher constantlyEventPusher;
         public ConstantlyEventPusher ConstantlyEventPusher => constantlyEventPusher;
 
+        private AppearCharacterManager appearCharacterManager;
+        public  AppearCharacterManager AppearCharacterManager => appearCharacterManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -92,6 +95,7 @@ namespace NL {
             this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
+            this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
 
             // initialize
             this.gameUIManager.Initialize (playerOnegaiRepository);
@@ -104,6 +108,7 @@ namespace NL {
             this.monoManager.UpdateByFrame ();
             this.fieldRaycastManager.UpdateByFrame ();
             this.timeManager.UpdateByFrame ();
+            this.appearCharacterManager.UpdateByFrame();
 
             // イベント関連
             this.constantlyEventPusher.PushConstantlyEventParameter();

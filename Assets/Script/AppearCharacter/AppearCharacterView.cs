@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public class AppearCharacterView : MonoBehaviour {
-        private TypeObservable<int> onSelect = null;
-        public TypeObservable<int> OnSelect => onSelect;
+    public class AppearCharacterView : SelectBase {
+        private TypeObservable<int> onSelectObservable = null;
+        public TypeObservable<int> OnSelectObservable => onSelectObservable;
 
         private void Awake () {
-            this.onSelect = new TypeObservable<int> ();
+            this.onSelectObservable = new TypeObservable<int> ();
+        }
+
+        public override void OnOver (RaycastHit hit) {
+        }
+
+        public override void OnSelect (RaycastHit hit) {
+            this.onSelectObservable.Execute (0);
         }
     }
 }

@@ -68,6 +68,9 @@ namespace NL {
         private AppearCharacterManager appearCharacterManager;
         public  AppearCharacterManager AppearCharacterManager => appearCharacterManager;
 
+        private DailyAppearCharacterRegistManager dailyAppearCharacterRegistManager;
+        public DailyAppearCharacterRegistManager DailyAppearCharacterRegistManager => dailyAppearCharacterRegistManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -96,10 +99,12 @@ namespace NL {
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
             this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
+            this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager();
 
             // initialize
             this.gameUIManager.Initialize (playerOnegaiRepository);
             this.mouseHomeManager.Initialize ();
+            this.appearCharacterManager.Initialize();
         }
 
         private void Update () {

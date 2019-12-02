@@ -18,9 +18,7 @@ namespace NL {
     }
     
     [DataContract]
-    public class RewardEntry {
-        [DataMember]
-        public uint Id { get; set; }
+    public class RewardEntry : EntryBase {
 
         [DataMember]
         public RewardSingleEntry[] RewardSingleEntrys { get; set; }
@@ -34,7 +32,8 @@ namespace NL {
     public class RewardRepository : RepositoryBase<RewardEntry>, IRewardRepository {
         public RewardRepository (ContextMap contextMap) : base (contextMap.RewardEntrys) { }
 
-        public IEnumerable<RewardModel> GetAll () {
+        public IEnumerable<RewardModel> GetAll () 
+        {
             return entrys.Select (entry => {
                 return new RewardModel (
                     entry.Id,
@@ -42,9 +41,9 @@ namespace NL {
             });
         }
 
-        public RewardModel Get (uint id) {
-            var entry = this.entrys.Where (e => e.Id == id).First ();
-            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
+        public RewardModel Get (uint id) 
+        {
+            var entry = base.GetEntry(id);
             return new RewardModel (
                     entry.Id,
                     Generate(entry.RewardSingleEntrys));

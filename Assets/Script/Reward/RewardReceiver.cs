@@ -26,6 +26,12 @@ namespace NL {
 
         public void ReceiveRewardAndShowModel() {
 
+            // 報酬がなければ終了
+            if (rewardModel.RewardAmounts.Count <= 0) {
+                onEndReceiveObservable.Execute(0);
+                return;                
+            }
+
             // 報酬を受け取り
             foreach (var rewardAmount in rewardModel.RewardAmounts)
             {

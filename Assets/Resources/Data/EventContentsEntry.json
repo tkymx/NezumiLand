@@ -8,8 +8,9 @@
     },
     {
         "Id": 2,
-        "EventContentsType": "ForceConversation",
+        "EventContentsType": "AppearConversationCharacter",
         "Arg": [
+            "1",
             "2"
         ]
     },

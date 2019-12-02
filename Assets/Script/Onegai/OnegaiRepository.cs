@@ -5,9 +5,7 @@ using UnityEngine;
 
 namespace NL {
     [DataContract]
-    public class OnegaiEntry {
-        [DataMember]
-        public uint Id { get; set; }
+    public class OnegaiEntry : EntryBase {
 
         [DataMember]
         public uint TriggerMonoInfoId { get; set; }
@@ -49,9 +47,9 @@ namespace NL {
             });
         }
 
-        public OnegaiModel Get (uint id) {
-            var entry = this.entrys.Where (e => e.Id == id).First ();
-            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
+        public OnegaiModel Get (uint id) 
+        {
+            var entry = base.GetEntry(id);
             return new OnegaiModel (
                 entry.Id,
                 entry.TriggerMonoInfoId,

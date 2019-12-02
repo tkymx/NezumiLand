@@ -6,9 +6,7 @@ using UnityEngine;
 
 namespace NL {
     [DataContract]
-    public class EventEntry {
-        [DataMember]
-        public uint Id { get; set; }
+    public class EventEntry : EntryBase {
 
         [DataMember]
         public uint[] EventConditionIds { get; set; }
@@ -56,8 +54,7 @@ namespace NL {
         }
 
         public EventModel Get (uint id) {
-            var entry = this.entrys.Where (e => e.Id == id).First ();
-            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
+            var entry = base.GetEntry(id);
             return new EventModel (
                 entry.Id,
                 entry.EventConditionIds.Select (eventConditionId => this.eventConditionRepository.Get (eventConditionId)).ToList (),

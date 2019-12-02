@@ -6,9 +6,7 @@ using UnityEngine;
 
 namespace NL {
     [DataContract]
-    public class ConversationEntry {
-        [DataMember]
-        public uint Id { get; set; }
+    public class ConversationEntry : EntryBase {
 
         [DataMember]
         public string[] ConversationTexts { get; set; }
@@ -35,8 +33,7 @@ namespace NL {
         }
 
         public ConversationModel Get (uint id) {
-            var entry = this.entrys.Where (e => e.Id == id).First ();
-            Debug.Assert (entry != null, "ConversationModelが見つかりません : " + id.ToString ());
+            var entry = base.GetEntry(id);
             return new ConversationModel (
                 entry.Id,
                 entry.ConversationTexts.ToList(),

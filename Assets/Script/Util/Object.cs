@@ -11,7 +11,7 @@ namespace NL {
 
         public static GameObject AppearToFloor (GameObject prefab, GameObject parent, Vector3 position) {
             GameObject instance = GameObject.Instantiate (prefab);
-            if (parent == null) {
+            if (parent != null) {
                 instance.transform.SetParent (parent.transform, false);
             }
             instance.transform.position = Object.To2D (position);

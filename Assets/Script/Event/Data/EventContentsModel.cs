@@ -7,7 +7,7 @@ namespace NL {
         InValid,
         Nope,
         ForceConversation,
-        TapCharacterConversation
+        AppearConversationCharacter,
     }
 
     public class EventContentsModel {

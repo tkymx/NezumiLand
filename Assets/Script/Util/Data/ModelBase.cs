@@ -11,7 +11,7 @@ namespace NL {
             if (obj == null || GetType () != obj.GetType ()) {
                 return false;
             }
-            var value = obj as EventConditionModel;
+            var value = obj as ModelBase;
             return Id.Equals (value.Id);
         }
 

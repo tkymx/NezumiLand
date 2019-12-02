@@ -13,5 +13,10 @@
                 "Args":[]
             }
         ]
+    },
+    {
+        "Id": 2,
+        "RewardSingleEntrys": [
+        ]
     }
 ]

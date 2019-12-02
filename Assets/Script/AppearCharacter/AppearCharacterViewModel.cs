@@ -19,14 +19,28 @@ namespace NL {
             this.appearCharacterModel = appearCharacterModel;
             this.conversationModel = conversationModel;
 
-            appearCharacterView.OnSelect.Subscribe(_ => {
-                // タッチされたら会話を流す
+            appearCharacterView.OnSelectObservable.Subscribe(_ => {
+                // 会話を開始
+                GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateConversationMode(this.conversationModel,()=>{
+                    GameManager.Instance.GameModeManager.Back();
+                    
+                    // 終了後に撤退の動作を始める
+                    // この動作も抽象化したいが。。。
+                    if(GameManager.Instance.DailyAppearCharacterRegistManager.IsRemoveReserve(this)) {
+                        GameManager.Instance.DailyAppearCharacterRegistManager.RemoveReserve(this); 
+                    }
+                }));
             });
         }
 
         public void UpdateByFrame()
         {
             // なにか行動する
+        }
+
+        public void Dispose () 
+        {
+            Object.DisAppear(appearCharacterView.gameObject);
         }
     }
 }

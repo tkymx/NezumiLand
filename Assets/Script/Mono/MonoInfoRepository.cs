@@ -4,9 +4,7 @@ using System.Runtime.Serialization;
 
 namespace NL {
     [DataContract]
-    public class MonoInfoEntry {
-        [DataMember]
-        public uint Id { get; set; }
+    public class MonoInfoEntry : EntryBase {
 
         [DataMember]
         public string Name { get; set; }

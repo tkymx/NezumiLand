@@ -20,6 +20,10 @@ namespace NL {
             GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.ClearOnegai(OnegaiModel));
         }
 
+        public void ToUnlock () {
+            this.OnegaiState = OnegaiState.UnLock;
+        }
+
         public PlayerOnegaiModel (
             uint id,
             OnegaiModel onegaiModel,

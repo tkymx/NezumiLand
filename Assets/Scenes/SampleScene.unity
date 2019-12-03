@@ -1730,6 +1730,7 @@ MonoBehaviour:
   satisfactionPresenter: {fileID: 91909932}
   conversationPresenter: {fileID: 650360791}
   rewardPresenter: {fileID: 650360792}
+  onegaiPresenter: {fileID: 650360790}
 --- !u!1 &482328885
 GameObject:
   m_ObjectHideFlags: 0
@@ -2430,7 +2431,6 @@ MonoBehaviour:
   levelUpButton: {fileID: 1821360855}
   levelUpFeeText: {fileID: 892959362}
   onegaiListButton: {fileID: 975439277}
-  onegaiPresenter: {fileID: 650360790}
   closeButton: {fileID: 2030462055}
 --- !u!114 &650360789
 MonoBehaviour:

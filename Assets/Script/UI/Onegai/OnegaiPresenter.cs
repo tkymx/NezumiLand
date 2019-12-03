@@ -26,23 +26,7 @@ namespace NL {
 
         public override void onPrepareShow () {
             base.onPrepareShow ();
-
-            // 表示するターゲットの判定を行う
-            var targetMonoInfoId = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.Id;
-
-            // 隣接オブジェクトの比較用データの作成
-            var onegaiMediater = new OnegaiMediater (playerOnegaiRepository);
-
-            // 近接に関するお願いのクリア可否を確認する
-            var nearMonoInfoIds = GameManager.Instance.ArrangementManager
-                .GetNearArrangement (GameManager.Instance.ArrangementManager.SelectedArrangementTarget)
-                .Select (arrangementTarget => arrangementTarget.MonoInfo.Id)
-                .ToList ();
-
-            onegaiMediater.Mediate (new Near (nearMonoInfoIds), targetMonoInfoId);
-
-            // 選択されているターゲットのお願いを取得
-            this.onegaiListPresenter.Initialize (playerOnegaiRepository.GetByTriggerMonoInfoId (targetMonoInfoId).ToList ());
+            this.onegaiListPresenter.Initialize (playerOnegaiRepository.GetAll ().ToList ());
             onegaiListPresenter.ReLoad ();
         }
     }

@@ -43,5 +43,9 @@ namespace NL {
         public static SelectMode GenerateSelectMode () {
             return new SelectMode ();
         }
+
+        public static OnegaiSelectMode GenerateOnegaiSelectMode () {
+            return new OnegaiSelectMode ();
+        }
     }
 }

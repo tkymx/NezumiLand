@@ -27,6 +27,11 @@ namespace NL {
         private RewardPresenter rewardPresenter = null;
         public RewardPresenter RewardPresenter => rewardPresenter;
 
+        [SerializeField]
+        private OnegaiPresenter onegaiPresenter = null;
+
+        public OnegaiPresenter OnegaiPresenter => onegaiPresenter;
+
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.monoTabPresenter.Initialize ();
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
@@ -34,6 +39,7 @@ namespace NL {
             this.satisfactionPresenter.Initialize (playerOnegaiRepository);
             this.conversationPresenter.Initialize();
             this.rewardPresenter.Initialize();
+            this.onegaiPresenter.Initialize(playerOnegaiRepository);
         }
     }
 }

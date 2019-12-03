@@ -5,16 +5,32 @@ using UnityEngine;
 
 namespace NL {
     public struct NearArgs {
-        public uint NearTargetMonoInfoId { get; private set; }
+        public uint TargetMonoInfoId { get; private set; }
+        public uint NearMonoInfoId { get; private set; }
         public NearArgs (OnegaiConditionArg args) {
-            Debug.Assert (args.Args.Length == 1, "NearのArgsの数が1ではありません。");
-            this.NearTargetMonoInfoId = uint.Parse (args.Args[0]);
+            Debug.Assert (args.Args.Length >= 2, "NearのArgsの数が2以上ではありません。");
+            this.TargetMonoInfoId = uint.Parse (args.Args[0]);
+            this.NearMonoInfoId = uint.Parse (args.Args[1]);
+        }
+        public bool IsClear(uint targetMonoInfoId, List<uint> nearMonoInfoIDs) {
+            
+            if (this.TargetMonoInfoId != targetMonoInfoId) {
+                return false;
+            }
+
+            var nearMonoInfoId = this.NearMonoInfoId;
+            if (nearMonoInfoIDs.All(id => id != nearMonoInfoId)) {
+                return false;
+            }
+            return true;
         }
     }
 
     public class Near : IOnegaiConditionBase {
+        private uint targetMonoInfoID;
         private List<uint> nearMonoInfoIDs;
-        public Near (List<uint> nearMonoInfoIDs) {
+        public Near (uint targetMonoInfoID, List<uint> nearMonoInfoIDs) {
+            this.targetMonoInfoID = targetMonoInfoID;
             this.nearMonoInfoIDs = nearMonoInfoIDs;
         }
 
@@ -23,13 +39,12 @@ namespace NL {
         public List<PlayerOnegaiModel> Mediate (List<PlayerOnegaiModel> playerOnegaiModels) {
             var outputPlayerOnegaiModels = new List<PlayerOnegaiModel> ();
             foreach (var playerOnegaiModel in playerOnegaiModels) {
-                // 隣接モノが条件に合うかどうか？
+
                 var nearArgs = new NearArgs (playerOnegaiModel.OnegaiModel.OnegaiConditionArg);
-                if (nearMonoInfoIDs.All (id => nearArgs.NearTargetMonoInfoId != id)) {
+                if (!nearArgs.IsClear(this.targetMonoInfoID, this.nearMonoInfoIDs)) {
                     continue;
                 }
 
-                // クリアにする
                 playerOnegaiModel.ToClear ();
                 outputPlayerOnegaiModels.Add (playerOnegaiModel);
             }

@@ -50,6 +50,9 @@ namespace NL {
         private MouseHomeManager mouseHomeManager;
         public MouseHomeManager MouseHomeManager => mouseHomeManager;
 
+        private OnegaiHomeManager onegaiHomeManager;
+        public OnegaiHomeManager OnegaiHomeManager => onegaiHomeManager;
+
         private MouseStockManager mouseStockManager;
         public MouseStockManager MouseStockManager => mouseStockManager;
 
@@ -71,6 +74,9 @@ namespace NL {
         private DailyAppearCharacterRegistManager dailyAppearCharacterRegistManager;
         public DailyAppearCharacterRegistManager DailyAppearCharacterRegistManager => dailyAppearCharacterRegistManager;
 
+        private OnegaiMediaterManager onegaiMediaterManager;
+        public OnegaiMediaterManager OnegaiMediaterManager => onegaiMediaterManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -78,6 +84,7 @@ namespace NL {
             GameContextMap.Initialize ();
 
             // レポジトリ
+            var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
 
@@ -94,17 +101,24 @@ namespace NL {
             this.monoSelectManager = new MonoSelectManager ();
             this.timeManager = new TimeManager ();
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
+            this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
             this.mouseStockManager = new MouseStockManager (this.rootObject);
             this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
             this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
             this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager();
+            this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
 
             // initialize
             this.gameUIManager.Initialize (playerOnegaiRepository);
             this.mouseHomeManager.Initialize ();
+            this.onegaiHomeManager.Initialize ();
             this.appearCharacterManager.Initialize();
+
+            // Service
+            OnegaiUnLockService onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
+            onegaiUnLockService.Execute();
         }
 
         private void Update () {

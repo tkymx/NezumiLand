@@ -8,9 +8,6 @@ namespace NL {
     public class OnegaiEntry : EntryBase {
 
         [DataMember]
-        public uint TriggerMonoInfoId { get; set; }
-
-        [DataMember]
         public string Title { get; set; }
 
         [DataMember]
@@ -38,7 +35,6 @@ namespace NL {
             return entrys.Select (entry => {
                 return new OnegaiModel (
                     entry.Id,
-                    entry.TriggerMonoInfoId,
                     entry.Title,
                     entry.Detail,
                     entry.OnegaiCondition,
@@ -52,7 +48,6 @@ namespace NL {
             var entry = base.GetEntry(id);
             return new OnegaiModel (
                 entry.Id,
-                entry.TriggerMonoInfoId,
                 entry.Title,
                 entry.Detail,
                 entry.OnegaiCondition,

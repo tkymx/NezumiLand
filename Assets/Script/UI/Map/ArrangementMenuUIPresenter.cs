@@ -30,9 +30,6 @@ namespace NL {
         private Button onegaiListButton = null;
 
         [SerializeField]
-        private OnegaiPresenter onegaiPresenter = null;
-
-        [SerializeField]
         private Button closeButton = null;
 
         // Start is called before the first frame update
@@ -62,11 +59,8 @@ namespace NL {
             });
 
             onegaiListButton.onClick.AddListener (() => {
-                this.onegaiPresenter.Show ();
+                GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateOnegaiSelectMode());
             });
-
-            // おねがいのリストを表示
-            this.onegaiPresenter.Initialize (playerOnegaiRepository);
 
             // 初めは閉じておく
             this.Close ();
@@ -93,7 +87,6 @@ namespace NL {
 
         public void Close () {
             arrangementUI.SetActive (false);
-            onegaiPresenter.Close ();
         }
 
         private void UpdateDetail () {

@@ -30,10 +30,16 @@ namespace NL {
             }
         }
 
+        /// <summary>
+        /// 隣接状況を保管している
+        /// </summary>
+        private Dictionary<IArrangementTarget, List<IArrangementTarget>> nearMap;
+
         public ArrangementManager (GameObject root) {
             this.arrangementTargetStore = new List<IArrangementTarget> ();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater (root);
+            this.nearMap = new Dictionary<IArrangementTarget, List<IArrangementTarget>>();
         }
 
         /// <summary>
@@ -50,11 +56,23 @@ namespace NL {
         }
 
         /// <summary>
-        /// 近くの配置物を取得
+        /// 近くの配置物を取得する
         /// </summary>
         /// <param name="arrangementTarget">モデル</param>
         /// <returns></returns>
         public List<IArrangementTarget> GetNearArrangement (IArrangementTarget arrangementTarget) {
+            if (!this.nearMap.ContainsKey(arrangementTarget)) {
+                return new List<IArrangementTarget>();
+            }
+            return this.nearMap[arrangementTarget];
+        }
+
+        /// <summary>
+        /// 近くの配置物を探索する
+        /// </summary>
+        /// <param name="arrangementTarget">モデル</param>
+        /// <returns></returns>
+        private List<IArrangementTarget> SearchNearArrangement (IArrangementTarget arrangementTarget) {
             var nearArrangementTargets = new List<IArrangementTarget> ();
             foreach (var arrangementPosition in arrangementTarget.GetEdgePositions ()) {
                 var findArrangementTarget = this.Find (arrangementPosition);
@@ -64,7 +82,7 @@ namespace NL {
                 if (nearArrangementTargets.IndexOf (findArrangementTarget) >= 0) {
                     continue;
                 }
-                if (!findArrangementTarget.HasMonoViewModel) {
+                if (!findArrangementTarget.HasMonoInfo) {
                     continue;
                 }
                 nearArrangementTargets.Add (findArrangementTarget);
@@ -79,6 +97,11 @@ namespace NL {
             Debug.Assert (IsSetArrangement (arrangementTarget), "セットできない arrangementPosition が選択されています。");
             this.arrangementTargetStore.Add (arrangementTarget);
             GameManager.Instance.ArrangementPresenter.ReLoad ();
+        }
+
+        public void CreateAndSetMono (IArrangementTarget arrangementTarget) {
+            arrangementTarget.MonoViewModel = GameManager.Instance.MonoManager.CreateMono (arrangementTarget.MonoInfo, arrangementTarget.CenterPosition);
+            this.AppendNearArrangement(arrangementTarget);
         }
 
         /// <summary>
@@ -104,12 +127,41 @@ namespace NL {
         /// 配置位置を消去する
         /// </summary>
         public void RemoveArranement (IArrangementTarget arrangementTarget) {
-            // 現在登録されている位置にその位置が存在するかを確認
             if (arrangementTargetStore.Contains (arrangementTarget)) {
                 arrangementTargetStore.Remove (arrangementTarget);
                 GameManager.Instance.MonoManager.RemoveMono (arrangementTarget.MonoViewModel);
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
+            this.RemoveNearArrangement(arrangementTarget);
+        }
+
+        /// <summary>
+        /// 近接情報を取得
+        /// </summary>
+        /// <param name="arrangementTarget"></param>
+        private void AppendNearArrangement(IArrangementTarget arrangementTarget) {
+           var nearArrangementTargets = SearchNearArrangement(arrangementTarget);
+            if (!this.nearMap.ContainsKey(arrangementTarget)) {
+                this.nearMap[arrangementTarget] = new List<IArrangementTarget>();
+            }
+            this.nearMap[arrangementTarget].AddRange(nearArrangementTargets);
+            foreach (var nearArrangementTarget in nearArrangementTargets)
+            {
+                if (!this.nearMap.ContainsKey(nearArrangementTarget)) {
+                    this.nearMap[nearArrangementTarget] = new List<IArrangementTarget>();
+                }
+                this.nearMap[nearArrangementTarget].Add(arrangementTarget);
+            }
+        }
+
+        private void RemoveNearArrangement(IArrangementTarget arrangementTarget) {
+            if (this.nearMap.ContainsKey(arrangementTarget)) {
+                foreach (var nearArrangementTarget in this.nearMap[arrangementTarget])
+                {
+                    this.nearMap[nearArrangementTarget].Remove(arrangementTarget);
+                }
+                this.nearMap.Remove(arrangementTarget);
+            }
         }
 
         /// <summary>

@@ -18,9 +18,8 @@ namespace NL {
 
     public interface IPlayerOnegaiRepository {
         IEnumerable<PlayerOnegaiModel> GetAll ();
-        IEnumerable<PlayerOnegaiModel> GetById (uint id);
-        IEnumerable<PlayerOnegaiModel> GetByTriggerMonoInfoId (uint triggerMonoInfoId);
-        IEnumerable<PlayerOnegaiModel> GetMediatable (OnegaiCondition onegaiCondition, uint targetMonoInfoId);
+        PlayerOnegaiModel GetById (uint id);
+        List<PlayerOnegaiModel> GetByIds (List<uint> ids);
         Satisfaction GetAllSatisfaction ();
         void Store (PlayerOnegaiModel playerOnegaiModel);
     }
@@ -34,17 +33,6 @@ namespace NL {
 
         public PlayerOnegaiRepository (IOnegaiRepository onegaiRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerOnegaiEntrys) {
             this.onegaiRepository = onegaiRepository;
-            foreach (var onegaiModel in this.onegaiRepository.GetAll ()) {
-                if (this.entrys.Any (entry => entry.OnegaiId == onegaiModel.Id)) {
-                    continue;
-                }
-
-                this.entrys.Add (new PlayerOnegaiEntry () {
-                    Id = onegaiModel.Id,
-                        OnegaiId = onegaiModel.Id,
-                        OnegaiState = OnegaiState.UnLock.ToString ()
-                });
-            }
         }
 
         public static PlayerOnegaiRepository GetRepository (ContextMap contextMap, PlayerContextMap playerContextMap) {
@@ -57,22 +45,28 @@ namespace NL {
                 .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
         }
 
-        public IEnumerable<PlayerOnegaiModel> GetById (uint id) {
-            return this.entrys
-                .Where (entry => entry.Id == id)
-                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
+        public PlayerOnegaiModel GetById (uint id) {
+            var foundEntrys = this.entrys.Where (entry => entry.Id == id);
+            if (foundEntrys.Count() <= 0) {
+
+                var onegaiModel = this.onegaiRepository.Get(id);
+                Debug.Assert(onegaiModel != null, "OnegaiModel がありません : " + id.ToString());
+
+                var playerOnegaiModel = new PlayerOnegaiModel(
+                    id,
+                    onegaiModel,
+                    OnegaiState.Lock.ToString()
+                );
+                return playerOnegaiModel;
+            }
+            var foundEntry = foundEntrys.First();
+            return new PlayerOnegaiModel (foundEntry.Id, onegaiRepository.Get (foundEntry.Id), foundEntry.OnegaiState.ToString ());
         }
 
-        public IEnumerable<PlayerOnegaiModel> GetByTriggerMonoInfoId (uint triggerMonoInfoId) {
-            return this.entrys
-                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()))
-                .Where (model => model.OnegaiModel.TriggerMonoInfoId == triggerMonoInfoId);
-        }
-
-        public IEnumerable<PlayerOnegaiModel> GetMediatable (OnegaiCondition onegaiCondition, uint targetMonoInfoId) {
-            return this.GetByTriggerMonoInfoId (targetMonoInfoId)
-                .Where (model => model.OnegaiState == OnegaiState.UnLock)
-                .Where (model => model.OnegaiModel.OnegaiCondition == onegaiCondition);
+        public List<PlayerOnegaiModel> GetByIds (List<uint> ids) {
+            return ids
+                .Select(id => GetById(id))
+                .ToList();
         }
 
         private IEnumerable<PlayerOnegaiModel> GetClear () {

@@ -11,7 +11,6 @@ namespace NL {
 
     public class OnegaiModel {
         public uint Id { get; private set; }
-        public uint TriggerMonoInfoId { get; private set; }
         public string Title { get; private set; }
         public string Detail { get; private set; }
         public OnegaiCondition OnegaiCondition { get; private set; }
@@ -20,14 +19,12 @@ namespace NL {
 
         public OnegaiModel (
             uint id,
-            uint triggetMonoInfoId,
             string title,
             string detail,
             string onegaiCondition,
             string onegaiConditionArg,
             long satisfaction) {
             this.Id = id;
-            this.TriggerMonoInfoId = triggetMonoInfoId;
             this.Title = title;
             this.Detail = detail;
 

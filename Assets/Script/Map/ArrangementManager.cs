@@ -102,6 +102,7 @@ namespace NL {
         public void CreateAndSetMono (IArrangementTarget arrangementTarget) {
             arrangementTarget.MonoViewModel = GameManager.Instance.MonoManager.CreateMono (arrangementTarget.MonoInfo, arrangementTarget.CenterPosition);
             this.AppendNearArrangement(arrangementTarget);
+            GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(arrangementTarget);
         }
 
         /// <summary>
@@ -132,6 +133,7 @@ namespace NL {
                 GameManager.Instance.MonoManager.RemoveMono (arrangementTarget.MonoViewModel);
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
+            GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByRBeforeRemoval(arrangementTarget);
             this.RemoveNearArrangement(arrangementTarget);
         }
 
@@ -140,7 +142,7 @@ namespace NL {
         /// </summary>
         /// <param name="arrangementTarget"></param>
         private void AppendNearArrangement(IArrangementTarget arrangementTarget) {
-           var nearArrangementTargets = SearchNearArrangement(arrangementTarget);
+            var nearArrangementTargets = SearchNearArrangement(arrangementTarget);
             if (!this.nearMap.ContainsKey(arrangementTarget)) {
                 this.nearMap[arrangementTarget] = new List<IArrangementTarget>();
             }

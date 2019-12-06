@@ -40,7 +40,7 @@ namespace NL {
 
             // クリア状況をリセットするモデルを保存する
             foreach (var targetPlayerOnegaiModel in targetPlayerOnegaiModels) {
-                targetPlayerOnegaiModel.Reset();
+                targetPlayerOnegaiModel.ToUnlock();
             }
 
             // クリア状況を更新する

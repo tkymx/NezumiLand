@@ -43,7 +43,7 @@ namespace NL {
             selectButton.interactable = false;
 
             var monoInfoRepository = new MonoInfoRepository (ContextMap.DefaultMap);
-            this.monoListPresetner.Initialize (monoInfoRepository.GetByType (selectType).ToList ());
+            this.monoListPresetner.SetElement (monoInfoRepository.GetByType (selectType).ToList ());
         }
 
         public override void onPrepareShow () {

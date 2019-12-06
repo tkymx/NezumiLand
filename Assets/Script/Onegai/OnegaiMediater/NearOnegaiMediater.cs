@@ -37,7 +37,7 @@ namespace NL {
         /// 隣接オブジェクトと、自分のお願いを判定
         /// </summary>
         /// <param name="arrangementTarget"></param>
-        public void MediateByRemoval(IArrangementTarget arrangementTarget) 
+        public void MediateByRBeforeRemoval(IArrangementTarget arrangementTarget) 
         {
             var nearArrangementTargets = GameManager.Instance.ArrangementManager.GetNearArrangement (arrangementTarget);
             foreach (var nearArrangementTarget in nearArrangementTargets) {
@@ -45,12 +45,12 @@ namespace NL {
                 nearNearArrangementTargets.Remove(arrangementTarget);
                 this.MediateInternal(nearArrangementTarget, nearNearArrangementTargets, true);
             }
-            this.MediateInternal(arrangementTarget,new List<IArrangementTarget>(), false);
+            this.MediateInternal(arrangementTarget,new List<IArrangementTarget>(), true);
         }
 
         private void MediateInternal(IArrangementTarget arrangementTarget, List<IArrangementTarget> nearArrangementTargets,  bool isReset) {
             var targetMonoInfoId = arrangementTarget.MonoInfo.Id;                
-            if (monoInfoIdToOngeais.ContainsKey(targetMonoInfoId)) {
+            if (!monoInfoIdToOngeais.ContainsKey(targetMonoInfoId)) {
                 return;
             }
 

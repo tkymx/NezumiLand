@@ -119,6 +119,8 @@ namespace NL {
             // Service
             OnegaiUnLockService onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
             onegaiUnLockService.Execute();
+            OnegaiUnLockChacheService onegaiUnLockChacheService = new OnegaiUnLockChacheService(playerOnegaiRepository);
+            onegaiUnLockChacheService.Execute();
         }
 
         private void Update () {

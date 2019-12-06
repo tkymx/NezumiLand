@@ -24,6 +24,10 @@ namespace NL {
             this.OnegaiState = OnegaiState.UnLock;
         }
 
+        public bool IsLock() {
+            return this.OnegaiState == OnegaiState.Lock;
+        }
+
         public PlayerOnegaiModel (
             uint id,
             OnegaiModel onegaiModel,

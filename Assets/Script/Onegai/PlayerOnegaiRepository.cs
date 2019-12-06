@@ -84,14 +84,21 @@ namespace NL {
         }
 
         public void Store (PlayerOnegaiModel playerOnegaiModel) {
-            var entry = this.entrys.Where (e => e.Id == playerOnegaiModel.Id).First ();
-            Debug.Assert (entry != null, "保存対象が見つかりませんでした。");
-            var index = this.entrys.IndexOf (entry);
-            this.entrys[index] = new PlayerOnegaiEntry () {
-                Id = playerOnegaiModel.Id,
-                OnegaiId = playerOnegaiModel.OnegaiModel.Id,
-                OnegaiState = playerOnegaiModel.OnegaiState.ToString ()
-            };
+            var entry = this.entrys.Find (e => e.Id == playerOnegaiModel.Id);
+            if (entry != null) {
+                var index = this.entrys.IndexOf (entry);
+                this.entrys[index] = new PlayerOnegaiEntry () {
+                    Id = playerOnegaiModel.Id,
+                    OnegaiId = playerOnegaiModel.OnegaiModel.Id,
+                    OnegaiState = playerOnegaiModel.OnegaiState.ToString ()
+                };
+            } else {
+                this.entrys.Add(new PlayerOnegaiEntry () {
+                    Id = playerOnegaiModel.Id,
+                    OnegaiId = playerOnegaiModel.OnegaiModel.Id,
+                    OnegaiState = playerOnegaiModel.OnegaiState.ToString ()
+                });
+            }
             PlayerContextMap.WriteEntry (this.entrys);
         }
     }

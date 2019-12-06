@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL {
     public class OnegaiSelectMode : IGameMode {
+
+        private IDisposable disposable = null;
 
         public OnegaiSelectMode () {
         }
@@ -12,7 +15,7 @@ namespace NL {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.GameUIManager.OnegaiPresenter.Show ();
             GameManager.Instance.TimeManager.Pause ();
-            GameManager.Instance.GameUIManager.OnegaiPresenter.OnClose
+            this.disposable = GameManager.Instance.GameUIManager.OnegaiPresenter.OnClose
                 .Subscribe(_ => {
                     GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
                 });
@@ -20,6 +23,9 @@ namespace NL {
         public void OnUpdate () {
         }
         public void OnExit () {
+            if (this.disposable != null) {
+                this.disposable.Dispose();
+            }
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close ();
             GameManager.Instance.GameUIManager.OnegaiPresenter.Close ();
             GameManager.Instance.TimeManager.Play ();

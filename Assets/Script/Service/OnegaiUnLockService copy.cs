@@ -20,7 +20,7 @@ namespace  NL
 
                 // モデルを取得
                 var playerOnegaiModel = playerOnegaiRepository.GetById(onegaiModel.Id);
-                if (playerOnegaiModel.OnegaiState != OnegaiState.Lock) {
+                if (!playerOnegaiModel.IsLock()) {
                     continue;
                 }
 

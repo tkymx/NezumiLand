@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace NL {
     public abstract class ListPresenterBase<Element, CellView> : MonoBehaviour
-    where CellView : ListCellViewBase {
+        where CellView : ListCellViewBase 
+    {
         [SerializeField]
         private GameObject cellPrefab = null;
 
@@ -14,7 +15,7 @@ namespace NL {
         protected Dictionary<Element, CellView> displayElementCellDictionary;
         private List<Element> elements;
 
-        public void Initialize (List<Element> elements) {
+        public void SetElement (List<Element> elements) {
             this.displayElementCellDictionary = new Dictionary<Element, CellView> ();
             this.elements = elements;
             this.ReLoad ();

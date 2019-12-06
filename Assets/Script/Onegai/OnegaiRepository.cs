@@ -14,6 +14,9 @@ namespace NL {
         public string Detail { get; set; }
 
         [DataMember]
+        public string Author { get; set; }
+
+        [DataMember]
         public string OnegaiCondition { get; set; }
 
         [DataMember]
@@ -37,6 +40,7 @@ namespace NL {
                     entry.Id,
                     entry.Title,
                     entry.Detail,
+                    entry.Author,
                     entry.OnegaiCondition,
                     entry.OnegaiConditionArg,
                     entry.Satisfaction);
@@ -50,6 +54,7 @@ namespace NL {
                 entry.Id,
                 entry.Title,
                 entry.Detail,
+                entry.Author,
                 entry.OnegaiCondition,
                 entry.OnegaiConditionArg,
                 entry.Satisfaction);

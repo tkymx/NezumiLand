@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace  NL
 {
+    /// <summary>
+    /// 元すべてのUnLock ミッションをMediaterのキャッシュに入れる
+    /// </summary>
     public class OnegaiUnLockChacheService
     {
         private readonly IPlayerOnegaiRepository playerOnegaiRepository = null;

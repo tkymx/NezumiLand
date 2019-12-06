@@ -12,14 +12,9 @@ namespace NL {
         private OnegaiListPresenter onegaiListPresenter = null;
 
         [SerializeField]
-        private OnegaiDetailView onegaiDetailView = null;
-
-        [SerializeField]
         private Button closeButton = null;
 
         private IPlayerOnegaiRepository playerOnegaiRepository;
-
-        private List<IDisposable> disposables = null;
 
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
 
@@ -32,13 +27,9 @@ namespace NL {
                 this.ShowDetail(playerOnegaiModel);
             }));
 
-            this.onegaiDetailView.Initialize();
-            this.disposables.Add(this.onegaiDetailView.OnBack.Subscribe(_ => {
-                this.CloseDetail();
-            }));
-
-            closeButton.onClick.AddListener (() => {
+            this.closeButton.onClick.AddListener (() => {
                 this.Close ();
+                this.CloseDetail();
             });
 
             this.Close ();
@@ -47,17 +38,13 @@ namespace NL {
 
         private void ShowDetail(PlayerOnegaiModel playerOnegaiModel)
         {
-            this.onegaiDetailView.UpdateCell(
-                playerOnegaiModel.OnegaiModel.Title,
-                playerOnegaiModel.OnegaiModel.Detail,
-                playerOnegaiModel.OnegaiModel.Author
-            );
-            this.onegaiDetailView.gameObject.SetActive(true);
+            GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetOnegaiDetail(playerOnegaiModel.OnegaiModel);
+            GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Show();
         }
 
         private void CloseDetail()
         {
-            this.onegaiDetailView.gameObject.SetActive(false);
+            GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Close();
         }
 
         public override void onPrepareShow () {
@@ -66,13 +53,9 @@ namespace NL {
             onegaiListPresenter.ReLoad ();
         }
 
-        private void OnDestroy() {
-            if (this.disposables != null) {
-                foreach (var disposable in this.disposables)
-                {
-                    disposable.Dispose();                    
-                }
-            }            
+        public override void onPrepareClose() {
+            base.onPrepareClose();
+            this.CloseDetail();
         }
     }
 }

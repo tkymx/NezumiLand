@@ -9,8 +9,7 @@ namespace NL {
         Near
     }
 
-    public class OnegaiModel {
-        public uint Id { get; private set; }
+    public class OnegaiModel : ModelBase {
         public string Title { get; private set; }
         public string Detail { get; private set; }
         public string Author { get; private set; }

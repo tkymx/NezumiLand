@@ -21,6 +21,15 @@ namespace NL {
             if (rewardType == RewardType.Item) {
                 return new ItemRewardAmount(amount);
             }
+
+            if (rewardType == RewardType.Onegai) {
+                Debug.Assert(args.Length >= 1, "RewardType.Onegai の要素数が足りません");
+                uint onegaiId = 0;
+                if (args.Length >= 1) {
+                    onegaiId = uint.Parse(args[0]);
+                }
+                return new OnegaiRewardAmount(amount, onegaiId);
+            }
             
             Debug.Assert(false, "無効な報酬が設定されいています。 : " + type);
             return new InvalidRewardAmount();

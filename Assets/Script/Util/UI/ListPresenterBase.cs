@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public abstract class ListPresenterBase<Element, CellView> : MonoBehaviour
+    public abstract class ListPresenterBase<Element, CellView> : DisposableMonoBehaviour
         where CellView : ListCellViewBase 
     {
         [SerializeField]

@@ -18,8 +18,6 @@ namespace NL {
         private ConversationModel currentConversationModel = null;
         private int currentConversationIndex = 0;
 
-        private IDisposable onEndConversationDisposable = null;
-
         public void Initialize()
         {
             // init
@@ -27,7 +25,7 @@ namespace NL {
             this.onEndConversation = new TypeObservable<int>();
 
             // end conversation event
-            this.onEndConversationDisposable = this.conversationView.OnEndConversation.Subscribe(_=>{
+            this.disposables.Add(this.conversationView.OnEndConversation.Subscribe(_=>{
                 if (currentConversationModel.IsLastIndex(this.currentConversationIndex)) {
                     this.Close();
                     this.onEndConversation.Execute(0);
@@ -35,7 +33,7 @@ namespace NL {
                 }
                 this.currentConversationIndex++;
                 this.SetConversationIndex(this.currentConversationIndex);
-            });
+            }));
 
             // initialize close
             this.Close();
@@ -52,13 +50,6 @@ namespace NL {
             Debug.Assert(currentConversationModel!=null,"currentConversationModelがnullです。");
             this.conversationCharacterView.UpdateCharacterImage(this.currentConversationModel.ConversationCharacterNames[index]);
             this.conversationView.StartSpeak("サンプル", this.currentConversationModel.ConversationTexts[index]);
-        }
-
-        private void OnDestroy() {
-            if (this.onEndConversationDisposable != null) {
-                this.onEndConversationDisposable.Dispose();
-                this.onEndConversationDisposable = null;
-            }
         }
     }
 }

@@ -7,7 +7,8 @@ namespace NL {
     public enum RewardType {
         None,
         Currency,
-        Item
+        Item,
+        Onegai
     }
 
     public interface IRewardAmount

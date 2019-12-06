@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public class RewardPresenter : UiWindowPresenterBase
+    public class RewardPresenter : RewardWindowPresenterBase
     {
         [SerializeField]
         private RewardItemView rewardItemView = null;
@@ -14,7 +14,7 @@ namespace NL {
             this.rewardAmount = RewardGenerator.InValidReward;
         }
 
-        public void SetRewardAmount(IRewardAmount rewardAmount) {
+        public override void SetRewardAmount(IRewardAmount rewardAmount) {
             Debug.Assert(rewardAmount != null, "報酬がありません");
             this.rewardAmount = rewardAmount;
         }

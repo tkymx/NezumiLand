@@ -77,6 +77,9 @@ namespace NL {
         private OnegaiMediaterManager onegaiMediaterManager;
         public OnegaiMediaterManager OnegaiMediaterManager => onegaiMediaterManager;
 
+        private OnegaiManager onegaiManager;
+        public OnegaiManager OnegaiManager => onegaiManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -109,12 +112,12 @@ namespace NL {
             this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
             this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager();
             this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
+            this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
 
             // initialize
-            this.gameUIManager.Initialize (playerOnegaiRepository);
+            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
-            this.appearCharacterManager.Initialize();
 
             // Service
             OnegaiUnLockService onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
@@ -130,6 +133,7 @@ namespace NL {
             this.fieldRaycastManager.UpdateByFrame ();
             this.timeManager.UpdateByFrame ();
             this.appearCharacterManager.UpdateByFrame();
+            this.onegaiManager.UpdateByFrame();
 
             // イベント関連
             this.constantlyEventPusher.PushConstantlyEventParameter();

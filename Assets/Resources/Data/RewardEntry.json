@@ -8,10 +8,20 @@
                 "Args":[]
             },
             {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[1]
+            },
+            {
                 "Type": "Item",
                 "Amount": 10,
                 "Args":[]
-            }
+            },
+            {
+                "Type": "Item",
+                "Amount": 10,
+                "Args":[]
+            },
         ]
     },
     {

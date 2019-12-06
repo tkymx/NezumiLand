@@ -21,10 +21,6 @@ namespace NL {
             this.reservedRemovableModels = new List<AppearCharacterViewModel>();
         }
 
-        public void Initialize() 
-        {
-        }
-
         public void UpdateByFrame()
         {
             // 追加

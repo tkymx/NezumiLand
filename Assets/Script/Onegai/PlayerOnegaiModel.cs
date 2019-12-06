@@ -10,8 +10,8 @@ namespace NL {
         Clear
     }
 
-    public class PlayerOnegaiModel {
-        public uint Id { get; private set; }
+    public class PlayerOnegaiModel : ModelBase {
+
         public OnegaiModel OnegaiModel { get; private set; }
         public OnegaiState OnegaiState { get; private set; }
 

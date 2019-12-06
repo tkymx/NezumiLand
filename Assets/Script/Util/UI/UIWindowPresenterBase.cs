@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public abstract class UiWindowPresenterBase : MonoBehaviour {
+    public abstract class UiWindowPresenterBase : DisposableMonoBehaviour {
         
         [SerializeField]
         private GameObject mainWindowGameObject = null;

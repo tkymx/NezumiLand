@@ -38,29 +38,32 @@ namespace NL {
                 rewardAmount.Receive();                
             }
 
-            var currentRewardCount = 0;
-            GameManager.Instance.GameUIManager.RewardPresenter.SetRewardAmount(rewardModel.RewardAmounts[currentRewardCount]);
-            GameManager.Instance.GameUIManager.RewardPresenter.Show();
-            this.disposable = GameManager.Instance.GameUIManager.RewardPresenter.OnClose.Subscribe(_ => {
+            // 報酬の受け取り
+            this.showRewardWindow(rewardModel.RewardAmounts.Count);
+        }
 
-                // 次の報酬に移動
-                currentRewardCount++;
-
-                // 報酬がまだあるかどうか？
-                if (currentRewardCount < rewardModel.RewardAmounts.Count) {
-
-                    // 次のモデルの受け取り画面を開く
-                    GameManager.Instance.GameUIManager.RewardPresenter.SetRewardAmount(rewardModel.RewardAmounts[currentRewardCount]);
-                    GameManager.Instance.GameUIManager.RewardPresenter.Show();
-                } else {
-
-                    // 終了する
-                    if (this.disposable != null) {
-                        this.disposable.Dispose();
-                    }
-                    onEndReceiveObservable.Execute(0);
+        private void showRewardWindow(int maxRecordCount, int currentRewardCount = 0) {
+            if (currentRewardCount >= maxRecordCount) {
+                this.onEndReceiveObservable.Execute(0);
+                return;
+            }
+            var rewardAmount = rewardModel.RewardAmounts[currentRewardCount];
+            var rewardWindowPresenterBase = GetRewardWindowPresenterBase(rewardAmount);
+            rewardWindowPresenterBase.SetRewardAmount(rewardAmount);
+            rewardWindowPresenterBase.Show();
+            this.disposable = rewardWindowPresenterBase.OnClose.Subscribe(_ => {
+                if (this.disposable != null) {
+                    this.disposable.Dispose();
                 }
+                showRewardWindow(maxRecordCount, currentRewardCount+1);
             });
+        }
+
+        private RewardWindowPresenterBase GetRewardWindowPresenterBase(IRewardAmount rewardAmount) {
+            if (rewardAmount.RewardType == RewardType.Onegai) {
+                return GameManager.Instance.GameUIManager.RewardOnegaiPresenter;
+            }
+            return GameManager.Instance.GameUIManager.RewardPresenter;
         }
     }
 }

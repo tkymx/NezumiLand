@@ -42,6 +42,13 @@ namespace NL {
             this.rewardRepository = rewardRepository;
         }
 
+        public static EventRepository GetRepository (ContextMap contextMap) {
+            IEventConditionRepository eventConditionRepository = new EventConditionRepository (contextMap);
+            IEventContentsRepository eventContentsRepository = new EventContentsRepository (contextMap);
+            IRewardRepository rewardRepository = new RewardRepository(contextMap);
+            return new EventRepository (contextMap, eventConditionRepository, eventContentsRepository, rewardRepository);
+        }
+
         public IEnumerable<EventModel> GetAll () {
             return entrys.Select (entry => {
                 return new EventModel (

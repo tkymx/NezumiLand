@@ -18,6 +18,14 @@ namespace NL {
         public EventState EventState { get; private set; }
         public List<EventConditionModel> doneEventConditionModels { get; private set; }
 
+        public bool IsLock () {
+            return this.EventState == EventState.Lock;
+        }
+
+        public void ToUnLock () {
+            this.EventState = EventState.UnLock;
+        }
+
         public void ToClear (EventConditionModel eventConditionModel) {
             if (this.doneEventConditionModels.IndexOf (eventConditionModel) >= 0) {
                 return;

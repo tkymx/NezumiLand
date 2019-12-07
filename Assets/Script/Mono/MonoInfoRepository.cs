@@ -44,6 +44,9 @@ namespace NL {
 
         [DataMember]
         public string ReleaseConditionText { get; set; }
+
+        [DataMember]
+        public float MakingTime { get; set; }
     }
 
     public interface IMonoInfoRepository {
@@ -81,7 +84,8 @@ namespace NL {
                 entry.LevelUpSatisfaction,
                 entry.BaseSatisfaction,
                 entry.ArrangementCount,
-                entry.ReleaseConditionText);
+                entry.ReleaseConditionText,
+                entry.MakingTime);
         }
 
         public IEnumerable<MonoInfo> GetByType (MonoType type) {

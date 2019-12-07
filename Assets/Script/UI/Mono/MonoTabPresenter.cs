@@ -32,9 +32,6 @@ namespace NL {
                     this.SelectTab (button, monoType);
                 });
             }
-
-            this.SelectTab (tabButtons[0], displayMonoType[0]);
-
             this.Close ();
         }
 
@@ -54,6 +51,7 @@ namespace NL {
 
         public override void onPrepareShow () {
             base.onPrepareShow ();
+            this.SelectTab (tabButtons[0], displayMonoType[0]);
             monoListPresetner.ReLoad ();
         }
     }

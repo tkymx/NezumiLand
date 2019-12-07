@@ -15,11 +15,7 @@ namespace NL {
 
         // プレイヤーデータは始めない可能性もあるのでnull 許容
         protected T GetEntry(uint id) {
-            var result = this.entrys.Where (e => e.Id == id);
-            if (result.Count() <= 0) {
-                return null;
-            }
-            var entry = result.First();
+            var entry = this.entrys.Find (e => e.Id == id);
             return entry;            
         }
     }

@@ -91,6 +91,7 @@ namespace NL {
 
             // レポジトリ
             var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
+            var eventRepository = EventRepository.GetRepository(ContextMap.DefaultMap);
             var monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -127,10 +128,12 @@ namespace NL {
             this.onegaiHomeManager.Initialize ();
 
             // Service
-            OnegaiUnLockService onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
+            var onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
             onegaiUnLockService.Execute();
-            OnegaiUnLockChacheService onegaiUnLockChacheService = new OnegaiUnLockChacheService(playerOnegaiRepository);
+            var onegaiUnLockChacheService = new OnegaiUnLockChacheService(playerOnegaiRepository);
             onegaiUnLockChacheService.Execute();
+            var eventUnLockService = new EventUnLockService(eventRepository, playerEventRepository);
+            eventUnLockService.Execute();
         }
 
         private void Update () {

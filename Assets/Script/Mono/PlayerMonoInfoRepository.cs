@@ -59,7 +59,7 @@ namespace NL {
 
 
         public void Store (PlayerMonoInfo playerMonoInfo) {
-            var entry = this.entrys.Find (e => e.Id == playerMonoInfo.Id);
+            var entry = this.GetEntry(playerMonoInfo.Id);
             if (entry != null) {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerMonoInfoEntry () {

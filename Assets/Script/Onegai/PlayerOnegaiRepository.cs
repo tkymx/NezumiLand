@@ -87,7 +87,7 @@ namespace NL {
         }
 
         public void Store (PlayerOnegaiModel playerOnegaiModel) {
-            var entry = this.entrys.Find (e => e.Id == playerOnegaiModel.Id);
+            var entry = this.GetEntry(playerOnegaiModel.Id);
             if (entry != null) {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerOnegaiEntry () {

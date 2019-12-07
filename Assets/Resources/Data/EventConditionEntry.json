@@ -22,9 +22,9 @@
     },
     {
         "Id": 4,
-        "EventConditionType": "ClearOnegai",
+        "EventConditionType": "AboveSatisfaction",
         "Arg": [
-            "1"
+            "0"
         ]
     }
 ]

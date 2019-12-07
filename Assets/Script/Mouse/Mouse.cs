@@ -66,6 +66,14 @@ namespace NL {
             currentPreMono.StartMaking (arrangementTarget);
         }
 
+        public void ProgressMaking (MakingAmount deltaMakingAmount) {
+            this.currentPreMono.ProgressMaking (deltaMakingAmount);
+        }
+
+        public bool IsFinishMaking () {
+            return this.currentPreMono.IsFinishMaking ();
+        }        
+
         public void FinishMaking (IArrangementTarget arrangementTarget) {
             if (!HasPreMono) {
                 Debug.LogError ("プレモノを持っていないのにMakeが呼ばれました");

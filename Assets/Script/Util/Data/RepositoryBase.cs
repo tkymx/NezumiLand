@@ -6,16 +6,15 @@ using System.Linq;
 namespace NL {
     public class RepositoryBase<T> 
         where T : EntryBase {
-        protected IList<T> entrys;
+        protected List<T> entrys;
 
         protected RepositoryBase (IList<T> entrys) {
-            this.entrys = entrys;
+            this.entrys = entrys.ToList();
         }
 
         protected T GetEntry(uint id) {
-            var result = this.entrys.Where (e => e.Id == id);
-            Debug.Assert (result != null, "ファイルが見つかりません : " + id.ToString ());
-            var entry = result.First();
+            var entry = this.entrys.Find (e => e.Id == id);
+            Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
             return entry;            
         }
     }

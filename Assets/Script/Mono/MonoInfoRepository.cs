@@ -41,10 +41,15 @@ namespace NL {
 
         [DataMember]
         public long ArrangementCount { get; set; }
+
+        [DataMember]
+        public string ReleaseConditionText { get; set; }
     }
 
     public interface IMonoInfoRepository {
         IEnumerable<MonoInfo> GetAll ();
+        MonoInfo Get (uint id);
+        IEnumerable<MonoInfo> GetByType (MonoType type);
     }
 
     public class MonoInfoRepository : RepositoryBase<MonoInfoEntry>, IMonoInfoRepository {
@@ -52,21 +57,31 @@ namespace NL {
 
         public IEnumerable<MonoInfo> GetAll () {
             return entrys.Select (entry => {
-                return new MonoInfo (
-                    entry.Id,
-                    entry.Name,
-                    entry.Type,
-                    entry.Width,
-                    entry.Height,
-                    entry.MakingFee,
-                    entry.MakingItemAmount,
-                    entry.RemoveFee,
-                    entry.ModelName,
-                    entry.LevelUpFee,
-                    entry.LevelUpSatisfaction,
-                    entry.BaseSatisfaction,
-                    entry.ArrangementCount);
+                return this.CreateFromEntry(entry);
             });
+        }
+
+        public MonoInfo Get(uint id) {
+            var entry = this.GetEntry(id);
+            return this.CreateFromEntry(entry);
+        }
+
+        private MonoInfo CreateFromEntry (MonoInfoEntry entry) {
+            return new MonoInfo (
+                entry.Id,
+                entry.Name,
+                entry.Type,
+                entry.Width,
+                entry.Height,
+                entry.MakingFee,
+                entry.MakingItemAmount,
+                entry.RemoveFee,
+                entry.ModelName,
+                entry.LevelUpFee,
+                entry.LevelUpSatisfaction,
+                entry.BaseSatisfaction,
+                entry.ArrangementCount,
+                entry.ReleaseConditionText);
         }
 
         public IEnumerable<MonoInfo> GetByType (MonoType type) {

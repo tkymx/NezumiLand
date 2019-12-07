@@ -21,7 +21,7 @@ namespace NL {
             this.cellButton.interactable = true;
         }
 
-        public void DiasbleForLowFee () {
+        public void Diasble () {
             this.cellButton.interactable = false;
         }
     }

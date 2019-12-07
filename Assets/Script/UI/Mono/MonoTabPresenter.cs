@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace NL {
     public class MonoTabPresenter : UiWindowPresenterBase {
+        
+        private IPlayerMonoInfoRepository playerMonoInfoRepository = null;
+
         [SerializeField]
         private List<Button> tabButtons = null;
 
@@ -15,7 +18,9 @@ namespace NL {
         [SerializeField]
         private MonoListPresenter monoListPresetner = null;
 
-        public void Initialize () {
+        public void Initialize (IPlayerMonoInfoRepository playerMonoInfoRepository) {
+            this.playerMonoInfoRepository = playerMonoInfoRepository;
+
             Debug.Assert (this.tabButtons.Count > 0, "タブの項目がありません");
             Debug.Assert (this.tabButtons.Count == this.displayMonoType.Count, "ボタンとタイプの個数が異なります。");
 
@@ -42,8 +47,9 @@ namespace NL {
             // 押したボタンを非アクティブにする
             selectButton.interactable = false;
 
-            var monoInfoRepository = new MonoInfoRepository (ContextMap.DefaultMap);
-            this.monoListPresetner.SetElement (monoInfoRepository.GetByType (selectType).ToList ());
+            // 表示可能なモノを取得
+            var displayableMonoInfos = playerMonoInfoRepository.GetDisplayableByType(selectType).ToList();
+            this.monoListPresetner.SetElement (displayableMonoInfos);
         }
 
         public override void onPrepareShow () {

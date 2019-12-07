@@ -29,6 +29,9 @@ namespace NL {
 
             this.displayElementCellDictionary.Clear ();
 
+            // disposable をクリアする
+            this.ClearDisposable();
+
             // 要素の追加を行う
             foreach (var element in this.elements) {
                 var instance = Object.Appear2D (cellPrefab, cellViewRoot, Vector2.zero);

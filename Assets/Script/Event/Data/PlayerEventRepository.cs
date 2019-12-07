@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace NL {
     [DataContract]
-    public class PlayerEventEntry {
-        [DataMember]
-        public uint Id { get; set; }
-
+    public class PlayerEventEntry : EntryBase{
         [DataMember]
         public uint EventId { get; set; }
 
@@ -22,7 +19,7 @@ namespace NL {
     public interface IPlayerEventRepository {
         IEnumerable<PlayerEventModel> GetDetectable (EventConditionType eventConditionType);
         IEnumerable<PlayerEventModel> GetAll ();
-        IEnumerable<PlayerEventModel> Get (uint id);
+        PlayerEventModel Get (uint id);
         IEnumerable<PlayerEventModel> GetClearEvent ();
         void Store (PlayerEventModel playerEventModel);
     }
@@ -39,7 +36,7 @@ namespace NL {
             this.eventRepository = eventRepository;
             this.eventConditionRepository = eventConditionRepository;
 
-            // 現在あるイベントで登録されていないものを登録
+            // 現在あるイベントで登録されていないものを登録 TODO: 後で外だし。
             var models = this.eventRepository.GetAll ().ToList();
             foreach (var eventModel in models) {
                 if (this.entrys.Any (entry => entry.EventId == eventModel.Id)) {
@@ -83,14 +80,23 @@ namespace NL {
                 .Where (model => model.EventState == EventState.Clear);        
         }
 
-        public IEnumerable<PlayerEventModel> Get (uint id) {
-            return this.entrys
-                .Where (entry => entry.Id == id)
-                .Select (entry => new PlayerEventModel (
-                    entry.Id,
-                    eventRepository.Get (entry.Id),
-                    entry.EventState.ToString (),
-                    entry.doneEventConditionIds.Select (eventConditionId => eventConditionRepository.Get (eventConditionId)).ToList ()));
+        public PlayerEventModel Get (uint id) {
+            var entry = this.GetEntry(id);
+            if (entry == null) {
+                var eventModel = eventRepository.Get (id);
+                Debug.Assert(eventModel != null, "イベントのモデルが存在しません : " + id);
+
+                return new PlayerEventModel (
+                    id,
+                    eventModel,
+                    EventState.Lock.ToString(),
+                    new List<EventConditionModel>());
+            }
+            return new PlayerEventModel (
+                entry.Id,
+                eventRepository.Get (entry.Id),
+                entry.EventState.ToString (),
+                entry.doneEventConditionIds.Select (eventConditionId => eventConditionRepository.Get (eventConditionId)).ToList ());
         }
 
         public void Store (PlayerEventModel playerEventModel) {

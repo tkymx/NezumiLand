@@ -22,7 +22,6 @@ namespace NL {
             this.disposables = new List<IDisposable>();
 
             this.onegaiListPresenter.Initialize ();
-            this.onegaiListPresenter.SetElement(playerOnegaiRepository.GetAll ().ToList ());
             this.disposables.Add(this.onegaiListPresenter.OnCellClick.Subscribe(playerOnegaiModel => {
                 this.ShowDetail(playerOnegaiModel);
             }));
@@ -49,7 +48,7 @@ namespace NL {
 
         public override void onPrepareShow () {
             base.onPrepareShow ();
-            this.onegaiListPresenter.SetElement (playerOnegaiRepository.GetAll ().ToList ());
+            this.onegaiListPresenter.SetElement (playerOnegaiRepository.GetDisplayable ().ToList ());
             onegaiListPresenter.ReLoad ();
         }
 

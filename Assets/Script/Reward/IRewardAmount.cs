@@ -8,7 +8,8 @@ namespace NL {
         None,
         Currency,
         Item,
-        Onegai
+        Onegai,
+        Mono
     }
 
     public interface IRewardAmount

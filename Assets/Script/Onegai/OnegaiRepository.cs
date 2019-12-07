@@ -24,6 +24,9 @@ namespace NL {
 
         [DataMember]
         public long Satisfaction { get; set; }
+
+        [DataMember]
+        public bool IsInitialLock { get; set; }
     }
 
     public interface IOnegaiRepository {
@@ -43,7 +46,8 @@ namespace NL {
                     entry.Author,
                     entry.OnegaiCondition,
                     entry.OnegaiConditionArg,
-                    entry.Satisfaction);
+                    entry.Satisfaction,
+                    entry.IsInitialLock);
             });
         }
 
@@ -57,7 +61,8 @@ namespace NL {
                 entry.Author,
                 entry.OnegaiCondition,
                 entry.OnegaiConditionArg,
-                entry.Satisfaction);
+                entry.Satisfaction,
+                entry.IsInitialLock);
         }
     }
 }

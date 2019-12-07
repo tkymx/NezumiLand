@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
+    
+    /// <summary>
+    /// 上に上がっていく機構
+    /// 基本的には独立した prefab が持っている予定
+    /// </summary>
     public class UpEffect : MonoBehaviour {
         [SerializeField]
         private float UpSpeed = 1;

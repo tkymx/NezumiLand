@@ -12,7 +12,8 @@
         "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
         "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
         "BaseSatisfaction": 10,
-        "ArrangementCount": 1
+        "ArrangementCount": 1,
+        "ReleaseConditionText": "はじめから開放"
     },
     {
         "Id": 2,
@@ -27,7 +28,8 @@
         "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
         "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
         "BaseSatisfaction": 100,
-        "ArrangementCount": 1
+        "ArrangementCount": 1,
+        "ReleaseConditionText": "はじめから開放"
     },
     {
         "Id": 3,
@@ -42,6 +44,23 @@
         "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
         "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
         "BaseSatisfaction": 10,
-        "ArrangementCount": 10
+        "ArrangementCount": 10,
+        "ReleaseConditionText": "はじめから開放"
+    },
+    {
+        "Id": 4,
+        "Name": "道路2",
+        "Type": "Tool",
+        "Width": 2,
+        "Height": 2,
+        "RemoveFee": 10,
+        "MakingFee": 10,
+        "MakingItemAmount": 1,
+        "ModelName": "doro",
+        "LevelUpFee": [ 0, 10, 20, 30, 40, 50, 60 ],
+        "LevelUpSatisfaction": [ 10, 20, 30, 40, 50, 60, 70 ],
+        "BaseSatisfaction": 10,
+        "ArrangementCount": 10,
+        "ReleaseConditionText": "お願い1をクリアしてね！"
     }
 ]

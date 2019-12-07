@@ -16,6 +16,7 @@ namespace NL {
 
         public IList<PlayerOnegaiEntry> PlayerOnegaiEntrys { get; private set; }
         public IList<PlayerEventEntry> PlayerEventEntrys { get; private set; }
+        public IList<PlayerMonoInfoEntry> PlayerMonoInfoEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new PlayerContextMap ();
@@ -25,6 +26,7 @@ namespace NL {
         public void Load () {
             this.PlayerOnegaiEntrys = LoadEntryFromJsonFromName<PlayerOnegaiEntry> ("PlayerOnegaiEntry");
             this.PlayerEventEntrys = LoadEntryFromJsonFromName<PlayerEventEntry> ("PlayerEventEntry");
+            this.PlayerMonoInfoEntrys = LoadEntryFromJsonFromName<PlayerMonoInfoEntry> ("PlayerMonoInfoEntry");
         }
 
         private static IList<T> LoadEntryFromJsonFromName<T> (string name) {

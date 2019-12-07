@@ -33,6 +33,7 @@ namespace  NL
             var onegaiRewardAmount = rewardAmount as OnegaiRewardAmount;
             Debug.Assert(onegaiRewardAmount != null, "onegaiRewardAmountがnullです");
             this.onegaiModel = this.onegaiRepository.Get(onegaiRewardAmount.OnegaiId);
+            this.rewardOnegaiView.UpdateView(this.onegaiModel.Title);
         }
     }   
 }

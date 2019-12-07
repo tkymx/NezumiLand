@@ -18,6 +18,11 @@ namespace  NL
         {
             foreach (var onegaiModel in this.onegaiRepository.GetAll ()) {
 
+                // 初期値を入れないタイプの場合はアンロックにしない
+                if (onegaiModel.IsInitialLock) {
+                    continue;
+                }
+
                 // モデルを取得
                 var playerOnegaiModel = playerOnegaiRepository.GetById(onegaiModel.Id);
                 if (!playerOnegaiModel.IsLock()) {

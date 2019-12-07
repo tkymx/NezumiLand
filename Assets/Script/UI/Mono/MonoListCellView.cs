@@ -17,11 +17,15 @@ namespace NL {
         [SerializeField]
         private Text appearMaxCount = null;
 
-        public void UpdateCell (string name, Currency free, long appearCount, long appearMaxCount) {
+        [SerializeField]
+        private GameObject releaseLock = null;
+
+        public void UpdateCell (string name, Currency free, long appearCount, long appearMaxCount, bool isLock) {
             this.monoName.text = name;
             this.makingFree.text = free.ToString ();
             this.appearCount.text = appearCount.ToString ();
             this.appearMaxCount.text = appearMaxCount.ToString ();
+            this.releaseLock.SetActive(isLock);
         }
     }
 }

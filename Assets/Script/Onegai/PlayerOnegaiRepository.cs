@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace NL {
     [DataContract]
-    public class PlayerOnegaiEntry {
-        [DataMember]
-        public uint Id { get; set; }
-
+    public class PlayerOnegaiEntry : EntryBase {
         [DataMember]
         public uint OnegaiId { get; set; }
 
@@ -18,6 +15,7 @@ namespace NL {
 
     public interface IPlayerOnegaiRepository {
         IEnumerable<PlayerOnegaiModel> GetAll ();
+        IEnumerable<PlayerOnegaiModel> GetDisplayable ();
         PlayerOnegaiModel GetById (uint id);
         List<PlayerOnegaiModel> GetByIds (List<uint> ids);
         Satisfaction GetAllSatisfaction ();
@@ -45,9 +43,15 @@ namespace NL {
                 .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
         }
 
+        public IEnumerable<PlayerOnegaiModel> GetDisplayable () {
+            return this.entrys
+                .Where(entry => entry.OnegaiState != OnegaiState.Lock.ToString())
+                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
+        }
+
         public PlayerOnegaiModel GetById (uint id) {
-            var foundEntrys = this.entrys.Where (entry => entry.Id == id);
-            if (foundEntrys.Count() <= 0) {
+            var foundEntry = this.GetEntry(id);
+            if (foundEntry == null) {
 
                 var onegaiModel = this.onegaiRepository.Get(id);
                 Debug.Assert(onegaiModel != null, "OnegaiModel がありません : " + id.ToString());
@@ -59,7 +63,6 @@ namespace NL {
                 );
                 return playerOnegaiModel;
             }
-            var foundEntry = foundEntrys.First();
             return new PlayerOnegaiModel (foundEntry.Id, onegaiRepository.Get (foundEntry.Id), foundEntry.OnegaiState.ToString ());
         }
 

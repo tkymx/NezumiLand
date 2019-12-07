@@ -80,6 +80,9 @@ namespace NL {
         private OnegaiManager onegaiManager;
         public OnegaiManager OnegaiManager => onegaiManager;
 
+        private MonoReleaseManager monoReleaseManager;
+        public MonoReleaseManager MonoReleaseManager => monoReleaseManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -88,8 +91,10 @@ namespace NL {
 
             // レポジトリ
             var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
+            var monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
+            var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
 
             // instance
             this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
@@ -113,9 +118,11 @@ namespace NL {
             this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager();
             this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
+            this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
 
             // initialize
-            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository);
+            this.arrangementPresenter.Initialize();
+            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
 
@@ -134,6 +141,7 @@ namespace NL {
             this.timeManager.UpdateByFrame ();
             this.appearCharacterManager.UpdateByFrame();
             this.onegaiManager.UpdateByFrame();
+            this.monoReleaseManager.UpdateByFrame();
 
             // イベント関連
             this.constantlyEventPusher.PushConstantlyEventParameter();

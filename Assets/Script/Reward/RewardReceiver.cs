@@ -63,6 +63,9 @@ namespace NL {
             if (rewardAmount.RewardType == RewardType.Onegai) {
                 return GameManager.Instance.GameUIManager.RewardOnegaiPresenter;
             }
+            if (rewardAmount.RewardType == RewardType.Mono) {
+                return GameManager.Instance.GameUIManager.RewardMonoInfoPresenter;
+            }
             return GameManager.Instance.GameUIManager.RewardPresenter;
         }
     }

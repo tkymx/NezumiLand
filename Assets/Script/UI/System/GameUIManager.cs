@@ -41,9 +41,17 @@ namespace NL {
         private RewardOnegaiPresenter rewardOnegaiPresenter = null;
         public RewardOnegaiPresenter RewardOnegaiPresenter => rewardOnegaiPresenter;
 
+        [SerializeField]
+        private RewardMonoPresenter rewardMonoInfoPresenter = null;
+        public RewardMonoPresenter RewardMonoInfoPresenter => rewardMonoInfoPresenter;
 
-        public void Initialize (OnegaiRepository onegaiRepository, IPlayerOnegaiRepository playerOnegaiRepository) {
-            this.monoTabPresenter.Initialize ();
+        [SerializeField]
+        private CommonPresenter commonPresenter = null;
+        public CommonPresenter CommonPresenter => commonPresenter;
+
+
+        public void Initialize (OnegaiRepository onegaiRepository, IPlayerOnegaiRepository playerOnegaiRepository, IMonoInfoRepository monoInfoRepository, IPlayerMonoInfoRepository playerMonoInfoRepository) {
+            this.monoTabPresenter.Initialize (playerMonoInfoRepository);
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
             this.fieldActionUIPresenter.Initialize ();
             this.satisfactionPresenter.Initialize (playerOnegaiRepository);
@@ -52,6 +60,8 @@ namespace NL {
             this.onegaiPresenter.Initialize(playerOnegaiRepository);
             this.onegaiDetailPresenter.Initialize();
             this.rewardOnegaiPresenter.Initialize(onegaiRepository);
+            this.rewardMonoInfoPresenter.Initialize(monoInfoRepository);
+            this.commonPresenter.Initialize();
         }
     }
 }

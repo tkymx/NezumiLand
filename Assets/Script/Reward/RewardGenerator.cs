@@ -30,6 +30,15 @@ namespace NL {
                 }
                 return new OnegaiRewardAmount(amount, onegaiId);
             }
+
+            if (rewardType == RewardType.Mono) {
+                Debug.Assert(args.Length >= 1, "RewardType.Mono の要素数が足りません");
+                uint monoInfoId = 0;
+                if (args.Length >= 1) {
+                    monoInfoId = uint.Parse(args[0]);
+                }
+                return new MonoRewardAmount(amount, monoInfoId);
+            }            
             
             Debug.Assert(false, "無効な報酬が設定されいています。 : " + type);
             return new InvalidRewardAmount();

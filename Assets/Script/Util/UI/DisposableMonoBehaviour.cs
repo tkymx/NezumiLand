@@ -9,13 +9,18 @@ namespace  NL
     {
         protected List<IDisposable> disposables = new List<IDisposable>();
 
-        private void OnDestroy() {
+        protected void ClearDisposable() {
             if (this.disposables != null) {
                 foreach (var disposable in this.disposables)
                 {
                     disposable.Dispose();                    
-                }                
+                }                  
+                this.disposables.Clear();
             }
+        }
+
+        private void OnDestroy() {
+            this.ClearDisposable();
         }
     }   
 }

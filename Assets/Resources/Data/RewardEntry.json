@@ -8,20 +8,35 @@
                 "Args":[]
             },
             {
-                "Type": "Onegai",
+                "Type": "Mono",
                 "Amount": 1,
                 "Args":[1]
             },
             {
-                "Type": "Item",
-                "Amount": 10,
-                "Args":[]
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[2]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[3]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[3]
             },
             {
                 "Type": "Item",
                 "Amount": 10,
                 "Args":[]
             },
+            {
+                "Type": "Item",
+                "Amount": 100,
+                "Args":[]
+            }
         ]
     },
     {

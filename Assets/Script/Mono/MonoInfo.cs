@@ -26,6 +26,7 @@ namespace NL {
         public Satisfaction BaseSatisfaction { get; private set; }
         public ArrangementItemAmount ArrangementItemAmount { get; private set; }
         public ArrangementCount ArrangementCount { get; private set; }
+        public string ReleaseConditionText { get; private set; }
 
         public MonoInfo (
             uint Id,
@@ -40,7 +41,9 @@ namespace NL {
             long[] LevelUpFee,
             long[] LevelUpSatisfaction,
             long BaseSatisfaction,
-            long ArrangementCount) {
+            long ArrangementCount,
+            string ReleaseConditionText
+        ) {
             this.Id = Id;
             this.Name = Name;
 
@@ -59,6 +62,7 @@ namespace NL {
             this.LevelUpSatisfaction = LevelUpSatisfaction.Select (satisfaction => new Satisfaction (satisfaction)).ToArray ();
             this.BaseSatisfaction = new Satisfaction (BaseSatisfaction);
             this.ArrangementCount = new ArrangementCount (this.Id, ArrangementCount);
+            this.ReleaseConditionText = ReleaseConditionText;
         }
 
         public ArrangementResourceAmount ArrangementResourceAmount {

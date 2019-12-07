@@ -16,7 +16,7 @@ namespace NL {
         // のちのち view として作れれば良い
         private List<ArrangementView> arrangementViews;
 
-        private void Start () {
+        public void Initialize () {
             this.arrangementViews = new List<ArrangementView> ();
         }
 

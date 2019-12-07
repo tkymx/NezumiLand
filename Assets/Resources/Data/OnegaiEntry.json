@@ -6,7 +6,8 @@
         "Author": "ひぐっち",
         "OnegaiCondition": "Near",
         "OnegaiConditionArg": "1,2",
-        "Satisfaction": "10"
+        "Satisfaction": "10",
+        "IsInitialLock": false
     },
     {
         "Id": 2,
@@ -15,6 +16,17 @@
         "Author": "ふぐっち",
         "OnegaiCondition": "Near",
         "OnegaiConditionArg": "1,3",
-        "Satisfaction": "100"
+        "Satisfaction": "100",
+        "IsInitialLock": false
+    },
+    {
+        "Id": 3,
+        "Title": "ブランコサンプル",
+        "Detail": "ブランコ大と道を近くに配置しよう",
+        "Author": "ふぐっち2",
+        "OnegaiCondition": "Near",
+        "OnegaiConditionArg": "2,3",
+        "Satisfaction": "100",
+        "IsInitialLock": true
     }
 ]

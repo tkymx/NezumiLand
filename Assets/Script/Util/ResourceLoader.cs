@@ -17,10 +17,26 @@ namespace NL {
 
         public static void WritePlayerEntry (string name, string json) {
             string path = PlayerDataPath(name);
+            if (!Directory.Exists(PlayerDataDirPath())) {
+                Directory.CreateDirectory(PlayerDataDirPath());
+            }
             File.WriteAllText (path, json);
         }
+
+        private static string PlayerDataDirPath () {
+#if UNITY_EDITOR
+            return Application.dataPath + "/PlayerData/";
+#else
+            return Application.persistentDataPath + "/PlayerData/";
+#endif            
+        }
+
         private static string PlayerDataPath (string name) {
-            return Application.dataPath + "/PlayerData/" + name + ".json";
+            return PlayerDataDirPath () + "/" + name + "json";
+        }
+
+        public static void RemoveAllPlayerData () {
+            Directory.Delete(PlayerDataDirPath(),true);
         }
 
         public static string LoadText (string path) {

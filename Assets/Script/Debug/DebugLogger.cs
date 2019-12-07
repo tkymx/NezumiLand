@@ -10,6 +10,17 @@ namespace NL {
         [SerializeField]
         private Text text = null;
 
+        [SerializeField]
+        private Button removePlayerData = null;
+
+        private void Start() {
+            removePlayerData.onClick.AddListener(()=>{
+                ResourceLoader.RemoveAllPlayerData();
+                GameManager.Instance.GameUIManager.CommonPresenter.SetContents("Debug","プレイヤーデータを消去しました。");
+                GameManager.Instance.GameUIManager.CommonPresenter.Show();
+            });
+        }
+
         private void Update () {
             text.text = "";
             text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContents.ToString () + LR;

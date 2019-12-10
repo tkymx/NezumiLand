@@ -40,5 +40,9 @@ namespace NL {
             this.mainWindowGameObject.SetActive (false);
             this.OnClose.Execute(0);
         }
+
+        public bool IsShow () {
+            return mainWindowGameObject.activeSelf;
+        }
     }
 }

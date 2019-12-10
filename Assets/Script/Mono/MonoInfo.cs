@@ -29,6 +29,10 @@ namespace NL {
         public string ReleaseConditionText { get; private set; }
         public float MakingTime { get; private set; }
 
+        public string Size () {
+            return this.Width.ToString() + "x" + this.Height.ToString(); 
+        }
+
         public MonoInfo (
             uint Id,
             string Name,

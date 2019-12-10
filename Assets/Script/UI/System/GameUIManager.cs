@@ -49,8 +49,26 @@ namespace NL {
         private CommonPresenter commonPresenter = null;
         public CommonPresenter CommonPresenter => commonPresenter;
 
+        [SerializeField]
+        private MonoDetailPresenter monoDetailPresenter = null;
+        public MonoDetailPresenter MonoDetailPresenter => monoDetailPresenter;
 
-        public void Initialize (OnegaiRepository onegaiRepository, IPlayerOnegaiRepository playerOnegaiRepository, IMonoInfoRepository monoInfoRepository, IPlayerMonoInfoRepository playerMonoInfoRepository) {
+        [SerializeField]
+        private MousePurchasePresenter mousePurchasePresenter = null;
+        public MousePurchasePresenter MousePurchasePresenter => mousePurchasePresenter;
+
+        [SerializeField]
+        private ToolBarManager toolBarmanager = null;
+        public ToolBarManager ToolBarManager => toolBarmanager;
+
+        public void Initialize (
+            OnegaiRepository onegaiRepository, 
+            IPlayerOnegaiRepository playerOnegaiRepository, 
+            IMonoInfoRepository monoInfoRepository, 
+            IPlayerMonoInfoRepository playerMonoInfoRepository, 
+            IMousePurchaceTableRepository mousePurchaceTableRepository,
+            IPlayerMouseStockRepository playerMouseStockRepository
+        ) {
             this.monoTabPresenter.Initialize (playerMonoInfoRepository);
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
             this.fieldActionUIPresenter.Initialize ();
@@ -62,6 +80,13 @@ namespace NL {
             this.rewardOnegaiPresenter.Initialize(onegaiRepository);
             this.rewardMonoInfoPresenter.Initialize(monoInfoRepository);
             this.commonPresenter.Initialize();
+            this.monoDetailPresenter.Initialize();
+            this.mousePurchasePresenter.Initialize(mousePurchaceTableRepository, playerMouseStockRepository);
+            this.toolBarmanager.Initialize();
+        }
+
+        public void UpdateByFrame() {
+            this.toolBarmanager.UpdateByrame();
         }
     }
 }

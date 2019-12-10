@@ -12,17 +12,17 @@ namespace NL {
                 element.MonoInfo.ArrangementCount.Count,
                 !element.IsRelease);
 
-            this.disposables.Add(cellView.OnClick
-                .Subscribe (_ => {
-                    if (element.IsRelease) {
-                        GameManager.Instance.MonoSelectManager.SelectMonoInfo (element.MonoInfo);
-                    } else {
-                        GameManager.Instance.GameUIManager.CommonPresenter.SetContents(
-                            Thesaurus.NotifyReleaseConditionModalTitle, 
-                            element.MonoInfo.ReleaseConditionText);
-                        GameManager.Instance.GameUIManager.CommonPresenter.Show();
-                    }
-                }));
+            this.disposables.Add(cellView.OnClick.Subscribe (_ => {
+                GameManager.Instance.MonoSelectManager.SelectMonoInfo (element.MonoInfo);
+            }));
+            this.disposables.Add(cellView.OnClickDetail.Subscribe(_=>{
+                GameManager.Instance.GameUIManager.MonoDetailPresenter.SetDetail(element, GameManager.Instance.ArrangementManager.GetAppearMonoCountById (element.MonoInfo.Id));
+                GameManager.Instance.GameUIManager.MonoDetailPresenter.Show();
+            }));
+            this.disposables.Add(cellView.OnClickLock.Subscribe(_=>{
+                GameManager.Instance.GameUIManager.CommonPresenter.SetContents(Thesaurus.NotifyReleaseConditionModalTitle, element.MonoInfo.ReleaseConditionText);
+                GameManager.Instance.GameUIManager.CommonPresenter.Show();
+            }));
         }
 
         private void Update () {

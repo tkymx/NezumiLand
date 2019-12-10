@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace NL {
     public class MouseStockManager : MonoBehaviour {
+        private readonly IPlayerMouseStockRepository playerMouseStockRepository;
+
         private GameObject root;
         private List<Mouse> orderedMouse;
 
@@ -24,12 +26,18 @@ namespace NL {
         /// </summary>
         public bool IsOrderMouse => this.OrderedMouseCount < this.mouseStockCount;
 
-        public MouseStockManager (GameObject root) {
-            // 仮
-            this.mouseStockCount = 5;
+        public MouseStockManager (GameObject root, IPlayerMouseStockRepository playerMouseStockRepository) {
+            this.playerMouseStockRepository = playerMouseStockRepository;
+            this.FetchMouseStockCount();
 
             this.root = root;
             this.orderedMouse = new List<Mouse> ();
+        }
+
+        public void FetchMouseStockCount () {
+            // 現在のネズミ数を取得
+            var playerMouseStockModel =  playerMouseStockRepository.GetOwn();
+            this.mouseStockCount = playerMouseStockModel.MouseStockCount;
         }
 
         public void OrderMouse (IArrangementTarget arrangementTarget, MonoInfo monoInfo) {

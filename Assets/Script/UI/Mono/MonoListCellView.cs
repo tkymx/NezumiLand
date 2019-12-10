@@ -18,14 +18,35 @@ namespace NL {
         private Text appearMaxCount = null;
 
         [SerializeField]
-        private GameObject releaseLock = null;
+        private Button releaseLock = null;
+
+        [SerializeField]
+        private Button detailButton = null;
+
+        private TypeObservable<int> onClickDetail = null;
+        public TypeObservable<int> OnClickDetail => onClickDetail;
+
+        private TypeObservable<int> onClickLock = null;
+        public TypeObservable<int> OnClickLock => onClickLock;
+
+        public override void Initialize() {
+            base.Initialize();
+            this.onClickDetail = new TypeObservable<int>();
+            this.onClickLock = new TypeObservable<int>();
+            this.detailButton.onClick.AddListener(() => {
+                this.onClickDetail.Execute(0);
+            });
+            this.releaseLock.onClick.AddListener(() => {
+                this.onClickLock.Execute(0);
+            });
+        }
 
         public void UpdateCell (string name, Currency free, long appearCount, long appearMaxCount, bool isLock) {
             this.monoName.text = name;
             this.makingFree.text = free.ToString ();
             this.appearCount.text = appearCount.ToString ();
             this.appearMaxCount.text = appearMaxCount.ToString ();
-            this.releaseLock.SetActive(isLock);
+            this.releaseLock.gameObject.SetActive(isLock);
         }
     }
 }

@@ -28,10 +28,5 @@ namespace NL {
             GameManager.Instance.Wallet.Pay (amount.Currency);
             GameManager.Instance.ArrangementItemStore.Consume (amount.ArrangementItemAmount);
         }
-
-        public static void Push (ArrangementResourceAmount amount) {
-            GameManager.Instance.Wallet.Push (amount.Currency);
-            GameManager.Instance.ArrangementItemStore.Push (amount.ArrangementItemAmount);
-        }
     }
 }

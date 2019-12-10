@@ -10,7 +10,7 @@ namespace NL {
 
         public TypeObservable<int> OnClick { get; private set; }
 
-        public void Initialize () {
+        public virtual void Initialize () {
             OnClick = new TypeObservable<int> ();
             cellButton.onClick.AddListener (() => {
                 OnClick.Execute (0);

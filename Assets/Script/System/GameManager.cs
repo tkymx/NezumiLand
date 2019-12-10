@@ -93,9 +93,11 @@ namespace NL {
             var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
             var eventRepository = EventRepository.GetRepository(ContextMap.DefaultMap);
             var monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
+            var mousePurchaceTableRepository = new MousePurchaceTableRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
+            var playerMouseStockRepository = new PlayerMouseStockRepository(PlayerContextMap.DefaultMap);
 
             // instance
             this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
@@ -111,7 +113,7 @@ namespace NL {
             this.timeManager = new TimeManager ();
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
-            this.mouseStockManager = new MouseStockManager (this.rootObject);
+            this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository);
             this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
@@ -123,7 +125,7 @@ namespace NL {
 
             // initialize
             this.arrangementPresenter.Initialize();
-            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository);
+            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
 
@@ -137,6 +139,11 @@ namespace NL {
         }
 
         private void Update () {
+            // イベント関連
+            this.constantlyEventPusher.PushConstantlyEventParameter();
+            this.eventManager.UpdateByFrame ();
+
+            // 定常
             this.dailyActionManager.UpdateByFrame ();
             this.gameModeManager.UpdateByFrame ();
             this.monoManager.UpdateByFrame ();
@@ -146,9 +153,8 @@ namespace NL {
             this.onegaiManager.UpdateByFrame();
             this.monoReleaseManager.UpdateByFrame();
 
-            // イベント関連
-            this.constantlyEventPusher.PushConstantlyEventParameter();
-            this.eventManager.UpdateByFrame ();
+            // UI関連
+            this.gameUIManager.UpdateByFrame();
         }
     }
 }

@@ -28,10 +28,8 @@ namespace NL {
         }
 
         public void UpdateByFrame () {
-            if (this.IsOverDay ()) {                
-                this.DoDailyEnd ();
-                // この間に演出を挟む
-                this.DoDailyStart ();
+            if (this.IsOverDay ()) {    
+                GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateDailyChangeMode());
                 this.OverDay ();
             }
         }
@@ -44,35 +42,6 @@ namespace NL {
 
         private void OverDay () {
             this.prevEarnTime = GameManager.Instance.TimeManager.ElapsedTime;
-        }
-
-        /// <summary>
-        /// 一日の終りに行うこと
-        /// </summary>
-        private void DoDailyEnd() {
-            this.Earn();
-            this.RemoveAppearCharacter();
-        }
-
-        private void Earn() {
-            var dailyEarn = dailyEarnCalculater.CalcEarnFromSatisfaction ();
-            GameManager.Instance.Wallet.Push (dailyEarn);
-            GameManager.Instance.EffectManager.PlayEarnEffect (dailyEarn, GameManager.Instance.MouseHomeManager.HomePostion);
-        }
-
-        private void RemoveAppearCharacter() {
-            GameManager.Instance.AppearCharacterManager.RemoveAll();
-        }
-
-        /// <summary>
-        /// 一日の始まりに行うこと
-        /// </summary>
-        private void DoDailyStart() {
-            this.ResistAppearCharacter();
-        }
-
-        private void ResistAppearCharacter() {
-            GameManager.Instance.DailyAppearCharacterRegistManager.Resist();
         }
     }
 }

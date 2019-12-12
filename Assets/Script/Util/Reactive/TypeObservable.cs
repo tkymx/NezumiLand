@@ -35,14 +35,14 @@ namespace NL {
                 this.observers.Remove (observer);
             });
         }
+    }
 
-        // ちょっと特殊
-        public IDisposable Subscribe (Action<T> action) {
-            IObserver<T> observer = new TypeObserver<T> (action);
-            observers.Add (observer);
-            return new ActionDisposer (() => {
-                this.observers.Remove (observer);
-            });
+    public static partial class IObservableExtension
+    {
+        // SubScribe の一般化
+        public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> action)
+        {
+            return observable.Subscribe(new TypeObserver<T>(value => action(value)));
         }
     }
 }

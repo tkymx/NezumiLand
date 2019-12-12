@@ -41,12 +41,15 @@ namespace NL {
             var removeList = new Queue<DailyAppearCharacterGeneratorResistReserve>();
             foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {
+                // 条件が満たしていたら
                 if (!dailyAppearCharacterGeneratorResistReserve.IsResist()) {
                     continue;
                 }
 
+                // キャラクタを生成する
                 dailyAppearCharacterGeneratorResistReserve.Generate();
 
+                // これで終わりの場合は消去リストに入れる
                 if (dailyAppearCharacterGeneratorResistReserve.IsRemove()) {
                     removeList.Enqueue(dailyAppearCharacterGeneratorResistReserve);                
                 }

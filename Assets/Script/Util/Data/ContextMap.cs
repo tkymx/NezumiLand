@@ -23,6 +23,7 @@ namespace NL {
         public IList<RewardEntry> RewardEntrys { get; private set; }
         public IList<AppearCharacterEntry> AppearCharacterEntrys { get; private set; }
         public IList<MousePurchaceTableEntry> MousePurchaceTableEntrys { get; private set; }
+        public IList<ScheduleEntry> ScheduleEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -39,6 +40,7 @@ namespace NL {
             this.RewardEntrys = LoadEntryFromJson<RewardEntry> (ResourceLoader.LoadData ("RewardEntry"));
             this.AppearCharacterEntrys = LoadEntryFromJson<AppearCharacterEntry> (ResourceLoader.LoadData ("AppearCharacterEntry"));
             this.MousePurchaceTableEntrys = LoadEntryFromJson<MousePurchaceTableEntry> (ResourceLoader.LoadData ("MousePurchaceTableEntry"));
+            this.ScheduleEntrys = LoadEntryFromJson<ScheduleEntry> (ResourceLoader.LoadData ("ScheduleEntry"));
         }
 
         private static IList<T> LoadEntryFromJson<T> (string json) {

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
+
+    /// <summary>
+    /// 遊園地に登場するキャラクタの登場予約情報
+    /// </summary>
     public class DailyAppearCharacterGeneratorResistReserve
     {
         private AppearCharacterGenerator appearCharacterGenerator;

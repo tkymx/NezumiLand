@@ -51,5 +51,11 @@ namespace NL {
         public static MousePurchaseMode GenerateMousePurchaseMode () {
             return new MousePurchaseMode ();
         }
+
+        public static DailyChangeMode GenerateDailyChangeMode () {
+            return new DailyChangeMode (PlayerOnegaiRepository.GetRepository(
+                ContextMap.DefaultMap,
+                PlayerContextMap.DefaultMap));
+        }
     }
 }

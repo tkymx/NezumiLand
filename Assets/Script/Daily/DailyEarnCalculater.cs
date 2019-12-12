@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace NL {
     public class DailyEarnCalculater {
+        public static int SatisfactionMultiRate = 10;
+
         private readonly IPlayerOnegaiRepository playerOnegaiRepository;
 
         public DailyEarnCalculater (IPlayerOnegaiRepository playerOnegaiRepository) {
@@ -17,7 +19,7 @@ namespace NL {
         public Currency CalcEarnFromSatisfaction () {
             var satisfactionCalculater = new SatisfactionCalculater (playerOnegaiRepository);
             Satisfaction currentSatisfaction = satisfactionCalculater.CalcFieldSatisfaction ();
-            Currency currency = new Currency (currentSatisfaction.Value * 10);
+            Currency currency = new Currency (currentSatisfaction.Value * DailyEarnCalculater.SatisfactionMultiRate);
             return currency;
         }
     }

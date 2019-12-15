@@ -90,5 +90,11 @@ namespace NL {
             }
             this.monoInfoIdToOngeais[nearArgs.TargetMonoInfoId].Add(onegaiModel);
         }
+
+        public void UnChacheOnegai(OnegaiModel onegaiModel) 
+        {
+            var nearArgs = new NearArgs(onegaiModel.OnegaiConditionArg);
+            this.monoInfoIdToOngeais[nearArgs.TargetMonoInfoId].RemoveAll(model => model.Id == onegaiModel.Id);
+        }        
     }
 }

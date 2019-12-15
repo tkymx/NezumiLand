@@ -37,7 +37,7 @@ namespace NL {
 
         private void ShowDetail(PlayerOnegaiModel playerOnegaiModel)
         {
-            GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetOnegaiDetail(playerOnegaiModel.OnegaiModel);
+            GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetOnegaiDetail(playerOnegaiModel);
             GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Show();
         }
 

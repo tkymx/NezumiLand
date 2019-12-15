@@ -8,35 +8,43 @@
         "Id": 2,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 3,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 4,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 5,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 6,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 7,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 8,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 9,
         "CurrencyCost": 100,
         "ItemCost": 10
-    },    {
+    },    
+    {
         "Id": 10,
         "CurrencyCost": 100,
         "ItemCost": 10

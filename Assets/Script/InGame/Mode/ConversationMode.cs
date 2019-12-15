@@ -8,19 +8,17 @@ namespace NL {
 
         private IDisposable conversationDisposable = null;
         private ConversationModel conversationModel = null;
-        private Action conversationEndCallBack = null;
 
-        public ConversationMode(ConversationModel conversationModel, Action conversationEndCallBack)
+        public ConversationMode(ConversationModel conversationModel)
         {
             this.conversationDisposable = null;
             this.conversationModel = conversationModel;
-            this.conversationEndCallBack = conversationEndCallBack;
         }
 
         public void OnEnter () { 
             GameManager.Instance.TimeManager.Pause ();
             this.conversationDisposable = ConversationStarter.StartConversation(this.conversationModel).Subscribe(_ => {
-                this.conversationEndCallBack();
+                GameManager.Instance.GameModeManager.Back();
             });
         }
         public void OnUpdate () {

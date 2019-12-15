@@ -33,12 +33,13 @@ namespace NL {
             return new EventMode();
         }
 
-        public static ConversationMode GenerateConversationMode (ConversationModel conversationModel, Action conversationEndCallBack = null) {
-            if ( conversationEndCallBack == null ) {
-                conversationEndCallBack = () => {};
-            }
-            return new ConversationMode(conversationModel, conversationEndCallBack);
+        public static ConversationMode GenerateConversationMode (ConversationModel conversationModel) {
+            return new ConversationMode(conversationModel);
         }
+
+        public static ReceiveRewardMode GenerateReceiveRewardMode (RewardModel rewardModel) {
+            return new ReceiveRewardMode(rewardModel);
+        }        
 
         public static SelectMode GenerateSelectMode () {
             return new SelectMode ();

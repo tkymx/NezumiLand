@@ -7,22 +7,22 @@ namespace  NL
 {
     public class RewardOnegaiPresenter : RewardWindowPresenterBase
     {
-        private IOnegaiRepository onegaiRepository = null;
+        private IPlayerOnegaiRepository playerOegaiRepository = null;
 
         [SerializeField]
         RewardOnegaiView rewardOnegaiView = null;
 
-        private OnegaiModel onegaiModel = null;
+        private PlayerOnegaiModel playerOnegaiModel = null;
 
-        public void Initialize(OnegaiRepository onegaiRepository) {
-            this.onegaiRepository = onegaiRepository;
+        public void Initialize(IPlayerOnegaiRepository playerOegaiRepository) {
+            this.playerOegaiRepository = playerOegaiRepository;
             this.rewardOnegaiView.Initialize();
             this.disposables.Add(this.rewardOnegaiView.OnClickCloseObservable.Subscribe(_ => {
                 this.Close();
             }));
             this.disposables.Add(this.rewardOnegaiView.OnClickDetailObservable.Subscribe(_ => {
-                if (this.onegaiModel != null) {
-                    GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetOnegaiDetail(onegaiModel);
+                if (this.playerOnegaiModel != null) {
+                    GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetOnegaiDetail(playerOnegaiModel);
                     GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Show();
                 }
             }));
@@ -32,8 +32,8 @@ namespace  NL
         public override void SetRewardAmount(IRewardAmount rewardAmount) {
             var onegaiRewardAmount = rewardAmount as OnegaiRewardAmount;
             Debug.Assert(onegaiRewardAmount != null, "onegaiRewardAmountがnullです");
-            this.onegaiModel = this.onegaiRepository.Get(onegaiRewardAmount.OnegaiId);
-            this.rewardOnegaiView.UpdateView(this.onegaiModel.Title);
+            this.playerOnegaiModel = this.playerOegaiRepository.GetById(onegaiRewardAmount.OnegaiId);
+            this.rewardOnegaiView.UpdateView(this.playerOnegaiModel.OnegaiModel.Title);
         }
     }   
 }

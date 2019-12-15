@@ -8,7 +8,7 @@ namespace NL {
     public class ScheduleEntry : EntryBase {
 
         [DataMember]
-        public float closeElapsedTime { get; set; }
+        public float CloseElapsedTime { get; set; }
     }
 
     public interface IScheduleRepository {
@@ -23,7 +23,7 @@ namespace NL {
             return entrys.Select (entry => {
                 return new ScheduleModel (
                     entry.Id,
-                    entry.closeElapsedTime);
+                    entry.CloseElapsedTime);
             });
         }
 
@@ -32,7 +32,7 @@ namespace NL {
             var entry = base.GetEntry(id);
             return new ScheduleModel (
                 entry.Id,
-                entry.closeElapsedTime);
+                entry.CloseElapsedTime);
         }
     }
 }

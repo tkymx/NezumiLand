@@ -18,11 +18,13 @@ namespace NL
             this.Close();
         }
 
-        public void SetOnegaiDetail(OnegaiModel onegaiModel) {
+        public void SetOnegaiDetail(PlayerOnegaiModel playerOnegaiModel) {
             this.onegaiDetailView.UpdateCell(
-                onegaiModel.Title,
-                onegaiModel.Detail,
-                onegaiModel.Author
+                playerOnegaiModel.OnegaiModel.Title,
+                playerOnegaiModel.OnegaiModel.Detail,
+                playerOnegaiModel.OnegaiModel.Author,
+                playerOnegaiModel.HasSchedule (),
+                playerOnegaiModel.CloseTime ()
             );
         }
     }    

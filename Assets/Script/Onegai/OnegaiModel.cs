@@ -17,6 +17,11 @@ namespace NL {
         public OnegaiConditionArg OnegaiConditionArg { get; private set; }
         public Satisfaction Satisfaction { get; private set; }
         public bool IsInitialLock { get; private set; }
+        public ScheduleModel ScheduleModel { get; private set; }
+
+        public bool HasSchedule () {
+            return ScheduleModel != null;
+        }
 
         public OnegaiModel (
             uint id,
@@ -26,7 +31,9 @@ namespace NL {
             string onegaiCondition,
             string onegaiConditionArg,
             long satisfaction,
-            bool isInitialLock) {
+            bool isInitialLock,
+            ScheduleModel scheduleModel
+            ) {
             this.Id = id;
             this.Title = title;
             this.Detail = detail;
@@ -40,6 +47,7 @@ namespace NL {
             this.OnegaiConditionArg = new OnegaiConditionArg (onegaiConditionArg);
             this.Satisfaction = new Satisfaction (satisfaction);
             this.IsInitialLock = isInitialLock;
+            this.ScheduleModel = scheduleModel;
         }
     }
 }

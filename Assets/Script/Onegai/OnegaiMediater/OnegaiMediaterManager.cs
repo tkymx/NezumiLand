@@ -15,5 +15,9 @@ namespace NL {
         public void ChacheOnegai(OnegaiModel onegaiModel) {
             this.nearOnegaiMediater.ChacheOnegai(onegaiModel);
         }
+
+        public void UnChacheOnegai(OnegaiModel onegaiModel) {
+            this.nearOnegaiMediater.UnChacheOnegai(onegaiModel);
+        }
     }
 }

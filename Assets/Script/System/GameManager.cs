@@ -90,7 +90,7 @@ namespace NL {
             GameContextMap.Initialize ();
 
             // レポジトリ
-            var onegaiRepository = new OnegaiRepository(ContextMap.DefaultMap);
+            var onegaiRepository = OnegaiRepository.GetRepository(ContextMap.DefaultMap);
             var eventRepository = EventRepository.GetRepository(ContextMap.DefaultMap);
             var monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             var mousePurchaceTableRepository = new MousePurchaceTableRepository(ContextMap.DefaultMap);

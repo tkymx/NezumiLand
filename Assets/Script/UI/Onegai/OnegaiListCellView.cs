@@ -12,12 +12,19 @@ namespace NL {
         private Text detailText = null;
 
         [SerializeField]
+        private OnegaiCloseTimeView closeTimeView = null;
+
+        [SerializeField]
         private GameObject clearBadge = null;
 
-        public void UpdateCell (string title, string detail, bool isClear) {
+        // 終了までの時間
+        private float closeTime = 0;
+
+        public void UpdateCell (string title, string detail, bool isClear, bool isShowClose,float closeTime) {
             this.titleText.text = title;
             this.detailText.text = detail;
             this.clearBadge.SetActive (isClear);
+            this.closeTimeView.UpdateView(isShowClose, closeTime);
         }
     }
 }

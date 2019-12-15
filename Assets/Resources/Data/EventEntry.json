@@ -23,7 +23,7 @@
         "EventConditionIds": [
             4
         ],
-        "EventContentsId": 1,
+        "EventContentsId": 2,
         "EventRepeatType": "Once",
         "RewardId": 1
     }  

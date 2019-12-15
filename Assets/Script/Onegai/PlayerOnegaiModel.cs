@@ -14,6 +14,7 @@ namespace NL {
 
         public OnegaiModel OnegaiModel { get; private set; }
         public OnegaiState OnegaiState { get; private set; }
+        public float StartOnegaiTime { get; private set; } 
 
         public void ToClear () {
             this.OnegaiState = OnegaiState.Clear;
@@ -24,14 +25,42 @@ namespace NL {
             this.OnegaiState = OnegaiState.UnLock;
         }
 
+        public void ToLock () {
+            this.OnegaiState = OnegaiState.Lock;
+        }
+
         public bool IsLock() {
             return this.OnegaiState == OnegaiState.Lock;
+        }
+
+        public float CloseTime () {
+            if (!HasSchedule()) {
+                return float.MaxValue;
+            }
+            return this.StartOnegaiTime + this.OnegaiModel.ScheduleModel.closeElapsedTime;
+        }
+
+        public bool HasSchedule () {
+            return OnegaiModel.HasSchedule();
+        }
+
+        public bool IsClose (float currentElapsedTime) {
+            if (!HasSchedule ()) {
+                return false;
+            } 
+            var closeTime = CloseTime ();
+            var isClose = currentElapsedTime > closeTime;
+            if (isClose) {
+                return true;
+            }
+            return false;
         }
 
         public PlayerOnegaiModel (
             uint id,
             OnegaiModel onegaiModel,
-            string onegaiState) {
+            string onegaiState,
+            float startOnegaiTime) {
             this.Id = id;
             this.OnegaiModel = onegaiModel;
 
@@ -39,6 +68,8 @@ namespace NL {
             if (Enum.TryParse (onegaiState, out OnegaiState outOnegaiState)) {
                 this.OnegaiState = outOnegaiState;
             }
+
+            this.StartOnegaiTime = startOnegaiTime;
         }
     }
 }

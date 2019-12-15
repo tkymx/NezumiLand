@@ -7,7 +7,9 @@
         "OnegaiCondition": "Near",
         "OnegaiConditionArg": "1,2",
         "Satisfaction": "10",
-        "IsInitialLock": false
+        "IsInitialLock": false,
+        "IsSchedule": false,
+        "ScheduleId": 0
     },
     {
         "Id": 2,
@@ -17,7 +19,9 @@
         "OnegaiCondition": "Near",
         "OnegaiConditionArg": "1,3",
         "Satisfaction": "100",
-        "IsInitialLock": false
+        "IsInitialLock": false,
+        "IsSchedule": false,
+        "ScheduleId": 0
     },
     {
         "Id": 3,
@@ -27,6 +31,8 @@
         "OnegaiCondition": "Near",
         "OnegaiConditionArg": "2,3",
         "Satisfaction": "100",
-        "IsInitialLock": true
+        "IsInitialLock": true,
+        "IsSchedule": true,
+        "ScheduleId": 1
     }
 ]

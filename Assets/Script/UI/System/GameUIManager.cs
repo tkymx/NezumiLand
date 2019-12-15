@@ -86,7 +86,7 @@ namespace NL {
             this.rewardPresenter.Initialize();
             this.onegaiPresenter.Initialize(playerOnegaiRepository);
             this.onegaiDetailPresenter.Initialize();
-            this.rewardOnegaiPresenter.Initialize(onegaiRepository);
+            this.rewardOnegaiPresenter.Initialize(playerOnegaiRepository);
             this.rewardMonoInfoPresenter.Initialize(monoInfoRepository);
             this.commonPresenter.Initialize();
             this.monoDetailPresenter.Initialize();

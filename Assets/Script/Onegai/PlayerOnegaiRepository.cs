@@ -11,10 +11,14 @@ namespace NL {
 
         [DataMember]
         public string OnegaiState { get; set; }
+
+        [DataMember]
+        public float StartOnegaiTime { get; set; }
     }
 
     public interface IPlayerOnegaiRepository {
         IEnumerable<PlayerOnegaiModel> GetAll ();
+        IEnumerable<PlayerOnegaiModel> GetAlreadyClose ();
         IEnumerable<PlayerOnegaiModel> GetDisplayable ();
         PlayerOnegaiModel GetById (uint id);
         List<PlayerOnegaiModel> GetByIds (List<uint> ids);
@@ -34,19 +38,28 @@ namespace NL {
         }
 
         public static PlayerOnegaiRepository GetRepository (ContextMap contextMap, PlayerContextMap playerContextMap) {
-            IOnegaiRepository onegaiRepository = new OnegaiRepository (contextMap);
+            IOnegaiRepository onegaiRepository = OnegaiRepository.GetRepository (contextMap);
             return new PlayerOnegaiRepository (onegaiRepository, playerContextMap);
+        }
+
+        private PlayerOnegaiModel GeneratePlayerOnegaiModel(PlayerOnegaiEntry entry) {
+            return new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString (), entry.StartOnegaiTime);
         }
 
         public IEnumerable<PlayerOnegaiModel> GetAll () {
             return this.entrys
-                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
+                .Select (entry => GeneratePlayerOnegaiModel(entry));
+        }
+
+        public IEnumerable<PlayerOnegaiModel> GetAlreadyClose () {
+            return GetDisplayable()
+                .Where (model => model.IsClose(GameManager.Instance.TimeManager.ElapsedTime));
         }
 
         public IEnumerable<PlayerOnegaiModel> GetDisplayable () {
             return this.entrys
                 .Where(entry => entry.OnegaiState != OnegaiState.Lock.ToString())
-                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()));
+                .Select (entry => GeneratePlayerOnegaiModel(entry));
         }
 
         public PlayerOnegaiModel GetById (uint id) {
@@ -59,11 +72,12 @@ namespace NL {
                 var playerOnegaiModel = new PlayerOnegaiModel(
                     id,
                     onegaiModel,
-                    OnegaiState.Lock.ToString()
+                    OnegaiState.Lock.ToString(),
+                    GameManager.Instance.TimeManager.ElapsedTime // なんか微妙な気もするが
                 );
                 return playerOnegaiModel;
             }
-            return new PlayerOnegaiModel (foundEntry.Id, onegaiRepository.Get (foundEntry.Id), foundEntry.OnegaiState.ToString ());
+            return GeneratePlayerOnegaiModel(foundEntry);
         }
 
         public List<PlayerOnegaiModel> GetByIds (List<uint> ids) {
@@ -74,7 +88,7 @@ namespace NL {
 
         private IEnumerable<PlayerOnegaiModel> GetClear () {
             return this.entrys
-                .Select (entry => new PlayerOnegaiModel (entry.Id, onegaiRepository.Get (entry.Id), entry.OnegaiState.ToString ()))
+                .Select (entry => GeneratePlayerOnegaiModel(entry))
                 .Where (model => model.OnegaiState == OnegaiState.Clear);
         }
 
@@ -93,13 +107,15 @@ namespace NL {
                 this.entrys[index] = new PlayerOnegaiEntry () {
                     Id = playerOnegaiModel.Id,
                     OnegaiId = playerOnegaiModel.OnegaiModel.Id,
-                    OnegaiState = playerOnegaiModel.OnegaiState.ToString ()
+                    OnegaiState = playerOnegaiModel.OnegaiState.ToString (),
+                    StartOnegaiTime = playerOnegaiModel.StartOnegaiTime
                 };
             } else {
                 this.entrys.Add(new PlayerOnegaiEntry () {
                     Id = playerOnegaiModel.Id,
                     OnegaiId = playerOnegaiModel.OnegaiModel.Id,
-                    OnegaiState = playerOnegaiModel.OnegaiState.ToString ()
+                    OnegaiState = playerOnegaiModel.OnegaiState.ToString (),
+                    StartOnegaiTime = playerOnegaiModel.StartOnegaiTime
                 });
             }
             PlayerContextMap.WriteEntry (this.entrys);

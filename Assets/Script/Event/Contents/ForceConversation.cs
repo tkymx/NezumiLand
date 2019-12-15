@@ -21,10 +21,11 @@ namespace NL.EventContents {
 
         public override void OnEnter() {
             this.isAlive = true;
-            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(GameModeGenerator.GenerateConversationMode(this.conversationModel,()=>{
-                GameManager.Instance.GameModeManager.Back();
+            var conversationMode = GameModeGenerator.GenerateConversationMode(this.conversationModel);
+            GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(conversationMode);
+            GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode).Subscribe(_ => {
                 this.isAlive = false;
-            }));
+            });
         }
         public override void OnUpdate() {
         }

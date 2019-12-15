@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
 namespace NL {
     public class GameModeManager {
@@ -11,8 +13,19 @@ namespace NL {
         private IGameMode nextGameModeWithHistory = null;
         private Stack<IGameMode> gameModeHistory = null;
 
+        // 特定のモードが終了したときのオブザーバブル
+        private Dictionary<IGameMode,TypeObservable<int>> modeEndObservableDictionary = null;
+
+        public TypeObservable<int> GetModeEndObservable(IGameMode gameMode) {
+            if (!this.modeEndObservableDictionary.ContainsKey(gameMode)) {
+                this.modeEndObservableDictionary.Add(gameMode, new TypeObservable<int>());
+            }
+            return this.modeEndObservableDictionary[gameMode];
+        }
+
         public GameModeManager () {
             this.gameModeHistory = new Stack<IGameMode> ();
+            this.modeEndObservableDictionary = new Dictionary<IGameMode, TypeObservable<int>>(); 
         }
 
         public void EnqueueChangeModeWithHistory (IGameMode gameMode) {
@@ -35,6 +48,10 @@ namespace NL {
 
             if (this.currentGameMode != null) {
                 this.currentGameMode.OnExit ();
+
+                // 終了を流す
+                var observable = this.GetModeEndObservable(this.currentGameMode);
+                observable.Execute(0);
             }
             this.currentGameMode = gameMode;
             this.currentGameMode.OnEnter ();

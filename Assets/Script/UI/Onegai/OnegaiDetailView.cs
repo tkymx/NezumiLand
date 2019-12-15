@@ -15,6 +15,9 @@ namespace NL {
         private Text authorText = null;
 
         [SerializeField]
+        private OnegaiCloseTimeView closeTimeView = null;
+
+        [SerializeField]
         private Button back = null;
 
         private TypeObservable<int> onBack = null;
@@ -27,10 +30,13 @@ namespace NL {
             });
         }
 
-        public void UpdateCell (string title, string detail, string author) {
+        private float closeTime = 0;
+
+        public void UpdateCell (string title, string detail, string author, bool isCloseTIme, float closeTime) {
             this.titleText.text = title;
             this.detailText.text = detail;
             this.authorText.text = author;
+            this.closeTimeView.UpdateView(isCloseTIme, closeTime);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace NL {
         public Sprite Image { get; private set; }
         public void Receive() {
             GameManager.Instance.OnegaiManager.EnqueueUnLockReserve(this.onegaiId);
+            GameManager.Instance.OnegaiManager.UpdateImmidiately();
         }
     }
 }

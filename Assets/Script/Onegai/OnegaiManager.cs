@@ -25,8 +25,8 @@ namespace  NL
             this.reserveLockOnegaiIdQueue.Enqueue(onegaiId);
         }
 
-        public void UpdateByFrame() {
-
+        public void UpdateImmidiately () {
+            
             Debug.Assert(this.reserveUnLockOnegaiIdQueue != null, "reserveUnLockQueue が null です");
             Debug.Assert(this.reserveLockOnegaiIdQueue != null, "reserveLockQueue が null です");
 
@@ -41,18 +41,13 @@ namespace  NL
                 // アンロックにする
                 Debug.Assert(playerOnegaiModel.IsLock(), playerOnegaiModel.Id.ToString() + "がLock状態ではありません");
                 playerOnegaiModel.ToUnlock();
+                playerOnegaiModel.UpdateStartTime();
 
                 // キャッシュに入れる
                 GameManager.Instance.OnegaiMediaterManager.ChacheOnegai(playerOnegaiModel.OnegaiModel);
                 
                 // 保存する
                 this.playerOnegaiRepository.Store(playerOnegaiModel);
-            }
-
-            //期限付きのものは期限があるかを確認
-            foreach (var playerOnegaiModel in playerOnegaiRepository.GetAlreadyClose() )
-            {
-                this.reserveLockOnegaiIdQueue.Enqueue(playerOnegaiModel.Id);                
             }
 
             // Lock にする
@@ -73,6 +68,17 @@ namespace  NL
                 // 保存する
                 this.playerOnegaiRepository.Store(playerOnegaiModel);
             }            
+        }
+
+        public void UpdateByFrame() {
+
+            //期限付きのものは期限があるかを確認
+            foreach (var playerOnegaiModel in playerOnegaiRepository.GetAlreadyClose() )
+            {
+                this.reserveLockOnegaiIdQueue.Enqueue(playerOnegaiModel.Id);                
+            }
+
+            this.UpdateImmidiately();
         }
     }    
 }

@@ -37,6 +37,21 @@ namespace NL {
         }
     }
 
+    public class ImmediatelyObservable<T> : IObservable<T> {
+
+        T value;
+
+        public ImmediatelyObservable (T value) {
+            this.value = value;
+        }
+
+        public IDisposable Subscribe (IObserver<T> observer) {
+            observer.OnNext(this.value);
+            return new ActionDisposer (() => {
+            });
+        }
+    }    
+
     public static partial class IObservableExtension
     {
         // SubScribe の一般化

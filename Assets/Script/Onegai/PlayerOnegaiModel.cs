@@ -25,6 +25,10 @@ namespace NL {
             this.OnegaiState = OnegaiState.UnLock;
         }
 
+        public void UpdateStartTime () {
+            this.StartOnegaiTime = GameManager.Instance.TimeManager.ElapsedTime;
+        }
+
         public void ToLock () {
             this.OnegaiState = OnegaiState.Lock;
         }
@@ -35,9 +39,9 @@ namespace NL {
 
         public float CloseTime () {
             if (!HasSchedule()) {
-                return float.MaxValue;
+                return this.OnegaiModel.CloseTime();
             }
-            return this.StartOnegaiTime + this.OnegaiModel.ScheduleModel.closeElapsedTime;
+            return this.StartOnegaiTime + this.OnegaiModel.CloseTime();
         }
 
         public bool HasSchedule () {

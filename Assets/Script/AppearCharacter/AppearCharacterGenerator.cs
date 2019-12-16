@@ -8,12 +8,15 @@ namespace NL
     {
         private AppearCharacterModel appearCharacterModel;
         private ConversationModel conversationModel;
+        private RewardModel rewardModel;
         private AppearCharacterViewModel generatedAppearCharacterViewModel;
 
-        public AppearCharacterGenerator(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel)
+        public AppearCharacterGenerator(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel,RewardModel rewardModel)
         {
             this.appearCharacterModel = appearCharacterModel;
             this.conversationModel = conversationModel;
+            this.rewardModel = rewardModel;
+
             this.generatedAppearCharacterViewModel = null;
         }
 
@@ -23,8 +26,9 @@ namespace NL
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
             this.generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
-                appearCharacterModel,
-                conversationModel
+                this.appearCharacterModel,
+                this.conversationModel,
+                this.rewardModel
             );
             return generatedAppearCharacterViewModel;
         }

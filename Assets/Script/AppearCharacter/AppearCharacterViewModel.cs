@@ -13,28 +13,38 @@ namespace NL {
         private AppearCharacterView appearCharacterView;
         private AppearCharacterModel appearCharacterModel;
         private ConversationModel conversationModel;    /*今は固定だが、後々は抽象化したい*/
+        private RewardModel rewardModel;
 
         private List<IDisposable> disposables = new List<IDisposable>();
 
-        public AppearCharacterViewModel(AppearCharacterView appearCharacterView, AppearCharacterModel appearCharacterModel, ConversationModel conversationModel)
+        private bool isReceiveReward = false;
+
+        public AppearCharacterViewModel(AppearCharacterView appearCharacterView, AppearCharacterModel appearCharacterModel, ConversationModel conversationModel, RewardModel rewardModel)
         {
             this.appearCharacterView = appearCharacterView;            
             this.appearCharacterModel = appearCharacterModel;
             this.conversationModel = conversationModel;
+            this.rewardModel = rewardModel;
 
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable
                 .SelectMany(_ => {
-                    // 会話モード
                     var conversationMode =  GameModeGenerator.GenerateConversationMode(this.conversationModel);
-                    // 会話を開始
                     GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(conversationMode);
-                    // 会話の終了を取得
                     return GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode);
                 })
+                .SelectMany(_ => {
+                    if (this.isReceiveReward) {
+                        return new ImmediatelyObservable<int>(_);
+                    }
+                    this.isReceiveReward = true;
+                    var rewardMode = GameModeGenerator.GenerateReceiveRewardMode(this.rewardModel);
+                    GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(rewardMode);
+                    return GameManager.Instance.GameModeManager.GetModeEndObservable(rewardMode);
+                })
                 .Subscribe(_ => {
-                    // 終了後に撤退の動作を始める
-                    // この動作も抽象化したいが。。。
+                    // TODO 終了後に撤退の動作を始める
+                    // 予約から消す必要があれば消す
                     if(GameManager.Instance.DailyAppearCharacterRegistManager.IsRemoveReserve(this)) {
                         GameManager.Instance.DailyAppearCharacterRegistManager.RemoveReserve(this); 
                     }

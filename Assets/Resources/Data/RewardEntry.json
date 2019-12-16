@@ -42,6 +42,11 @@
     {
         "Id": 2,
         "RewardSingleEntrys": [
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[3]
+            }
         ]
     }
 ]

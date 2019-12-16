@@ -23,6 +23,13 @@ namespace NL {
             return ScheduleModel != null;
         }
 
+        public float CloseTime () {
+            if (!HasSchedule()) {
+                return float.MaxValue;
+            }
+            return ScheduleModel.closeElapsedTime;
+        }
+
         public OnegaiModel (
             uint id,
             string title,

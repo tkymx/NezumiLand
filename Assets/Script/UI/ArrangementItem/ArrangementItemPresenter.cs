@@ -9,7 +9,7 @@ namespace NL {
         Text text = null;
 
         void Update () {
-            text.text = GameManager.Instance.ArrangementItemStore.CurrentArrangementItemAmount.ToString ();
+            text.text = GameManager.Instance.ArrangementItemStore.CurrentWithReserve.ToString ();
         }
     }
 }

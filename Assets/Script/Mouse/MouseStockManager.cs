@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public class MouseStockManager : MonoBehaviour {
+    public class MouseStockManager : ConsumableCollectionBase<MouseOrderAmount> {
         private readonly IPlayerMouseStockRepository playerMouseStockRepository;
 
         private GameObject root;
@@ -13,18 +13,26 @@ namespace NL {
         /// ネズミのストック数
         /// いずれ増やせるようになりたい
         /// </summary>
-        private int mouseStockCount;
-        public int MouseStockCount => mouseStockCount;
+        private MouseOrderAmount mouseStockCount;
+        public MouseOrderAmount MouseStockCount => mouseStockCount;
 
         /// <summary>
         /// ネズミをオーダーしている数
         /// </summary>
-        public int OrderedMouseCount => orderedMouse.Count;
+        public override MouseOrderAmount Current => new MouseOrderAmount(orderedMouse.Count);
+        public override MouseOrderAmount CurrentWithReserve => Current + GameManager.Instance.ReserveAmountManager.Get<MouseOrderAmount>();
 
         /// <summary>
         /// ネズミにオーダーできるか？
         /// </summary>
-        public bool IsOrderMouse => this.OrderedMouseCount < this.mouseStockCount;
+        public override bool OnIsConsume (MouseOrderAmount count) {
+            return (this.Current + count) <= this.mouseStockCount;
+        }
+
+        public override void OnConsume(MouseOrderAmount amount) {
+            Debug.Assert(false,"OrderMouseでオーダーしているので基本的には通らない");
+            throw new System.NotImplementedException();
+        }
 
         public MouseStockManager (GameObject root, IPlayerMouseStockRepository playerMouseStockRepository) {
             this.playerMouseStockRepository = playerMouseStockRepository;
@@ -40,8 +48,8 @@ namespace NL {
             this.mouseStockCount = playerMouseStockModel.MouseStockCount;
         }
 
-        public void OrderMouse (IArrangementTarget arrangementTarget, MonoInfo monoInfo) {
-            Debug.Assert (this.IsOrderMouse, "Mouse のオーダー数が限界です");
+        public void OrderMouse (IArrangementTarget arrangementTarget) {
+            Debug.Assert (this.IsConsume (new MouseOrderAmount(1)), "Mouse のオーダー数が限界です");
 
             // ネズミを家からインスタンス化して特定位置にオーダーする（ねずみの種類は動的に変えられるようにしてもいいかも）
             var mousePrefab = ResourceLoader.LoadModel ("mouse_normal");
@@ -52,11 +60,8 @@ namespace NL {
             Debug.Assert (!mouse.IsOrdered (), "すでにオーダーされています。");
 
             var makingPrefab = ResourceLoader.LoadPrefab ("Model/Making");
-            mouse.OrderMaking (arrangementTarget, new PreMono (mouse, makingPrefab, monoInfo));
+            mouse.OrderMaking (arrangementTarget, new PreMono (mouse, makingPrefab, arrangementTarget.MonoInfo));
             orderedMouse.Add (mouse);
-
-            //オーダーをセットする
-            arrangementTarget.MonoInfo = monoInfo;
         }
 
         public void BackMouse (Mouse mouse) {

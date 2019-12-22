@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
+
+    public enum ArrangementTargetState {
+        None,
+        Reserve,
+        Appear
+    }
+
     /// <summary>
     /// 配置のターゲット
     /// 配置には２つの座標系がある
@@ -33,5 +40,10 @@ namespace NL {
 
         // エッジを取得
         List<ArrangementPosition> GetEdgePositions ();
+
+        // 現在の状態
+        ArrangementTargetState ArrangementTargetState { get; }
+
+        void ToAppear();
     }
 }

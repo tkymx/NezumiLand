@@ -41,7 +41,7 @@ namespace NL {
         }
 
         public static bool operator >= (MakingAmount left, MakingAmount right) {
-            return left.value > right.value;
+            return left.value >= right.value;
         }
     }
 }

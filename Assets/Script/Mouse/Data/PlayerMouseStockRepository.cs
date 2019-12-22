@@ -8,7 +8,7 @@ namespace NL {
     public class PlayerMouseStockEntry : EntryBase {
 
         [DataMember]
-        public int MouseStockCount { get; set; }
+        public long MouseStockCount { get; set; }
     }
 
     public interface IPlayerMouseStockRepository {
@@ -44,12 +44,12 @@ namespace NL {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerMouseStockEntry () {
                     Id = playerMouseStockModel.Id,
-                    MouseStockCount = playerMouseStockModel.MouseStockCount
+                    MouseStockCount = playerMouseStockModel.MouseStockCount.Value
                 };
             } else {
                 this.entrys.Add(new PlayerMouseStockEntry () {
                     Id = playerMouseStockModel.Id,
-                    MouseStockCount = playerMouseStockModel.MouseStockCount
+                    MouseStockCount = playerMouseStockModel.MouseStockCount.Value
                 });
             }
             PlayerContextMap.WriteEntry (this.entrys);

@@ -25,7 +25,7 @@ namespace NL {
         public Satisfaction[] LevelUpSatisfaction { get; private set; }
         public Satisfaction BaseSatisfaction { get; private set; }
         public ArrangementItemAmount ArrangementItemAmount { get; private set; }
-        public ArrangementCount ArrangementCount { get; private set; }
+        public ArrangementMaxCount ArrangementMaxCount { get; private set; }
         public string ReleaseConditionText { get; private set; }
         public float MakingTime { get; private set; }
 
@@ -67,14 +67,14 @@ namespace NL {
             this.LevelUpFee = LevelUpFee.Select (fee => new Currency (fee)).ToArray ();
             this.LevelUpSatisfaction = LevelUpSatisfaction.Select (satisfaction => new Satisfaction (satisfaction)).ToArray ();
             this.BaseSatisfaction = new Satisfaction (BaseSatisfaction);
-            this.ArrangementCount = new ArrangementCount (this.Id, ArrangementCount);
+            this.ArrangementMaxCount = new ArrangementMaxCount (this.Id, ArrangementCount);
             this.ReleaseConditionText = ReleaseConditionText;
             this.MakingTime = MakingTime;
         }
 
         public ArrangementResourceAmount ArrangementResourceAmount {
             get {
-                return new ArrangementResourceAmount (this.MakingFee, this.ArrangementItemAmount, this.ArrangementCount);
+                return new ArrangementResourceAmount (this.MakingFee, this.ArrangementItemAmount, new ArrangementCount(this.Id), MouseOrderAmount.One);
             }
         }
     }

@@ -19,7 +19,8 @@ namespace NL {
                 element.OnegaiModel.Detail,
                 element.OnegaiState == OnegaiState.Clear,
                 element.HasSchedule (),
-                element.CloseTime ());
+                element.CloseTime (),
+                element.OnegaiModel.Satisfaction.ToString());
             
             this.disposables.Add(cellView.OnClick.Subscribe(_ => {
                 this.onCellClick.Execute(element);                

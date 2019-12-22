@@ -17,7 +17,7 @@ namespace NL {
     public interface IMousePurchaceTableRepository {
         IEnumerable<MousePurchaceTableModel> GetAll ();
         MousePurchaceTableModel Get (uint id);
-        uint MacPurchaseCount ();
+        MouseOrderAmount MaxPurchaseCount ();
     }
 
     public class MousePurchaceTableRepository : RepositoryBase<MousePurchaceTableEntry>, IMousePurchaceTableRepository {
@@ -42,10 +42,10 @@ namespace NL {
                     entry.ItemCost);
         }
 
-        public uint MacPurchaseCount () 
+        public MouseOrderAmount MaxPurchaseCount () 
         {
             var maxId = this.entrys.Max(entry => entry.Id);
-            return maxId;
+            return new MouseOrderAmount(maxId);
         }
     }
 }

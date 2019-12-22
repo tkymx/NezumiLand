@@ -21,17 +21,16 @@ namespace NL {
         }
 
         public void OnUpdate () {
+            OrderMouseIfSelect();
+        }
+
+        private void OrderMouseIfSelect () {
             if (!GameManager.Instance.ArrangementManager.ArrangementAnnotater.IsSelectByFrame) {
                 return;
             }
 
             var currentTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget ();
             if (!GameManager.Instance.ArrangementManager.IsSetArrangement (currentTarget)) {
-                return;
-            }
-
-            if (!GameManager.Instance.MouseStockManager.IsOrderMouse) {
-                GameManager.Instance.EffectManager.PlayError ("ネズミがいません", currentTarget.CenterPosition);
                 return;
             }
 
@@ -42,9 +41,7 @@ namespace NL {
                 return;
             }
 
-            ArrangementResourceHelper.Consume (makingArrangementResourceAmount);
-            GameManager.Instance.EffectManager.PlayConsumeEffect (makingMono.MakingFee, currentTarget.CenterPosition);
-            GameManager.Instance.MouseStockManager.OrderMouse (currentTarget, makingMono);
+            ReserveArrangementService.Execute(currentTarget, makingMono);
         }
 
         public void OnExit () {

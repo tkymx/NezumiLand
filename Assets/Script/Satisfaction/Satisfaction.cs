@@ -32,7 +32,7 @@ namespace NL {
         }
 
         public static bool operator >= (Satisfaction left, Satisfaction right) {
-            return left.value > right.value;
+            return left.value >= right.value;
         }
 
         // 掛け算は存在しない

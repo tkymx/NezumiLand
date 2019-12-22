@@ -16,13 +16,13 @@ namespace NL.EventContents {
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
             var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
 
-            Debug.Assert(playerEventModel.EventModel.EventContentsModel.Arg.Length >= 2, "AppearConversationCharacter: コンテンツ引数の要素数が2未満です");
+            Debug.Assert(playerEventModel.EventModel.EventContentsModel.Arg.Length >= 3, "AppearConversationCharacter: コンテンツ引数の要素数が3未満です");
             var appearCharacterId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
             var conversationId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[1]);
             var rewardId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[2]);
 
-            this.conversationModel = conversationRepository.Get(conversationId);
             this.appearCharacterModel = appearCharacterRepository.Get(appearCharacterId);
+            this.conversationModel = conversationRepository.Get(conversationId);
             this.rewardModel = rewardRepository.Get(rewardId);
         }
 

@@ -21,7 +21,7 @@ namespace NL
                 this.Close();
             }));
             this.disposables.Add (this.mousePurchaseView.OnPurchace.Subscribe(_ => {
-                var mousePurchaceTableModel = this.mousePurchaceTableRepository.Get((uint)(FetchCurrentCount()+1));
+                var mousePurchaceTableModel = this.mousePurchaceTableRepository.Get((uint)(FetchCurrentCount().Value+1));
                 var amount = mousePurchaceTableModel.GetMousePurchaseResourceAmount();
                 if(MousePurchaseResourceHelper.IsConsume(amount)) {
 
@@ -51,19 +51,19 @@ namespace NL
             this.UpdateView();
         }
 
-        private int FetchCurrentCount() {
+        private MouseOrderAmount FetchCurrentCount() {
             var currentMouseStockCount = this.playerMouseStockRepository.GetOwn().MouseStockCount;
             return currentMouseStockCount;
         }
 
         private bool IsMaxCount() {
             var currentMouseStockCount = FetchCurrentCount();
-            return this.mousePurchaceTableRepository.MacPurchaseCount() <= currentMouseStockCount;
+            return this.mousePurchaceTableRepository.MaxPurchaseCount() <= currentMouseStockCount;
         }
 
         private void UpdateView () {
             var currentMouseStockCount = FetchCurrentCount();
-            var nextMouseStockCount = currentMouseStockCount + 1;
+            var nextMouseStockCount = currentMouseStockCount++;
 
             if (IsMaxCount()) {
                 this.mousePurchaseView.UpdateView(
@@ -75,7 +75,7 @@ namespace NL
                 this.mousePurchaseView.SetNoPuchaseByMaxCount();
             }
             else {
-                var mousePurchaceTableModel = this.mousePurchaceTableRepository.Get((uint)nextMouseStockCount);
+                var mousePurchaceTableModel = this.mousePurchaceTableRepository.Get((uint)nextMouseStockCount.Value);
                 this.mousePurchaseView.UpdateView(
                     currentMouseStockCount.ToString(),
                     nextMouseStockCount.ToString(),

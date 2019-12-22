@@ -11,6 +11,7 @@ namespace NL {
         public float ElapsedTime => elapsedTime;
 
         private bool isPause;
+        public bool IsPause => isPause;
 
         public TimeManager () {
             this.elapsedTime = 0;

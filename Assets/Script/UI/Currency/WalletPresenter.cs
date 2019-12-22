@@ -9,7 +9,7 @@ namespace NL {
         Text text = null;
 
         private void Update () {
-            text.text = GameManager.Instance.Wallet.CurrentCurrency.Value.ToString ();
+            text.text = GameManager.Instance.Wallet.CurrentWithReserve.Value.ToString ();
         }
     }
 }

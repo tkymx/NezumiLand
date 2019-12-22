@@ -35,11 +35,27 @@ namespace NL {
         /// </summary>
         private Dictionary<IArrangementTarget, List<IArrangementTarget>> nearMap;
 
+        /// <summary>
+        /// 配置の予約されているものがあるか？
+        /// </summary>
+        /// <returns></returns>
+        private bool HasReserveArrangementTarget () {
+            return this.arrangementTargetStore.Find(target => target.ArrangementTargetState == ArrangementTargetState.Reserve) != null;
+        }
+
         public ArrangementManager (GameObject root) {
             this.arrangementTargetStore = new List<IArrangementTarget> ();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater (root);
             this.nearMap = new Dictionary<IArrangementTarget, List<IArrangementTarget>>();
+        }
+
+        public void UpdateByFrame () {
+            if (!GameManager.Instance.TimeManager.IsPause) {
+                if (HasReserveArrangementTarget ()) {
+                    AppearArrangementService.Execute ();
+                }
+            }
         }
 
         /// <summary>
@@ -48,8 +64,14 @@ namespace NL {
         /// </summary>
         /// <param name="id"></param>
         /// <returns>出現数</returns>
-        public int GetAppearMonoCountById (uint id) {
-            return this.arrangementTargetStore
+        public int GetAppearMonoCountById (uint id, bool withReserve = true) {
+            var result = this.arrangementTargetStore;
+            if (!withReserve) {
+                result = this.arrangementTargetStore
+                    .Where (target => target.ArrangementTargetState == ArrangementTargetState.Appear)
+                    .ToList();
+            }
+            return result
                 .Where (target => target.HasMonoInfo)
                 .Where (target => target.MonoInfo.Id == id)
                 .Count ();

@@ -8,6 +8,7 @@ namespace NL {
         Vector3 centerPosition;
         float range;
         List<ArrangementPosition> arrangementPositions;
+        ArrangementTargetState arrangementTargetState;
 
         public ArrangementTarget (List<GameObject> gameObjectList, List<ArrangementPosition> arrangementPositions, ArrangementInfo arrangementInfo) {
             // 中心座標
@@ -22,6 +23,9 @@ namespace NL {
 
             // 配列位置
             this.arrangementPositions = new List<ArrangementPosition> (arrangementPositions);
+
+            // はじめは予約
+            this.arrangementTargetState = ArrangementTargetState.Reserve;
         }
 
         // プレイヤー
@@ -70,6 +74,15 @@ namespace NL {
                 }
             }
             return edgePositions;
+        }
+        
+        // 現在の状態を保持
+        public ArrangementTargetState ArrangementTargetState => arrangementTargetState;
+
+        // 表示状態にする
+        public void ToAppear() {
+            Debug.Assert(this.arrangementTargetState != ArrangementTargetState.Appear, "すでにAppearです");
+            this.arrangementTargetState = ArrangementTargetState.Appear;
         }
     }
 }

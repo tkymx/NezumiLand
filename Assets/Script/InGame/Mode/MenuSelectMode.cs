@@ -20,7 +20,7 @@ namespace NL {
                 return;
             }
 
-            Debug.Assert (GameManager.Instance.MouseStockManager.IsOrderMouse, "オーダーできないのにモノが選択されました。");
+            Debug.Assert (GameManager.Instance.MouseStockManager.IsConsume (), "オーダーできないのにモノが選択されました。");
 
             // なんかここで入れてあげるのは違う気もする
             this.context.SelectMonoInfo (GameManager.Instance.MonoSelectManager.SelectedMonoInfo);

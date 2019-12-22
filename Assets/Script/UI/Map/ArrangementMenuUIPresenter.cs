@@ -33,8 +33,8 @@ namespace NL {
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             deleteButton.onClick.AddListener (() => {
                 var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-                if (GameManager.Instance.Wallet.IsPay (removeFee)) {
-                    GameManager.Instance.Wallet.Pay (removeFee);
+                if (GameManager.Instance.Wallet.IsConsume (removeFee)) {
+                    GameManager.Instance.Wallet.Consume (removeFee);
                     GameManager.Instance.EffectManager.PlayConsumeEffect (removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
                     GameManager.Instance.ArrangementManager.RemoveSelectArrangement ();
                     this.DoFinishProcess ();
@@ -43,8 +43,8 @@ namespace NL {
 
             levelUpButton.onClick.AddListener (() => {
                 var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
-                if (GameManager.Instance.Wallet.IsPay (levelUpFee)) {
-                    GameManager.Instance.Wallet.Pay (levelUpFee);
+                if (GameManager.Instance.Wallet.IsConsume (levelUpFee)) {
+                    GameManager.Instance.Wallet.Consume (levelUpFee);
                     GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.LevelUp ();
                     GameManager.Instance.EffectManager.PlayConsumeEffect (levelUpFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
                 }
@@ -108,7 +108,7 @@ namespace NL {
             }
 
             var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-            if (!GameManager.Instance.Wallet.IsPay (removeFee)) {
+            if (!GameManager.Instance.Wallet.IsConsume (removeFee)) {
                 deleteButton.interactable = false;
                 return;
             }
@@ -148,7 +148,7 @@ namespace NL {
             }
 
             var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
-            if (!GameManager.Instance.Wallet.IsPay (levelUpFee)) {
+            if (!GameManager.Instance.Wallet.IsConsume (levelUpFee)) {
                 levelUpButton.interactable = false;
                 return;
             }

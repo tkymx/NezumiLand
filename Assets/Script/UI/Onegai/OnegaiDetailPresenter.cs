@@ -24,8 +24,8 @@ namespace NL
                 playerOnegaiModel.OnegaiModel.Detail,
                 playerOnegaiModel.OnegaiModel.Author,
                 playerOnegaiModel.HasSchedule (),
-                playerOnegaiModel.CloseTime ()
-            );
+                playerOnegaiModel.CloseTime (),
+                playerOnegaiModel.OnegaiModel.Satisfaction.ToString());
         }
     }    
 }

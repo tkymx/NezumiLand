@@ -52,7 +52,9 @@ namespace NL {
     public interface IMonoInfoRepository {
         IEnumerable<MonoInfo> GetAll ();
         MonoInfo Get (uint id);
+        IEnumerable<MonoInfo> Gets (List<uint> ids);
         IEnumerable<MonoInfo> GetByType (MonoType type);
+        ArrangementMaxCount GetMaxCount (List<uint> ids);
     }
 
     public class MonoInfoRepository : RepositoryBase<MonoInfoEntry>, IMonoInfoRepository {
@@ -67,6 +69,10 @@ namespace NL {
         public MonoInfo Get(uint id) {
             var entry = this.GetEntry(id);
             return this.CreateFromEntry(entry);
+        }
+
+        public IEnumerable<MonoInfo> Gets (List<uint> ids) {
+            return ids.Select(id => Get(id));
         }
 
         private MonoInfo CreateFromEntry (MonoInfoEntry entry) {
@@ -91,6 +97,15 @@ namespace NL {
         public IEnumerable<MonoInfo> GetByType (MonoType type) {
             return GetAll ()
                 .Where (monoInfo => monoInfo.Type == type);
+        }
+
+        public ArrangementMaxCount GetMaxCount (List<uint> ids) {
+            var arrangementMaxCount = new ArrangementMaxCount();
+            foreach (var model in Gets(ids))
+            {
+                arrangementMaxCount += model.ArrangementMaxCount;   
+            }
+            return arrangementMaxCount;
         }
     }
 }

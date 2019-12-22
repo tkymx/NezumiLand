@@ -6,7 +6,7 @@ namespace NL
 {
     public class PlayerMouseStockModel : ModelBase
     {
-        public int MouseStockCount { get; private set; }
+        public MouseOrderAmount MouseStockCount { get; private set; }
 
         public void Increment() {
             this.MouseStockCount++;
@@ -14,11 +14,11 @@ namespace NL
 
         public PlayerMouseStockModel(
             uint id,
-            int mouseStockCount
+            long mouseStockCount
         )
         {
             this.Id = id;
-            this.MouseStockCount = mouseStockCount;            
+            this.MouseStockCount = new MouseOrderAmount(mouseStockCount);            
         }
     }   
 }

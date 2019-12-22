@@ -9,7 +9,7 @@ namespace NL {
                 element.MonoInfo.Name,
                 element.MonoInfo.MakingFee,
                 GameManager.Instance.ArrangementManager.GetAppearMonoCountById (element.MonoInfo.Id),
-                element.MonoInfo.ArrangementCount.Count,
+                element.MonoInfo.ArrangementMaxCount.GetMaxCount(element.MonoInfo.Id),
                 !element.IsRelease);
 
             this.disposables.Add(cellView.OnClick.Subscribe (_ => {

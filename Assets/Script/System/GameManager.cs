@@ -83,6 +83,9 @@ namespace NL {
         private MonoReleaseManager monoReleaseManager;
         public MonoReleaseManager MonoReleaseManager => monoReleaseManager;
 
+        private ReserveAmountManager reserveAmountManager;
+        public ReserveAmountManager ReserveAmountManager => reserveAmountManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -122,6 +125,7 @@ namespace NL {
             this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
             this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
+            this.reserveAmountManager = new ReserveAmountManager();
 
             // initialize
             this.arrangementPresenter.Initialize();
@@ -144,6 +148,7 @@ namespace NL {
             this.eventManager.UpdateByFrame ();
 
             // 定常
+            this.arrangementManager.UpdateByFrame ();
             this.dailyActionManager.UpdateByFrame ();
             this.gameModeManager.UpdateByFrame ();
             this.monoManager.UpdateByFrame ();

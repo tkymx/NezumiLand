@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NL {
-    public struct Currency {
+
+    public struct Currency : IConsumableAmount{
         private long value;
         public long Value => value;
 
@@ -11,12 +12,24 @@ namespace NL {
             this.value = value;
         }
 
+        public IConsumableAmount Add_Implementation(IConsumableAmount right) {
+            Debug.Assert(right is Currency, "Currency ではありません");
+            var rightCast = (Currency)right;
+            return new Currency(this.value + rightCast.value);
+        }
+
+        public IConsumableAmount Subtraction_Implementation(IConsumableAmount right) {
+            Debug.Assert(right is Currency, "Currency ではありません");
+            var rightCast = (Currency)right;
+            return new Currency(this.value - rightCast.value);
+        }
+
         public static Currency operator + (Currency left, Currency right) {
-            return new Currency (left.value + right.value);
+            return (Currency)left.Add_Implementation(right);
         }
 
         public static Currency operator - (Currency left, Currency right) {
-            return new Currency (left.value - right.value);
+            return (Currency)left.Subtraction_Implementation(right);
         }
 
         public static bool operator < (Currency left, Currency right) {
@@ -32,7 +45,7 @@ namespace NL {
         }
 
         public static bool operator >= (Currency left, Currency right) {
-            return left.value > right.value;
+            return left.value >= right.value;
         }
 
         // 掛け算は存在しない

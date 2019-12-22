@@ -8,7 +8,7 @@ namespace NL {
     /// </summary>
     public class MousePurchaseResourceHelper {
         public static bool IsConsume (MousePurchaseResourceAmount amount) {
-            if (!GameManager.Instance.Wallet.IsPay (amount.Currency)) {
+            if (!GameManager.Instance.Wallet.IsConsume (amount.Currency)) {
                 return false;
             }
 
@@ -21,7 +21,7 @@ namespace NL {
 
         public static void Consume (MousePurchaseResourceAmount amount) {
             Debug.Assert (MousePurchaseResourceHelper.IsConsume (amount), "精算ができません");
-            GameManager.Instance.Wallet.Pay (amount.Currency);
+            GameManager.Instance.Wallet.Consume (amount.Currency);
             GameManager.Instance.ArrangementItemStore.Consume (amount.ArrangementItemAmount);
         }
     }

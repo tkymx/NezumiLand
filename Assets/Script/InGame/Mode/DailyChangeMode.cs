@@ -23,7 +23,7 @@ namespace NL {
             GameManager.Instance.TimeManager.Pause ();
 
             // 変化前の情報
-            Currency prevCurrency = GameManager.Instance.Wallet.CurrentCurrency;
+            Currency prevCurrency = GameManager.Instance.Wallet.Current;
             Satisfaction currentSatisfaction = this.satisfactionCalculater.CalcFieldSatisfaction();
 
             // 日銭の計算と付与を行う
@@ -32,7 +32,7 @@ namespace NL {
             GameManager.Instance.EffectManager.PlayEarnEffect (dailyEarn, GameManager.Instance.MouseHomeManager.HomePostion);
 
             // 変化後の計算
-            Currency nextCurrency = GameManager.Instance.Wallet.CurrentCurrency;
+            Currency nextCurrency = GameManager.Instance.Wallet.Current;
             
             // 一日の終りダイアログを出す
             this.DoDailyEnd ();

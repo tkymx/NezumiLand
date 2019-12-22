@@ -17,14 +17,18 @@ namespace NL {
         [SerializeField]
         private GameObject clearBadge = null;
 
+        [SerializeField]
+        private Text satisfaction = null;
+
         // 終了までの時間
         private float closeTime = 0;
 
-        public void UpdateCell (string title, string detail, bool isClear, bool isShowClose,float closeTime) {
+        public void UpdateCell (string title, string detail, bool isClear, bool isShowClose,float closeTime, string satisfaction) {
             this.titleText.text = title;
             this.detailText.text = detail;
             this.clearBadge.SetActive (isClear);
             this.closeTimeView.UpdateView(isShowClose, closeTime);
+            this.satisfaction.text = "取得満足度: " + satisfaction;
         }
     }
 }

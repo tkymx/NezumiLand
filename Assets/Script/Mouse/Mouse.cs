@@ -89,8 +89,6 @@ namespace NL {
 
         public void OrderMaking (IArrangementTarget arrangementTarget, PreMono preMono) {
             Debug.Assert (!IsOrdered (), "現在作成中のため追加で作成を行うことができません。");
-
-            GameManager.Instance.ArrangementManager.AddArrangement (arrangementTarget);
             this.currentPreMono = preMono;
             stateManager.Interrupt (new MoveToTarget (this, arrangementTarget));
         }

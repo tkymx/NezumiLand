@@ -20,6 +20,9 @@ namespace NL {
         [SerializeField]
         private Button back = null;
 
+        [SerializeField]
+        private Text satisfaction = null;
+
         private TypeObservable<int> onBack = null;
         public TypeObservable<int> OnBack => onBack;
 
@@ -32,11 +35,12 @@ namespace NL {
 
         private float closeTime = 0;
 
-        public void UpdateCell (string title, string detail, string author, bool isCloseTIme, float closeTime) {
+        public void UpdateCell (string title, string detail, string author, bool isCloseTIme, float closeTime, string satisfaction) {
             this.titleText.text = title;
             this.detailText.text = detail;
             this.authorText.text = author;
             this.closeTimeView.UpdateView(isCloseTIme, closeTime);
+            this.satisfaction.text = "取得満足度: " + satisfaction;
         }
     }
 }

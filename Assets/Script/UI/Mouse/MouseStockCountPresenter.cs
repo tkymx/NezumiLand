@@ -23,8 +23,13 @@ namespace NL {
         }
 
         public void UpdateByFrame () {
+            
+            // 最大数
             this.mouseStockCountText.text = GameManager.Instance.MouseStockManager.MouseStockCount.ToString ();
-            this.orderedMouseCountText.text = GameManager.Instance.MouseStockManager.OrderedMouseCount.ToString ();
+
+            // 現在の数
+            var currentCount = GameManager.Instance.MouseStockManager.CurrentWithReserve;
+            this.orderedMouseCountText.text = currentCount.ToString ();
         }
     }
 }

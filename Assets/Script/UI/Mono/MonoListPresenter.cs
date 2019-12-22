@@ -42,7 +42,7 @@ namespace NL {
             if (!playerMonoInfo.IsRelease) {
                 return true;
             }
-            if (!ArrangementResourceHelper.IsConsume (playerMonoInfo.MonoInfo.ArrangementResourceAmount)) {
+            if (!ArrangementResourceHelper.IsConsume (playerMonoInfo.MonoInfo.ArrangementResourceAmount).IsConsume) {
                 return false;
             }
             return true;

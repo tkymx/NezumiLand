@@ -32,7 +32,7 @@ namespace NL {
         }
 
         private static string PlayerDataPath (string name) {
-            return PlayerDataDirPath () + "/" + name + "json";
+            return PlayerDataDirPath () + "/" + name + ".json";
         }
 
         public static void RemoveAllPlayerData () {

@@ -150,13 +150,21 @@ namespace NL {
         /// 配置位置を消去する
         /// </summary>
         public void RemoveArranement (IArrangementTarget arrangementTarget) {
-            if (arrangementTargetStore.Contains (arrangementTarget)) {
+
+            var isContain = arrangementTargetStore.Contains (arrangementTarget);
+            Debug.Assert(isContain, "含まれていない配置が消されようとしました。");
+            if (isContain) {
+                
                 arrangementTargetStore.Remove (arrangementTarget);
-                GameManager.Instance.MonoManager.RemoveMono (arrangementTarget.MonoViewModel);
+
+                // 設置済みの場合は設置情報を消す
+                if (arrangementTarget.HasMonoViewModel) {
+                    GameManager.Instance.MonoManager.RemoveMono (arrangementTarget.MonoViewModel);
+                    GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByRBeforeRemoval(arrangementTarget);
+                    this.RemoveNearArrangement(arrangementTarget);
+                }
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
-            GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByRBeforeRemoval(arrangementTarget);
-            this.RemoveNearArrangement(arrangementTarget);
         }
 
         /// <summary>

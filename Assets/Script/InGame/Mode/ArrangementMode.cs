@@ -36,7 +36,7 @@ namespace NL {
 
             var makingMono = GameManager.Instance.MonoSelectManager.SelectedMonoInfo;
             var makingArrangementResourceAmount = makingMono.ArrangementResourceAmount;
-            if (!ArrangementResourceHelper.IsConsume (makingArrangementResourceAmount)) {
+            if (!ArrangementResourceHelper.IsConsume (makingArrangementResourceAmount).IsConsume) {
                 GameManager.Instance.EffectManager.PlayError ("素材が足りません。", currentTarget.CenterPosition);
                 return;
             }

@@ -63,7 +63,7 @@ namespace NL
 
         private void UpdateView () {
             var currentMouseStockCount = FetchCurrentCount();
-            var nextMouseStockCount = currentMouseStockCount++;
+            var nextMouseStockCount = currentMouseStockCount + 1;
 
             if (IsMaxCount()) {
                 this.mousePurchaseView.UpdateView(

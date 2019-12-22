@@ -24,36 +24,38 @@ namespace NL {
         private Camera mainCameta = null;
 
         // のちのち view として作れれば良い
-        private List<ArrangementView> arrangementViews;
+        private List<GameObject> instances;
 
         public void Initialize () {
-            this.arrangementViews = new List<ArrangementView> ();
+            this.instances = new List<GameObject> ();
         }
 
         public void ReLoad () {
 
             this.ClearDisposable();
 
-            foreach (var arrangementView in this.arrangementViews) {
-                Object.DisAppear (arrangementView.gameObject);
+            foreach (var instance in this.instances) {
+                Object.DisAppear (instance);
             }
 
-            this.arrangementViews.Clear ();
+            this.instances.Clear ();
 
             // 設置開始しているもの
             GameManager.Instance.ArrangementManager.ArrangementTargetStore.ForEach (arrangementTarget => {
                 if (GameManager.Instance.ArrangementManager.CheckIsSelect (arrangementTarget)) 
                 {
+                    // 選択状態
                     this.appearArrangement (arrangementTarget, this.selectedArrangementPrefab);
                 } 
                 else if (arrangementTarget.ArrangementTargetState == ArrangementTargetState.Reserve) 
                 {
+                    // 予約状態
                     this.appearArrangement (arrangementTarget, reserveArrangementPrefab);
                     this.AddArrangementCancelAnnotation(arrangementTarget);
-
                 } 
                 else 
                 {
+                    // 設置状態
                     this.appearArrangement (arrangementTarget, this.arrangementPrefab);
                 }
             });
@@ -66,6 +68,8 @@ namespace NL {
             this.disposables.Add(view.OnCancelObservable.Subscribe(_ => {
                 UnReserveArrangementService.Execute(arrangementTarget);
             }));
+
+            this.instances.Add (instance);
         }
 
         private void appearArrangement (IArrangementTarget arrangementTarget, GameObject prefab, bool isReserve = false) {
@@ -90,7 +94,7 @@ namespace NL {
                         });
                 }
 
-                this.arrangementViews.Add (arrangementView);
+                this.instances.Add (instance);
             });
         }
     }

@@ -14,7 +14,7 @@
         "EventConditionIds": [
             3
         ],
-        "EventContentsId": 2,
+        "EventContentsId": 3,
         "EventRepeatType": "Once",
         "RewardId": 2
     },

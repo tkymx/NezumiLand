@@ -69,6 +69,10 @@ namespace NL {
         private DailyStartPresenter dailyStartPresenter = null;
         public DailyStartPresenter DailyStartPresenter => dailyStartPresenter;
 
+        [SerializeField]
+        private OnegaiConditionNotificationPresenter onegaiConditionNotificationPresenter = null;
+        public OnegaiConditionNotificationPresenter OnegaiConditionNotificationPresenter => onegaiConditionNotificationPresenter;
+
 
         public void Initialize (
             OnegaiRepository onegaiRepository, 
@@ -94,10 +98,12 @@ namespace NL {
             this.toolBarmanager.Initialize();
             this.dailyEndPresenter.Initialize();
             this.dailyStartPresenter.Initialize();
+            this.onegaiConditionNotificationPresenter.Initialize();
         }
 
         public void UpdateByFrame() {
             this.toolBarmanager.UpdateByrame();
+            this.onegaiConditionNotificationPresenter.UpdateByFrame();
         }
     }
 }

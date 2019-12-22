@@ -10,6 +10,7 @@ namespace NL
         [SerializeField]
         private Button onCancel = null;
 
+        [SerializeField]
         private Canvas mainCanvas = null;
 
         public TypeObservable<int> OnCancelObservable { get; private set; } 

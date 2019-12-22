@@ -7,18 +7,29 @@ namespace NL {
     /// 配置するときのアイテムの管理を行う
     /// </summary>
     public class ArrangementResourceHelper {
-        public static bool IsConsume (ArrangementResourceAmount amount, bool withReserve = true) {
+
+        public struct IsConsumeResult {
+            public bool IsConsume { get; private set; }
+            public string Error { get; private set; }
+
+            public IsConsumeResult (bool isConsume, string error) {
+                this.IsConsume = isConsume;
+                this.Error = error;
+            }
+        }
+
+        public static IsConsumeResult IsConsume (ArrangementResourceAmount amount, bool withReserve = true) {
             
             if (!GameManager.Instance.MouseStockManager.IsConsume (amount.MouseOrderAmount, withReserve) ) {
-                return false;
+                return new IsConsumeResult(false, string.Format("MouseOrderAmount:{0}/{1}", amount.MouseOrderAmount, GameManager.Instance.MouseStockManager.MouseStockCount));
             }
             
             if (!GameManager.Instance.Wallet.IsConsume (amount.Currency, withReserve)) {
-                return false;
+                return new IsConsumeResult(false, string.Format("Currency:{0}/{1}", amount.Currency, GameManager.Instance.Wallet.Current));
             }
 
             if (!GameManager.Instance.ArrangementItemStore.IsConsume (amount.ArrangementItemAmount)) {
-                return false;
+                return new IsConsumeResult(false, string.Format("ArrangementItemStore:{0}/{1}", amount.ArrangementItemAmount, GameManager.Instance.ArrangementItemStore.Current));
             }
 
             var monoIds = amount.ArrangementCount.GetCountedMonoInfos();
@@ -29,15 +40,16 @@ namespace NL {
                 var currentCount = GameManager.Instance.ArrangementManager.GetAppearMonoCountById(monoId, withReserve);
                 var maxCount = arrangementMaxCount.GetMaxCount(monoId);
                 if (maxCount <= currentCount) {
-                    return false;
+                    return new IsConsumeResult(false, string.Format("currentCount:{0}:{1}/{2}", monoId, currentCount, maxCount));
                 }
             }
             
-            return true;
+            return new IsConsumeResult(true, "success");
         }
 
         public static void Consume (ArrangementResourceAmount amount) {
-            Debug.Assert (ArrangementResourceHelper.IsConsume (amount, false), "精算ができません");
+            var isConsumeResult = ArrangementResourceHelper.IsConsume (amount, false);
+            Debug.Assert (isConsumeResult.IsConsume, isConsumeResult.Error);
             GameManager.Instance.Wallet.Consume (amount.Currency);
             GameManager.Instance.ArrangementItemStore.Consume (amount.ArrangementItemAmount);
         }

@@ -9,7 +9,7 @@ namespace NL
         public MouseOrderAmount MouseStockCount { get; private set; }
 
         public void Increment() {
-            this.MouseStockCount++;
+            this.MouseStockCount += 1;
         }
 
         public PlayerMouseStockModel(

@@ -27,12 +27,16 @@ namespace NL {
             return (MouseOrderAmount)left.Add_Implementation(right);
         }
 
+        public static MouseOrderAmount operator + (MouseOrderAmount left, long right) {
+            return (MouseOrderAmount)left.Add_Implementation(new MouseOrderAmount(right));
+        }
+
         public static MouseOrderAmount operator - (MouseOrderAmount left, MouseOrderAmount right) {
             return (MouseOrderAmount)left.Subtraction_Implementation(right);
         }        
 
-        public static MouseOrderAmount operator ++ (MouseOrderAmount left) {
-            return new MouseOrderAmount (left.value + 1);
+        public static MouseOrderAmount operator - (MouseOrderAmount left, long right) {
+            return (MouseOrderAmount)left.Subtraction_Implementation(new MouseOrderAmount(right));
         }
 
         public static bool operator < (MouseOrderAmount left, MouseOrderAmount right) {

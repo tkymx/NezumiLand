@@ -48,7 +48,7 @@ namespace NL {
             this.mouseStockCount = playerMouseStockModel.MouseStockCount;
         }
 
-        public void OrderMouse (IArrangementTarget arrangementTarget) {
+        public void OrderMouse (IPlayerArrangementTarget arrangementTarget) {
             Debug.Assert (this.IsConsume (new MouseOrderAmount(1)), "Mouse のオーダー数が限界です");
 
             // ネズミを家からインスタンス化して特定位置にオーダーする（ねずみの種類は動的に変えられるようにしてもいいかも）

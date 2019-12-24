@@ -4,9 +4,9 @@ using UnityEngine;
 namespace NL {
     public class MoveToTarget : IState {
         private Mouse context;
-        private IArrangementTarget targetObject;
+        private IPlayerArrangementTarget targetObject;
 
-        public MoveToTarget (Mouse context, IArrangementTarget targetObject) {
+        public MoveToTarget (Mouse context, IPlayerArrangementTarget targetObject) {
             this.context = context;
             this.targetObject = targetObject;
         }

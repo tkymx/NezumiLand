@@ -6,7 +6,14 @@ using System.Linq;
 namespace NL {
     public class AppearArrangementService
     {
-        public static void Execute () {
+        private readonly IPlayerArrangementTargetRepository playerArrangementTargetRepository = null;
+
+        public AppearArrangementService(IPlayerArrangementTargetRepository playerArrangementTargetRepository)
+        {
+            this.playerArrangementTargetRepository = playerArrangementTargetRepository;
+        }
+
+        public void Execute () {
             ArrangementResourceHelper.ConsumeReserve();
 
             var reserveArrangementTarget = GameManager.Instance.ArrangementManager.ArrangementTargetStore
@@ -15,6 +22,8 @@ namespace NL {
 
             foreach (var arrangementTarget in reserveArrangementTarget) {
                 arrangementTarget.ToAppear();
+                this.playerArrangementTargetRepository.Store(arrangementTarget.PlayerArrangementTargetModel);
+                
                 GameManager.Instance.MouseStockManager.OrderMouse (arrangementTarget);
             }
 

@@ -20,7 +20,7 @@ namespace NL {
             var menuSelectModeContext = GameContextMap.DefaultMap.MenuSelectModeContext;
             return new MenuSelectMode (menuSelectModeContext);
         }
-        public static ArrangementMenuSelectMode GenerateArrangementMenuSelectMode (IArrangementTarget arrangementTarget) {
+        public static ArrangementMenuSelectMode GenerateArrangementMenuSelectMode (IPlayerArrangementTarget arrangementTarget) {
             var arrangementMenuSelectModeContext = GameContextMap.DefaultMap.ArrangementMenuSelectModeContext;
 
             // コンバート

@@ -15,7 +15,7 @@ namespace NL {
         protected T GetEntry(uint id) {
             var entry = this.entrys.Find (e => e.Id == id);
             Debug.Assert (entry != null, "ファイルが見つかりません : " + id.ToString ());
-            return entry;            
+            return entry;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace NL {
             }
         }
 
-        public static void Initialize () {
-            GameContextMap.defaultMap = new GameContextMap ();
+        public static void Initialize (IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
+            GameContextMap.defaultMap = new GameContextMap (playerArrangementTargetRepository);
         }
 
         // class
@@ -32,9 +32,9 @@ namespace NL {
         private ArrangementMenuSelectModeContext arrangementMenuSelectModeContext = null;
         public ArrangementMenuSelectModeContext ArrangementMenuSelectModeContext => arrangementMenuSelectModeContext;
 
-        public GameContextMap () {
+        public GameContextMap (IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.menuSelectModeContext = new MenuSelectModeContext ();
-            this.arrangementModeContext = new ArrangementModeContext ();
+            this.arrangementModeContext = new ArrangementModeContext (playerArrangementTargetRepository);
             this.arrangementMenuSelectModeContext = new ArrangementMenuSelectModeContext ();
         }
     }

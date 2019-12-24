@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEngine;
 
 namespace NL {
-    public class ArrangementTarget : IArrangementTarget {
+    public class YesPlayerArrangementTarget : IPlayerArrangementTarget {
         Vector3 centerPosition;
         float range;
         List<ArrangementPosition> arrangementPositions;
         ArrangementTargetState arrangementTargetState;
 
-        public ArrangementTarget (List<GameObject> gameObjectList, List<ArrangementPosition> arrangementPositions, ArrangementInfo arrangementInfo) {
+        public YesPlayerArrangementTarget (List<GameObject> gameObjectList, List<ArrangementPosition> arrangementPositions, ArrangementInfo arrangementInfo) {
             // 中心座標
             this.centerPosition = new Vector3 ();
             foreach (var gameObject in gameObjectList) {
@@ -28,6 +28,12 @@ namespace NL {
             this.arrangementTargetState = ArrangementTargetState.Reserve;
         }
 
+        public PlayerArrangementTargetModel PlayerArrangementTargetModel {
+            get {
+                throw new System.NotImplementedException();
+            }
+        }
+
         // プレイヤー
         public Vector3 CenterPosition => centerPosition;
         public float Range => range;
@@ -36,12 +42,18 @@ namespace NL {
         public List<ArrangementPosition> ArrangementPositions => arrangementPositions;
 
         // モノ
-        public MonoViewModel MonoViewModel { get; set; }
+        public MonoViewModel MonoViewModel { get; private set; }
         public bool HasMonoViewModel => MonoViewModel != null;
+        public void RegisterMade (MonoViewModel monoViewModel) {
+            this.MonoViewModel = monoViewModel;
+        }
 
         // 配置されるモノ
-        public MonoInfo MonoInfo { get; set; }
+        public MonoInfo MonoInfo { get; private set; }
         public bool HasMonoInfo => MonoInfo != null;
+        public void RegisterMaking (MonoInfo monoInfo) {
+            this.MonoInfo = monoInfo;
+        }
 
         // エッジを取得
         public List<ArrangementPosition> GetEdgePositions () {

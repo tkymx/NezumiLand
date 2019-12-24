@@ -90,7 +90,6 @@ namespace NL {
             // コンテキストマップ
             ContextMap.Initialize ();
             PlayerContextMap.Initialize ();
-            GameContextMap.Initialize ();
 
             // レポジトリ
             var onegaiRepository = OnegaiRepository.GetRepository(ContextMap.DefaultMap);
@@ -101,12 +100,17 @@ namespace NL {
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMouseStockRepository = new PlayerMouseStockRepository(PlayerContextMap.DefaultMap);
+            var playerMonoViewRepository = new PlayerMonoViewRepository(monoInfoRepository, PlayerContextMap.DefaultMap);
+            var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
+
+            // ゲームのコンテキストマップ
+            GameContextMap.Initialize(playerArrangementTargetRepository);
 
             // instance
             this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (100)); // 所持アイテムの初期値も外出ししたい
-            this.arrangementManager = new ArrangementManager (this.rootObject);
-            this.monoManager = new MonoManager (this.rootObject);
+            this.arrangementManager = new ArrangementManager (this.rootObject, playerArrangementTargetRepository);
+            this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
             this.effectManager = new EffectManager (mainCamera, rootEffectUI);
             this.gameModeManager = new GameModeManager ();
             this.gameModeManager.EnqueueChangeModeWithHistory (GameModeGenerator.GenerateSelectMode ());
@@ -117,7 +121,7 @@ namespace NL {
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
             this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository);
-            this.dailyActionManager = new DailyActionManager (playerOnegaiRepository);
+            this.dailyActionManager = new DailyActionManager ();
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
             this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
@@ -128,7 +132,7 @@ namespace NL {
             this.reserveAmountManager = new ReserveAmountManager();
 
             // initialize
-            this.arrangementPresenter.Initialize();
+            this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
             this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
@@ -140,6 +144,8 @@ namespace NL {
             onegaiUnLockChacheService.Execute();
             var eventUnLockService = new EventUnLockService(eventRepository, playerEventRepository);
             eventUnLockService.Execute();
+            var initialArrangementService = new InitialArrangementService(playerArrangementTargetRepository);
+            initialArrangementService.Execute();
         }
 
         private void Update () {

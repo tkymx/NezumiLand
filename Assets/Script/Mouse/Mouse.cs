@@ -59,7 +59,7 @@ namespace NL {
             }
         }
 
-        public void StartMake (IArrangementTarget arrangementTarget) {
+        public void StartMake (IPlayerArrangementTarget arrangementTarget) {
             if (!HasPreMono) {
                 Debug.LogError ("プレモノを持っていないのにMakeが呼ばれました");
             }
@@ -74,7 +74,7 @@ namespace NL {
             return this.currentPreMono.IsFinishMaking ();
         }        
 
-        public void FinishMaking (IArrangementTarget arrangementTarget) {
+        public void FinishMaking (IPlayerArrangementTarget arrangementTarget) {
             if (!HasPreMono) {
                 Debug.LogError ("プレモノを持っていないのにMakeが呼ばれました");
             }
@@ -87,7 +87,7 @@ namespace NL {
             moveVector = ObjectComparison.Direction (target, transform.position) * this.mouseParameter.speed * GameManager.Instance.TimeManager.DeltaTime ();
         }
 
-        public void OrderMaking (IArrangementTarget arrangementTarget, PreMono preMono) {
+        public void OrderMaking (IPlayerArrangementTarget arrangementTarget, PreMono preMono) {
             Debug.Assert (!IsOrdered (), "現在作成中のため追加で作成を行うことができません。");
             this.currentPreMono = preMono;
             stateManager.Interrupt (new MoveToTarget (this, arrangementTarget));

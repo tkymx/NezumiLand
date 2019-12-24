@@ -18,5 +18,13 @@ namespace NL {
             var entry = this.entrys.Find (e => e.Id == id);
             return entry;            
         }
+
+        // 最も高いIDを取得
+        protected uint MaximuId () {
+            if (this.entrys.Count <= 0) {
+                return 0;
+            }
+            return this.entrys.Max(entry => entry.Id);
+        }
     }
 }

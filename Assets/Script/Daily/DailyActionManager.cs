@@ -5,26 +5,12 @@ using System.Threading.Tasks;
 
 namespace NL {
     public class DailyActionManager {
-        private readonly DailyEarnCalculater dailyEarnCalculater;
 
-        private float prevEarnTime = 0;
-        public float PrevEarnTime => prevEarnTime;
+        private int prevDay = 0;
 
-        private float daySecond = 10;
-        public float DaySecond => daySecond;
-
-        /// <summary>
-        /// 一日の残り時間
-        /// </summary>
-        public float RemainOverSecond {
-            get {
-                var currentElapsedTime = GameManager.Instance.TimeManager.ElapsedTime;
-                return currentElapsedTime - this.prevEarnTime;
-            }
-        }
-
-        public DailyActionManager (IPlayerOnegaiRepository playerOnegaiRepository) {
-            this.dailyEarnCalculater = new DailyEarnCalculater (playerOnegaiRepository);
+        public DailyActionManager () {
+            var span = DayTextConverter.ConvertSpan(GameManager.Instance.TimeManager.ElapsedTime);
+            this.prevDay = span.Days;
         }
 
         public void UpdateByFrame () {
@@ -35,13 +21,13 @@ namespace NL {
         }
 
         private bool IsOverDay () {
-            var currentElapsedTime = GameManager.Instance.TimeManager.ElapsedTime;
-            var elapsedTimeFromPrevEarnTime = currentElapsedTime - this.prevEarnTime;
-            return elapsedTimeFromPrevEarnTime > this.daySecond;
+            var span = DayTextConverter.ConvertSpan(GameManager.Instance.TimeManager.ElapsedTime);
+            return span.Days > this.prevDay;
         }
 
         private void OverDay () {
-            this.prevEarnTime = GameManager.Instance.TimeManager.ElapsedTime;
+            var span = DayTextConverter.ConvertSpan(GameManager.Instance.TimeManager.ElapsedTime);
+            this.prevDay = span.Days;
         }
     }
 }

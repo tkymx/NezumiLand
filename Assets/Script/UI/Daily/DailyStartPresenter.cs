@@ -16,5 +16,9 @@ namespace NL
             }));
             this.Close();
         }
+
+        public override void onPrepareShow() {
+            this.dailyStartView.UpdateView("「" + GameManager.Instance.TimeManager.ToString()+"」の始まり");
+        }
     }   
 }

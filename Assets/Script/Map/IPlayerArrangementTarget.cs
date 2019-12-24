@@ -16,7 +16,11 @@ namespace NL {
     /// - １つ目はプレイヤーが移動するときの目指すべき座標と範囲
     /// - ２つ目はマップの配置が可能かどうかの範囲
     /// </summary>
-    public interface IArrangementTarget {
+    public interface IPlayerArrangementTarget {
+
+        // プレイヤー情報
+        PlayerArrangementTargetModel PlayerArrangementTargetModel { get; }
+
         // 配置の中心
         Vector3 CenterPosition { get; }
 
@@ -27,16 +31,22 @@ namespace NL {
         List<ArrangementPosition> ArrangementPositions { get; }
 
         // 今後配置されるもの
-        MonoInfo MonoInfo { get; set; }
+        MonoInfo MonoInfo { get; }
 
         // 今後設置されているかどうか？
         bool HasMonoInfo { get; }
 
+        // 設置
+        void RegisterMaking (MonoInfo monoInfo); 
+
+
         // 設定されているモノ
-        MonoViewModel MonoViewModel { get; set; }
+        MonoViewModel MonoViewModel { get;}
 
         // 設置されているかどうか？
         bool HasMonoViewModel { get; }
+
+        void RegisterMade (MonoViewModel monoViewModel);
 
         // エッジを取得
         List<ArrangementPosition> GetEdgePositions ();

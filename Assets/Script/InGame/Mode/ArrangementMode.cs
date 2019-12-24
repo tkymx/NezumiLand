@@ -7,10 +7,15 @@ namespace NL {
     public class ArrangementMode : IGameMode {
         private Camera mainCamera;
         private ArrangementModeContext context;
+        private ArrangementTargetCreateService arrangementTargetCreateService = null;
+        private ReserveArrangementService reserveArrangementService = null;
 
         public ArrangementMode (Camera mainCamera, ArrangementModeContext context) {
             this.mainCamera = mainCamera;
             this.context = context;
+
+            this.arrangementTargetCreateService = new ArrangementTargetCreateService(context.PlayerArrangementTargetRepository);
+            this.reserveArrangementService = new ReserveArrangementService(context.PlayerArrangementTargetRepository);
         }
 
         public void OnEnter () {
@@ -31,6 +36,7 @@ namespace NL {
 
             var currentTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget ();
             if (!GameManager.Instance.ArrangementManager.IsSetArrangement (currentTarget)) {
+
                 return;
             }
 
@@ -41,7 +47,9 @@ namespace NL {
                 return;
             }
 
-            ReserveArrangementService.Execute(currentTarget, makingMono);
+            // 追加して予約する
+            var playerArrangementTarget = this.arrangementTargetCreateService.Execute(currentTarget);
+            this.reserveArrangementService.Execute(playerArrangementTarget, makingMono);
         }
 
         public void OnExit () {

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace NL {
     public class ArrangementMenuSelectModeContext {
-        private IArrangementTarget arrangementTarget;
-        public IArrangementTarget ArrangementTarget => arrangementTarget;
+        private IPlayerArrangementTarget arrangementTarget;
+        public IPlayerArrangementTarget ArrangementTarget => arrangementTarget;
 
-        public void SetArrangementTarget (IArrangementTarget arrangementTarget) {
+        public void SetArrangementTarget (IPlayerArrangementTarget arrangementTarget) {
             this.arrangementTarget = arrangementTarget;
         }
     }

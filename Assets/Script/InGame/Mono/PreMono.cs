@@ -18,7 +18,7 @@ namespace NL {
             this.mono = mono;
         }
 
-        public void StartMaking (IArrangementTarget arrangementTarget) {
+        public void StartMaking (IPlayerArrangementTarget arrangementTarget) {
             this.makingInstane = Object.AppearToFloor (makingPrefab, mouse.transform.parent.gameObject, arrangementTarget.CenterPosition);
             
             this.preMonoView = this.makingInstane.GetComponent<PreMonoView>();
@@ -37,7 +37,7 @@ namespace NL {
             return this.currentMakingAmount.IsFinish;
         }
 
-        public void FinishMaking (IArrangementTarget arrangementTarget) {
+        public void FinishMaking (IPlayerArrangementTarget arrangementTarget) {
             Debug.Assert (!arrangementTarget.HasMonoViewModel, "モノがセットされています。");
             Object.DisAppear (this.makingInstane);
 

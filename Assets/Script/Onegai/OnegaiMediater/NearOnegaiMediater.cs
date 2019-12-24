@@ -22,7 +22,7 @@ namespace NL {
         /// 設置したオブジェクトと、その隣接オブジェクトに関して判定する
         /// </summary>
         /// <param name="arrangementTarget"></param>
-        public void MediateByArrangement(IArrangementTarget arrangementTarget) 
+        public void MediateByArrangement(IPlayerArrangementTarget arrangementTarget) 
         {
             var nearArrangementTargets = GameManager.Instance.ArrangementManager.GetNearArrangement (arrangementTarget);
             foreach (var nearArrangementTarget in nearArrangementTargets) {
@@ -37,7 +37,7 @@ namespace NL {
         /// 隣接オブジェクトと、自分のお願いを判定
         /// </summary>
         /// <param name="arrangementTarget"></param>
-        public void MediateByRBeforeRemoval(IArrangementTarget arrangementTarget) 
+        public void MediateByRBeforeRemoval(IPlayerArrangementTarget arrangementTarget) 
         {
             var nearArrangementTargets = GameManager.Instance.ArrangementManager.GetNearArrangement (arrangementTarget);
             foreach (var nearArrangementTarget in nearArrangementTargets) {
@@ -45,10 +45,10 @@ namespace NL {
                 nearNearArrangementTargets.Remove(arrangementTarget);
                 this.MediateInternal(nearArrangementTarget, nearNearArrangementTargets, true);
             }
-            this.MediateInternal(arrangementTarget,new List<IArrangementTarget>(), true);
+            this.MediateInternal(arrangementTarget,new List<IPlayerArrangementTarget>(), true);
         }
 
-        private void MediateInternal(IArrangementTarget arrangementTarget, List<IArrangementTarget> nearArrangementTargets,  bool isReset) {
+        private void MediateInternal(IPlayerArrangementTarget arrangementTarget, List<IPlayerArrangementTarget> nearArrangementTargets,  bool isReset) {
             var targetMonoInfoId = arrangementTarget.MonoInfo.Id;                
             if (!monoInfoIdToOngeais.ContainsKey(targetMonoInfoId)) {
                 return;

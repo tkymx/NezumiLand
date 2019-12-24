@@ -5,9 +5,9 @@ using UnityEngine;
 namespace NL {
     public class MakingState : IState {
         private Mouse context;
-        private IArrangementTarget arrangementTarget;
+        private IPlayerArrangementTarget arrangementTarget;
 
-        public MakingState (Mouse context, IArrangementTarget makingPosition) {
+        public MakingState (Mouse context, IPlayerArrangementTarget makingPosition) {
             this.context = context;
             this.arrangementTarget = makingPosition;
         }

@@ -6,41 +6,38 @@ namespace NL {
     public class MonoViewModel {
         // monoView
         private MonoView monoView = null;
-        public MonoView MonoView => monoView;
+        public MonoView MonoView =>this.monoView;
 
         // private
-        private MonoInfo monoInfo;
-        public MonoInfo MonoInfo => monoInfo;
+        private PlayerMonoViewModel playerMonoViewModel;
+        public PlayerMonoViewModel PlayerMonoViewModel => this.playerMonoViewModel;
 
-        private uint currentLevel;
-        public uint CurrentLevel => currentLevel;
+        public int CurrentLevel => this.playerMonoViewModel.Level;
 
-        public Currency RemoveFee => monoInfo.RemoveFee;
+        public Currency RemoveFee => this.playerMonoViewModel.MonoInfo.RemoveFee;
 
-        public MonoViewModel (MonoView monoView, MonoInfo monoInfo) {
-            this.currentLevel = 1;
+        public MonoViewModel (MonoView monoView, PlayerMonoViewModel playerMonoViewModel) {
             this.monoView = monoView;
-            this.monoInfo = monoInfo;
+            this.playerMonoViewModel = playerMonoViewModel;
         }
 
         public bool ExistNextLevelUp () {
-            return monoInfo.LevelUpFee.Length > this.currentLevel; // ５レベルまでなら、配列数は6
+            return this.playerMonoViewModel.MonoInfo.LevelUpFee.Length > this.playerMonoViewModel.Level; // ５レベルまでなら、配列数は6
         }
 
         public Currency GetCurrentLevelUpFee () {
             Debug.Assert (ExistNextLevelUp (), "次のレベルがありません");
-            return monoInfo.LevelUpFee[this.currentLevel];
+            return this.playerMonoViewModel.MonoInfo.LevelUpFee[this.playerMonoViewModel.Level];
         }
 
         public void LevelUp () {
-            this.currentLevel++;
-            if (!this.ExistNextLevelUp ()) {
-                this.currentLevel = (uint) monoInfo.LevelUpFee.Length;
+            if (this.ExistNextLevelUp ()) {
+                GameManager.Instance.MonoManager.LevelUp(this.playerMonoViewModel);
             }
         }
 
         public Satisfaction GetCurrentSatisfaction () {
-            return monoInfo.BaseSatisfaction + monoInfo.LevelUpSatisfaction[this.currentLevel - 1];
+            return this.playerMonoViewModel.MonoInfo.BaseSatisfaction + this.playerMonoViewModel.MonoInfo.LevelUpSatisfaction[this.playerMonoViewModel.Level - 1];
         }
 
         public void UpdateByFrame () { }

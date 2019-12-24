@@ -8,14 +8,14 @@ namespace NL {
         /// <summary>
         /// 配置ターゲット
         /// </summary>
-        private List<IArrangementTarget> arrangementTargetStore;
-        public List<IArrangementTarget> ArrangementTargetStore => arrangementTargetStore;
+        private List<IPlayerArrangementTarget> arrangementTargetStore;
+        public List<IPlayerArrangementTarget> ArrangementTargetStore => arrangementTargetStore;
 
         /// <summary>
         /// 選択されている 配置ターゲット
         /// </summary>
-        private IArrangementTarget selectedArrangementTarget;
-        public IArrangementTarget SelectedArrangementTarget => selectedArrangementTarget;
+        private IPlayerArrangementTarget selectedArrangementTarget;
+        public IPlayerArrangementTarget SelectedArrangementTarget => selectedArrangementTarget;
         public bool HasSelectedArrangementTarget => selectedArrangementTarget != null;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace NL {
         /// <summary>
         /// 隣接状況を保管している
         /// </summary>
-        private Dictionary<IArrangementTarget, List<IArrangementTarget>> nearMap;
+        private Dictionary<IPlayerArrangementTarget, List<IPlayerArrangementTarget>> nearMap;
 
         /// <summary>
         /// 配置の予約されているものがあるか？
@@ -43,17 +43,36 @@ namespace NL {
             return this.arrangementTargetStore.Find(target => target.ArrangementTargetState == ArrangementTargetState.Reserve) != null;
         }
 
-        public ArrangementManager (GameObject root) {
-            this.arrangementTargetStore = new List<IArrangementTarget> ();
+        /// <summary>
+        /// モノViewのセットのサービス
+        /// </summary>
+        private SetMonoViewModelToArrangementService setMonoViewModelToArrangementService = null;
+
+        /// <summary>
+        /// 配置物が消去できない
+        /// </summary>
+        private ArrangementTargetRemoveService arrangementTargetRemoveService = null;
+
+        /// <summary>
+        /// 予約状態から可視化する際に使用する
+        /// </summary>
+        private AppearArrangementService appearArrangementService = null;
+
+        public ArrangementManager (GameObject root, IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
+            this.arrangementTargetStore = new List<IPlayerArrangementTarget> ();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater (root);
-            this.nearMap = new Dictionary<IArrangementTarget, List<IArrangementTarget>>();
+            this.nearMap = new Dictionary<IPlayerArrangementTarget, List<IPlayerArrangementTarget>>();
+            
+            this.setMonoViewModelToArrangementService = new SetMonoViewModelToArrangementService(playerArrangementTargetRepository);
+            this.arrangementTargetRemoveService = new ArrangementTargetRemoveService(playerArrangementTargetRepository);
+            this.appearArrangementService = new AppearArrangementService(playerArrangementTargetRepository);
         }
 
         public void UpdateByFrame () {
             if (!GameManager.Instance.TimeManager.IsPause) {
                 if (HasReserveArrangementTarget ()) {
-                    AppearArrangementService.Execute ();
+                    this.appearArrangementService.Execute ();
                 }
             }
         }
@@ -82,9 +101,9 @@ namespace NL {
         /// </summary>
         /// <param name="arrangementTarget">モデル</param>
         /// <returns></returns>
-        public List<IArrangementTarget> GetNearArrangement (IArrangementTarget arrangementTarget) {
+        public List<IPlayerArrangementTarget> GetNearArrangement (IPlayerArrangementTarget arrangementTarget) {
             if (!this.nearMap.ContainsKey(arrangementTarget)) {
-                return new List<IArrangementTarget>();
+                return new List<IPlayerArrangementTarget>();
             }
             return this.nearMap[arrangementTarget];
         }
@@ -94,8 +113,8 @@ namespace NL {
         /// </summary>
         /// <param name="arrangementTarget">モデル</param>
         /// <returns></returns>
-        private List<IArrangementTarget> SearchNearArrangement (IArrangementTarget arrangementTarget) {
-            var nearArrangementTargets = new List<IArrangementTarget> ();
+        private List<IPlayerArrangementTarget> SearchNearArrangement (IPlayerArrangementTarget arrangementTarget) {
+            var nearArrangementTargets = new List<IPlayerArrangementTarget> ();
             foreach (var arrangementPosition in arrangementTarget.GetEdgePositions ()) {
                 var findArrangementTarget = this.Find (arrangementPosition);
                 if (findArrangementTarget == null) {
@@ -115,14 +134,16 @@ namespace NL {
         /// <summary>
         /// 配置位置を追加する
         /// </summary>
-        public void AddArrangement (IArrangementTarget arrangementTarget) {
+        public void AddArrangement (IPlayerArrangementTarget arrangementTarget) {
             Debug.Assert (IsSetArrangement (arrangementTarget), "セットできない arrangementPosition が選択されています。");
             this.arrangementTargetStore.Add (arrangementTarget);
             GameManager.Instance.ArrangementPresenter.ReLoad ();
         }
 
-        public void CreateAndSetMono (IArrangementTarget arrangementTarget) {
-            arrangementTarget.MonoViewModel = GameManager.Instance.MonoManager.CreateMono (arrangementTarget.MonoInfo, arrangementTarget.CenterPosition);
+        public void CreateAndSetMono (IPlayerArrangementTarget arrangementTarget) {
+            var monoViewModel = GameManager.Instance.MonoManager.CreateMono (arrangementTarget.MonoInfo, arrangementTarget.CenterPosition);
+            this.setMonoViewModelToArrangementService.Execute(arrangementTarget, monoViewModel);
+
             this.AppendNearArrangement(arrangementTarget);
             GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(arrangementTarget);
         }
@@ -149,13 +170,11 @@ namespace NL {
         /// <summary>
         /// 配置位置を消去する
         /// </summary>
-        public void RemoveArranement (IArrangementTarget arrangementTarget) {
+        public void RemoveArranement (IPlayerArrangementTarget arrangementTarget) {
 
             var isContain = arrangementTargetStore.Contains (arrangementTarget);
             Debug.Assert(isContain, "含まれていない配置が消されようとしました。");
             if (isContain) {
-                
-                arrangementTargetStore.Remove (arrangementTarget);
 
                 // 設置済みの場合は設置情報を消す
                 if (arrangementTarget.HasMonoViewModel) {
@@ -163,6 +182,10 @@ namespace NL {
                     GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByRBeforeRemoval(arrangementTarget);
                     this.RemoveNearArrangement(arrangementTarget);
                 }
+
+                this.arrangementTargetStore.Remove (arrangementTarget);
+                this.arrangementTargetRemoveService.Execute(arrangementTarget);
+
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
         }
@@ -171,22 +194,22 @@ namespace NL {
         /// 近接情報を取得
         /// </summary>
         /// <param name="arrangementTarget"></param>
-        private void AppendNearArrangement(IArrangementTarget arrangementTarget) {
+        private void AppendNearArrangement(IPlayerArrangementTarget arrangementTarget) {
             var nearArrangementTargets = SearchNearArrangement(arrangementTarget);
             if (!this.nearMap.ContainsKey(arrangementTarget)) {
-                this.nearMap[arrangementTarget] = new List<IArrangementTarget>();
+                this.nearMap[arrangementTarget] = new List<IPlayerArrangementTarget>();
             }
             this.nearMap[arrangementTarget].AddRange(nearArrangementTargets);
             foreach (var nearArrangementTarget in nearArrangementTargets)
             {
                 if (!this.nearMap.ContainsKey(nearArrangementTarget)) {
-                    this.nearMap[nearArrangementTarget] = new List<IArrangementTarget>();
+                    this.nearMap[nearArrangementTarget] = new List<IPlayerArrangementTarget>();
                 }
                 this.nearMap[nearArrangementTarget].Add(arrangementTarget);
             }
         }
 
-        private void RemoveNearArrangement(IArrangementTarget arrangementTarget) {
+        private void RemoveNearArrangement(IPlayerArrangementTarget arrangementTarget) {
             if (this.nearMap.ContainsKey(arrangementTarget)) {
                 foreach (var nearArrangementTarget in this.nearMap[arrangementTarget])
                 {
@@ -199,7 +222,7 @@ namespace NL {
         /// <summary>
         /// 引数の配置位置がすでに存在しているかどうか？
         /// </summary>
-        public bool IsSetArrangement (IArrangementTarget arrangementTarget) {
+        public bool IsSetArrangement (IPlayerArrangementTarget arrangementTarget) {
             return IsSetArrangement (arrangementTarget.ArrangementPositions);
         }
         public bool IsSetArrangement (List<ArrangementPosition> arrangementPositions) {
@@ -215,7 +238,7 @@ namespace NL {
         /// 選択する
         /// </summary>
         /// <param name="arrangementTarget"></param>
-        public void Select (IArrangementTarget arrangementTarget) {
+        public void Select (IPlayerArrangementTarget arrangementTarget) {
             Debug.Assert (arrangementTargetStore.Contains (arrangementTarget), "管理されていないターゲットです。");
             selectedArrangementTarget = arrangementTarget;
             GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Show ();
@@ -226,11 +249,11 @@ namespace NL {
         /// </summary>
         /// <param name="arrangementTarget"></param>
         /// <returns></returns>
-        public bool CheckIsSelect (IArrangementTarget arrangementTarget) {
+        public bool CheckIsSelect (IPlayerArrangementTarget arrangementTarget) {
             return selectedArrangementTarget == arrangementTarget;
         }
 
-        private IArrangementTarget Find (ArrangementPosition arrangementPosition) {
+        private IPlayerArrangementTarget Find (ArrangementPosition arrangementPosition) {
             foreach (var arrangemetTarget in this.arrangementTargetStore) {
                 var findIndex = arrangemetTarget.ArrangementPositions.FindIndex (targetArrangementPosition => {
                     if (targetArrangementPosition.x != arrangementPosition.x) {

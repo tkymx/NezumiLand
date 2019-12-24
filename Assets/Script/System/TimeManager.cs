@@ -40,5 +40,9 @@ namespace NL {
         public void UpdateByFrame () {
             this.elapsedTime += DeltaTime ();
         }
+
+        public override string ToString() {
+            return DayTextConverter.ConvertString(this.elapsedTime);
+        }
     }
 }

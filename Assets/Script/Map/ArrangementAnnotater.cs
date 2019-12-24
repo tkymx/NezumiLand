@@ -62,8 +62,8 @@ namespace NL {
             this.isSelectByFrame = false;
         }
 
-        public ArrangementTarget GetCurrentTarget () {
-            return new ArrangementTarget (this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
+        public YesPlayerArrangementTarget GetCurrentTarget () {
+            return new YesPlayerArrangementTarget (this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
         }
     }
 }

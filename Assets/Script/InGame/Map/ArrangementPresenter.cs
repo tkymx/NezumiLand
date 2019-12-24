@@ -26,8 +26,11 @@ namespace NL {
         // のちのち view として作れれば良い
         private List<GameObject> instances;
 
-        public void Initialize () {
+        private UnReserveArrangementService unReserveArrangementService = null;
+
+        public void Initialize (IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.instances = new List<GameObject> ();
+            this.unReserveArrangementService = new UnReserveArrangementService(playerArrangementTargetRepository);
         }
 
         public void ReLoad () {
@@ -61,18 +64,18 @@ namespace NL {
             });
         }
 
-        private void AddArrangementCancelAnnotation (IArrangementTarget arrangementTarget) {
+        private void AddArrangementCancelAnnotation (IPlayerArrangementTarget arrangementTarget) {
             var instance = Object.AppearToFloor (this.arrangementCancelAnnotationPrefab, this.gameObject, arrangementTarget.CenterPosition);
             var view = instance.GetComponent<ArrangementReserveCancelView>();
             view.Initialize(this.mainCameta);
             this.disposables.Add(view.OnCancelObservable.Subscribe(_ => {
-                UnReserveArrangementService.Execute(arrangementTarget);
+                this.unReserveArrangementService.Execute(arrangementTarget);
             }));
 
             this.instances.Add (instance);
         }
 
-        private void appearArrangement (IArrangementTarget arrangementTarget, GameObject prefab, bool isReserve = false) {
+        private void appearArrangement (IPlayerArrangementTarget arrangementTarget, GameObject prefab, bool isReserve = false) {
             arrangementTarget.ArrangementPositions.ForEach (arrangementPosition => {
                 var instance = Object.AppearToFloor (prefab, gameObject, new Vector3 (
                     arrangementPosition.x * ArrangementAnnotater.ArrangementWidth,

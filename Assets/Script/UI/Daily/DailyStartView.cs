@@ -8,6 +8,10 @@ namespace NL
     public class DailyStartView : MonoBehaviour
     {
         [SerializeField]
+        private Text timeText;
+
+
+        [SerializeField]
         private Button onNext;
 
         private TypeObservable<int> onNextObservable = null;
@@ -18,6 +22,10 @@ namespace NL
             this.onNext.onClick.AddListener(()=>{
                 this.onNextObservable.Execute(0);
             });
+        }
+
+        public void UpdateView (string time) {
+            this.timeText.text = time;
         }
     }
 }

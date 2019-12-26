@@ -20,6 +20,7 @@ namespace NL {
         public IList<PlayerMouseStockEntry> PlayerMouseStockEntrys { get; private set; }
         public IList<PlayerMonoViewEntry> PlayerMonoViewEntrys { get; private set; }
         public IList<PlayerArrangementTargetEntry> PlayerArrangementTargetEntrys { get; private set; }
+        public IList<PlayerMouseViewEntry> PlayerMouseViewEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new PlayerContextMap ();
@@ -33,6 +34,7 @@ namespace NL {
             this.PlayerMouseStockEntrys = LoadEntryFromJsonFromName<PlayerMouseStockEntry> ("PlayerMouseStockEntry");
             this.PlayerMonoViewEntrys = LoadEntryFromJsonFromName<PlayerMonoViewEntry> ("PlayerMonoViewEntry");
             this.PlayerArrangementTargetEntrys = LoadEntryFromJsonFromName<PlayerArrangementTargetEntry> ("PlayerArrangementTargetEntry");
+            this.PlayerMouseViewEntrys = LoadEntryFromJsonFromName<PlayerMouseViewEntry> ("PlayerMouseViewEntry");
         }
 
         private static IList<T> LoadEntryFromJsonFromName<T> (string name) {

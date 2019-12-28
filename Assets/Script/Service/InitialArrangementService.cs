@@ -19,7 +19,15 @@ namespace NL
             {
                 // 配置
                 var playerArrangementTarget = new PlayerArrangementTarget(playerArrangementTargetModel);
-                GameManager.Instance.ArrangementManager.AddArrangement(playerArrangementTarget);                       
+
+                // 予約の場合は消す
+                if (playerArrangementTarget.PlayerArrangementTargetModel.State == ArrangementTargetState.Reserve) {
+                    this.playerArrangementTargetRepository.Remove(playerArrangementTarget.PlayerArrangementTargetModel);
+                    continue;
+                }
+
+                // 配置
+                GameManager.Instance.ArrangementManager.AddArrangement(playerArrangementTarget);
 
                 // ものの配置
                 var playreMonoViewModel = playerArrangementTarget.PlayerArrangementTargetModel.PlayerMonoViewModel;

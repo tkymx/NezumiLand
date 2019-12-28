@@ -103,13 +103,14 @@ namespace NL {
             var playerMonoViewRepository = new PlayerMonoViewRepository(monoInfoRepository, PlayerContextMap.DefaultMap);
             var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
             var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
+            var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
 
             // instance
-            this.wallet = new Wallet (new Currency (100)); // 所持金の初期値も外出ししたい
-            this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (100)); // 所持アイテムの初期値も外出ししたい
+            this.wallet = new Wallet (new Currency (0),playerInfoRepository); // 所持金の初期値も外出ししたい
+            this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager (this.rootObject, playerArrangementTargetRepository);
             this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
             this.effectManager = new EffectManager (mainCamera, rootEffectUI);
@@ -118,7 +119,7 @@ namespace NL {
             this.fieldRaycastManager = new FieldRaycastManager (this.mainCamera);
             //            this.mouseSelectManager = new MouseSelectManager();
             this.monoSelectManager = new MonoSelectManager ();
-            this.timeManager = new TimeManager ();
+            this.timeManager = new TimeManager (playerInfoRepository);
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
             this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository, playerMouseViewRepository);
@@ -139,6 +140,8 @@ namespace NL {
             this.onegaiHomeManager.Initialize ();
 
             // Service
+            var initializePlayerInfoService = new InitializePlayerInfoService(playerInfoRepository);
+            initializePlayerInfoService.Execute();
             var onegaiUnLockService = new OnegaiUnLockService(onegaiRepository, playerOnegaiRepository);
             onegaiUnLockService.Execute();
             var onegaiUnLockChacheService = new OnegaiUnLockChacheService(playerOnegaiRepository);

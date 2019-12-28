@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 namespace NL {
     public class DailyActionManager {
 
+        private bool isInitialize = false;
+
         private int prevDay = 0;
 
         public DailyActionManager () {
-            var span = DayTextConverter.ConvertSpan(GameManager.Instance.TimeManager.ElapsedTime);
-            this.prevDay = span.Days;
+            this.isInitialize = false;
         }
 
         public void UpdateByFrame () {
+
+            if (!this.isInitialize) {
+                var span = DayTextConverter.ConvertSpan(GameManager.Instance.TimeManager.ElapsedTime);
+                this.prevDay = span.Days;
+                this.isInitialize = true;
+            }
+
             if (this.IsOverDay ()) {    
                 GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateDailyChangeMode());
                 this.OverDay ();

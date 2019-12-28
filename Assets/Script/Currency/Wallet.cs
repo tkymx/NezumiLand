@@ -31,12 +31,19 @@ namespace NL {
     }
 
     public class Wallet : ConsumableCollectionBase<Currency>{
-        
+
+        private UpdateCurrencyService updateCurrencyService = null;
+
         private Currency current;
         public override Currency Current => current;
         public override Currency CurrentWithReserve => current - GameManager.Instance.ReserveAmountManager.Get<Currency>();
 
-        public Wallet (Currency currency) {
+        public Wallet (Currency currency, IPlayerInfoRepository playerInfoRepository) {
+            this.current = currency;
+            this.updateCurrencyService = new UpdateCurrencyService(playerInfoRepository);
+        }
+
+        public void ForceSet (Currency currency) {
             this.current = currency;
         }
 
@@ -48,10 +55,12 @@ namespace NL {
         public override void OnConsume (Currency fee) {
             Debug.Assert (OnIsConsume (fee), "払うことができません");
             current -= fee;
+            this.updateCurrencyService.Execute(current);
         }
 
         public void Push (Currency fee) {
             current += fee;
+            this.updateCurrencyService.Execute(current);
         }
     }
 }

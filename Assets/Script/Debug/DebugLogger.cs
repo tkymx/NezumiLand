@@ -8,6 +8,12 @@ namespace NL {
         private readonly string LR = "\n";
 
         [SerializeField]
+        private Button openCloseButton = null;
+
+        [SerializeField]
+        private GameObject mainContetns = null;
+
+        [SerializeField]
         private Text text = null;
 
         [SerializeField]
@@ -18,6 +24,9 @@ namespace NL {
                 ResourceLoader.RemoveAllPlayerData();
                 GameManager.Instance.GameUIManager.CommonPresenter.SetContents("Debug","プレイヤーデータを消去しました。");
                 GameManager.Instance.GameUIManager.CommonPresenter.Show();
+            });
+            openCloseButton.onClick.AddListener(() => {
+                mainContetns.SetActive(!mainContetns.activeSelf);
             });
         }
 

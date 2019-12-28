@@ -8,6 +8,7 @@ namespace NL {
             cellView.UpdateCell (
                 element.MonoInfo.Name,
                 element.MonoInfo.MakingFee,
+                element.MonoInfo.ArrangementItemAmount,
                 GameManager.Instance.ArrangementManager.GetAppearMonoCountById (element.MonoInfo.Id),
                 element.MonoInfo.ArrangementMaxCount.GetMaxCount(element.MonoInfo.Id),
                 !element.IsRelease);

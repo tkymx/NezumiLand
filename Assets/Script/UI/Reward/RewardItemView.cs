@@ -32,7 +32,7 @@ namespace NL {
         }
 
         public void UpdateReward(string name, uint amount, Sprite sprite) {
-            this.rewardItemName.text = name;
+            this.rewardItemName.text = name + "を獲得";
             this.rewardItemAmount.text = "x" + amount.ToString();
             this.rewardItemImage.sprite = sprite;
         }

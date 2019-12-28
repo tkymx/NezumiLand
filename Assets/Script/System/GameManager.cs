@@ -86,6 +86,12 @@ namespace NL {
         private ReserveAmountManager reserveAmountManager;
         public ReserveAmountManager ReserveAmountManager => reserveAmountManager;
 
+        private InputManager inputManager;
+        public InputManager InputManager => inputManager;
+
+        private CameraMoveManager cameraMoveManager;
+        public CameraMoveManager CameraMoveManager => cameraMoveManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -109,6 +115,7 @@ namespace NL {
             GameContextMap.Initialize(playerArrangementTargetRepository);
 
             // instance
+            this.inputManager = new InputManager();
             this.wallet = new Wallet (new Currency (0),playerInfoRepository); // 所持金の初期値も外出ししたい
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager (this.rootObject, playerArrangementTargetRepository);
@@ -132,12 +139,14 @@ namespace NL {
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
             this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
             this.reserveAmountManager = new ReserveAmountManager();
+            this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
             this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
+            this.inputManager.Initialize ();
 
             // Service
             var initializePlayerInfoService = new InitializePlayerInfoService(playerInfoRepository);
@@ -155,6 +164,9 @@ namespace NL {
         }
 
         private void Update () {
+            // 入力
+            this.InputManager.UpdateByFrame();
+
             // イベント関連
             this.constantlyEventPusher.PushConstantlyEventParameter();
             this.eventManager.UpdateByFrame ();
@@ -169,6 +181,7 @@ namespace NL {
             this.appearCharacterManager.UpdateByFrame();
             this.onegaiManager.UpdateByFrame();
             this.monoReleaseManager.UpdateByFrame();
+            this.cameraMoveManager.UpdateByFrame();
 
             // UI関連
             this.gameUIManager.UpdateByFrame();

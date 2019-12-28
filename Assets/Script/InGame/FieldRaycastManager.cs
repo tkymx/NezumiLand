@@ -21,7 +21,7 @@ namespace NL {
                 Debug.Assert (select != null, "選択したオブジェクトに ISelect がありません");
 
                 if (select != null) {
-                    if (Input.GetMouseButtonDown (0)) {
+                    if (GameManager.Instance.InputManager.IsSingleTap) {
                         if (CanTouch ()) {
                             select.OnSelect (Hit);
                         }

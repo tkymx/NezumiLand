@@ -23,7 +23,7 @@ namespace NL
                 playerMonoInfo.MonoInfo.MakingFee.ToString(),
                 playerMonoInfo.MonoInfo.ArrangementItemAmount.ToString(),
                 currentArrangementCount.ToString(),
-                playerMonoInfo.MonoInfo.ArrangementMaxCount.ToString(),
+                playerMonoInfo.MonoInfo.ArrangementMaxCount.GetMaxCount(playerMonoInfo.MonoInfo.Id).ToString(),
                 playerMonoInfo.MonoInfo.BaseSatisfaction.ToString(),
                 playerMonoInfo.MonoInfo.Size()
             );

@@ -12,6 +12,9 @@ namespace NL {
         private Text makingFree = null;
 
         [SerializeField]
+        private Text makingAmount = null;
+
+        [SerializeField]
         private Text appearCount = null;
 
         [SerializeField]
@@ -41,9 +44,10 @@ namespace NL {
             });
         }
 
-        public void UpdateCell (string name, Currency free, long appearCount, long appearMaxCount, bool isLock) {
+        public void UpdateCell (string name, Currency free, ArrangementItemAmount amount, long appearCount, long appearMaxCount, bool isLock) {
             this.monoName.text = name;
             this.makingFree.text = free.ToString ();
+            this.makingAmount.text = amount.ToString();
             this.appearCount.text = appearCount.ToString ();
             this.appearMaxCount.text = appearMaxCount.ToString ();
             this.releaseLock.gameObject.SetActive(isLock);

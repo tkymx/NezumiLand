@@ -10,7 +10,9 @@ namespace NL {
         private MonoInfo mono;
         private GameObject makingInstane;
         private PreMonoView preMonoView = null;
+        
         private MakingAmount currentMakingAmount;
+        public MakingAmount CurrentMakingAmount => currentMakingAmount;
 
         public PreMono (Mouse mouse, GameObject makingPrefab, MonoInfo mono) {
             this.mouse = mouse;
@@ -18,8 +20,8 @@ namespace NL {
             this.mono = mono;
         }
 
-        public void StartMaking (IPlayerArrangementTarget arrangementTarget) {
-            this.makingInstane = Object.AppearToFloor (makingPrefab, mouse.transform.parent.gameObject, arrangementTarget.CenterPosition);
+        public void StartMaking (PlayerArrangementTargetModel playerArrangementTargetModel) {
+            this.makingInstane = Object.AppearToFloor (makingPrefab, mouse.transform.parent.gameObject, playerArrangementTargetModel.CenterPosition);
             
             this.preMonoView = this.makingInstane.GetComponent<PreMonoView>();
             Debug.Assert(this.preMonoView != null, "PreMonoView がセットされていません");
@@ -37,12 +39,12 @@ namespace NL {
             return this.currentMakingAmount.IsFinish;
         }
 
-        public void FinishMaking (IPlayerArrangementTarget arrangementTarget) {
-            Debug.Assert (!arrangementTarget.HasMonoViewModel, "モノがセットされています。");
+        public void FinishMaking (PlayerArrangementTargetModel playerArrangementTargetModel) {
+            Debug.Assert (playerArrangementTargetModel.PlayerMonoViewModel == null, "モノがセットされています。");
             Object.DisAppear (this.makingInstane);
 
             // ものを生成
-            GameManager.Instance.ArrangementManager.CreateAndSetMono(arrangementTarget);
+            GameManager.Instance.ArrangementManager.CreateAndSetMono(playerArrangementTargetModel);
         }
     }
 }

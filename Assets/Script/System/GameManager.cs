@@ -102,6 +102,7 @@ namespace NL {
             var playerMouseStockRepository = new PlayerMouseStockRepository(PlayerContextMap.DefaultMap);
             var playerMonoViewRepository = new PlayerMonoViewRepository(monoInfoRepository, PlayerContextMap.DefaultMap);
             var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
+            var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -120,7 +121,7 @@ namespace NL {
             this.timeManager = new TimeManager ();
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
-            this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository);
+            this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository, playerMouseViewRepository);
             this.dailyActionManager = new DailyActionManager ();
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
@@ -146,6 +147,8 @@ namespace NL {
             eventUnLockService.Execute();
             var initialArrangementService = new InitialArrangementService(playerArrangementTargetRepository);
             initialArrangementService.Execute();
+            var initializeOrderedMouseService = new InitializeOrderedMouseService(playerMouseViewRepository);
+            initializeOrderedMouseService.Execute();
         }
 
         private void Update () {

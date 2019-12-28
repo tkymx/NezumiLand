@@ -7,7 +7,8 @@ namespace NL
     public enum MouseViewState {
         None,
         Move,
-        Making
+        Making,
+        BackToHome
     }
 
     public class PlayerMouseViewModel : ModelBase

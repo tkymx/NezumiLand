@@ -9,7 +9,7 @@ namespace  NL
     {
         protected List<IDisposable> disposables = new List<IDisposable>();
 
-        protected void ClearDisposable() {
+        public void ClearDisposable() {
             if (this.disposables != null) {
                 foreach (var disposable in this.disposables)
                 {

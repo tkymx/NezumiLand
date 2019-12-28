@@ -4,11 +4,11 @@ using UnityEngine;
 namespace NL {
     public class MoveToTarget : IState {
         private Mouse context;
-        private IPlayerArrangementTarget targetObject;
+        private PlayerArrangementTargetModel playerArrangementTargetModel;
 
-        public MoveToTarget (Mouse context, IPlayerArrangementTarget targetObject) {
+        public MoveToTarget (Mouse context, PlayerArrangementTargetModel playerArrangementTargetModel) {
             this.context = context;
-            this.targetObject = targetObject;
+            this.playerArrangementTargetModel = playerArrangementTargetModel;
         }
 
         public void onEnter () {
@@ -16,17 +16,17 @@ namespace NL {
         }
 
         private bool isAlivable () {
-            return ObjectComparison.Distance (context.transform.position, targetObject.CenterPosition) < targetObject.Range;
+            return ObjectComparison.Distance (context.transform.position, playerArrangementTargetModel.CenterPosition) < playerArrangementTargetModel.Range;
         }
 
         public IState onUpdate () {
-            context.MoveTimeTo (targetObject.CenterPosition);
+            context.MoveTimeTo (playerArrangementTargetModel.CenterPosition);
 
             // 到着したとき
             if (isAlivable ()) {
                 // 物があれば作成する
                 if (context.HasPreMono) {
-                    return new MakingState (context, targetObject);
+                    return new MakingState (context, playerArrangementTargetModel);
                 }
 
                 return new EmptyState ();

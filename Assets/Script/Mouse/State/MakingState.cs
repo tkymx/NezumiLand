@@ -5,21 +5,21 @@ using UnityEngine;
 namespace NL {
     public class MakingState : IState {
         private Mouse context;
-        private IPlayerArrangementTarget arrangementTarget;
+        private PlayerArrangementTargetModel playerArrangementTargetModel;
 
-        public MakingState (Mouse context, IPlayerArrangementTarget makingPosition) {
+        public MakingState (Mouse context, PlayerArrangementTargetModel playerArrangementTargetModel) {
             this.context = context;
-            this.arrangementTarget = makingPosition;
+            this.playerArrangementTargetModel = playerArrangementTargetModel;
         }
 
         public void onEnter () {
-            context.StartMake (arrangementTarget);
+            context.StartMake (playerArrangementTargetModel);
         }
 
         public IState onUpdate () {
             context.ProgressMaking( new MakingAmount(GameManager.Instance.TimeManager.DeltaTime (), 0/*todo これ微妙*/));            
             if (context.IsFinishMaking ()) {
-                context.FinishMaking (arrangementTarget);
+                context.FinishMaking (playerArrangementTargetModel);
                 return new BackToHomeState (this.context);
             }
 

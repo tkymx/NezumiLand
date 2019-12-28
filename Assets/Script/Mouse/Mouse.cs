@@ -7,7 +7,7 @@ namespace NL {
         public float speed;
     }
 
-    public class Mouse : MonoBehaviour {
+    public class Mouse : DisposableMonoBehaviour {
         [SerializeField]
         private SimpleAnimation simpleAnimation = null;
 
@@ -23,6 +23,8 @@ namespace NL {
 
         private PreMono currentPreMono;
 
+        public PlayerMouseViewModel PlayerMouseViewModel { get; private set; }
+
         /// <summary>
         /// プレモノをっ持っているかどうか？
         /// </summary>
@@ -31,11 +33,17 @@ namespace NL {
         // Start is called before the first frame update
         void Awake () {
             // 初期化
-            mouseParameter = new MouseParameter () {
+            this.mouseParameter = new MouseParameter () {
                 speed = 4.0f,
             };
-            stateManager = new StateManager (new EmptyState ());
-            currentPreMono = null;
+
+            // 状態遷移
+            this.stateManager = new StateManager (new EmptyState ());
+            this.disposables.Add(this.stateManager.OnChangeStateObservable.Subscribe(state => {
+                GameManager.Instance.MouseStockManager.ChangeState(this, state);
+            }));
+
+            this.currentPreMono = null;
         }
 
         // Update is called once per frame
@@ -43,6 +51,20 @@ namespace NL {
             InitializeByFrame ();
             stateManager.UpdateByFrame ();
             Move ();
+            InfoUpdate();
+        }
+
+        private float infoUpdateTime;
+        private const float InfoUpdateInterval = 0.5f;
+        private void InfoUpdate () {
+            this.infoUpdateTime += GameManager.Instance.TimeManager.DeltaTime ();
+            if (this.infoUpdateTime > InfoUpdateInterval) {
+                GameManager.Instance.MouseStockManager.ChangeTransform(this);
+                if (this.currentPreMono != null) {
+                    GameManager.Instance.MouseStockManager.ChangeMakingAmount(this, this.currentPreMono.CurrentMakingAmount);
+                }
+                this.infoUpdateTime = 0;
+            }
         }
 
         void InitializeByFrame () {
@@ -59,11 +81,12 @@ namespace NL {
             }
         }
 
-        public void StartMake (IPlayerArrangementTarget arrangementTarget) {
+        public void StartMake (PlayerArrangementTargetModel playerArrangementTargetModel) {
             if (!HasPreMono) {
                 Debug.LogError ("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.StartMaking (arrangementTarget);
+            GameManager.Instance.MouseStockManager.ChangeTransform(this);
+            currentPreMono.StartMaking (playerArrangementTargetModel);
         }
 
         public void ProgressMaking (MakingAmount deltaMakingAmount) {
@@ -74,11 +97,11 @@ namespace NL {
             return this.currentPreMono.IsFinishMaking ();
         }        
 
-        public void FinishMaking (IPlayerArrangementTarget arrangementTarget) {
+        public void FinishMaking (PlayerArrangementTargetModel playerArrangementTargetModel) {
             if (!HasPreMono) {
                 Debug.LogError ("プレモノを持っていないのにMakeが呼ばれました");
             }
-            currentPreMono.FinishMaking (arrangementTarget);
+            currentPreMono.FinishMaking (playerArrangementTargetModel);
             currentPreMono = null;
         }
 
@@ -87,10 +110,43 @@ namespace NL {
             moveVector = ObjectComparison.Direction (target, transform.position) * this.mouseParameter.speed * GameManager.Instance.TimeManager.DeltaTime ();
         }
 
-        public void OrderMaking (IPlayerArrangementTarget arrangementTarget, PreMono preMono) {
+        /// <summary>
+        /// マウスにモノのオーダーする部分。実質ここが初期化
+        /// </summary>
+        /// <param name="arrangementTarget"></param>
+        /// <param name="preMono"></param>
+        public void OrderMaking (PlayerMouseViewModel playerMouseViewModel, PreMono preMono) {
             Debug.Assert (!IsOrdered (), "現在作成中のため追加で作成を行うことができません。");
             this.currentPreMono = preMono;
-            stateManager.Interrupt (new MoveToTarget (this, arrangementTarget));
+            this.PlayerMouseViewModel = playerMouseViewModel;
+            stateManager.Interrupt (new MoveToTarget (this, playerMouseViewModel.PlayerArrangementTargetModel));
+        }
+
+        /// <summary>
+        /// プレイヤーデータから再度マウスの状態を決める場合
+        /// </summary>
+        /// <param name="playerMouseViewModel"></param>
+        /// <param name="preMono"></param>
+        public void ReOrderMaking (PlayerMouseViewModel playerMouseViewModel, PreMono preMono) {
+            Debug.Assert (!IsOrdered (), "現在作成中のため追加で作成を行うことができません。");
+
+            this.currentPreMono = preMono;
+            this.PlayerMouseViewModel = playerMouseViewModel;
+
+            // 状態変化による切り替え
+            if (playerMouseViewModel.State == MouseViewState.Move) {
+                stateManager.Interrupt (new MoveToTarget (this, playerMouseViewModel.PlayerArrangementTargetModel));
+            }
+            else if (playerMouseViewModel.State == MouseViewState.Making) {
+                stateManager.Interrupt (new MakingState (this, playerMouseViewModel.PlayerArrangementTargetModel));
+                this.currentPreMono.ProgressMaking (playerMouseViewModel.MakingAmount); 
+            }
+            else if (playerMouseViewModel.State == MouseViewState.BackToHome) {
+                stateManager.Interrupt (new BackToHomeState (this) );
+            }
+            else {
+                Debug.Assert(false, "ありえない状態" + playerMouseViewModel.State.ToString());
+            }
         }
 
         public bool IsOrdered () {

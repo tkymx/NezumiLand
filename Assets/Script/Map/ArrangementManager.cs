@@ -140,12 +140,16 @@ namespace NL {
             GameManager.Instance.ArrangementPresenter.ReLoad ();
         }
 
-        public void CreateAndSetMono (IPlayerArrangementTarget arrangementTarget) {
-            var monoViewModel = GameManager.Instance.MonoManager.CreateMono (arrangementTarget.MonoInfo, arrangementTarget.CenterPosition);
-            this.setMonoViewModelToArrangementService.Execute(arrangementTarget, monoViewModel);
+        public void CreateAndSetMono (PlayerArrangementTargetModel playerArrangementTargetModel) {
+            var monoViewModel = GameManager.Instance.MonoManager.CreateMono (playerArrangementTargetModel.MonoInfo, playerArrangementTargetModel.CenterPosition);
+            var foundArrangementTarget = this.arrangementTargetStore.Find(arrangementTarget => arrangementTarget.PlayerArrangementTargetModel.Equals(playerArrangementTargetModel));
+            Debug.Assert(foundArrangementTarget != null, "配置ターゲットがありません");
 
-            this.AppendNearArrangement(arrangementTarget);
-            GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(arrangementTarget);
+            // 生成した viewModel をセット
+            this.setMonoViewModelToArrangementService.Execute(foundArrangementTarget, monoViewModel);
+
+            this.AppendNearArrangement(foundArrangementTarget);
+            GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(foundArrangementTarget);
         }
 
         /// <summary>

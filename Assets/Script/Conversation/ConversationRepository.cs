@@ -5,14 +5,15 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+
+    [System.Serializable]
     public class ConversationEntry : EntryBase {
 
-        [DataMember]
-        public string[] ConversationTexts { get; set; }
+        
+        public string[] ConversationTexts;
 
-        [DataMember]
-        public string[] ConversationCharacterNames { get; set; }
+        
+        public string[] ConversationCharacterNames;
     }
 
     public interface IConversationRepository {

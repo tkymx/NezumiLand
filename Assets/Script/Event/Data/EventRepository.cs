@@ -5,20 +5,13 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    
+    [System.Serializable]
     public class EventEntry : EntryBase {
-
-        [DataMember]
-        public uint[] EventConditionIds { get; set; }
-
-        [DataMember]
-        public uint EventContentsId { get; set; }
-
-        [DataMember]
-        public string EventRepeatType { get; set; }
-
-        [DataMember]
-        public uint RewardId { get; set; }
+        public uint[] EventConditionIds;
+        public uint EventContentsId;
+        public string EventRepeatType;
+        public uint RewardId;
     }
 
     public interface IEventRepository {

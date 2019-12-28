@@ -4,16 +4,16 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerEventEntry : EntryBase{
-        [DataMember]
-        public uint EventId { get; set; }
+        
+        public uint EventId;
 
-        [DataMember]
-        public string EventState { get; set; }
+        
+        public string EventState;
 
-        [DataMember]
-        public uint[] doneEventConditionIds { get; set; }
+        
+        public uint[] doneEventConditionIds;
     }
 
     public interface IPlayerEventRepository {

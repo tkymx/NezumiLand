@@ -4,11 +4,12 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+
+    [System.Serializable]
     public class ScheduleEntry : EntryBase {
 
-        [DataMember]
-        public float CloseElapsedTime { get; set; }
+        
+        public float CloseElapsedTime;
     }
 
     public interface IScheduleRepository {

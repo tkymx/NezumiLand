@@ -4,13 +4,13 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerMonoInfoEntry : EntryBase {
-        [DataMember]
-        public uint MonoInfoId { get; set; }
+        
+        public uint MonoInfoId;
 
-        [DataMember]
-        public bool IsRelease { get; set; }
+        
+        public bool IsRelease;
     }
 
     public interface IPlayerMonoInfoRepository {

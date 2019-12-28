@@ -4,16 +4,16 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerOnegaiEntry : EntryBase {
-        [DataMember]
-        public uint OnegaiId { get; set; }
+        
+        public uint OnegaiId;
 
-        [DataMember]
-        public string OnegaiState { get; set; }
+        
+        public string OnegaiState;
 
-        [DataMember]
-        public float StartOnegaiTime { get; set; }
+        
+        public float StartOnegaiTime;
     }
 
     public interface IPlayerOnegaiRepository {

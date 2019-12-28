@@ -30,6 +30,11 @@ namespace NL {
             defaultMap.Load ();
         }
 
+        [System.Serializable]
+        public class Lap<T> {
+            public T[] InnerArray;
+        }
+
         public void Load () {
             this.MonoInfoEntrys = LoadEntryFromJson<MonoInfoEntry> (ResourceLoader.LoadData ("MonoInfoEntry"));
             this.OnegaiEntrys = LoadEntryFromJson<OnegaiEntry> (ResourceLoader.LoadData ("OnegaiEntry"));
@@ -43,10 +48,10 @@ namespace NL {
             this.ScheduleEntrys = LoadEntryFromJson<ScheduleEntry> (ResourceLoader.LoadData ("ScheduleEntry"));
         }
 
-        private static IList<T> LoadEntryFromJson<T> (string json) {
+        private static T[] LoadEntryFromJson<T> (string json) {
             using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (json))) {
-                var serializer = new DataContractJsonSerializer (typeof (IList<T>));
-                return (IList<T>) serializer.ReadObject (stream);
+                var lap = JsonUtility.FromJson<Lap<T>>(json);
+                return lap.InnerArray;
             }
         }
     }

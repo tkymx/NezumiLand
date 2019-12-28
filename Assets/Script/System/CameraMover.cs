@@ -36,10 +36,6 @@ namespace NL
             if (this.isDragging) {
                 this.targetTransform.position = this.startPosition + GameManager.Instance.InputManager.DraggingFromStart;
             }
-
-            
-            Debug.Log(this.isDragging);
-            Debug.Log(this.targetTransform.position);
         }
     }    
 }

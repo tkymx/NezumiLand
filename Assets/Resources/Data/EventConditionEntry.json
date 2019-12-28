@@ -1,4 +1,4 @@
-[
+{"InnerArray":[
     {
         "Id": 1,
         "EventConditionType": "Time",
@@ -28,3 +28,4 @@
         ]
     }
 ]
+}

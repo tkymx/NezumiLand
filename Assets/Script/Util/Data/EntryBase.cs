@@ -5,11 +5,11 @@ using UnityEngine;
 using System.Runtime.Serialization;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class EntryBase
     {
-        [DataMember]
-        public uint Id { get; set; }
+        
+        public uint Id;
 
         public override bool Equals (object obj) {
             if (obj == null || GetType () != obj.GetType ()) {

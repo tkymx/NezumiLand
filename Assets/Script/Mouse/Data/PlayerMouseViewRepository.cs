@@ -5,26 +5,26 @@ using UnityEngine;
 using System;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerMouseViewEntry : EntryBase {
 
-        [DataMember]
-        public  Position3Entry<float> Position { get; set; }
         
-        [DataMember]
-        public  Position3Entry<float> Rotation { get; set; }
+        public  Position3Entry Position;
+        
+        
+        public  Position3Entry Rotation;
 
-        [DataMember]
-        public string State { get; set; }
+        
+        public string State;
 
-        [DataMember]
-        public float MakingAmountValue { get; set; }
+        
+        public float MakingAmountValue;
 
-        [DataMember]
-        public float MakingAmountMaxValue { get; set; }
+        
+        public float MakingAmountMaxValue;
 
-        [DataMember]
-        public uint PlayerArrangementTargetId { get; set; }
+        
+        public uint PlayerArrangementTargetId;
     }
 
     public interface IPlayerMouseViewRepository {
@@ -86,12 +86,12 @@ namespace NL {
             var id = this.MaximuId()+1;
             var entry = new PlayerMouseViewEntry () {
                 Id = id,
-                Position = new Position3Entry<float>() {
+                Position = new Position3Entry() {
                     X = position.x,
                     Y = position.y,
                     Z = position.z
                 },
-                Rotation = new Position3Entry<float>() {
+                Rotation = new Position3Entry() {
                     X = 0.0f,
                     Y = 0.0f,
                     Z = 0.0f
@@ -112,12 +112,12 @@ namespace NL {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerMouseViewEntry () {
                     Id = playerMouseViewModel.Id,
-                    Position = new Position3Entry<float>() {
+                    Position = new Position3Entry() {
                         X = playerMouseViewModel.Position.x,
                         Y = playerMouseViewModel.Position.y,
                         Z = playerMouseViewModel.Position.z
                     },
-                    Rotation = new Position3Entry<float>() {
+                    Rotation = new Position3Entry() {
                         X = playerMouseViewModel.Rotation.x,
                         Y = playerMouseViewModel.Rotation.y,
                         Z = playerMouseViewModel.Rotation.z

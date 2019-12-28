@@ -1,24 +1,26 @@
-[
-    {
-        "Id": 1,
-        "ConversationTexts": [
-            "こんにちは、これから始まるネズミの物語",
-            "きみはついてくれるかな？",
-            "まずは、ブランコを立ててみよう"
-        ],
-        "ConversationCharacterNames": [
-            "Nezumi",
-            "Nezumi",
-            "Nezumi"
-        ]
-    },
-    {
-        "Id": 2,
-        "ConversationTexts": [
-            "一行のみテスト"
-        ],
-        "ConversationCharacterNames": [
-            "Nezumi",
-        ]
-    }
-]
+{
+    "InnerArray": [
+        {
+            "Id": 1,
+            "ConversationTexts": [
+                "こんにちは、これから始まるネズミの物語",
+                "きみはついてくれるかな？",
+                "まずは、ブランコを立ててみよう"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi",
+                "Nezumi",
+                "Nezumi"
+            ]
+        },
+        {
+            "Id": 2,
+            "ConversationTexts": [
+                "一行のみテスト"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ]
+        }
+    ]
+}

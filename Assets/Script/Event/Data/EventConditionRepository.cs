@@ -5,14 +5,15 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+
+    [System.Serializable]
     public class EventConditionEntry : EntryBase {
 
-        [DataMember]
-        public string EventConditionType { get; set; }
+        
+        public string EventConditionType;
 
-        [DataMember]
-        public string[] Arg { get; set; }
+        
+        public string[] Arg;
     }
 
     public interface IEventConditionRepository {

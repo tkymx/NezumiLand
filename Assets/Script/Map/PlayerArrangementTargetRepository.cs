@@ -6,49 +6,49 @@ using System;
 
 namespace NL {
 
-    [DataContract]
-    public class Position3Entry<T> {
-        [DataMember]
-        public T X;
-        [DataMember]
-        public T Y;
-        [DataMember]
-        public T Z;
+    [System.Serializable]
+    public class Position3Entry {
+        
+        public float X;
+        
+        public float Y;
+        
+        public float Z;
     }
 
-    [DataContract]
-    public class Position2Entry<T> {
-        [DataMember]
-        public T X;
-        [DataMember]
-        public T Z;
+    [System.Serializable]
+    public class Position2Entry {
+        
+        public int X;
+        
+        public int Z;
     }    
 
-    [DataContract]
+    [System.Serializable]
     public class PlayerArrangementTargetEntry : EntryBase {
 
-        [DataMember]
-        public Position3Entry<float> CenterPosition;
+        
+        public Position3Entry CenterPosition;
 
-        [DataMember]
+        
         public float Range;
 
-        [DataMember]
-        public List<Position2Entry<int>> ArrangementPositions;
+        
+        public Position2Entry[] ArrangementPositions;
 
-        [DataMember]
+        
         public string ArrangementTargetState;
 
-        [DataMember]
+        
         public bool HasMonoInfoId;
 
-        [DataMember]
+        
         public uint MonoInfoId;
 
-        [DataMember]
+        
         public bool HasMonoViewModelId;
 
-        [DataMember]
+        
         public uint MonoViewModelId;
     }
 
@@ -130,16 +130,16 @@ namespace NL {
             var id = this.MaximuId()+1;
             var entry = new PlayerArrangementTargetEntry () {
                 Id = id,
-                CenterPosition = new Position3Entry<float>() {
+                CenterPosition = new Position3Entry() {
                     X = centerPosition.x,
                     Y = centerPosition.y,
                     Z = centerPosition.z
                 },
                 Range = range,
-                ArrangementPositions = positions.Select(pos => new Position2Entry<int>(){
+                ArrangementPositions = positions.Select(pos => new Position2Entry(){
                     X = pos.x,
                     Z = pos.z
-                }).ToList(),
+                }).ToArray(),
                 ArrangementTargetState = state.ToString(),
                 HasMonoInfoId = monoInfo != null,
                 MonoInfoId = monoInfo != null ? monoInfo.Id : uint.MaxValue,
@@ -157,16 +157,16 @@ namespace NL {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerArrangementTargetEntry () {
                     Id = playerArrangementTargetModel.Id,
-                    CenterPosition = new Position3Entry<float>() {
+                    CenterPosition = new Position3Entry() {
                         X = playerArrangementTargetModel.CenterPosition.x,
                         Y = playerArrangementTargetModel.CenterPosition.y,
                         Z = playerArrangementTargetModel.CenterPosition.z
                     },
                     Range = playerArrangementTargetModel.Range,
-                    ArrangementPositions = playerArrangementTargetModel.Positions.Select(pos => new Position2Entry<int>(){
+                    ArrangementPositions = playerArrangementTargetModel.Positions.Select(pos => new Position2Entry(){
                         X = pos.x,
                         Z = pos.z
-                    }).ToList(),
+                    }).ToArray(),
                     ArrangementTargetState = playerArrangementTargetModel.State.ToString(),
                     HasMonoInfoId = playerArrangementTargetModel.MonoInfo != null,
                     MonoInfoId = playerArrangementTargetModel.MonoInfo != null ? playerArrangementTargetModel.MonoInfo.Id : uint.MaxValue,

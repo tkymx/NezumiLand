@@ -6,7 +6,9 @@ using UnityEngine;
 namespace NL {
     public enum OnegaiCondition {
         None,
-        Near
+        Near,
+        AboveSatisfaction,
+        ArrangementCount,
     }
 
     public class OnegaiModel : ModelBase {

@@ -1,4 +1,4 @@
-[
+{"InnerArray":[
     {
         "Id": 1,
         "EventContentsType": "ForceConversation",
@@ -22,3 +22,4 @@
         ]
     }
 ]
+}

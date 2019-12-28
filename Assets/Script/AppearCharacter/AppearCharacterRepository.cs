@@ -4,11 +4,11 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class AppearCharacterEntry : EntryBase {
 
-        [DataMember]
-        public string Name { get; set; }
+        
+        public string Name;
     }
 
     public interface IAppearCharacterRepository {

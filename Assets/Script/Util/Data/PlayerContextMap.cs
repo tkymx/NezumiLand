@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Linq;
 using UnityEngine;
 
 namespace NL {
@@ -39,6 +40,16 @@ namespace NL {
             this.PlayerInfoEntrys = LoadEntryFromJsonFromName<PlayerInfoEntry> ("PlayerInfoEntry");
         }
 
+        [System.Serializable]
+        public class PlayerLap<T> {
+            public T[] InnerArray;
+
+            public PlayerLap(IList<T> innerArray)
+            {
+                this.InnerArray = innerArray.ToArray();
+            }
+        }
+
         private static IList<T> LoadEntryFromJsonFromName<T> (string name) {
             if (!ResourceLoader.ExistsPlayerEntry(name)) {
                 return new List<T>();
@@ -46,19 +57,19 @@ namespace NL {
             return LoadEntryFromJson<T>(ResourceLoader.LoadPlayerEntry (name));
         }
 
-        private static IList<T> LoadEntryFromJson<T> (string json) {
+        private static T[] LoadEntryFromJson<T> (string json) {
             using (var stream = new MemoryStream (Encoding.UTF8.GetBytes (json))) {
-                var serializer = new DataContractJsonSerializer (typeof (IList<T>));
-                return (IList<T>) serializer.ReadObject (stream);
+                var lap = JsonUtility.FromJson<PlayerLap<T>>(json);
+                return lap.InnerArray;
             }
         }
 
         public static void WriteEntry<T> (IList<T> entrys) {
             using (var stream = new MemoryStream ()) {
-                var serializer = new DataContractJsonSerializer (typeof (IList<T>));
-                serializer.WriteObject (stream, entrys);
+                var lap = new PlayerLap<T>(entrys);
+                var json = JsonUtility.ToJson(lap);
                 Debug.Log (typeof (T).Name + "の書き込みをします");
-                ResourceLoader.WritePlayerEntry (typeof (T).Name, Encoding.UTF8.GetString (stream.GetBuffer (), 0, (int) stream.Length));
+                ResourceLoader.WritePlayerEntry (typeof (T).Name, json);
             }
         }
     }

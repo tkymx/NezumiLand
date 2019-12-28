@@ -5,23 +5,23 @@ using UnityEngine;
 
 namespace NL {
 
-    [DataContract]
+    [System.Serializable]
     public class RewardSingleEntry {
-        [DataMember]
-        public string Type { get; set; }
+        
+        public string Type;
 
-        [DataMember]
-        public uint Amount { get; set; }
+        
+        public uint Amount;
 
-        [DataMember]
-        public string[] Args { get; set; }
+        
+        public string[] Args;
     }
     
-    [DataContract]
+    [System.Serializable]
     public class RewardEntry : EntryBase {
 
-        [DataMember]
-        public RewardSingleEntry[] RewardSingleEntrys { get; set; }
+        
+        public RewardSingleEntry[] RewardSingleEntrys;
     }
 
     public interface IRewardRepository {

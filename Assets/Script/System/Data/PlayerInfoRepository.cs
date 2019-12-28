@@ -4,17 +4,17 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerInfoEntry : EntryBase {
 
-        [DataMember]
-        public float ElapsedTime { get; set; }
+        
+        public float ElapsedTime;
 
-        [DataMember]
-        public long Currency { get; set; }
+        
+        public long Currency;
 
-        [DataMember]
-        public long ArrangementItemAmount { get; set; }
+        
+        public long ArrangementItemAmount;
     }
 
     public interface IPlayerInfoRepository {

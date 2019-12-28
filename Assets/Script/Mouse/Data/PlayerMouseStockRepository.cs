@@ -4,11 +4,11 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class PlayerMouseStockEntry : EntryBase {
 
-        [DataMember]
-        public long MouseStockCount { get; set; }
+        
+        public long MouseStockCount;
     }
 
     public interface IPlayerMouseStockRepository {

@@ -3,50 +3,36 @@ using System.Linq;
 using System.Runtime.Serialization;
 
 namespace NL {
-    [DataContract]
+    [System.Serializable]
     public class MonoInfoEntry : EntryBase {
 
-        [DataMember]
-        public string Name { get; set; }
+        public string Name;
 
-        [DataMember]
-        public string Type { get; set; }
+        public string Type;
 
-        [DataMember]
-        public int Width { get; set; }
+        public int Width;
 
-        [DataMember]
-        public int Height { get; set; }
+        public int Height;
 
-        [DataMember]
-        public long MakingFee { get; set; }
+        public long MakingFee;
 
-        [DataMember]
-        public long MakingItemAmount { get; set; }
+        public long MakingItemAmount;
 
-        [DataMember]
-        public long RemoveFee { get; set; }
+        public long RemoveFee;
 
-        [DataMember]
-        public string ModelName { get; set; }
+        public string ModelName;
 
-        [DataMember]
-        public long[] LevelUpFee { get; set; }
+        public long[] LevelUpFee;
 
-        [DataMember]
-        public long[] LevelUpSatisfaction { get; set; }
+        public long[] LevelUpSatisfaction;
 
-        [DataMember]
-        public long BaseSatisfaction { get; set; }
+        public long BaseSatisfaction;
 
-        [DataMember]
-        public long ArrangementCount { get; set; }
+        public long ArrangementCount;
 
-        [DataMember]
-        public string ReleaseConditionText { get; set; }
+        public string ReleaseConditionText;
 
-        [DataMember]
-        public float MakingTime { get; set; }
+        public float MakingTime;
     }
 
     public interface IMonoInfoRepository {

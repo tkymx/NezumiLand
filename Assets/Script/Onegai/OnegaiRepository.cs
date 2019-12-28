@@ -4,35 +4,36 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+
+    [System.Serializable]
     public class OnegaiEntry : EntryBase {
 
-        [DataMember]
-        public string Title { get; set; }
+        
+        public string Title;
 
-        [DataMember]
-        public string Detail { get; set; }
+        
+        public string Detail;
 
-        [DataMember]
-        public string Author { get; set; }
+        
+        public string Author;
 
-        [DataMember]
-        public string OnegaiCondition { get; set; }
+        
+        public string OnegaiCondition;
 
-        [DataMember]
-        public string OnegaiConditionArg { get; set; }
+        
+        public string OnegaiConditionArg;
 
-        [DataMember]
-        public long Satisfaction { get; set; }
+        
+        public long Satisfaction;
 
-        [DataMember]
-        public bool IsInitialLock { get; set; }
+        
+        public bool IsInitialLock;
 
-        [DataMember]
-        public bool IsSchedule { get; set; }
+        
+        public bool IsSchedule;
 
-        [DataMember]
-        public uint ScheduleId { get; set; }
+        
+        public uint ScheduleId;
     }
 
     public interface IOnegaiRepository {

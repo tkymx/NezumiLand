@@ -34,7 +34,7 @@ namespace NL {
             this.nearMonoInfoIDs = nearMonoInfoIDs;
         }
 
-        public OnegaiCondition OnegaiCondition => OnegaiCondition.Near;
+        public OnegaiCondition OnegaiCondition => NL.OnegaiCondition.Near;
 
         public List<PlayerOnegaiModel> Mediate (List<PlayerOnegaiModel> playerOnegaiModels) {
             var outputPlayerOnegaiModels = new List<PlayerOnegaiModel> ();

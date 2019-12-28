@@ -4,14 +4,15 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace NL {
-    [DataContract]
+
+    [System.Serializable]
     public class MousePurchaceTableEntry : EntryBase {
 
-        [DataMember]
-        public long CurrencyCost { get; set; }
+        
+        public long CurrencyCost;
 
-        [DataMember]
-        public long ItemCost { get; set; }
+        
+        public long ItemCost;
     }
 
     public interface IMousePurchaceTableRepository {

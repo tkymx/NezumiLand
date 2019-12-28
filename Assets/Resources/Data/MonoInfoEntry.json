@@ -1,4 +1,4 @@
-[
+{"InnerArray":[
     {
         "Id": 1,
         "Name": "ブランコ",
@@ -68,3 +68,4 @@
         "MakingTime": 2
     }
 ]
+}

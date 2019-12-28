@@ -28,6 +28,7 @@ namespace NL {
             openCloseButton.onClick.AddListener(() => {
                 mainContetns.SetActive(!mainContetns.activeSelf);
             });
+            Application.logMessageReceived += HandleLog;
         }
 
         private void Update () {
@@ -37,6 +38,19 @@ namespace NL {
                 text.text += "MonoState : " + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Id.ToString () + ":" + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Name.ToString () + LR;
             }
             text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString () + LR;
+            text.text += message;
         }
+
+        private string message = "";
+
+        private void OnDestroy()
+        {
+            Application.logMessageReceived -= HandleLog;
+        }
+
+        private void HandleLog( string logText, string stackTrace, LogType type )
+        {
+            message += type.ToString() + ":" + logText + LR;
+        }        
     }
 }

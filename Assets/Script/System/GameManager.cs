@@ -102,6 +102,9 @@ namespace NL {
             var eventRepository = EventRepository.GetRepository(ContextMap.DefaultMap);
             var monoInfoRepository = new MonoInfoRepository(ContextMap.DefaultMap);
             var mousePurchaceTableRepository = new MousePurchaceTableRepository(ContextMap.DefaultMap);
+            var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
+            var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
+            var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -110,6 +113,8 @@ namespace NL {
             var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
             var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
+            var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
+            var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(playerAppearCharacterReserveRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -133,8 +138,8 @@ namespace NL {
             this.dailyActionManager = new DailyActionManager ();
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
-            this.appearCharacterManager = new AppearCharacterManager(this.rootObject);
-            this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager();
+            this.appearCharacterManager = new AppearCharacterManager(this.rootObject, playerAppearCharacterViewRepository);
+            this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager(playerAppearCharacterReserveRepository);
             this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
             this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
@@ -161,6 +166,8 @@ namespace NL {
             initialArrangementService.Execute();
             var initializeOrderedMouseService = new InitializeOrderedMouseService(playerMouseViewRepository);
             initializeOrderedMouseService.Execute();
+            var initializeAppearCharacterService = new InitializeAppearCharacterService(playerAppearCharacterReserveRepository, playerAppearCharacterViewRepository);
+            initializeAppearCharacterService.Execute();
         }
 
         private void Update () {

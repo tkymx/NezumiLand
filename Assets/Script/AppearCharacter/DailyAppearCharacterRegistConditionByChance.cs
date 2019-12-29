@@ -6,6 +6,7 @@ namespace NL {
     public class DailyAppearCharacterRegistConditionByChance : IDailyAppearCharacterRegistCondition
     {
         private float rate = 0;
+        public float Rate => rate;
 
         public DailyAppearCharacterRegistConditionByChance(float rate)
         {

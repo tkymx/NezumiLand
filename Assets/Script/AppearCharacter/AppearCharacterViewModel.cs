@@ -10,46 +10,43 @@ namespace NL {
     /// </summary>
     public class AppearCharacterViewModel
     {
+        public PlayerAppearCharacterViewModel PlayerAppearCharacterViewModel { get; private set; }
         private AppearCharacterView appearCharacterView;
-        private AppearCharacterModel appearCharacterModel;
-        private ConversationModel conversationModel;    /*今は固定だが、後々は抽象化したい*/
-        private RewardModel rewardModel;
 
         private List<IDisposable> disposables = new List<IDisposable>();
 
-        private bool isReceiveReward = false;
-
-        public AppearCharacterViewModel(AppearCharacterView appearCharacterView, AppearCharacterModel appearCharacterModel, ConversationModel conversationModel, RewardModel rewardModel)
+        public AppearCharacterViewModel(AppearCharacterView appearCharacterView, PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
             this.appearCharacterView = appearCharacterView;            
-            this.appearCharacterModel = appearCharacterModel;
-            this.conversationModel = conversationModel;
-            this.rewardModel = rewardModel;
+            this.PlayerAppearCharacterViewModel = playerAppearCharacterViewModel;
 
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable
                 .SelectMany(_ => {
-                    var conversationMode =  GameModeGenerator.GenerateConversationMode(this.conversationModel);
+                    var conversationMode =  GameModeGenerator.GenerateConversationMode(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.ConversationModel);
                     GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(conversationMode);
                     return GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode);
                 })
                 .SelectMany(_ => {
-                    if (this.rewardModel == null) {
+                    if (this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel == null) {
                         return new ImmediatelyObservable<int>(_);
                     }
-                    if (this.isReceiveReward) {
+                    if (this.PlayerAppearCharacterViewModel.IsReceiveReward) {
                         return new ImmediatelyObservable<int>(_);
                     }
-                    this.isReceiveReward = true;
-                    var rewardMode = GameModeGenerator.GenerateReceiveRewardMode(this.rewardModel);
+
+                    // 受け取り済みにする
+                    GameManager.Instance.AppearCharacterManager.ToReeiveRewards(this.PlayerAppearCharacterViewModel);
+
+                    var rewardMode = GameModeGenerator.GenerateReceiveRewardMode(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel);
                     GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(rewardMode);
                     return GameManager.Instance.GameModeManager.GetModeEndObservable(rewardMode);
                 })
                 .Subscribe(_ => {
                     // TODO 終了後に撤退の動作を始める
                     // 予約から消す必要があれば消す
-                    if(GameManager.Instance.DailyAppearCharacterRegistManager.IsRemoveReserve(this)) {
-                        GameManager.Instance.DailyAppearCharacterRegistManager.RemoveReserve(this); 
+                    if(GameManager.Instance.DailyAppearCharacterRegistManager.IsRemoveReserve(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel)) {
+                        GameManager.Instance.DailyAppearCharacterRegistManager.RemoveReserve(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel); 
                     }
                 }));
         }

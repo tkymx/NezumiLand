@@ -23,6 +23,8 @@ namespace NL {
         public IList<PlayerArrangementTargetEntry> PlayerArrangementTargetEntrys { get; private set; }
         public IList<PlayerMouseViewEntry> PlayerMouseViewEntrys { get; private set; }
         public IList<PlayerInfoEntry> PlayerInfoEntrys { get; private set; }
+        public IList<PlayerAppearCharacterReserveEntry> PlayerAppearCharacterReserveEntrys { get; private set; }
+        public IList<PlayerAppearCharacterViewEntry> PlayerAppearCharacterViewEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new PlayerContextMap ();
@@ -38,6 +40,8 @@ namespace NL {
             this.PlayerArrangementTargetEntrys = LoadEntryFromJsonFromName<PlayerArrangementTargetEntry> ("PlayerArrangementTargetEntry");
             this.PlayerMouseViewEntrys = LoadEntryFromJsonFromName<PlayerMouseViewEntry> ("PlayerMouseViewEntry");
             this.PlayerInfoEntrys = LoadEntryFromJsonFromName<PlayerInfoEntry> ("PlayerInfoEntry");
+            this.PlayerAppearCharacterReserveEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterReserveEntry> ("PlayerAppearCharacterReserveEntry");
+            this.PlayerAppearCharacterViewEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterViewEntry> ("PlayerAppearCharacterViewEntry");
         }
 
         [System.Serializable]

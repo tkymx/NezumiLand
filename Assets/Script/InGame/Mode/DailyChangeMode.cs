@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL {
 
@@ -13,10 +14,13 @@ namespace NL {
         private readonly DailyEarnCalculater dailyEarnCalculater = null;
         private readonly SatisfactionCalculater satisfactionCalculater = null;
 
+        private IDisposable disposable = null;
+
         public DailyChangeMode (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.playerOnegaiRepository = playerOnegaiRepository;
             this.dailyEarnCalculater = new DailyEarnCalculater(playerOnegaiRepository);
             this.satisfactionCalculater = new SatisfactionCalculater(playerOnegaiRepository);
+            this.disposable = null;
         }
         
         public void OnEnter () {
@@ -38,7 +42,7 @@ namespace NL {
             this.DoDailyEnd ();
             GameManager.Instance.GameUIManager.DailyEndPresenter.Show ();
             GameManager.Instance.GameUIManager.DailyEndPresenter.SetCurrentChangeInfo(prevCurrency, nextCurrency, currentSatisfaction);
-            GameManager.Instance.GameUIManager.DailyEndPresenter.OnClose
+            this.disposable = GameManager.Instance.GameUIManager.DailyEndPresenter.OnClose
                 .SelectMany(_ => {
                     // 一日の始まりダイアログを出す
                     this.DoDailyStart ();
@@ -62,6 +66,7 @@ namespace NL {
         }
         public void OnExit () {
             GameManager.Instance.TimeManager.Play ();
+            this.disposable.Dispose();
         }
 
         /// <summary>

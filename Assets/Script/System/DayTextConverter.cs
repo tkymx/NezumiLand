@@ -46,5 +46,10 @@ namespace NL
             var date = Convert(time);
             return string.Format("{0,2}月{1,2}日 {2,2}時{3,2}分", date.Month, date.Day, date.Hour, date.Minute);
         }
+
+        public static float OneDayProgress (float time) {
+            int elapsedDay = (int)(time / SecondToDay);                 // (int)( 113 / 30 ) = 3日
+            return (time - elapsedDay * SecondToDay) / SecondToDay;
+        }
     }   
 }

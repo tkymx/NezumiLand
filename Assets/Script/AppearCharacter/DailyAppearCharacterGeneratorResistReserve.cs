@@ -9,33 +9,28 @@ namespace NL {
     /// </summary>
     public class DailyAppearCharacterGeneratorResistReserve
     {
-        private AppearCharacterGenerator appearCharacterGenerator;
-        private IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition;
+        public PlayerAppearCharacterReserveModel PlayerAppearCharacterReserveModel { get; private set; }
 
-        public DailyAppearCharacterGeneratorResistReserve(AppearCharacterGenerator appearCharacterGenerator, IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition)
+        public DailyAppearCharacterGeneratorResistReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel)
         {
-            this.appearCharacterGenerator = appearCharacterGenerator;
-            this.dailyAppearCharacterRegistCondition = dailyAppearCharacterRegistCondition;
+            this.PlayerAppearCharacterReserveModel = playerAppearCharacterReserveModel;
         }
 
         public bool IsResist() {
-            return this.dailyAppearCharacterRegistCondition.IsResist();
+            return this.PlayerAppearCharacterReserveModel.DailyAppearCharacterRegistCondition.IsResist();
         }
 
         public bool IsOnce() {
-            return this.dailyAppearCharacterRegistCondition.IsOnce ();
+            return this.PlayerAppearCharacterReserveModel.DailyAppearCharacterRegistCondition.IsOnce ();
         }
 
         public void Generate() {
-            GameManager.Instance.AppearCharacterManager.EnqueueRegister(this.appearCharacterGenerator.Generate());
+            var generator = new AppearCharacterGenerator(PlayerAppearCharacterReserveModel);
+            GameManager.Instance.AppearCharacterManager.EnqueueRegister(generator.Generate());
         }
 
         public override string ToString() {
-            return this.appearCharacterGenerator.ToString() + " " + this.dailyAppearCharacterRegistCondition.ToString();  
-        }
-
-        public bool IsTarget (AppearCharacterViewModel appearCharacterViewModel) {
-            return this.appearCharacterGenerator.IsTarget(appearCharacterViewModel);
+            return this.PlayerAppearCharacterReserveModel.AppearCharacterModel.Id.ToString() + " " + this.PlayerAppearCharacterReserveModel.DailyAppearCharacterRegistCondition.ToString();  
         }
     }
 }

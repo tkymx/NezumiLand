@@ -9,29 +9,37 @@ namespace NL
         private AppearCharacterModel appearCharacterModel;
         private ConversationModel conversationModel;
         private RewardModel rewardModel;
-        private AppearCharacterViewModel generatedAppearCharacterViewModel;
+        private PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel;
 
-        public AppearCharacterGenerator(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel,RewardModel rewardModel)
+        public AppearCharacterGenerator(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel)
         {
-            this.appearCharacterModel = appearCharacterModel;
-            this.conversationModel = conversationModel;
-            this.rewardModel = rewardModel;
-
-            this.generatedAppearCharacterViewModel = null;
+            this.appearCharacterModel = playerAppearCharacterReserveModel.AppearCharacterModel;
+            this.conversationModel = playerAppearCharacterReserveModel.ConversationModel;
+            this.rewardModel = playerAppearCharacterReserveModel.RewardModel;
+            this.playerAppearCharacterReserveModel = playerAppearCharacterReserveModel;
         }
 
         public AppearCharacterViewModel Generate() {
             var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , GetInitialPosition());
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
-            this.generatedAppearCharacterViewModel = new AppearCharacterViewModel(
+            var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
-                this.appearCharacterModel,
-                this.conversationModel,
-                this.rewardModel
+                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, playerAppearCharacterReserveModel)
             );
             return generatedAppearCharacterViewModel;
         }
+
+        public AppearCharacterViewModel Generate(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
+            var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
+            var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , playerAppearCharacterViewModel.Position);
+            var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
+            var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
+                appearCharacterView,
+                playerAppearCharacterViewModel
+            );
+            return generatedAppearCharacterViewModel;
+        }        
 
         private static Vector3 GetInitialPosition() 
         {
@@ -40,13 +48,6 @@ namespace NL
 
         public override string ToString() {
             return "AppearCharacterGenerator" + appearCharacterModel.Name + " " + conversationModel.Id.ToString();
-        }
-
-        public bool IsTarget(AppearCharacterViewModel appearCharacterViewModel) {
-            if (this.generatedAppearCharacterViewModel == null) {
-                return false;
-            }
-            return this.generatedAppearCharacterViewModel == appearCharacterViewModel;
         }
     }
 }

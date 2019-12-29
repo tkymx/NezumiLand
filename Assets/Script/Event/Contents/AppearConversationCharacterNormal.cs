@@ -31,10 +31,9 @@ namespace NL.EventContents {
         public override EventContentsType EventContentsType => EventContentsType.AppearConversationCharacterNormal;
 
         public override void OnEnter() {
-            GameManager.Instance.DailyAppearCharacterRegistManager.RegistReserve(new DailyAppearCharacterGeneratorResistReserve(
-                new AppearCharacterGenerator(this.appearCharacterModel, this.conversationModel, this.rewardModel),
-                new DailyAppearCharacterRegistConditionByChance(this.rate)
-            ));
+            GameManager.Instance.DailyAppearCharacterRegistManager.RegistReserve(
+                this.appearCharacterModel, this.conversationModel, this.rewardModel,
+                new DailyAppearCharacterRegistConditionByChance(this.rate));
         }
         public override void OnUpdate() {
         }

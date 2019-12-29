@@ -10,37 +10,68 @@ namespace NL {
     /// </summary>
     public class DailyAppearCharacterRegistManager
     {
+        private readonly DailyAppearCharacterRegistReserveCreateService dailyAppearCharacterRegistReserveCreateService = null;
+        private readonly DailyAppearCharacterRegistReserveRemoveService dailyAppearCharacterRegistReserveRemoveService = null;
+        private readonly DailyAppearCharacterRegistReserveNextRemoveService dailyAppearCharacterRegistReserveNextRemoveService = null;
+
         private List<DailyAppearCharacterGeneratorResistReserve> dailyAppearCharacterGeneratorResistReserves = null;
 
-        public DailyAppearCharacterRegistManager()
+        public DailyAppearCharacterRegistManager(IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository)
         {
             this.dailyAppearCharacterGeneratorResistReserves = new List<DailyAppearCharacterGeneratorResistReserve>();            
+
+            this.dailyAppearCharacterRegistReserveCreateService = new DailyAppearCharacterRegistReserveCreateService(playerAppearCharacterReserveRepository);
+            this.dailyAppearCharacterRegistReserveRemoveService = new DailyAppearCharacterRegistReserveRemoveService(playerAppearCharacterReserveRepository);
+            this.dailyAppearCharacterRegistReserveNextRemoveService = new DailyAppearCharacterRegistReserveNextRemoveService(playerAppearCharacterReserveRepository);
         }
 
-        public void RegistReserve(DailyAppearCharacterGeneratorResistReserve dailyAppearCharacterGeneratorResistReserve) 
+        public void RegistReserve(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel, RewardModel rewardModel, IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition) 
         {
-            Debug.Log("キャラクタの出演予約をしました。:" + dailyAppearCharacterGeneratorResistReserve.ToString());
+            var playerAppearCharacterReserveModel = this.dailyAppearCharacterRegistReserveCreateService.Execute(
+                appearCharacterModel,
+                conversationModel,
+                rewardModel,
+                dailyAppearCharacterRegistCondition
+            );
+            this.RegistReserve(playerAppearCharacterReserveModel);
+        }
+        public void RegistReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) 
+        {
+            var dailyAppearCharacterGeneratorResistReserve = new DailyAppearCharacterGeneratorResistReserve(playerAppearCharacterReserveModel);
             this.dailyAppearCharacterGeneratorResistReserves.Add(dailyAppearCharacterGeneratorResistReserve);
         }
 
-        public bool IsRemoveReserve(AppearCharacterViewModel appearCharacterViewModel)
+        public bool IsRemoveReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel)
         {
-            var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.IsTarget(appearCharacterViewModel));
+            var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.PlayerAppearCharacterReserveModel.Id == playerAppearCharacterReserveModel.Id);
             Debug.Assert(dailyAppearCharacterGeneratorResistReserve != null, "要素が見つかりません");
 
             // 条件は増える可能性があるが、現状一回のみのやつは消してもいい
             return dailyAppearCharacterGeneratorResistReserve.IsOnce();
         }
 
-        public void RemoveReserve(AppearCharacterViewModel appearCharacterViewModel)
+        public void RemoveReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel)
         {
-            var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.IsTarget(appearCharacterViewModel));
+            var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.PlayerAppearCharacterReserveModel.Id == playerAppearCharacterReserveModel.Id);
             Debug.Assert(dailyAppearCharacterGeneratorResistReserve != null, "DailyAppearCharacterRegistManagerに見つかりませんでした。");
-            this.dailyAppearCharacterGeneratorResistReserves.Remove(dailyAppearCharacterGeneratorResistReserve);
+
+            // 消去予約
+            this.dailyAppearCharacterRegistReserveNextRemoveService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel);
         }
 
         public void Resist() 
         {
+            // 消去すべきかを判断する
+            foreach (var dailyAppearCharacterGeneratorResistReserve in this.dailyAppearCharacterGeneratorResistReserves.ToArray())
+            {
+                if (!dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel.IsNextRemove) {
+                    continue;
+                }
+
+                this.dailyAppearCharacterGeneratorResistReserves.Remove(dailyAppearCharacterGeneratorResistReserve);
+                this.dailyAppearCharacterRegistReserveRemoveService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel);
+            }
+
             var removeList = new Queue<DailyAppearCharacterGeneratorResistReserve>();
             foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {

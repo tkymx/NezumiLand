@@ -21,6 +21,15 @@
             "ConversationCharacterNames": [
                 "Nezumi"
             ]
+        },
+        {
+            "Id": 3,
+            "ConversationTexts": [
+                "定期的に出てくるやつ"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ]
         }
     ]
 }

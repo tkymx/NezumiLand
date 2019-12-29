@@ -1,25 +1,35 @@
-{"InnerArray":[
-    {
-        "Id": 1,
-        "EventContentsType": "ForceConversation",
-        "Arg": [
-            "1"
-        ]
-    },
-    {
-        "Id": 2,
-        "EventContentsType": "AppearConversationCharacter",
-        "Arg": [
-            "1",
-            "2",
-            "2"
-        ]
-    },
-    {
-        "Id": 3,
-        "EventContentsType": "Nope",
-        "Arg": [
-        ]
-    }
-]
+{
+    "InnerArray": [
+        {
+            "Id": 1,
+            "EventContentsType": "ForceConversation",
+            "Arg": [
+                "1"
+            ]
+        },
+        {
+            "Id": 2,
+            "EventContentsType": "AppearConversationCharacter",
+            "Arg": [
+                "1",
+                "2",
+                "2"
+            ]
+        },
+        {
+            "Id": 3,
+            "EventContentsType": "Nope",
+            "Arg": []
+        },
+        {
+            "Id": 4,
+            "EventContentsType": "AppearConversationCharacterNormal",
+            "Arg": [
+                "1",
+                "3",
+                "2",
+                0.9
+            ]
+        }
+    ]
 }

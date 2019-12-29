@@ -6,7 +6,7 @@ namespace NL {
     public class DailyAppearCharacterRegistConditionForce : IDailyAppearCharacterRegistCondition
     {
         public bool IsOnce() {
-            return false;
+            return true;
         }
         public bool IsResist() {
             return true;

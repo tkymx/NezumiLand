@@ -12,6 +12,9 @@ namespace NL {
             if (playerEventModel.EventModel.EventContentsModel.EventContentsType == EventContentsType.AppearConversationCharacter) {
                 return new NL.EventContents.AppearConversationCharacter(playerEventModel);
             }
+            if (playerEventModel.EventModel.EventContentsModel.EventContentsType == EventContentsType.AppearConversationCharacterNormal) {
+                return new NL.EventContents.AppearConversationCharacterNormal(playerEventModel);
+            }
             Debug.Assert(false,"Invalidなコンテンツが生成されました。");
             return new NL.EventContents.Invalid();
         }

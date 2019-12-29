@@ -26,7 +26,10 @@ namespace NL {
         public bool IsRemoveReserve(AppearCharacterViewModel appearCharacterViewModel)
         {
             var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.IsTarget(appearCharacterViewModel));
-            return dailyAppearCharacterGeneratorResistReserve != null;
+            Debug.Assert(dailyAppearCharacterGeneratorResistReserve != null, "要素が見つかりません");
+
+            // 条件は増える可能性があるが、現状一回のみのやつは消してもいい
+            return dailyAppearCharacterGeneratorResistReserve.IsOnce();
         }
 
         public void RemoveReserve(AppearCharacterViewModel appearCharacterViewModel)
@@ -48,11 +51,6 @@ namespace NL {
 
                 // キャラクタを生成する
                 dailyAppearCharacterGeneratorResistReserve.Generate();
-
-                // これで終わりの場合は消去リストに入れる
-                if (dailyAppearCharacterGeneratorResistReserve.IsRemove()) {
-                    removeList.Enqueue(dailyAppearCharacterGeneratorResistReserve);                
-                }
             }
             while(removeList.Count > 0) {
                 dailyAppearCharacterGeneratorResistReserves.Remove(removeList.Dequeue());

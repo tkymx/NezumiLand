@@ -22,8 +22,8 @@ namespace NL {
             return this.dailyAppearCharacterRegistCondition.IsResist();
         }
 
-        public bool IsRemove() {
-            return this.dailyAppearCharacterRegistCondition.IsOnce();
+        public bool IsOnce() {
+            return this.dailyAppearCharacterRegistCondition.IsOnce ();
         }
 
         public void Generate() {

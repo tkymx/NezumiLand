@@ -34,6 +34,30 @@
         "IsInitialLock": true,
         "IsSchedule": true,
         "ScheduleId": 1 
+    },
+    {
+        "Id": 4,
+        "Title": "満足",
+        "Detail": "満足度を300に使用",
+        "Author": "ふぐっち2",
+        "OnegaiCondition": "AboveSatisfaction",
+        "OnegaiConditionArg": "300",
+        "Satisfaction": "100",
+        "IsInitialLock": false,
+        "IsSchedule": false,
+        "ScheduleId": 0
+    },
+    {
+        "Id": 5,
+        "Title": "設置",
+        "Detail": "道を2こ設置",
+        "Author": "ふぐっち2",
+        "OnegaiCondition": "ArrangementCount",
+        "OnegaiConditionArg": "3,2",
+        "Satisfaction": "100",
+        "IsInitialLock": false,
+        "IsSchedule": false,
+        "ScheduleId": 0
     }
 ]
 }

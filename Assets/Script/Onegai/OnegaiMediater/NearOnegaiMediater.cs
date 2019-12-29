@@ -69,7 +69,7 @@ namespace NL {
 
             // 一旦クリア済みのものもリセットしてクリア状況を判断する
             if (isReset) {
-                onegaiMediater.ResetAndMediate (
+                onegaiMediater.ClearResetAndMediate (
                     new Near (targetMonoInfoId, nearMonoInfoIds), 
                     playerOnegaiModels);
             } else {

@@ -118,7 +118,7 @@ namespace NL {
             this.inputManager = new InputManager();
             this.wallet = new Wallet (new Currency (0),playerInfoRepository); // 所持金の初期値も外出ししたい
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
-            this.arrangementManager = new ArrangementManager (this.rootObject, playerArrangementTargetRepository);
+            this.arrangementManager = new ArrangementManager (this.rootObject, playerOnegaiRepository, playerArrangementTargetRepository);
             this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
             this.effectManager = new EffectManager (mainCamera, rootEffectUI);
             this.gameModeManager = new GameModeManager ();

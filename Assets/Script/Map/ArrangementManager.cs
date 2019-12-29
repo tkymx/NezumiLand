@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace NL {
     public class ArrangementManager {
+
         /// <summary>
         /// 配置ターゲット
         /// </summary>
@@ -58,7 +59,11 @@ namespace NL {
         /// </summary>
         private AppearArrangementService appearArrangementService = null;
 
-        public ArrangementManager (GameObject root, IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
+        private IPlayerOnegaiRepository playerOnegaiRepository = null;
+
+        private OnegaiMediater onegaiMediater = null;
+
+        public ArrangementManager (GameObject root, IPlayerOnegaiRepository playerOnegaiRepository, IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.arrangementTargetStore = new List<IPlayerArrangementTarget> ();
             this.selectedArrangementTarget = null;
             this.arrangementAnnotater = new ArrangementAnnotater (root);
@@ -67,6 +72,9 @@ namespace NL {
             this.setMonoViewModelToArrangementService = new SetMonoViewModelToArrangementService(playerArrangementTargetRepository);
             this.arrangementTargetRemoveService = new ArrangementTargetRemoveService(playerArrangementTargetRepository);
             this.appearArrangementService = new AppearArrangementService(playerArrangementTargetRepository);
+
+            this.onegaiMediater = new OnegaiMediater(playerOnegaiRepository);
+            this.playerOnegaiRepository = playerOnegaiRepository;
         }
 
         public void UpdateByFrame () {
@@ -148,8 +156,17 @@ namespace NL {
             // 生成した viewModel をセット
             this.setMonoViewModelToArrangementService.Execute(foundArrangementTarget, monoViewModel);
 
+            // お願いの確認
+
             this.AppendNearArrangement(foundArrangementTarget);
             GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(foundArrangementTarget);
+
+            // 通常の判断
+            var arrangemntMonoId = playerArrangementTargetModel.MonoInfo.Id;
+            this.onegaiMediater.Mediate (
+                new NL.OnegaiConditions.ArrangementCount(arrangemntMonoId, (uint)GetAppearMonoCountById(arrangemntMonoId, false)),
+                playerOnegaiRepository.GetAll().ToList()
+            ); 
         }
 
         /// <summary>
@@ -184,12 +201,24 @@ namespace NL {
                 if (arrangementTarget.HasMonoViewModel) {
                     GameManager.Instance.MonoManager.RemoveMono (arrangementTarget.MonoViewModel);
                     GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByRBeforeRemoval(arrangementTarget);
+
+                    // 近隣配置のお願い（自分の近隣を見るために消える前に必要）
                     this.RemoveNearArrangement(arrangementTarget);
                 }
 
                 this.arrangementTargetStore.Remove (arrangementTarget);
                 this.arrangementTargetRemoveService.Execute(arrangementTarget);
 
+                // 設置済みの場合は設置情報を消す
+                if (arrangementTarget.HasMonoViewModel) {
+
+                    // 減ったかどうかの判断（減った状態を渡すため、減ったあとに事項する必要あり）
+                    var arrangemntMonoId = arrangementTarget.MonoInfo.Id;
+                    this.onegaiMediater.ClearResetAndMediate (
+                        new NL.OnegaiConditions.ArrangementCount(arrangemntMonoId, (uint)GetAppearMonoCountById(arrangemntMonoId, false)),
+                        playerOnegaiRepository.GetAll().ToList()
+                    );
+                }
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
         }

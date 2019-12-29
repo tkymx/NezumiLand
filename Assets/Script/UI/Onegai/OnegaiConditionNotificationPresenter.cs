@@ -22,7 +22,7 @@ namespace NL
             }
         }        
 
-        private static float ShowingTime = 2;
+        private static float ShowingTime = 4;
 
         [SerializeField]
         private OnegaiConditionNotificationView onegaiConditionNotificationView = null;

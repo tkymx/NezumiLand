@@ -8,6 +8,7 @@ namespace NL {
         Nope,
         ForceConversation,
         AppearConversationCharacter,
+        AppearConversationCharacterNormal,
     }
 
     public class EventContentsModel {

@@ -92,6 +92,10 @@ namespace NL {
                 if (!isReserve) {
                     arrangementView.OnSelect
                         .Subscribe (_ => {
+                            // 予約状態の場合はメニューを出さない。
+                            if (arrangementTarget.PlayerArrangementTargetModel.State == ArrangementTargetState.Reserve) {
+                                return;
+                            }
                             // メニューを変更する
                             GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateArrangementMenuSelectMode (arrangementTarget));
                         });

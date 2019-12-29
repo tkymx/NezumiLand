@@ -35,7 +35,7 @@ namespace NL
 
         private static Vector3 GetInitialPosition() 
         {
-            return new Vector3(32,5,0);
+            return new Vector3(Random.Range(-32,32),0,Random.Range(-32,32));
         }
 
         public override string ToString() {

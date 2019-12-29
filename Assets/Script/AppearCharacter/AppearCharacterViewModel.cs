@@ -34,6 +34,9 @@ namespace NL {
                     return GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode);
                 })
                 .SelectMany(_ => {
+                    if (this.rewardModel == null) {
+                        return new ImmediatelyObservable<int>(_);
+                    }
                     if (this.isReceiveReward) {
                         return new ImmediatelyObservable<int>(_);
                     }

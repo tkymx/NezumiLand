@@ -47,7 +47,7 @@ namespace NL {
         /// </summary>
         /// <param name="conditionBase"></param>
         /// <param name="targetPlayerOnegaiModels"></param>
-        public void ResetAndMediate (IOnegaiConditionBase conditionBase, List<PlayerOnegaiModel> targetPlayerOnegaiModels) {
+        public void ClearResetAndMediate (IOnegaiConditionBase conditionBase, List<PlayerOnegaiModel> targetPlayerOnegaiModels) {
 
             var mediatablePlayerOnegaiModels = targetPlayerOnegaiModels                
                 .Where (model => model.OnegaiState == OnegaiState.Clear)
@@ -62,7 +62,7 @@ namespace NL {
 
             // クリア状況を更新する
             var clearPlayerOnegaiModels = conditionBase
-                .Mediate (targetPlayerOnegaiModels)
+                .Mediate (mediatablePlayerOnegaiModels)
                 .ToList();
 
             // クリアからUnLockになっているものを更新

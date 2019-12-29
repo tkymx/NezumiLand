@@ -13,11 +13,15 @@ namespace NL {
         }
 
         public void ChacheOnegai(OnegaiModel onegaiModel) {
-            this.nearOnegaiMediater.ChacheOnegai(onegaiModel);
+            if (onegaiModel.OnegaiCondition == OnegaiCondition.Near) {
+                this.nearOnegaiMediater.ChacheOnegai(onegaiModel);
+            }
         }
 
         public void UnChacheOnegai(OnegaiModel onegaiModel) {
-            this.nearOnegaiMediater.UnChacheOnegai(onegaiModel);
+            if (onegaiModel.OnegaiCondition == OnegaiCondition.Near) {
+                this.nearOnegaiMediater.UnChacheOnegai(onegaiModel);
+            }
         }
     }
 }

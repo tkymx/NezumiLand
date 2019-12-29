@@ -89,9 +89,8 @@ namespace NL {
         public bool IsCameraMobableMode => 
             this.currentGameMode is SelectMode || 
             this.currentGameMode is ArrangementMode || 
-            this.currentGameMode is ArrangementMenuSelectMode || 
-            this.currentGameMode is MenuSelectMode || 
-            this.currentGameMode is OnegaiSelectMode;
+            this.currentGameMode is ArrangementMenuSelectMode;
+            
         public bool IsEventMode => this.currentGameMode is EventMode;
         public bool IsMousePurchaseMode => this.currentGameMode is MousePurchaseMode;
 

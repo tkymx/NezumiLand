@@ -9,7 +9,7 @@ namespace NL {
             public uint MonoId { get; private set; }
             public uint Count { get; private set; }
             public ArrangementCountArgs (OnegaiConditionArg args) {
-                Debug.Assert (args.Args.Length >= 2, "ArrangementCountのArgsの数が2以上ではありません。");
+                Debug.Assert (args.Args.Length >= 2, "ArrangementCountのArgsの数が2以上ではありません。" + args.ToString());
                 this.MonoId = uint.Parse (args.Args[0]);
                 this.Count = uint.Parse (args.Args[1]);
             }

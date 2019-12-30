@@ -156,17 +156,19 @@ namespace NL {
             // 生成した viewModel をセット
             this.setMonoViewModelToArrangementService.Execute(foundArrangementTarget, monoViewModel);
 
-            // お願いの確認
-
+            // 隣接お願いの確認
             this.AppendNearArrangement(foundArrangementTarget);
             GameManager.Instance.OnegaiMediaterManager.NearOnegaiMediater.MediateByArrangement(foundArrangementTarget);
 
-            // 通常の判断
+            // 設置数のお願いの確認
             var arrangemntMonoId = playerArrangementTargetModel.MonoInfo.Id;
             this.onegaiMediater.Mediate (
                 new NL.OnegaiConditions.ArrangementCount(arrangemntMonoId, (uint)GetAppearMonoCountById(arrangemntMonoId, false)),
                 playerOnegaiRepository.GetAll().ToList()
             ); 
+
+            // 配置時のイベント
+            GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.AfterArrangement());
         }
 
         /// <summary>

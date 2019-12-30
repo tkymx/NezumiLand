@@ -73,6 +73,10 @@ namespace NL {
         private OnegaiConditionNotificationPresenter onegaiConditionNotificationPresenter = null;
         public OnegaiConditionNotificationPresenter OnegaiConditionNotificationPresenter => onegaiConditionNotificationPresenter;
 
+        [SerializeField]
+        private ImagePresenter imagePresenter = null;
+        public ImagePresenter ImagePresenter => imagePresenter;
+
 
         public void Initialize (
             OnegaiRepository onegaiRepository, 
@@ -99,6 +103,7 @@ namespace NL {
             this.dailyEndPresenter.Initialize();
             this.dailyStartPresenter.Initialize();
             this.onegaiConditionNotificationPresenter.Initialize();
+            this.imagePresenter.Initialize ();
         }
 
         public void UpdateByFrame() {

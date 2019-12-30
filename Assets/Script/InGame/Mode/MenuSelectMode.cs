@@ -13,6 +13,8 @@ namespace NL {
         public void OnEnter () {
             GameManager.Instance.GameUIManager.MonoTabPresenter.Show ();
             GameManager.Instance.TimeManager.Pause ();
+
+            GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.InMonoSelectMode());
         }
         public void OnUpdate () {
             if (!GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo) {

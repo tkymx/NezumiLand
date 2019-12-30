@@ -7,7 +7,10 @@ namespace NL {
         None,
         Time,
         AboveSatisfaction,
-        ClearOnegai
+        ClearOnegai,
+        InMonoSelectMode,
+        InArrangementMode,
+        AfterArrangement
     }
 
     public class EventConditionModel: ModelBase {

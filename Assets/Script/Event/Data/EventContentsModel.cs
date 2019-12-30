@@ -9,6 +9,7 @@ namespace NL {
         ForceConversation,
         AppearConversationCharacter,
         AppearConversationCharacterNormal,
+        ScreenImages
     }
 
     public class EventContentsModel {

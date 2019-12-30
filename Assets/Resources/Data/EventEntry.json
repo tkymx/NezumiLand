@@ -36,6 +36,15 @@
             "EventContentsId": 4,
             "EventRepeatType": "Once",
             "RewardId": 1
+        },
+        {
+            "Id": 5,
+            "EventConditionIds": [
+                4
+            ],
+            "EventContentsId": 5,
+            "EventRepeatType": "Once",
+            "RewardId": 2
         }
     ]
 }

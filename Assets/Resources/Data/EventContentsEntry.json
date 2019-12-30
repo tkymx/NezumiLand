@@ -30,6 +30,13 @@
                 "2",
                 0.9
             ]
-        }
+        },
+        {
+            "Id": 5,
+            "EventContentsType": "ScreenImages",
+            "Arg": [
+                "sample1,sample2"
+            ]
+        }        
     ]
 }

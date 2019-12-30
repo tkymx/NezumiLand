@@ -24,6 +24,8 @@ namespace NL {
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation ();
             GameManager.Instance.MonoSelectManager.SelectMonoInfo (context.TargetMonoInfo);
             GameManager.Instance.TimeManager.Pause ();
+
+            GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.InArrangementMode());
         }
 
         public void OnUpdate () {

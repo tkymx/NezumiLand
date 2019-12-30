@@ -93,6 +93,8 @@ namespace NL {
             
         public bool IsEventMode => this.currentGameMode is EventMode;
         public bool IsMousePurchaseMode => this.currentGameMode is MousePurchaseMode;
+        public bool IsMenuSelectMode => this.currentGameMode is MenuSelectMode;
+        public bool IsArrangementMode => this.currentGameMode is ArrangementMode;
 
         public override string ToString () {
             if (this.currentGameMode == null) {

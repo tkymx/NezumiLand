@@ -5,10 +5,22 @@ using UnityEngine.EventSystems;
 
 namespace NL {
     public class FieldRaycastManager {
+
+        public enum MaskMode {
+            All,
+            Field,
+        }
+
         private Camera mainCamera;
+
+        private MaskMode maskMode;
+        public void SetMaskMode (MaskMode maskMode) {
+            this.maskMode = maskMode;
+        }
 
         public FieldRaycastManager (Camera mainCamera) {
             this.mainCamera = mainCamera;
+            this.maskMode = MaskMode.All;
         }
 
         public void UpdateByFrame () {
@@ -16,7 +28,7 @@ namespace NL {
             var ray = mainCamera.ScreenPointToRay (Input.mousePosition);
 
             RaycastHit Hit;
-            if (Physics.Raycast (ray, out Hit, Mathf.Infinity, LayerMask.GetMask (new string[] { "SelectLayer", "Floor", "Mouse" }))) {
+            if (Physics.Raycast (ray, out Hit, Mathf.Infinity, LayerMask.GetMask (GetMask()))) {
                 var select = Hit.transform.GetComponent<SelectBase> ();
                 Debug.Assert (select != null, "選択したオブジェクトに ISelect がありません");
 
@@ -31,6 +43,13 @@ namespace NL {
 
                 }
             }
+        }
+
+        private string[] GetMask() {
+            if (this.maskMode == MaskMode.Field) {
+                return new string[] { "Floor" };
+            }
+            return new string[] { "SelectLayer", "Floor", "Mouse" };
         }
 
         private bool CanTouch () {

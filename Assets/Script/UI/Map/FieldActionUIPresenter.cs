@@ -8,9 +8,16 @@ namespace NL {
         [SerializeField]
         private Button backButton = null;
 
+        [SerializeField]
+        private Button startButton = null;
+
         public void Initialize () {
             // バックボタンを押した時
             backButton.onClick.AddListener (() => {
+                GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateMenuSelectMode ());
+            });
+            // スタートボタンを押した時
+            startButton.onClick.AddListener (() => {
                 GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateSelectMode ());
             });
 

@@ -12,7 +12,6 @@ namespace NL {
         }
 
         public void OnEnter () {
-            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.GameUIManager.OnegaiPresenter.Show ();
             GameManager.Instance.TimeManager.Pause ();
             this.disposable = GameManager.Instance.GameUIManager.OnegaiPresenter.OnClose
@@ -26,7 +25,6 @@ namespace NL {
             if (this.disposable != null) {
                 this.disposable.Dispose();
             }
-            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close ();
             GameManager.Instance.GameUIManager.OnegaiPresenter.Close ();
             GameManager.Instance.TimeManager.Play ();
         }

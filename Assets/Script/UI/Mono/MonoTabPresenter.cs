@@ -18,6 +18,9 @@ namespace NL {
         [SerializeField]
         private MonoListPresenter monoListPresetner = null;
 
+        [SerializeField]
+        private Button closeButton = null;
+
         public void Initialize (IPlayerMonoInfoRepository playerMonoInfoRepository) {
             this.playerMonoInfoRepository = playerMonoInfoRepository;
 
@@ -32,6 +35,11 @@ namespace NL {
                     this.SelectTab (button, monoType);
                 });
             }
+
+            closeButton.onClick.AddListener(() => {
+                GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateSelectMode ());
+            });
+
             this.Close ();
         }
 

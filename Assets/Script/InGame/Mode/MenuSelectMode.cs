@@ -11,7 +11,6 @@ namespace NL {
         }
 
         public void OnEnter () {
-            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
             GameManager.Instance.GameUIManager.MonoTabPresenter.Show ();
             GameManager.Instance.TimeManager.Pause ();
         }
@@ -28,7 +27,6 @@ namespace NL {
             GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateArrangementMode ());
         }
         public void OnExit () {
-            GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close ();
             GameManager.Instance.GameUIManager.MonoTabPresenter.Close ();
             GameManager.Instance.TimeManager.Play ();
         }

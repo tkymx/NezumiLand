@@ -23,15 +23,23 @@ namespace NL {
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root, screenPoint);
             var text = instance.GetComponent<Text> ();
-            text.text = earn.Value.ToString () + "yen";
+            text.text = earn.Value.ToString () + "yen獲得";
         }
+
+        public void PlayEarnItemEffect (ArrangementItemAmount item, Vector3 position) {
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/earn_effect");
+            var screenPoint = camera.WorldToScreenPoint (position);
+            var instance = Object.Appear2D (effectPrefab, root, screenPoint);
+            var text = instance.GetComponent<Text> ();
+            text.text = item.Value.ToString () + "個獲得";
+        }        
 
         public void PlayConsumeEffect (Currency fee, Vector3 position) {
             var effectPrefab = ResourceLoader.LoadPrefab ("UI/consume_effect");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root, screenPoint);
             var text = instance.GetComponent<Text> ();
-            text.text = fee.Value.ToString () + "yen";
+            text.text = fee.Value.ToString () + "yen消費";
         }
 
         public void PlayError (string errorMessage, Vector3 position) {

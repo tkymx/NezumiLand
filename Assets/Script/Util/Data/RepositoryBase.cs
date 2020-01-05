@@ -8,8 +8,8 @@ namespace NL {
         where T : EntryBase {
         protected List<T> entrys;
 
-        protected RepositoryBase (IList<T> entrys) {
-            this.entrys = entrys.ToList();
+        protected RepositoryBase (List<T> entrys) {
+            this.entrys = entrys;
         }
 
         protected T GetEntry(uint id) {

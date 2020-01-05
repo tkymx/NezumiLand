@@ -20,6 +20,7 @@ namespace NL {
 
         public void OnEnter () {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Show ();
+            GameManager.Instance.GameUIManager.ArrangementModeUIPresenter.Show ();
             GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.Field);
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation ();
             GameManager.Instance.MonoSelectManager.SelectMonoInfo (context.TargetMonoInfo);
@@ -45,8 +46,9 @@ namespace NL {
 
             var makingMono = GameManager.Instance.MonoSelectManager.SelectedMonoInfo;
             var makingArrangementResourceAmount = makingMono.ArrangementResourceAmount;
-            if (!ArrangementResourceHelper.IsConsume (makingArrangementResourceAmount).IsConsume) {
-                GameManager.Instance.EffectManager.PlayError ("素材が足りません。", currentTarget.CenterPosition);
+            var result = ArrangementResourceHelper.IsConsume (makingArrangementResourceAmount);
+            if (!result.IsConsume) {
+                GameManager.Instance.EffectManager.PlayError (result.GetErrorMessage(), currentTarget.CenterPosition);
                 return;
             }
 
@@ -57,6 +59,7 @@ namespace NL {
 
         public void OnExit () {
             GameManager.Instance.GameUIManager.FieldActionUIPresenter.Close ();
+            GameManager.Instance.GameUIManager.ArrangementModeUIPresenter.Close ();
             GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.All);
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation ();
             GameManager.Instance.MonoSelectManager.RemoveSelect ();

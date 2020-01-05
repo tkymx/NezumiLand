@@ -77,6 +77,13 @@ namespace NL {
         private ImagePresenter imagePresenter = null;
         public ImagePresenter ImagePresenter => imagePresenter;
 
+        [SerializeField]
+        private ArrangementModeUIPresenter arrangementModeUIPresenter = null;
+        public ArrangementModeUIPresenter ArrangementModeUIPresenter => arrangementModeUIPresenter;
+
+        [SerializeField]
+        private SelectModeUIPresenter selectModeUIPresenter = null;
+        public SelectModeUIPresenter SelectModeUIPresenter => selectModeUIPresenter;
 
         public void Initialize (
             OnegaiRepository onegaiRepository, 
@@ -104,11 +111,14 @@ namespace NL {
             this.dailyStartPresenter.Initialize();
             this.onegaiConditionNotificationPresenter.Initialize();
             this.imagePresenter.Initialize ();
+            this.arrangementModeUIPresenter.Initialize();
+            this.selectModeUIPresenter.Initialize();
         }
 
         public void UpdateByFrame() {
             this.toolBarmanager.UpdateByrame();
             this.onegaiConditionNotificationPresenter.UpdateByFrame();
+            this.fieldActionUIPresenter.UpdateByFrame();
         }
     }
 }

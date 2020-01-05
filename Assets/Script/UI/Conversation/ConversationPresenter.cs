@@ -49,7 +49,7 @@ namespace NL {
         private void SetConversationIndex(int index) {
             Debug.Assert(currentConversationModel!=null,"currentConversationModelがnullです。");
             this.conversationCharacterView.UpdateCharacterImage(this.currentConversationModel.ConversationCharacterNames[index]);
-            this.conversationView.StartSpeak("サンプル", this.currentConversationModel.ConversationTexts[index]);
+            this.conversationView.StartSpeak(this.currentConversationModel.ConversationCharacterDisplayNames[index], this.currentConversationModel.ConversationTexts[index]);
         }
     }
 }

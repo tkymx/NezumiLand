@@ -3,32 +3,163 @@
         {
             "Id": 1,
             "ConversationTexts": [
-                "こんにちは、これから始まるネズミの物語",
-                "きみはついてくれるかな？",
-                "まずは、ブランコを立ててみよう"
+                "こんにちは、あなたが新しい管理者ですか？",
+                "これから、ねずみたちが喜ぶ遊び場をつくっていただけると聞いたのですが！",
+                "おお、引き受けてくれるのですが！？ありがとうございます。",
+                "ではまずは、遊具を選んで設置してみましょう！"
             ],
             "ConversationCharacterNames": [
                 "Nezumi",
                 "Nezumi",
+                "Nezumi",
                 "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ"
             ]
         },
         {
             "Id": 2,
             "ConversationTexts": [
-                "一行のみテスト"
+                "おお、設置ができましたね！",
+                "設置したらどうやらねずみたちの満足度があがったようですよ。",
+                "今の満足度は、画面の右上で確認できますぞ！",
+                "この調子でみんなの満足度を上げていきましょうぞ！！",
+                "。。。",
+                "そういえば。。最近最強の遊具の噂をちらほら聞きますね〜"
             ],
             "ConversationCharacterNames": [
+                "Nezumi",
+                "Nezumi",
+                "Nezumi",
+                "Nezumi",
+                "Nezumi",
                 "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ"
             ]
         },
         {
             "Id": 3,
             "ConversationTexts": [
-                "定期的に出てくるやつ"
+                "なんとなんと！伝説の遊具の設定図を手に入れましたぞ！",
+                "伝説の遊具を隣り合わせて設置すると、良いことが起きるとかなんとか？",
+                "みんなのお願いも聞いてみるとよいぞ！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi",
+                "Nezumi",
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ"
+            ]
+        },
+        {
+            "Id": 4,
+            "ConversationTexts": [
+                "（無言）",
+                "伝説の遊具の中からなんとなんと、最強の遊具の設計図が出てきましたぞ！！",
+                "これを設置することで遊び場の人気は永遠に続くらしいですぞ！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi",
+                "Nezumi",
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ"
+            ]
+        },
+        {
+            "Id": 5,
+            "ConversationTexts": [
+                "ついについに最強の遊具を設置しましたぞ！",
+                "この遊び場はこれで人気は不動のものになりましたな！",
+                "今までありがとうございました。これからもお願いします。"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi",
+                "Nezumi",
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ",
+                "園長ねずみ",
+                "園長ねずみ"
+            ]
+        },
+        {
+            "Id": 6,
+            "ConversationTexts": [
+                "遊び場たのしい〜"
             ],
             "ConversationCharacterNames": [
                 "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずお"
+            ]
+        },
+        {
+            "Id": 7,
+            "ConversationTexts": [
+                "友達もつれてこようかな〜"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずえ"
+            ]
+        },
+        {
+            "Id": 8,
+            "ConversationTexts": [
+                "新しい遊具がほしい！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずよ"
+            ]
+        },
+        {
+            "Id": 9,
+            "ConversationTexts": [
+                "トイレどこ？"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねず太郎"
+            ]
+        },
+        {
+            "Id": 10,
+            "ConversationTexts": [
+                "子供に大人気ですわ！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずママ"
             ]
         }
     ]

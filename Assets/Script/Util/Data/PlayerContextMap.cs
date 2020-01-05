@@ -15,16 +15,16 @@ namespace NL {
             }
         }
 
-        public IList<PlayerOnegaiEntry> PlayerOnegaiEntrys { get; private set; }
-        public IList<PlayerEventEntry> PlayerEventEntrys { get; private set; }
-        public IList<PlayerMonoInfoEntry> PlayerMonoInfoEntrys { get; private set; }
-        public IList<PlayerMouseStockEntry> PlayerMouseStockEntrys { get; private set; }
-        public IList<PlayerMonoViewEntry> PlayerMonoViewEntrys { get; private set; }
-        public IList<PlayerArrangementTargetEntry> PlayerArrangementTargetEntrys { get; private set; }
-        public IList<PlayerMouseViewEntry> PlayerMouseViewEntrys { get; private set; }
-        public IList<PlayerInfoEntry> PlayerInfoEntrys { get; private set; }
-        public IList<PlayerAppearCharacterReserveEntry> PlayerAppearCharacterReserveEntrys { get; private set; }
-        public IList<PlayerAppearCharacterViewEntry> PlayerAppearCharacterViewEntrys { get; private set; }
+        public List<PlayerOnegaiEntry> PlayerOnegaiEntrys { get; private set; }
+        public List<PlayerEventEntry> PlayerEventEntrys { get; private set; }
+        public List<PlayerMonoInfoEntry> PlayerMonoInfoEntrys { get; private set; }
+        public List<PlayerMouseStockEntry> PlayerMouseStockEntrys { get; private set; }
+        public List<PlayerMonoViewEntry> PlayerMonoViewEntrys { get; private set; }
+        public List<PlayerArrangementTargetEntry> PlayerArrangementTargetEntrys { get; private set; }
+        public List<PlayerMouseViewEntry> PlayerMouseViewEntrys { get; private set; }
+        public List<PlayerInfoEntry> PlayerInfoEntrys { get; private set; }
+        public List<PlayerAppearCharacterReserveEntry> PlayerAppearCharacterReserveEntrys { get; private set; }
+        public List<PlayerAppearCharacterViewEntry> PlayerAppearCharacterViewEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new PlayerContextMap ();
@@ -32,16 +32,16 @@ namespace NL {
         }
 
         public void Load () {
-            this.PlayerOnegaiEntrys = LoadEntryFromJsonFromName<PlayerOnegaiEntry> ("PlayerOnegaiEntry");
-            this.PlayerEventEntrys = LoadEntryFromJsonFromName<PlayerEventEntry> ("PlayerEventEntry");
-            this.PlayerMonoInfoEntrys = LoadEntryFromJsonFromName<PlayerMonoInfoEntry> ("PlayerMonoInfoEntry");
-            this.PlayerMouseStockEntrys = LoadEntryFromJsonFromName<PlayerMouseStockEntry> ("PlayerMouseStockEntry");
-            this.PlayerMonoViewEntrys = LoadEntryFromJsonFromName<PlayerMonoViewEntry> ("PlayerMonoViewEntry");
-            this.PlayerArrangementTargetEntrys = LoadEntryFromJsonFromName<PlayerArrangementTargetEntry> ("PlayerArrangementTargetEntry");
-            this.PlayerMouseViewEntrys = LoadEntryFromJsonFromName<PlayerMouseViewEntry> ("PlayerMouseViewEntry");
-            this.PlayerInfoEntrys = LoadEntryFromJsonFromName<PlayerInfoEntry> ("PlayerInfoEntry");
-            this.PlayerAppearCharacterReserveEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterReserveEntry> ("PlayerAppearCharacterReserveEntry");
-            this.PlayerAppearCharacterViewEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterViewEntry> ("PlayerAppearCharacterViewEntry");
+            this.PlayerOnegaiEntrys = LoadEntryFromJsonFromName<PlayerOnegaiEntry> ("PlayerOnegaiEntry").ToList();
+            this.PlayerEventEntrys = LoadEntryFromJsonFromName<PlayerEventEntry> ("PlayerEventEntry").ToList();
+            this.PlayerMonoInfoEntrys = LoadEntryFromJsonFromName<PlayerMonoInfoEntry> ("PlayerMonoInfoEntry").ToList();
+            this.PlayerMouseStockEntrys = LoadEntryFromJsonFromName<PlayerMouseStockEntry> ("PlayerMouseStockEntry").ToList();
+            this.PlayerMonoViewEntrys = LoadEntryFromJsonFromName<PlayerMonoViewEntry> ("PlayerMonoViewEntry").ToList();
+            this.PlayerArrangementTargetEntrys = LoadEntryFromJsonFromName<PlayerArrangementTargetEntry> ("PlayerArrangementTargetEntry").ToList();
+            this.PlayerMouseViewEntrys = LoadEntryFromJsonFromName<PlayerMouseViewEntry> ("PlayerMouseViewEntry").ToList();
+            this.PlayerInfoEntrys = LoadEntryFromJsonFromName<PlayerInfoEntry> ("PlayerInfoEntry").ToList();
+            this.PlayerAppearCharacterReserveEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterReserveEntry> ("PlayerAppearCharacterReserveEntry").ToList();
+            this.PlayerAppearCharacterViewEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterViewEntry> ("PlayerAppearCharacterViewEntry").ToList();
         }
 
         [System.Serializable]

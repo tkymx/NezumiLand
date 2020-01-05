@@ -12,6 +12,9 @@ namespace NL {
         private GameObject arrangementUI = null;
 
         [SerializeField]
+        private Text monoName = null;
+
+        [SerializeField]
         private Text detail = null;
 
         [SerializeField]
@@ -33,9 +36,12 @@ namespace NL {
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             deleteButton.onClick.AddListener (() => {
                 var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
+                var item = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.ArrangementItemAmount;
                 if (GameManager.Instance.Wallet.IsConsume (removeFee)) {
                     GameManager.Instance.Wallet.Consume (removeFee);
+                    GameManager.Instance.ArrangementItemStore.Push (item);
                     GameManager.Instance.EffectManager.PlayConsumeEffect (removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
+                    GameManager.Instance.EffectManager.PlayEarnItemEffect (item, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition + new Vector3(0,2.0f,0));
                     GameManager.Instance.ArrangementManager.RemoveSelectArrangement ();
                     this.DoFinishProcess ();
                 }
@@ -65,6 +71,7 @@ namespace NL {
         }
 
         private void Update () {
+            UpdateName ();
             UpdateDetail ();
             UpdateRemoveButtonEnable ();
             UpdateRemoveFee ();
@@ -79,6 +86,18 @@ namespace NL {
 
         public void Close () {
             arrangementUI.SetActive (false);
+        }
+
+        private void UpdateName () {
+            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+                return;
+            }
+
+            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+                return;
+            }
+
+            monoName.text = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.Name;
         }
 
         private void UpdateDetail () {

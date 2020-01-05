@@ -9,8 +9,8 @@ namespace NL {
     {
         protected List<T> entrys;
 
-        protected PlayerRepositoryBase (IList<T> entrys) {
-            this.entrys = entrys.ToList ();
+        protected PlayerRepositoryBase (List<T> entrys) {
+            this.entrys = entrys;
         }
 
         // プレイヤーデータは始めない可能性もあるのでnull 許容

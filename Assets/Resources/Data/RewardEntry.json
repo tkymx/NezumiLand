@@ -1,41 +1,11 @@
 {"InnerArray":[
     {
         "Id": 1,
-        "RewardSingleEntrys": [
-            {
-                "Type": "Currency",
-                "Amount": 1000,
-                "Args":[]
-            },
-            {
-                "Type": "Mono",
-                "Amount": 1,
-                "Args":[1]
-            },
+        "RewardSingleEntrys": [            
             {
                 "Type": "Mono",
                 "Amount": 1,
                 "Args":[2]
-            },
-            {
-                "Type": "Mono",
-                "Amount": 1,
-                "Args":[3]
-            },
-            {
-                "Type": "Onegai",
-                "Amount": 1,
-                "Args":[3]
-            },
-            {
-                "Type": "Item",
-                "Amount": 10,
-                "Args":[]
-            },
-            {
-                "Type": "Item",
-                "Amount": 100,
-                "Args":[]
             }
         ]
     },
@@ -43,11 +13,201 @@
         "Id": 2,
         "RewardSingleEntrys": [
             {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[1]
+            },            
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[3]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[4]
+            },            
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[1]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[5]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[6]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[7]
+            },
+            {
+                "Type": "Item",
+                "Amount": 30,
+                "Args":[]
+            }
+        ]
+    },
+    {
+        "Id": 3,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[5]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[6]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[7]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[8]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[9]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[10]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[2]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[8]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[9]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[10]
+            },
+            {
+                "Type": "Item",
+                "Amount": 110,
+                "Args":[]
+            }
+        ]
+    },
+    {
+        "Id": 4,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[11]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[12]
+            },
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[13]
+            },            
+            {
                 "Type": "Onegai",
                 "Amount": 1,
                 "Args":[3]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[11]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[12]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[13]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[14]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[15]
+            },
+            {
+                "Type": "Item",
+                "Amount": 900,
+                "Args":[]
             }
         ]
-    }
+    },
+    {
+        "Id": 5,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Mono",
+                "Amount": 1,
+                "Args":[14]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[4]
+            },
+            {
+                "Type": "Onegai",
+                "Amount": 1,
+                "Args":[16]
+            },
+            {
+                "Type": "Item",
+                "Amount": 5000,
+                "Args":[]
+            }
+        ]
+    },
+    {
+        "Id": 6,
+        "RewardSingleEntrys": [
+        ]
+    },
+    {
+        "Id": 7,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Item",
+                "Amount": 50000,
+                "Args":[]
+            }        
+        ]
+    }    
 ]
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 namespace NL {
     public class FieldRaycastManager {
@@ -25,22 +26,24 @@ namespace NL {
 
         public void UpdateByFrame () {
             GameManager.Instance.ArrangementManager.ArrangementAnnotater.RemoveAllAnnotation ();
+
             var ray = mainCamera.ScreenPointToRay (Input.mousePosition);
 
             RaycastHit Hit;
-            if (Physics.Raycast (ray, out Hit, Mathf.Infinity, LayerMask.GetMask (GetMask()))) {
+            if (Physics.Raycast (ray, out Hit, Mathf.Infinity, LayerMask.GetMask (new string[] { "SelectLayer", "Floor", "Mouse" }))) {
                 var select = Hit.transform.GetComponent<SelectBase> ();
                 Debug.Assert (select != null, "選択したオブジェクトに ISelect がありません");
 
                 if (select != null) {
-                    if (GameManager.Instance.InputManager.IsSingleTap) {
-                        if (CanTouch ()) {
-                            select.OnSelect (Hit);
+                    if (GetMask().Any(mask => mask == LayerMask.LayerToName(select.gameObject.layer))) {
+                        if (GameManager.Instance.InputManager.IsSingleTap) {
+                            if (CanTouch ()) {
+                                select.OnSelect (Hit);
+                            }
+                        } else {
+                            select.OnOver (Hit);
                         }
-                    } else {
-                        select.OnOver (Hit);
                     }
-
                 }
             }
         }
@@ -53,10 +56,7 @@ namespace NL {
         }
 
         private bool CanTouch () {
-            if (Input.touchCount > 0) {
-                return !EventSystem.current.IsPointerOverGameObject (Input.GetTouch (0).fingerId);
-            }
-            return !EventSystem.current.IsPointerOverGameObject ();
+            return EventSystem.current.currentSelectedGameObject == null;
         }
     }
 }

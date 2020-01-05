@@ -22,7 +22,7 @@ namespace NL
             this.onegaiDetailView.UpdateCell(
                 playerOnegaiModel.OnegaiModel.Title,
                 playerOnegaiModel.OnegaiModel.Detail,
-                playerOnegaiModel.OnegaiModel.Author,
+                "依頼人 : " + playerOnegaiModel.OnegaiModel.Author,
                 playerOnegaiModel.HasSchedule (),
                 playerOnegaiModel.CloseTime (),
                 playerOnegaiModel.OnegaiModel.Satisfaction.ToString());

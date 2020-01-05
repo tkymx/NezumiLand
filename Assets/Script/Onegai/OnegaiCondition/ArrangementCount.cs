@@ -22,11 +22,8 @@ namespace NL {
         }
 
         public class ArrangementCount : IOnegaiConditionBase {
-            private uint monoId;
-            private uint count;
-            public ArrangementCount (uint monoId, uint count) {
-                this.monoId = monoId;
-                this.count = count;
+
+            public ArrangementCount () {
             }
 
             public OnegaiCondition OnegaiCondition => NL.OnegaiCondition.ArrangementCount;
@@ -35,8 +32,8 @@ namespace NL {
                 var outputPlayerOnegaiModels = new List<PlayerOnegaiModel> ();
                 foreach (var playerOnegaiModel in playerOnegaiModels) {
 
-                    var nearArgs = new ArrangementCountArgs (playerOnegaiModel.OnegaiModel.OnegaiConditionArg);
-                    if (!nearArgs.IsClear(this.monoId, this.count)) {
+                    var args = new ArrangementCountArgs (playerOnegaiModel.OnegaiModel.OnegaiConditionArg);
+                    if (!args.IsClear(args.MonoId, (uint)GameManager.Instance.ArrangementManager.GetAppearMonoCountById(args.MonoId, false))) {
                         continue;
                     }
 

@@ -11,9 +11,13 @@ namespace NL {
         [SerializeField]
         private Button startButton = null;
 
+        [SerializeField]
+        private GameObject yetArrangementMessage = null;
+
         public void Initialize () {
             // バックボタンを押した時
             backButton.onClick.AddListener (() => {
+                GameManager.Instance.ArrangementManager.UnReserveArrangementAll();
                 GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateMenuSelectMode ());
             });
             // スタートボタンを押した時
@@ -22,6 +26,11 @@ namespace NL {
             });
 
             this.Close ();
+        }
+
+        public void UpdateByFrame () {
+            yetArrangementMessage.SetActive(!GameManager.Instance.ArrangementManager.HasReserveArrangementTarget ());
+            startButton.interactable = GameManager.Instance.ArrangementManager.HasReserveArrangementTarget ();
         }
     }
 }

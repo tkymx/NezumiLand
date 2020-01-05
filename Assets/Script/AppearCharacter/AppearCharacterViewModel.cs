@@ -34,6 +34,9 @@ namespace NL {
                     if (this.PlayerAppearCharacterViewModel.IsReceiveReward) {
                         return new ImmediatelyObservable<int>(_);
                     }
+                    if (this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel.RewardAmounts.Count <= 0) {
+                        return new ImmediatelyObservable<int>(_);
+                    }                    
 
                     // 受け取り済みにする
                     GameManager.Instance.AppearCharacterManager.ToReeiveRewards(this.PlayerAppearCharacterViewModel);

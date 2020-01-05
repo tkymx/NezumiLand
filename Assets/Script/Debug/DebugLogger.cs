@@ -24,6 +24,12 @@ namespace NL {
                 ResourceLoader.RemoveAllPlayerData();
                 GameManager.Instance.GameUIManager.CommonPresenter.SetContents("Debug","プレイヤーデータを消去しました。");
                 GameManager.Instance.GameUIManager.CommonPresenter.Show();
+                
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                    Application.Quit();
+                #endif                    
             });
             openCloseButton.onClick.AddListener(() => {
                 mainContetns.SetActive(!mainContetns.activeSelf);

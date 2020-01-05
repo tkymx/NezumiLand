@@ -6,6 +6,7 @@ namespace NL.EventCondition {
 
     public class InMonoSelectMode : IEventCondition {
 
+        // 基本的には呼ばれたすべてを追加
         public InMonoSelectMode () {
         }
 
@@ -15,11 +16,6 @@ namespace NL.EventCondition {
 
             var outputEventConditionModels = new List<EventConditionModel> ();
             foreach (var eventConditionModel in eventConditionModels) {
-
-                if (!GameManager.Instance.GameModeManager.IsMenuSelectMode) {
-                    continue;
-                }
-
                 // 追加
                 outputEventConditionModels.Add (eventConditionModel);
             }

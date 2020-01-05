@@ -6,8 +6,8 @@ namespace NL
 {
     public class InputManager
     {
-        private const float movableDragMagnitude = 3;
-        private const float moveFactor = 0.1f;
+        private const float movableDragMagnitude = 9;
+        private const float moveFactor = 0.05f;
 
         enum State {
             Idle,
@@ -18,6 +18,10 @@ namespace NL
         private State currentState;
         private Vector3 startMousePosition;
 
+        /// <summary>
+        /// 現在シングルタップしているか？
+        /// ※ １フレームのみ有効
+        /// </summary>
         private bool isSingleTap = false;
         public bool IsSingleTap {
             get {
@@ -25,6 +29,10 @@ namespace NL
             }
         }
 
+        /// <summary>
+        /// 現在ドラッグ中かどうか？
+        /// ※ １フレームのみ有効
+        /// </summary>
         private bool isDragging = false;
         public bool IsDragging {
             get {
@@ -32,6 +40,9 @@ namespace NL
             }
         }
 
+        /// <summary>
+        /// ドラッグしている場合、スタート地点からどれくらいドラッグしているか？
+        /// </summary>
         Vector3 draggingFromStart = Vector3.zero;
         public Vector3 DraggingFromStart {
             get {

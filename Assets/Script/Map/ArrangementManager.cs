@@ -40,7 +40,7 @@ namespace NL {
         /// 配置の予約されているものがあるか？
         /// </summary>
         /// <returns></returns>
-        private bool HasReserveArrangementTarget () {
+        public bool HasReserveArrangementTarget () {
             return this.arrangementTargetStore.Find(target => target.ArrangementTargetState == ArrangementTargetState.Reserve) != null;
         }
 
@@ -59,6 +59,11 @@ namespace NL {
         /// </summary>
         private AppearArrangementService appearArrangementService = null;
 
+        /// <summary>
+        /// 予約状況をキャンセルする
+        /// </summary>
+        private UnReserveArrangementService unReserveArrangementService = null;
+
         private IPlayerOnegaiRepository playerOnegaiRepository = null;
 
         private OnegaiMediater onegaiMediater = null;
@@ -72,6 +77,7 @@ namespace NL {
             this.setMonoViewModelToArrangementService = new SetMonoViewModelToArrangementService(playerArrangementTargetRepository);
             this.arrangementTargetRemoveService = new ArrangementTargetRemoveService(playerArrangementTargetRepository);
             this.appearArrangementService = new AppearArrangementService(playerArrangementTargetRepository);
+            this.unReserveArrangementService = new UnReserveArrangementService(playerArrangementTargetRepository);
 
             this.onegaiMediater = new OnegaiMediater(playerOnegaiRepository);
             this.playerOnegaiRepository = playerOnegaiRepository;
@@ -163,7 +169,7 @@ namespace NL {
             // 設置数のお願いの確認
             var arrangemntMonoId = playerArrangementTargetModel.MonoInfo.Id;
             this.onegaiMediater.Mediate (
-                new NL.OnegaiConditions.ArrangementCount(arrangemntMonoId, (uint)GetAppearMonoCountById(arrangemntMonoId, false)),
+                new NL.OnegaiConditions.ArrangementCount(),
                 playerOnegaiRepository.GetAll().ToList()
             ); 
 
@@ -217,12 +223,23 @@ namespace NL {
                     // 減ったかどうかの判断（減った状態を渡すため、減ったあとに事項する必要あり）
                     var arrangemntMonoId = arrangementTarget.MonoInfo.Id;
                     this.onegaiMediater.ClearResetAndMediate (
-                        new NL.OnegaiConditions.ArrangementCount(arrangemntMonoId, (uint)GetAppearMonoCountById(arrangemntMonoId, false)),
+                        new NL.OnegaiConditions.ArrangementCount(),
                         playerOnegaiRepository.GetAll().ToList()
                     );
                 }
             }
             GameManager.Instance.ArrangementPresenter.ReLoad ();
+        }
+
+        /// <summary>
+        /// すべての予約状況をキャンセルする
+        /// </summary>
+        public void UnReserveArrangementAll() {
+            var reserveArrangementTarget = this.ArrangementTargetStore.Where(arrangementTarget => arrangementTarget.ArrangementTargetState == ArrangementTargetState.Reserve).ToList();
+            foreach (var arrangementTarget in reserveArrangementTarget)
+            {
+                this.unReserveArrangementService.Execute(arrangementTarget);
+            }
         }
 
         /// <summary>

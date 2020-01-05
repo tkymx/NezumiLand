@@ -1,31 +1,51 @@
 {"InnerArray":[
     {
         "Id": 1,
-        "EventConditionType": "Time",
+        "EventConditionType": "AboveSatisfaction",
         "Arg": [
-            "5"
+            "0"
         ]
     },
     {
         "Id": 2,
-        "EventConditionType": "AboveSatisfaction",
+        "EventConditionType": "AfterArrangement",
         "Arg": [
-            "100"
         ]
     },
     {
         "Id": 3,
-        "EventConditionType": "ClearOnegai",
+        "EventConditionType": "AboveSatisfaction",
         "Arg": [
-            "2"
+            "0"
         ]
     },
     {
         "Id": 4,
         "EventConditionType": "AboveSatisfaction",
         "Arg": [
-            "0"
+            "100"
         ]
-    }
+    },
+    {
+        "Id": 5,
+        "EventConditionType": "AboveSatisfaction",
+        "Arg": [
+            "1000"
+        ]
+    },
+    {
+        "Id": 6,
+        "EventConditionType": "ClearOnegai",
+        "Arg": [
+            16
+        ]
+    },
+    {
+        "Id": 7,
+        "EventConditionType": "AboveSatisfaction",
+        "Arg": [
+            "10000"
+        ]
+    }    
 ]
 }

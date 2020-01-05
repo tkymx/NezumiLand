@@ -8,12 +8,9 @@ namespace NL {
 
     [System.Serializable]
     public class ConversationEntry : EntryBase {
-
-        
         public string[] ConversationTexts;
-
-        
         public string[] ConversationCharacterNames;
+        public string[] ConversationCharacterDisplayNames;
     }
 
     public interface IConversationRepository {
@@ -29,7 +26,8 @@ namespace NL {
                 return new ConversationModel (
                     entry.Id,
                     entry.ConversationTexts.ToList(),
-                    entry.ConversationCharacterNames.ToList());
+                    entry.ConversationCharacterNames.ToList(),
+                    entry.ConversationCharacterDisplayNames.ToList());
             });
         }
 
@@ -38,7 +36,8 @@ namespace NL {
             return new ConversationModel (
                 entry.Id,
                 entry.ConversationTexts.ToList(),
-                entry.ConversationCharacterNames.ToList());
+                entry.ConversationCharacterNames.ToList(),
+                entry.ConversationCharacterDisplayNames.ToList());
         }
     }
 }

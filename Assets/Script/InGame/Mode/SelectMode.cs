@@ -4,12 +4,16 @@ using UnityEngine;
 
 namespace NL {
     public class SelectMode : IGameMode {
-        public void OnEnter () { }
+        public void OnEnter () { 
+            GameManager.Instance.GameUIManager.SelectModeUIPresenter.Show();
+        }
         public void OnUpdate () { 
             if (GameManager.Instance.EventManager.IsToEvent) {
                 GameManager.Instance.EventManager.GoToEvent();
             }
         }
-        public void OnExit () { }
+        public void OnExit () { 
+            GameManager.Instance.GameUIManager.SelectModeUIPresenter.Close();
+        }
     }
 }

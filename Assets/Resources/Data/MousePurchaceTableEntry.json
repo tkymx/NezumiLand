@@ -1,18 +1,18 @@
 {"InnerArray":[
     {
         "Id": 1,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 10,
+        "ItemCost": 1
     },
     {
         "Id": 2,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 20,
+        "ItemCost": 2
     },    
     {
         "Id": 3,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 50,
+        "ItemCost": 5
     },    
     {
         "Id": 4,
@@ -21,33 +21,33 @@
     },    
     {
         "Id": 5,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 200,
+        "ItemCost": 20
     },    
     {
         "Id": 6,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 500,
+        "ItemCost": 50
     },    
     {
         "Id": 7,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 1000,
+        "ItemCost": 100
     },    
     {
         "Id": 8,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 2000,
+        "ItemCost": 200
     },    
     {
         "Id": 9,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 5000,
+        "ItemCost": 500
     },    
     {
         "Id": 10,
-        "CurrencyCost": 100,
-        "ItemCost": 10
+        "CurrencyCost": 10000,
+        "ItemCost": 1000
     }
 ]
 }

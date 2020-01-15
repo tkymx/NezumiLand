@@ -18,7 +18,6 @@ namespace NL {
         }
 
         public void OnEnter () { 
-            GameManager.Instance.TimeManager.Pause ();
             rewardReceiver.ReceiveRewardAndShowModel();
             this.receiveRewardDisposable = rewardReceiver.OnEndReceiveObservable.Subscribe(_ => {
                 GameManager.Instance.GameModeManager.Back();
@@ -27,7 +26,6 @@ namespace NL {
         public void OnUpdate () {
         }
         public void OnExit () { 
-            GameManager.Instance.TimeManager.Play ();
             if (this.receiveRewardDisposable != null) {
                 this.receiveRewardDisposable.Dispose();
             } 

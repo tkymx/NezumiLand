@@ -12,7 +12,6 @@ namespace NL {
     public class MousePurchaseMode : IGameMode {
 
         public void OnEnter () {
-            GameManager.Instance.TimeManager.Pause ();
             GameManager.Instance.GameUIManager.MousePurchasePresenter.Show();
         }
         public void OnUpdate () {
@@ -22,7 +21,6 @@ namespace NL {
             }            
         }
         public void OnExit () {
-            GameManager.Instance.TimeManager.Play ();
             GameManager.Instance.GameUIManager.MousePurchasePresenter.Close();
         }
     }

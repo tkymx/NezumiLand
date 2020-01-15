@@ -62,14 +62,6 @@ namespace NL {
         public ToolBarManager ToolBarManager => toolBarmanager;
 
         [SerializeField]
-        private DailyEndPresenter dailyEndPresenter = null;
-        public DailyEndPresenter DailyEndPresenter => dailyEndPresenter;
-
-        [SerializeField]
-        private DailyStartPresenter dailyStartPresenter = null;
-        public DailyStartPresenter DailyStartPresenter => dailyStartPresenter;
-
-        [SerializeField]
         private OnegaiConditionNotificationPresenter onegaiConditionNotificationPresenter = null;
         public OnegaiConditionNotificationPresenter OnegaiConditionNotificationPresenter => onegaiConditionNotificationPresenter;
 
@@ -107,8 +99,6 @@ namespace NL {
             this.monoDetailPresenter.Initialize();
             this.mousePurchasePresenter.Initialize(mousePurchaceTableRepository, playerMouseStockRepository);
             this.toolBarmanager.Initialize();
-            this.dailyEndPresenter.Initialize();
-            this.dailyStartPresenter.Initialize();
             this.onegaiConditionNotificationPresenter.Initialize();
             this.imagePresenter.Initialize ();
             this.arrangementModeUIPresenter.Initialize();

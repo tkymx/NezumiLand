@@ -56,9 +56,6 @@ namespace NL {
         private MouseStockManager mouseStockManager;
         public MouseStockManager MouseStockManager => mouseStockManager;
 
-        private DailyActionManager dailyActionManager;
-        public DailyActionManager DailyActionManager => dailyActionManager;
-
         private ArrangementItemStore arrangementItemStore;
         public ArrangementItemStore ArrangementItemStore => arrangementItemStore;
 
@@ -135,7 +132,6 @@ namespace NL {
             this.mouseHomeManager = new MouseHomeManager (this.rootObject);
             this.onegaiHomeManager = new OnegaiHomeManager (this.rootObject);
             this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository, playerMouseViewRepository);
-            this.dailyActionManager = new DailyActionManager ();
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
             this.appearCharacterManager = new AppearCharacterManager(this.rootObject, playerAppearCharacterViewRepository);
@@ -180,7 +176,6 @@ namespace NL {
 
             // 定常
             this.arrangementManager.UpdateByFrame ();
-            this.dailyActionManager.UpdateByFrame ();
             this.gameModeManager.UpdateByFrame ();
             this.monoManager.UpdateByFrame ();
             this.fieldRaycastManager.UpdateByFrame ();

@@ -16,7 +16,6 @@ namespace NL {
         }
 
         public void OnEnter () { 
-            GameManager.Instance.TimeManager.Pause ();
             this.conversationDisposable = ConversationStarter.StartConversation(this.conversationModel).Subscribe(_ => {
                 GameManager.Instance.GameModeManager.Back();
             });
@@ -24,7 +23,6 @@ namespace NL {
         public void OnUpdate () {
         }
         public void OnExit () { 
-            GameManager.Instance.TimeManager.Play ();
             if (this.conversationDisposable != null) {
                 this.conversationDisposable.Dispose();
             } 

@@ -12,7 +12,6 @@ namespace NL {
 
         public void OnEnter () {
             GameManager.Instance.GameUIManager.MonoTabPresenter.Show ();
-            GameManager.Instance.TimeManager.Pause ();
 
             GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.InMonoSelectMode());
         }
@@ -30,7 +29,6 @@ namespace NL {
         }
         public void OnExit () {
             GameManager.Instance.GameUIManager.MonoTabPresenter.Close ();
-            GameManager.Instance.TimeManager.Play ();
         }
     }
 }

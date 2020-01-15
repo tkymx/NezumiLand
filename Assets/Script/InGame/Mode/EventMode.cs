@@ -14,7 +14,6 @@ namespace NL {
         }
         
         public void OnEnter () {
-            GameManager.Instance.TimeManager.Pause ();
             GameManager.Instance.EventManager.PlayEventContents();
         }
         public void OnUpdate () {     
@@ -23,7 +22,6 @@ namespace NL {
             }     
         }
         public void OnExit () {
-            GameManager.Instance.TimeManager.Play ();
         }
     }
 }

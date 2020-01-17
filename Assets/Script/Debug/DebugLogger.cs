@@ -11,6 +11,9 @@ namespace NL {
         private Button openCloseButton = null;
 
         [SerializeField]
+        private Button dailyAppearCharacterRegistButton = null;
+
+        [SerializeField]
         private GameObject mainContetns = null;
 
         [SerializeField]
@@ -30,6 +33,9 @@ namespace NL {
                 #else
                     Application.Quit();
                 #endif                    
+            });
+            dailyAppearCharacterRegistButton.onClick.AddListener(()=>{
+                GameManager.Instance.DailyAppearCharacterRegistManager.Regist();
             });
             openCloseButton.onClick.AddListener(() => {
                 mainContetns.SetActive(!mainContetns.activeSelf);

@@ -16,6 +16,9 @@ namespace NL {
         private AppearCharacterCreateService appearCharacterCreateService = null;
         private AppearCharacterRemoveService appearCharacterRemoveService = null;
         private AppearCharacterReceiveRewardsService appearCharacterReceiveRewardsService = null;
+        private AppearCharacterChangeStateService appearCharacterChangeStateService = null;
+        private AppearCharacterChangeTransformService appearCharacterChangeTransformService = null;
+        private AppearCharacterSetTargetArrangementService appearCharacterSetTargetArrangementService = null;
 
         public AppearCharacterManager(GameObject root, IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {
@@ -28,6 +31,9 @@ namespace NL {
             this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearCharacterViewRepository);
             this.appearCharacterRemoveService = new AppearCharacterRemoveService(playerAppearCharacterViewRepository);
             this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearCharacterViewRepository);
+            this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
+            this.appearCharacterChangeTransformService = new AppearCharacterChangeTransformService(playerAppearCharacterViewRepository);
+            this.appearCharacterSetTargetArrangementService = new AppearCharacterSetTargetArrangementService(playerAppearCharacterViewRepository);
         }
 
         public void UpdateByFrame()
@@ -48,7 +54,7 @@ namespace NL {
             // 消去
             foreach (var reservedRemovableModel in this.reservedRemovableModels)
             {
-                this.Remove(reservedRemovableModel);
+                this.RemoveInternal(reservedRemovableModel);
             }
             this.reservedRemovableModels.Clear();
         }
@@ -74,11 +80,38 @@ namespace NL {
         }
 
         public void ToReeiveRewards (PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
-            playerAppearCharacterViewModel.ToReceiveRewards();
             this.appearCharacterReceiveRewardsService.Execute(playerAppearCharacterViewModel);
         }
 
-        private void Remove (AppearCharacterViewModel appearCharacterViewModel) {
+        public void ChangeState (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, IState state) {
+            AppearCharacterState appearCharacterState = AppearCharacterState.None;
+            if (state is GoMonoState) {
+                appearCharacterState = AppearCharacterState.GoMono;
+            }
+            else if (state is GoAwayState) {
+                appearCharacterState = AppearCharacterState.GoAway;
+            }
+            else if (state is PlayingMonoState) {
+                appearCharacterState = AppearCharacterState.PlayingMono;
+            }
+            else if (state is RemovedState) {
+                appearCharacterState = AppearCharacterState.Removed;
+            }
+            else {
+                Debug.Assert(false, "状態が不定です。");
+            }
+            this.appearCharacterChangeStateService.Execute(playerAppearCharacterViewModel, appearCharacterState);
+        }
+
+        public void ChangeTransform (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, Vector3 position, Vector3 rotation) {
+            this.appearCharacterChangeTransformService.Execute(playerAppearCharacterViewModel, position, rotation);
+        }
+
+        public void SetTargetArrangement (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, PlayerArrangementTargetModel playerArrangementTargetModel) {
+            this.appearCharacterSetTargetArrangementService.Execute(playerAppearCharacterViewModel, playerArrangementTargetModel);
+        }
+
+        private void RemoveInternal (AppearCharacterViewModel appearCharacterViewModel) {
             if (this.appearCharacterViewModels.IndexOf(appearCharacterViewModel) < 0) {
                 return;
             }
@@ -87,9 +120,13 @@ namespace NL {
             this.appearCharacterRemoveService.Execute(appearCharacterViewModel.PlayerAppearCharacterViewModel);
         }
 
+        public void Remove(AppearCharacterViewModel appearCharacterViewModel) {
+            this.EnqueueRemove(appearCharacterViewModel);
+        }
+
         public void RemoveAll() {
             foreach (var reservedRegisterModel in this.appearCharacterViewModels) {
-                this.EnqueueRemove(reservedRegisterModel);
+                this.Remove(reservedRegisterModel);
             }                        
         }
     }

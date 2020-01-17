@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using UnityEngine;
 using System;
 
@@ -15,6 +14,7 @@ namespace NL {
         public string State;
         public float Rate;
         public bool IsNextRemove;
+        public bool IsNextSkip;
     }
 
     public interface IPlayerAppearCharacterReserveRepository 
@@ -79,7 +79,8 @@ namespace NL {
                 conversationModel,
                 rewardModel,
                 condition,
-                entry.IsNextRemove
+                entry.IsNextRemove,
+                entry.IsNextSkip
             );
         }
 
@@ -121,7 +122,8 @@ namespace NL {
                 RewardId = rewardModel.Id,
                 State = condition.ToString(),
                 Rate = rate,
-                IsNextRemove = false
+                IsNextRemove = false,
+                IsNextSkip = false
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -151,7 +153,8 @@ namespace NL {
                     RewardId = playerAppearCharacterReserveModel.RewardModel.Id,
                     State = condition.ToString(),
                     Rate = rate,
-                    IsNextRemove = playerAppearCharacterReserveModel.IsNextRemove
+                    IsNextRemove = playerAppearCharacterReserveModel.IsNextRemove,
+                    IsNextSkip = playerAppearCharacterReserveModel.IsNextSkip
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + playerAppearCharacterReserveModel.Id.ToString());

@@ -33,11 +33,13 @@ namespace NL
         public AppearCharacterViewModel Generate(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
             var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , playerAppearCharacterViewModel.Position);
+            appearCharacterInstance.transform.rotation = Quaternion.Euler(playerAppearCharacterViewModel.Rotation);
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
                 playerAppearCharacterViewModel
             );
+            generatedAppearCharacterViewModel.InterruptState(playerAppearCharacterViewModel.AppearCharacterState);
             return generatedAppearCharacterViewModel;
         }        
 

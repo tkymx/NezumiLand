@@ -13,6 +13,8 @@ namespace NL {
         public Position3Entry Rotation;
         public uint PlayerAppearCharacterReserveId;
         public bool IsReceiveReward;
+        public string AppearCharacterState;
+        public uint PlayerArrangementTargetId;
     }
 
     public interface IPlayerAppearCharacterViewRepository 
@@ -30,9 +32,11 @@ namespace NL {
     public class PlayerAppearCharacterViewRepository : PlayerRepositoryBase<PlayerAppearCharacterViewEntry>, IPlayerAppearCharacterViewRepository {
 
         private readonly IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository;
+        private readonly IPlayerArrangementTargetRepository playerArrangementTargetRepository;
 
-        public PlayerAppearCharacterViewRepository (IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys) {
+        public PlayerAppearCharacterViewRepository (IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository, IPlayerArrangementTargetRepository playerArrangementTargetRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys) {
             this.playerAppearCharacterReserveRepository = playerAppearCharacterReserveRepository;
+            this.playerArrangementTargetRepository = playerArrangementTargetRepository;
         }
 
         private PlayerAppearCharacterViewModel CreateByEntry (PlayerAppearCharacterViewEntry entry) {
@@ -40,6 +44,13 @@ namespace NL {
             var playerAppearCharacterReserveModel = this.playerAppearCharacterReserveRepository.Get(entry.PlayerAppearCharacterReserveId);
             Debug.Assert(playerAppearCharacterReserveModel!=null, "playerAppearCharacterReserveModel が存在していません");
             
+            var playerArrangementTargetModel = this.playerArrangementTargetRepository.Get(entry.PlayerArrangementTargetId);
+            
+            var state = AppearCharacterState.None;
+            if (Enum.TryParse (entry.AppearCharacterState, out AppearCharacterState outState)) {
+                state = outState;
+            }
+
             return new PlayerAppearCharacterViewModel(
                 entry.Id,
                 new Vector3(
@@ -53,7 +64,9 @@ namespace NL {
                     entry.Rotation.Z
                 ),
                 playerAppearCharacterReserveModel,
-                entry.IsReceiveReward
+                entry.IsReceiveReward,
+                state,
+                playerArrangementTargetModel
             );
         }
 
@@ -89,7 +102,9 @@ namespace NL {
                     Z = rotation.z,
                 },
                 PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel.Id,
-                IsReceiveReward = false /*はじめはまだ受け取っていない*/
+                IsReceiveReward = false /*はじめはまだ受け取っていない*/,
+                AppearCharacterState = AppearCharacterState.None.ToString(),
+                PlayerArrangementTargetId = 0
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -113,7 +128,9 @@ namespace NL {
                         Z = playerAppearCharacterViewModel.Rotation.z,
                     },
                     PlayerAppearCharacterReserveId = playerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.Id,
-                    IsReceiveReward = playerAppearCharacterViewModel.IsReceiveReward
+                    IsReceiveReward = playerAppearCharacterViewModel.IsReceiveReward,
+                    AppearCharacterState = playerAppearCharacterViewModel.AppearCharacterState.ToString(),
+                    PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + playerAppearCharacterViewModel.Id.ToString());

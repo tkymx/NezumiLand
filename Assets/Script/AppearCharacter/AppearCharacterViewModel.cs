@@ -13,12 +13,48 @@ namespace NL {
         public PlayerAppearCharacterViewModel PlayerAppearCharacterViewModel { get; private set; }
         private AppearCharacterView appearCharacterView;
 
+        public Vector3 Position => this.appearCharacterView.transform.position;
+
         private List<IDisposable> disposables = new List<IDisposable>();
+
+        private StateManager stateManager;
+
+        public void InterruptState(AppearCharacterState appearCharacterState) 
+        {
+            if (appearCharacterState == AppearCharacterState.GoMono) {
+                Debug.Assert(PlayerAppearCharacterViewModel.PlayerArrangementTargetModel != null, "playerArrangementTargetModel が null です");
+                stateManager.Interrupt (new GoMonoState (this));
+            }
+            else if (appearCharacterState == AppearCharacterState.GoAway) {
+                stateManager.Interrupt (new GoAwayState (this));
+            }
+            else if (appearCharacterState == AppearCharacterState.PlayingMono) {
+                stateManager.Interrupt (new PlayingMonoState (this));
+            }
+            else if (appearCharacterState == AppearCharacterState.Removed) {
+                stateManager.Interrupt (new RemovedState ());
+            }                        
+            else {
+                Debug.Assert(false, "ありえない状態" + appearCharacterState.ToString());
+            }
+        }
 
         public AppearCharacterViewModel(AppearCharacterView appearCharacterView, PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
             this.appearCharacterView = appearCharacterView;            
             this.PlayerAppearCharacterViewModel = playerAppearCharacterViewModel;
+
+            this.stateManager = new StateManager(new EmptyState());
+            this.disposables.Add(this.stateManager.OnChangeStateObservable.Subscribe(state => {
+                GameManager.Instance.AppearCharacterManager.ChangeState(playerAppearCharacterViewModel, state);
+            }));
+
+            // 遊具があればそこに移動する（仮）
+            var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
+            if (arrangementTargetStore.Count > 0) {          
+                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[0].PlayerArrangementTargetModel);
+                this.stateManager.Interrupt(new GoMonoState(this));
+            }
 
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable
@@ -56,7 +92,65 @@ namespace NL {
 
         public void UpdateByFrame()
         {
-            // なにか行動する
+            this.InitializeByFrame();
+            this.stateManager.UpdateByFrame();
+            this.Move();
+            this.UpdateTransform();
+        }
+
+        private float playeringTime = 0;
+
+        public void StartPlaying () {
+            this.playeringTime = 0;
+        }
+
+        public bool IsPlayingFinish () {
+            return this.playeringTime > 2.0f;
+        }
+
+        public void UpdatePlaying () {
+            if (this.stateManager.CurrentState is PlayingMonoState) {
+                this.playeringTime += GameManager.Instance.TimeManager.DeltaTime ();
+            }
+        }
+
+        // 移動関連
+        
+        private Vector3 moveVector;
+
+        void InitializeByFrame () {
+            moveVector = Vector3.zero;
+        }
+
+        void Move () {
+            if (moveVector.magnitude > 0.001) {
+                this.appearCharacterView.ChangeAnimation("run");
+                this.appearCharacterView.SetRotation(Quaternion.LookRotation (moveVector));
+                this.appearCharacterView.SetPosition(this.appearCharacterView.transform.position + moveVector);
+            } else {
+                this.appearCharacterView.ChangeAnimation("idle");
+            }
+        }
+
+        public void MoveTo (Vector3 target)
+        {
+            moveVector = ObjectComparison.Direction (target, this.appearCharacterView.transform.position) * 4.0f * GameManager.Instance.TimeManager.DeltaTime ();
+        }
+
+        private float elapsedTime = 0;
+        private const float intervalTime = 1.0f;
+        public void UpdateTransform()
+        {
+            elapsedTime += GameManager.Instance.TimeManager.DeltaTime ();
+            if (elapsedTime > intervalTime) {
+                this.elapsedTime = 0;
+
+                // 座標の更新
+                GameManager.Instance.AppearCharacterManager.ChangeTransform(
+                    this.PlayerAppearCharacterViewModel,
+                    this.appearCharacterView.transform.position,
+                    this.appearCharacterView.transform.rotation.eulerAngles);
+            }
         }
 
         public void Dispose () 

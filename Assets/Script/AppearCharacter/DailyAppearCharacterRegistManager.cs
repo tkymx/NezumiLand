@@ -13,6 +13,7 @@ namespace NL {
         private readonly DailyAppearCharacterRegistReserveCreateService dailyAppearCharacterRegistReserveCreateService = null;
         private readonly DailyAppearCharacterRegistReserveRemoveService dailyAppearCharacterRegistReserveRemoveService = null;
         private readonly DailyAppearCharacterRegistReserveNextRemoveService dailyAppearCharacterRegistReserveNextRemoveService = null;
+        private readonly DailyAppearCharacterRegistReserveNextSkipService dailyAppearCharacterRegistReserveNextSkipService = null;
 
         private List<DailyAppearCharacterGeneratorResistReserve> dailyAppearCharacterGeneratorResistReserves = null;
 
@@ -23,6 +24,7 @@ namespace NL {
             this.dailyAppearCharacterRegistReserveCreateService = new DailyAppearCharacterRegistReserveCreateService(playerAppearCharacterReserveRepository);
             this.dailyAppearCharacterRegistReserveRemoveService = new DailyAppearCharacterRegistReserveRemoveService(playerAppearCharacterReserveRepository);
             this.dailyAppearCharacterRegistReserveNextRemoveService = new DailyAppearCharacterRegistReserveNextRemoveService(playerAppearCharacterReserveRepository);
+            this.dailyAppearCharacterRegistReserveNextSkipService = new DailyAppearCharacterRegistReserveNextSkipService(playerAppearCharacterReserveRepository);
         }
 
         public void RegistReserve(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel, RewardModel rewardModel, IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition) 
@@ -59,10 +61,19 @@ namespace NL {
             this.dailyAppearCharacterRegistReserveNextRemoveService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel);
         }
 
-        public void Resist() 
+        public void SetReserveNextSkippable(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, bool isNextSkip)
+        {
+            var dailyAppearCharacterGeneratorResistReserve = this.dailyAppearCharacterGeneratorResistReserves.Find(reserve => reserve.PlayerAppearCharacterReserveModel.Id == playerAppearCharacterReserveModel.Id);
+            Debug.Assert(dailyAppearCharacterGeneratorResistReserve != null, "DailyAppearCharacterRegistManagerに見つかりませんでした。");
+
+            // スキップ予約
+            this.dailyAppearCharacterRegistReserveNextSkipService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel, isNextSkip);
+        }        
+
+        public void Regist() 
         {
             // 消去すべきかを判断する
-            foreach (var dailyAppearCharacterGeneratorResistReserve in this.dailyAppearCharacterGeneratorResistReserves.ToArray())
+            foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {
                 if (!dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel.IsNextRemove) {
                     continue;
@@ -72,7 +83,6 @@ namespace NL {
                 this.dailyAppearCharacterRegistReserveRemoveService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel);
             }
 
-            var removeList = new Queue<DailyAppearCharacterGeneratorResistReserve>();
             foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {
                 // 条件が満たしていたら
@@ -80,11 +90,12 @@ namespace NL {
                     continue;
                 }
 
+                if (dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel.IsNextSkip) {
+                    continue;
+                }
+
                 // キャラクタを生成する
                 dailyAppearCharacterGeneratorResistReserve.Generate();
-            }
-            while(removeList.Count > 0) {
-                dailyAppearCharacterGeneratorResistReserves.Remove(removeList.Dequeue());
             }
         }
     }

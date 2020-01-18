@@ -27,6 +27,7 @@ namespace NL
                 appearCharacterView,
                 GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, playerAppearCharacterReserveModel)
             );
+            generatedAppearCharacterViewModel.SetInitialState();
             return generatedAppearCharacterViewModel;
         }
 

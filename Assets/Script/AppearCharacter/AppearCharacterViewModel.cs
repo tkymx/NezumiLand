@@ -39,6 +39,15 @@ namespace NL {
             }
         }
 
+        public void SetInitialState () {
+            // 遊具があればそこに移動する（仮）
+            var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
+            if (arrangementTargetStore.Count > 0) {          
+                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[0].PlayerArrangementTargetModel);
+                this.stateManager.Interrupt(new GoMonoState(this));
+            }
+        }
+
         public AppearCharacterViewModel(AppearCharacterView appearCharacterView, PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
             this.appearCharacterView = appearCharacterView;            
@@ -48,13 +57,6 @@ namespace NL {
             this.disposables.Add(this.stateManager.OnChangeStateObservable.Subscribe(state => {
                 GameManager.Instance.AppearCharacterManager.ChangeState(playerAppearCharacterViewModel, state);
             }));
-
-            // 遊具があればそこに移動する（仮）
-            var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
-            if (arrangementTargetStore.Count > 0) {          
-                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[0].PlayerArrangementTargetModel);
-                this.stateManager.Interrupt(new GoMonoState(this));
-            }
 
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable

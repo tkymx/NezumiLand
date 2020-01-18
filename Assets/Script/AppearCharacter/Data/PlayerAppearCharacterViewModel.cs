@@ -21,6 +21,7 @@ namespace NL
         public bool IsReceiveReward { get; private set; }
         public AppearCharacterState AppearCharacterState { get; private set; }
         public PlayerArrangementTargetModel PlayerArrangementTargetModel { get; private set; }
+        public float CurrentPlayingTime { get; private set; }
 
         public void ToReceiveRewards() {
             this.IsReceiveReward = true;
@@ -39,6 +40,10 @@ namespace NL
             this.PlayerArrangementTargetModel = playerArrangementTargetModel;
         }
 
+        public void SetCurrentPlayingTime (float currentPlayingTime) {
+            this.CurrentPlayingTime = currentPlayingTime;
+        }
+
         public PlayerAppearCharacterViewModel(
             uint id,
             Vector3 position, 
@@ -46,7 +51,8 @@ namespace NL
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, 
             bool isReceiveReward,
             AppearCharacterState appearCharacterState,
-            PlayerArrangementTargetModel playerArrangementTargetModel)
+            PlayerArrangementTargetModel playerArrangementTargetModel,
+            float currentPlayingTime)
         {
             this.Id = id;
             this.Position = position;
@@ -55,6 +61,7 @@ namespace NL
             this.IsReceiveReward = isReceiveReward;
             this.AppearCharacterState = appearCharacterState;
             this.PlayerArrangementTargetModel = playerArrangementTargetModel;
+            this.CurrentPlayingTime = currentPlayingTime;
         }
 
     }   

@@ -13,7 +13,8 @@ namespace  NL
         }
 
         public void onEnter () {
-
+            // 次の出現を skip する設定
+            GameManager.Instance.DailyAppearCharacterRegistManager.SetReserveNextSkippable(appearCharacterViewModel.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel, true);
         }
 
         private bool isAlivable () {

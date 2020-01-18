@@ -58,6 +58,9 @@ namespace NL {
                 GameManager.Instance.AppearCharacterManager.ChangeState(playerAppearCharacterViewModel, state);
             }));
 
+            // 遊んでいた時間を適応
+            this.playeringTime = playerAppearCharacterViewModel.CurrentPlayingTime;
+
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable
                 .SelectMany(_ => {
@@ -152,6 +155,14 @@ namespace NL {
                     this.PlayerAppearCharacterViewModel,
                     this.appearCharacterView.transform.position,
                     this.appearCharacterView.transform.rotation.eulerAngles);
+
+                // 遊んでいる時間を適応
+                if (this.stateManager.CurrentState is PlayingMonoState) {
+                    GameManager.Instance.AppearCharacterManager.SetCurrentPlayingTime(
+                        this.PlayerAppearCharacterViewModel,
+                        this.playeringTime
+                    );
+                }
             }
         }
 

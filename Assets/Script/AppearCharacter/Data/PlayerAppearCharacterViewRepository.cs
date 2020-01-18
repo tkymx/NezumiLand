@@ -15,6 +15,7 @@ namespace NL {
         public bool IsReceiveReward;
         public string AppearCharacterState;
         public uint PlayerArrangementTargetId;
+        public float CurrentPlayingTime;
     }
 
     public interface IPlayerAppearCharacterViewRepository 
@@ -66,7 +67,8 @@ namespace NL {
                 playerAppearCharacterReserveModel,
                 entry.IsReceiveReward,
                 state,
-                playerArrangementTargetModel
+                playerArrangementTargetModel,
+                entry.CurrentPlayingTime
             );
         }
 
@@ -104,7 +106,8 @@ namespace NL {
                 PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel.Id,
                 IsReceiveReward = false /*はじめはまだ受け取っていない*/,
                 AppearCharacterState = AppearCharacterState.None.ToString(),
-                PlayerArrangementTargetId = 0
+                PlayerArrangementTargetId = 0,
+                CurrentPlayingTime = 0
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -130,7 +133,8 @@ namespace NL {
                     PlayerAppearCharacterReserveId = playerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.Id,
                     IsReceiveReward = playerAppearCharacterViewModel.IsReceiveReward,
                     AppearCharacterState = playerAppearCharacterViewModel.AppearCharacterState.ToString(),
-                    PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id
+                    PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id,
+                    CurrentPlayingTime = playerAppearCharacterViewModel.CurrentPlayingTime
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + playerAppearCharacterViewModel.Id.ToString());

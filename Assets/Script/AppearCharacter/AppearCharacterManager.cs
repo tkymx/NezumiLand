@@ -19,6 +19,7 @@ namespace NL {
         private AppearCharacterChangeStateService appearCharacterChangeStateService = null;
         private AppearCharacterChangeTransformService appearCharacterChangeTransformService = null;
         private AppearCharacterSetTargetArrangementService appearCharacterSetTargetArrangementService = null;
+        private AppearCharacterSetPlayingTimeService appearCharacterSetPlayingTimeService = null;
 
         public AppearCharacterManager(GameObject root, IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {
@@ -34,6 +35,7 @@ namespace NL {
             this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
             this.appearCharacterChangeTransformService = new AppearCharacterChangeTransformService(playerAppearCharacterViewRepository);
             this.appearCharacterSetTargetArrangementService = new AppearCharacterSetTargetArrangementService(playerAppearCharacterViewRepository);
+            this.appearCharacterSetPlayingTimeService = new AppearCharacterSetPlayingTimeService(playerAppearCharacterViewRepository);
         }
 
         public void UpdateByFrame()
@@ -109,6 +111,10 @@ namespace NL {
 
         public void SetTargetArrangement (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, PlayerArrangementTargetModel playerArrangementTargetModel) {
             this.appearCharacterSetTargetArrangementService.Execute(playerAppearCharacterViewModel, playerArrangementTargetModel);
+        }
+
+        public void SetCurrentPlayingTime (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, float currentPlayingTime) {
+            this.appearCharacterSetPlayingTimeService.Execute(playerAppearCharacterViewModel, currentPlayingTime);
         }
 
         private void RemoveInternal (AppearCharacterViewModel appearCharacterViewModel) {

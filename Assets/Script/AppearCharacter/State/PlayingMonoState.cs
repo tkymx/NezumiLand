@@ -23,6 +23,8 @@ namespace  NL
         public IState onUpdate () {
             this.appearCharacterViewModel.UpdatePlaying();
             if (!isAlivable ()) {
+                var earnCurrency = new Currency(10);
+                GameManager.Instance.EarnCurrencyManager.CreateOrAdd(appearCharacterViewModel.PlayerAppearCharacterViewModel.PlayerArrangementTargetModel, earnCurrency);
                 return new GoAwayState(appearCharacterViewModel);
             }
             return null;

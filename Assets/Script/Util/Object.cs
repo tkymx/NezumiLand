@@ -9,6 +9,15 @@ namespace NL {
             return position;
         }
 
+        public static GameObject Appear (GameObject prefab, GameObject parent, Vector3 position) {
+            GameObject instance = GameObject.Instantiate (prefab);
+            if (parent != null) {
+                instance.transform.SetParent (parent.transform, false);
+            }
+            instance.transform.position = position;
+            return instance;
+        }
+
         public static GameObject AppearToFloor (GameObject prefab, GameObject parent, Vector3 position) {
             GameObject instance = GameObject.Instantiate (prefab);
             if (parent != null) {

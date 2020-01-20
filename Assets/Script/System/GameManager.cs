@@ -89,6 +89,9 @@ namespace NL {
         private CameraMoveManager cameraMoveManager;
         public CameraMoveManager CameraMoveManager => cameraMoveManager;
 
+        private EarnCurrencyManager earnCurrencyManager;
+        public EarnCurrencyManager EarnCurrencyManager => earnCurrencyManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -112,6 +115,7 @@ namespace NL {
             var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
+            var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -141,6 +145,7 @@ namespace NL {
             this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
             this.reserveAmountManager = new ReserveAmountManager();
             this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform);
+            this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
@@ -164,6 +169,8 @@ namespace NL {
             initializeOrderedMouseService.Execute();
             var initializeAppearCharacterService = new InitializeAppearCharacterService(playerAppearCharacterReserveRepository, playerAppearCharacterViewRepository);
             initializeAppearCharacterService.Execute();
+            var initializeEarnCurrencyService = new EarnCurrencyInitializeService(playerEarnCurrencyRepository);
+            initializeEarnCurrencyService.Execute();
         }
 
         private void Update () {
@@ -184,6 +191,7 @@ namespace NL {
             this.onegaiManager.UpdateByFrame();
             this.monoReleaseManager.UpdateByFrame();
             this.cameraMoveManager.UpdateByFrame();
+            this.earnCurrencyManager.UpdateByFrame();
 
             // UI関連
             this.gameUIManager.UpdateByFrame();

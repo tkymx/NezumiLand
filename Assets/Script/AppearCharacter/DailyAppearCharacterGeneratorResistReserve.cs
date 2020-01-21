@@ -25,8 +25,8 @@ namespace NL {
         }
 
         public void Generate() {
-            var generator = new AppearCharacterGenerator(PlayerAppearCharacterReserveModel);
-            GameManager.Instance.AppearCharacterManager.EnqueueRegister(generator.Generate());
+            var generator = new AppearCharacterGenerator(PlayerAppearCharacterReserveModel.AppearCharacterModel);
+            GameManager.Instance.AppearCharacterManager.EnqueueRegister(generator.GenerateReserve(PlayerAppearCharacterReserveModel));
         }
 
         public override string ToString() {

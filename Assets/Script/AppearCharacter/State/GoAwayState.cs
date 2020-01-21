@@ -31,9 +31,6 @@ namespace  NL
             if (isAlivable ()) {
                 // 消去
                 GameManager.Instance.AppearCharacterManager.Remove(appearCharacterViewModel);
-                // 次の出現を skip しない設定
-                GameManager.Instance.DailyAppearCharacterRegistManager.SetReserveNextSkippable(appearCharacterViewModel.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel, false);
-
                 return new RemovedState ();
             }
             return null;

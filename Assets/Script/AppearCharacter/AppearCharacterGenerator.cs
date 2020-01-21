@@ -7,29 +7,35 @@ namespace NL
     public class AppearCharacterGenerator : MonoBehaviour
     {
         private AppearCharacterModel appearCharacterModel;
-        private ConversationModel conversationModel;
-        private RewardModel rewardModel;
-        private PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel;
 
-        public AppearCharacterGenerator(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel)
+        public AppearCharacterGenerator(AppearCharacterModel appearCharacterModel)
         {
-            this.appearCharacterModel = playerAppearCharacterReserveModel.AppearCharacterModel;
-            this.conversationModel = playerAppearCharacterReserveModel.ConversationModel;
-            this.rewardModel = playerAppearCharacterReserveModel.RewardModel;
-            this.playerAppearCharacterReserveModel = playerAppearCharacterReserveModel;
+            this.appearCharacterModel = appearCharacterModel;
         }
 
-        public AppearCharacterViewModel Generate() {
+        public AppearCharacterViewModel GenerateReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) {
             var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , GetInitialPosition());
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
-                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, playerAppearCharacterReserveModel)
+                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, appearCharacterModel, playerAppearCharacterReserveModel, AppearCharacterLifeDirectorType.Reserve)
             );
             generatedAppearCharacterViewModel.SetInitialState();
             return generatedAppearCharacterViewModel;
         }
+
+        public AppearCharacterViewModel GenerateParkOpen() {
+            var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
+            var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , GetInitialPosition());
+            var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
+            var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
+                appearCharacterView,
+                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, appearCharacterModel, null, AppearCharacterLifeDirectorType.ParkOpen)
+            );
+            generatedAppearCharacterViewModel.SetInitialState();
+            return generatedAppearCharacterViewModel;
+        }        
 
         public AppearCharacterViewModel Generate(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
             var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
@@ -50,7 +56,7 @@ namespace NL
         }
 
         public override string ToString() {
-            return "AppearCharacterGenerator" + appearCharacterModel.Name + " " + conversationModel.Id.ToString();
+            return "AppearCharacterGenerator" + appearCharacterModel.Name;
         }
     }
 }

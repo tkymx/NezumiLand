@@ -12,6 +12,7 @@ namespace NL {
     {
         public PlayerAppearCharacterViewModel PlayerAppearCharacterViewModel { get; private set; }
         private AppearCharacterView appearCharacterView;
+        private IAppearCharacterLifeDirector appearCharacterLifeDirector;
 
         public Vector3 Position => this.appearCharacterView.transform.position;
 
@@ -48,6 +49,18 @@ namespace NL {
             }
         }
 
+        private IAppearCharacterLifeDirector CreateDirector(PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
+        {
+            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen) {
+                return new ParkOpenAppearCharacterLifeDirector();
+            } else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Reserve) {
+                return new ReserveAppearCharacterLifeDirector(playerAppearCharacterViewModel, playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector);
+            } else {
+                Debug.Assert(false, "ありえない状態" + playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString());
+            }
+            return null;
+        }
+
         public AppearCharacterViewModel(AppearCharacterView appearCharacterView, PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
             this.appearCharacterView = appearCharacterView;            
@@ -58,41 +71,22 @@ namespace NL {
                 GameManager.Instance.AppearCharacterManager.ChangeState(playerAppearCharacterViewModel, state);
             }));
 
+            // Director の作成
+            this.appearCharacterLifeDirector = CreateDirector(playerAppearCharacterViewModel);
+
             // 遊んでいた時間を適応
             this.playeringTime = playerAppearCharacterViewModel.CurrentPlayingTime;
 
             // キャラクタがタップされた時
             disposables.Add(appearCharacterView.OnSelectObservable
                 .SelectMany(_ => {
-                    var conversationMode =  GameModeGenerator.GenerateConversationMode(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.ConversationModel);
-                    GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(conversationMode);
-                    return GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode);
-                })
-                .SelectMany(_ => {
-                    if (this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel == null) {
-                        return new ImmediatelyObservable<int>(_);
-                    }
-                    if (this.PlayerAppearCharacterViewModel.IsReceiveReward) {
-                        return new ImmediatelyObservable<int>(_);
-                    }
-                    if (this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel.RewardAmounts.Count <= 0) {
-                        return new ImmediatelyObservable<int>(_);
-                    }                    
-
-                    // 受け取り済みにする
-                    GameManager.Instance.AppearCharacterManager.ToReeiveRewards(this.PlayerAppearCharacterViewModel);
-
-                    var rewardMode = GameModeGenerator.GenerateReceiveRewardMode(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel.RewardModel);
-                    GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(rewardMode);
-                    return GameManager.Instance.GameModeManager.GetModeEndObservable(rewardMode);
+                    return this.appearCharacterLifeDirector.OnTouch();
                 })
                 .Subscribe(_ => {
-                    // TODO 終了後に撤退の動作を始める
-                    // 予約から消す必要があれば消す
-                    if(GameManager.Instance.DailyAppearCharacterRegistManager.IsRemoveReserve(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel)) {
-                        GameManager.Instance.DailyAppearCharacterRegistManager.RemoveReserve(this.PlayerAppearCharacterViewModel.PlayerAppearCharacterReserveModel); 
-                    }
                 }));
+
+            // 生成
+            this.appearCharacterLifeDirector.OnCreate();
         }
 
         public void UpdateByFrame()
@@ -168,6 +162,8 @@ namespace NL {
 
         public void Dispose () 
         {
+            this.appearCharacterLifeDirector.OnRemove();
+
             Object.DisAppear(appearCharacterView.gameObject);
 
             // dispose を駆逐

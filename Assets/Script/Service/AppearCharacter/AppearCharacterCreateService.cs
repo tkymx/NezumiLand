@@ -14,14 +14,18 @@ namespace NL
         }
 
         public PlayerAppearCharacterViewModel Execute(
+            AppearCharacterModel appearCharacterModel,
             Vector3 position,
             Vector3 rotation,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType
         ) {
             return playerAppearCharacterViewRepository.Create(
+                appearCharacterModel,
                 position,
                 rotation,
-                playerAppearCharacterReserveModel
+                playerAppearCharacterReserveModel,
+                appearCharacterLifeDirectorType
             );
         }
     }   

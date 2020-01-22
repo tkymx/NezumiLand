@@ -120,7 +120,7 @@ namespace NL {
                     Y = rotation.y,
                     Z = rotation.z,
                 },
-                PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel.Id,
+                PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel != null ? playerAppearCharacterReserveModel.Id : 0,
                 IsReceiveReward = false /*はじめはまだ受け取っていない*/,
                 AppearCharacterState = AppearCharacterState.None.ToString(),
                 PlayerArrangementTargetId = 0,

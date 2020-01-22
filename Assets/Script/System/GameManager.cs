@@ -92,6 +92,9 @@ namespace NL {
         private EarnCurrencyManager earnCurrencyManager;
         public EarnCurrencyManager EarnCurrencyManager => earnCurrencyManager;
 
+        private ParkOpenAppearManager parkOpenAppearManager;
+        public ParkOpenAppearManager ParkOpenAppearManager => parkOpenAppearManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -105,6 +108,7 @@ namespace NL {
             var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
             var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
+            var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -146,6 +150,7 @@ namespace NL {
             this.reserveAmountManager = new ReserveAmountManager();
             this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform);
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
+            this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);

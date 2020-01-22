@@ -25,6 +25,7 @@ namespace NL {
         public List<AppearCharacterEntry> AppearCharacterEntrys { get; private set; }
         public List<MousePurchaceTableEntry> MousePurchaceTableEntrys { get; private set; }
         public List<ScheduleEntry> ScheduleEntrys { get; private set; }
+        public List<ParkOpenPositionEntry> ParkOpenPositionEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -47,6 +48,7 @@ namespace NL {
             this.AppearCharacterEntrys = LoadEntryFromJson<AppearCharacterEntry> (ResourceLoader.LoadData ("AppearCharacterEntry")).ToList();
             this.MousePurchaceTableEntrys = LoadEntryFromJson<MousePurchaceTableEntry> (ResourceLoader.LoadData ("MousePurchaceTableEntry")).ToList();
             this.ScheduleEntrys = LoadEntryFromJson<ScheduleEntry> (ResourceLoader.LoadData ("ScheduleEntry")).ToList();
+            this.ParkOpenPositionEntrys = LoadEntryFromJson<ParkOpenPositionEntry> (ResourceLoader.LoadData ("ParkOpenPositionEntry")).ToList();
         }
 
         private static T[] LoadEntryFromJson<T> (string json) {

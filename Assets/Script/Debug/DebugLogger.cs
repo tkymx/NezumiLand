@@ -14,6 +14,9 @@ namespace NL {
         private Button dailyAppearCharacterRegistButton = null;
 
         [SerializeField]
+        private Button appearForParkOpen = null;
+
+        [SerializeField]
         private GameObject mainContetns = null;
 
         [SerializeField]
@@ -39,6 +42,11 @@ namespace NL {
             });
             openCloseButton.onClick.AddListener(() => {
                 mainContetns.SetActive(!mainContetns.activeSelf);
+            });
+            appearForParkOpen.onClick.AddListener(() => {
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
             });
             Application.logMessageReceived += HandleLog;
         }

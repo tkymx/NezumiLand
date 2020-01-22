@@ -69,7 +69,6 @@ namespace NL {
         {
             var resultModel = additionalEarnCurrencyViewModels.Find(model => model.playerEarnCurrencyModel.PlayerArrangementTargetModel.Equals(playerArrangementTargetModel));
             if (resultModel != null) {
-                Debug.Assert(false, "additionalEarnCurrencyViewModelsにある要素が指定されました。");
                 return resultModel;
             }
 

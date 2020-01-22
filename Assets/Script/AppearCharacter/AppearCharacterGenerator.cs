@@ -25,9 +25,9 @@ namespace NL
             return generatedAppearCharacterViewModel;
         }
 
-        public AppearCharacterViewModel GenerateParkOpen() {
+        public AppearCharacterViewModel GenerateParkOpen(Vector3 appearPosition) {
             var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
-            var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , GetInitialPosition());
+            var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , appearPosition);
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,

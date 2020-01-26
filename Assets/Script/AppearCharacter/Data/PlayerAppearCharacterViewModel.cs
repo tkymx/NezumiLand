@@ -31,6 +31,7 @@ namespace NL
         public PlayerArrangementTargetModel PlayerArrangementTargetModel { get; private set; }
         public float CurrentPlayingTime { get; private set; }
         public AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType { get; private set; }
+        public MovePath MovePath { get; private set; }
 
         public void ToReceiveRewards() {
             this.IsReceiveReward = true;
@@ -63,7 +64,8 @@ namespace NL
             AppearCharacterState appearCharacterState,
             PlayerArrangementTargetModel playerArrangementTargetModel,
             float currentPlayingTime,
-            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType)
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            MovePath movePath)
         {
             this.Id = id;
             this.AppearCharacterModel = appearCharacterModel;
@@ -75,6 +77,7 @@ namespace NL
             this.PlayerArrangementTargetModel = playerArrangementTargetModel;
             this.CurrentPlayingTime = currentPlayingTime;
             this.AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType;
+            this.MovePath = movePath;
         }
 
     }   

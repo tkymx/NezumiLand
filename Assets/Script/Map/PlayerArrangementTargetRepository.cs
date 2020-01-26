@@ -14,6 +14,17 @@ namespace NL {
         public float Y;
         
         public float Z;
+
+        public Vector3 ToVector3 () {
+            return new Vector3(X,Y,Z);
+        }
+        public static Position3Entry FromVector3 (Vector3 position) {
+            return new Position3Entry () {
+                X = position.x,
+                Y = position.y,
+                Z = position.z
+            };
+        }
     }
 
     [System.Serializable]

@@ -61,13 +61,20 @@ namespace NL {
             this.reservedRemovableModels.Clear();
         }
 
-        public PlayerAppearCharacterViewModel Create (Transform view,AppearCharacterModel appearCharacterModel, PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, AppearCharacterLifeDirectorType appearCharacterLifeDirectorType) {
+        public PlayerAppearCharacterViewModel Create (
+            Transform view,
+            AppearCharacterModel appearCharacterModel, 
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, 
+            MovePath movePath) 
+        {
             return this.appearCharacterCreateService.Execute(
                 appearCharacterModel,
                 view.position,
                 view.rotation.eulerAngles,
+                appearCharacterLifeDirectorType,
                 playerAppearCharacterReserveModel,
-                appearCharacterLifeDirectorType                
+                movePath
             );
         }
 

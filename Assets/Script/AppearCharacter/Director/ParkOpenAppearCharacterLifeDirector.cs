@@ -11,6 +11,10 @@ namespace  NL
         {
             return new ImmediatelyObservable<int>(0);
         }
+        public void OnInitializeView(AppearCharacterView appearCharacterView)
+        {
+            appearCharacterView.SetConversationNotifierEnabled(false);
+        }
         public void OnCreate()
         {
 

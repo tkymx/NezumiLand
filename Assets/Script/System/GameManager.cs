@@ -95,6 +95,9 @@ namespace NL {
         private ParkOpenAppearManager parkOpenAppearManager;
         public ParkOpenAppearManager ParkOpenAppearManager => parkOpenAppearManager;
 
+        private ParkOpenManager parkOpenManager;
+        public ParkOpenManager ParkOpenManager => parkOpenManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -109,6 +112,8 @@ namespace NL {
             var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
+            var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
+            var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -120,6 +125,7 @@ namespace NL {
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenRepository = new PlayerParkOpenRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -151,6 +157,7 @@ namespace NL {
             this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform);
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
+            this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
@@ -176,6 +183,8 @@ namespace NL {
             initializeAppearCharacterService.Execute();
             var initializeEarnCurrencyService = new EarnCurrencyInitializeService(playerEarnCurrencyRepository);
             initializeEarnCurrencyService.Execute();
+            var initializeParkOpenService = new ParkOpenInitializeService(playerParkOpenRepository);
+            initializeParkOpenService.Execute();
         }
 
         private void Update () {
@@ -197,6 +206,7 @@ namespace NL {
             this.monoReleaseManager.UpdateByFrame();
             this.cameraMoveManager.UpdateByFrame();
             this.earnCurrencyManager.UpdateByFrame();
+            this.parkOpenManager.UpdateByFrame();
 
             // UI関連
             this.gameUIManager.UpdateByFrame();

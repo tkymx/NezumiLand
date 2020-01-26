@@ -669,6 +669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleAnimation: {fileID: 5078358994823075725}
+  conversationNotifier: {fileID: 5408731522212745188}
 --- !u!1 &870650297054938407
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace NL
 {
@@ -10,18 +11,39 @@ namespace NL
         public ParkOpenAppearManager(IParkOpenPositionRepository parkOpenPositionRepository, IAppearCharacterRepository appearCharacterRepository)
         {
             this.parkOpenPositionRepository = parkOpenPositionRepository;
-            this.appearCharacterRepository = appearCharacterRepository;            
+            this.appearCharacterRepository = appearCharacterRepository;  
         }       
 
         /// <summary>
         /// ランダム位置に適当なキャラクタを召喚
         /// </summary>
-        public void AppearRandom()
+        public void AppearRandom(AppearCharacterModel appearCharacterModel)
         {
-            var positionModel = this.parkOpenPositionRepository.GerRandomPosition(ParkOpenPositionModel.PositionType.Appear);
-            var appearCharacterModel = this.appearCharacterRepository.Get(1);   // 外から指定したい
             var appearCharacterGenerator = new AppearCharacterGenerator(appearCharacterModel);
-            GameManager.Instance.AppearCharacterManager.EnqueueRegister(appearCharacterGenerator.GenerateParkOpen(positionModel.Position));
+            var appearPositionModel = this.parkOpenPositionRepository.GerRandomPosition(ParkOpenPositionModel.PositionType.Appear);
+            var disappearPositionModel = this.parkOpenPositionRepository.GerRandomPosition(ParkOpenPositionModel.PositionType.DisAppear);
+            var movePath = new MovePath(
+                appearPositionModel.Position + GetRandomOffsetPosition(),
+                disappearPositionModel.Position + GetRandomOffsetPosition()
+            );
+            GameManager.Instance.AppearCharacterManager.EnqueueRegister(appearCharacterGenerator.GenerateParkOpen(movePath));
+        }
+
+        public Vector3 GetRandomOffsetPosition()
+        {
+            float range = 8;
+            return new Vector3(UnityEngine.Random.Range(-range,range), 0, UnityEngine.Random.Range(-range,range));
+        }
+
+        public void AppearWave(ParkOpenWaveModel parkOpenWaveModel)
+        {
+            int loopCount = parkOpenWaveModel.AppearCount + UnityEngine.Random.Range(-parkOpenWaveModel.FluctuationCount,parkOpenWaveModel.FluctuationCount);
+            for(int currentLoop = 0 ; currentLoop < loopCount ; currentLoop++ )
+            {
+                int appearCharacterIndex = UnityEngine.Random.Range(0, parkOpenWaveModel.AppearCharacterModels.Length - 1 );
+                this.AppearRandom(parkOpenWaveModel.AppearCharacterModels[appearCharacterIndex]);
+            }
+
         }
     }
 }

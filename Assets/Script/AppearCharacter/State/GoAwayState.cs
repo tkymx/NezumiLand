@@ -13,7 +13,7 @@ namespace  NL
 
         public GoAwayState (AppearCharacterViewModel appearCharacterViewModel) {
             this.appearCharacterViewModel = appearCharacterViewModel;
-            this.awayTarget = new Vector3(0,0,5);
+            this.awayTarget = appearCharacterViewModel.DisappearPosition;
         }
 
         public void onEnter () {

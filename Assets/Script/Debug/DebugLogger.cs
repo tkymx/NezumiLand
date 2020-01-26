@@ -17,6 +17,9 @@ namespace NL {
         private Button appearForParkOpen = null;
 
         [SerializeField]
+        private Button parkOpenButton = null;
+
+        [SerializeField]
         private GameObject mainContetns = null;
 
         [SerializeField]
@@ -44,9 +47,19 @@ namespace NL {
                 mainContetns.SetActive(!mainContetns.activeSelf);
             });
             appearForParkOpen.onClick.AddListener(() => {
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom();
+                var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
+                var appearCharacterModel = appearCharacterRepository.Get(1);
+
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
+            });
+            parkOpenButton.onClick.AddListener(() => {
+                var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
+                var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
+                var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
+
+                GameManager.Instance.ParkOpenManager.Open(parkOpenGroupRepository.Get(1));
             });
             Application.logMessageReceived += HandleLog;
         }
@@ -54,14 +67,11 @@ namespace NL {
         private void Update () {
             text.text = "";
             text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContents.ToString () + LR;
-            if (GameManager.Instance.MonoSelectManager.HasSelectedMonoInfo) {
-                text.text += "MonoState : " + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Id.ToString () + ":" + GameManager.Instance.MonoSelectManager.SelectedMonoInfo.Name.ToString () + LR;
-            }
-            text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString () + LR;
-            text.text += message;
+            text.text += GameManager.Instance.ParkOpenManager.ToString() + LR;
+            text.text += string.Join(LR,message);
         }
 
-        private string message = "";
+        private List<string> message = new List<string>();
 
         private void OnDestroy()
         {
@@ -70,7 +80,10 @@ namespace NL {
 
         private void HandleLog( string logText, string stackTrace, LogType type )
         {
-            message += type.ToString() + ":" + logText + LR;
+            if (message.Count > 50) {
+                message.RemoveAt(0);
+            }
+            message.Add(type.ToString() + ":" + logText);
         }        
     }
 }

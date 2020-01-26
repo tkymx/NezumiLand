@@ -26,6 +26,8 @@ namespace NL {
         public List<MousePurchaceTableEntry> MousePurchaceTableEntrys { get; private set; }
         public List<ScheduleEntry> ScheduleEntrys { get; private set; }
         public List<ParkOpenPositionEntry> ParkOpenPositionEntrys { get; private set; }
+        public List<ParkOpenWaveEntry> ParkOpenWaveEntrys { get; private set; }
+        public List<ParkOpenGroupEntry> ParkOpenGroupEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -49,6 +51,8 @@ namespace NL {
             this.MousePurchaceTableEntrys = LoadEntryFromJson<MousePurchaceTableEntry> (ResourceLoader.LoadData ("MousePurchaceTableEntry")).ToList();
             this.ScheduleEntrys = LoadEntryFromJson<ScheduleEntry> (ResourceLoader.LoadData ("ScheduleEntry")).ToList();
             this.ParkOpenPositionEntrys = LoadEntryFromJson<ParkOpenPositionEntry> (ResourceLoader.LoadData ("ParkOpenPositionEntry")).ToList();
+            this.ParkOpenWaveEntrys = LoadEntryFromJson<ParkOpenWaveEntry> (ResourceLoader.LoadData ("ParkOpenWaveEntry")).ToList();
+            this.ParkOpenGroupEntrys = LoadEntryFromJson<ParkOpenGroupEntry> (ResourceLoader.LoadData ("ParkOpenGroupEntry")).ToList();
         }
 
         private static T[] LoadEntryFromJson<T> (string json) {

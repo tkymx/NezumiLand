@@ -17,15 +17,17 @@ namespace NL
             AppearCharacterModel appearCharacterModel,
             Vector3 position,
             Vector3 rotation,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
-            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType
+            MovePath movePath
         ) {
             return playerAppearCharacterViewRepository.Create(
                 appearCharacterModel,
                 position,
                 rotation,
+                appearCharacterLifeDirectorType,
                 playerAppearCharacterReserveModel,
-                appearCharacterLifeDirectorType
+                movePath
             );
         }
     }   

@@ -16,6 +16,11 @@ namespace  NL
             this.playerAppearCharacterReserveModel = playerAppearCharacterReserveModel;
         }
 
+        public void OnInitializeView(AppearCharacterView appearCharacterView)
+        {
+            appearCharacterView.SetConversationNotifierEnabled(true);
+        }
+
         public IObservable<int> OnTouch()
         {
             var conversationMode =  GameModeGenerator.GenerateConversationMode(this.playerAppearCharacterReserveModel.ConversationModel);

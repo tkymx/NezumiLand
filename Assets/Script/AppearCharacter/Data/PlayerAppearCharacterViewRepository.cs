@@ -18,6 +18,7 @@ namespace NL {
         public uint PlayerArrangementTargetId;
         public float CurrentPlayingTime;
         public string AppearCharacterLifeDirectorType;
+        public MovePathEntry MovePath;
     }
 
     public interface IPlayerAppearCharacterViewRepository 
@@ -27,9 +28,10 @@ namespace NL {
         PlayerAppearCharacterViewModel Create (  
             AppearCharacterModel appearCharacterModel,         
             Vector3 position,
-            Vector3 rotation,
+            Vector3 rotation,            
+            AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType,
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
-            AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType);
+            MovePath movePath);
         void Store (PlayerAppearCharacterViewModel playerAppearCharacterViewModel);
         void Remove (PlayerAppearCharacterViewModel playerAppearCharacterViewModel);
     }
@@ -67,22 +69,18 @@ namespace NL {
             return new PlayerAppearCharacterViewModel(
                 entry.Id,
                 appearCharacterModel,
-                new Vector3(
-                    entry.Position.X,
-                    entry.Position.Y,
-                    entry.Position.Z
-                ),
-                new Vector3(
-                    entry.Rotation.X,
-                    entry.Rotation.Y,
-                    entry.Rotation.Z
-                ),
+                entry.Position.ToVector3(),
+                entry.Rotation.ToVector3(),
                 playerAppearCharacterReserveModel,
                 entry.IsReceiveReward,
                 state,
                 playerArrangementTargetModel,
                 entry.CurrentPlayingTime,
-                type
+                type,
+                new MovePath(
+                    entry.MovePath.AppearPosition.ToVector3(),
+                    entry.MovePath.DisappearPosition.ToVector3()
+                )
             );
         }
 
@@ -102,30 +100,27 @@ namespace NL {
             AppearCharacterModel appearCharacterModel,
             Vector3 position,
             Vector3 rotation,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
-            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType
+            MovePath movePath
         ) {
             var id = this.MaximuId()+1;
 
             var entry = new PlayerAppearCharacterViewEntry () {
                 Id = id,
                 AppearCharacterId = appearCharacterModel.Id,
-                Position = new Position3Entry() {
-                    X = position.x,
-                    Y = position.y,
-                    Z = position.z,
-                },
-                Rotation = new Position3Entry() {
-                    X = rotation.x,
-                    Y = rotation.y,
-                    Z = rotation.z,
-                },
+                Position = Position3Entry.FromVector3(position),
+                Rotation = Position3Entry.FromVector3(rotation),
                 PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel != null ? playerAppearCharacterReserveModel.Id : 0,
                 IsReceiveReward = false /*はじめはまだ受け取っていない*/,
                 AppearCharacterState = AppearCharacterState.None.ToString(),
                 PlayerArrangementTargetId = 0,
                 CurrentPlayingTime = 0,
-                AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType.ToString()
+                AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType.ToString(),
+                MovePath = new MovePathEntry () {
+                    AppearPosition = Position3Entry.FromVector3(movePath.AppearPosition),
+                    DisappearPosition = Position3Entry.FromVector3(movePath.DisapearPosition)
+                }
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -139,22 +134,18 @@ namespace NL {
                 this.entrys[index] = new PlayerAppearCharacterViewEntry () {
                     Id = playerAppearCharacterViewModel.Id,
                     AppearCharacterId = playerAppearCharacterViewModel.AppearCharacterModel.Id,
-                    Position = new Position3Entry() {
-                        X = playerAppearCharacterViewModel.Position.x,
-                        Y = playerAppearCharacterViewModel.Position.y,
-                        Z = playerAppearCharacterViewModel.Position.z,
-                    },
-                    Rotation = new Position3Entry() {
-                        X = playerAppearCharacterViewModel.Rotation.x,
-                        Y = playerAppearCharacterViewModel.Rotation.y,
-                        Z = playerAppearCharacterViewModel.Rotation.z,
-                    },
+                    Position = Position3Entry.FromVector3(playerAppearCharacterViewModel.Position),
+                    Rotation = Position3Entry.FromVector3(playerAppearCharacterViewModel.Rotation),
                     PlayerAppearCharacterReserveId = playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector != null ? playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector.Id : 0,
                     IsReceiveReward = playerAppearCharacterViewModel.IsReceiveReward,
                     AppearCharacterState = playerAppearCharacterViewModel.AppearCharacterState.ToString(),
                     PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id,
                     CurrentPlayingTime = playerAppearCharacterViewModel.CurrentPlayingTime,
-                    AppearCharacterLifeDirectorType = playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString()
+                    AppearCharacterLifeDirectorType = playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString(),
+                    MovePath = new MovePathEntry () {
+                        AppearPosition = Position3Entry.FromVector3(playerAppearCharacterViewModel.MovePath.AppearPosition),
+                        DisappearPosition = Position3Entry.FromVector3(playerAppearCharacterViewModel.MovePath.DisapearPosition)
+                    }                    
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + playerAppearCharacterViewModel.Id.ToString());

@@ -20,6 +20,9 @@ namespace NL {
 
         private StateManager stateManager;
 
+        // 消失する地点
+        public Vector3 DisappearPosition => PlayerAppearCharacterViewModel.MovePath.DisapearPosition;
+
         public void InterruptState(AppearCharacterState appearCharacterState) 
         {
             if (appearCharacterState == AppearCharacterState.GoMono) {
@@ -84,6 +87,8 @@ namespace NL {
                 })
                 .Subscribe(_ => {
                 }));
+
+            this.appearCharacterLifeDirector.OnInitializeView(appearCharacterView);
 
             // 生成
             this.appearCharacterLifeDirector.OnCreate();

@@ -7,8 +7,10 @@ namespace NL {
     public class AppearCharacterView : SelectBase {
 
         [SerializeField]
-        SimpleAnimation simpleAnimation = null;
+        private SimpleAnimation simpleAnimation = null;
 
+        [SerializeField]
+        private GameObject conversationNotifier = null;
 
         private TypeObservable<int> onSelectObservable = null;
         public TypeObservable<int> OnSelectObservable => onSelectObservable;
@@ -34,6 +36,10 @@ namespace NL {
 
         public void ChangeAnimation(string tag) {
             simpleAnimation.CrossFade (tag, 0.5f);
+        }
+
+        public void SetConversationNotifierEnabled(bool isEnabled) {
+            this.conversationNotifier.SetActive(isEnabled);
         }
     }
 }

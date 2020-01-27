@@ -31,8 +31,9 @@ namespace NL
             Debug.Assert(sliderRect != null, "RectTransformがセットされていません");
             var sliderWidth = sliderRect.sizeDelta.x;
 
-            var goalLinePosition = goalLine.transform.position;
+            var goalLinePosition = goalLine.transform.localPosition;
             goalLinePosition.x = sliderRect.rect.xMin + sliderWidth * rateGoal;
+            goalLine.transform.localPosition = goalLinePosition;
         }
     }   
 }

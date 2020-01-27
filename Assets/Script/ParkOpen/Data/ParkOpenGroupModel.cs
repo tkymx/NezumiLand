@@ -11,19 +11,19 @@ namespace NL
     {
         public ParkOpenWaveModel[] ParkOpenWaves { get; private set; }
         public int MaxHeartCount { get; private set; }
-        public int GoalHeartCOunt { get; private set; }
+        public int GoalHeartCount { get; private set; }
 
         public ParkOpenGroupModel(
             uint id,
             ParkOpenWaveModel[] parkOpenWaves,
             int maxHeartCount,
-            int gloalHeartCount
+            int goalHeartCount
         )
         {
             this.Id = id;
             this.ParkOpenWaves = parkOpenWaves;
             this.MaxHeartCount = maxHeartCount;
-            this.GoalHeartCOunt = GoalHeartCOunt;
+            this.GoalHeartCount = goalHeartCount;
         }
     }
 }

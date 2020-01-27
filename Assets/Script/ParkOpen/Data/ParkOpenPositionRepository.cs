@@ -49,7 +49,7 @@ namespace NL {
         public ParkOpenPositionModel GerRandomPosition (ParkOpenPositionModel.PositionType type)
         {
             var entryWithType = this.entrys.Where(entry => entry.PositionType == type.ToString()).ToArray();
-            var selectIndex = UnityEngine.Random.Range(0, entryWithType.Length-1);
+            var selectIndex = UnityEngine.Random.Range(0, entryWithType.Length);
             return this.Get(entryWithType[selectIndex].Id);                
         }
     }

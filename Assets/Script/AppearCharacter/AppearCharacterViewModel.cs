@@ -46,8 +46,9 @@ namespace NL {
         public void SetInitialState () {
             // 遊具があればそこに移動する（仮）いろいろなタイプで行動を分けられるようにしたい
             var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
-            if (arrangementTargetStore.Count > 0) {          
-                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[0].PlayerArrangementTargetModel);
+            if (arrangementTargetStore.Count > 0) {  
+                var arrangemenTargetIndex = UnityEngine.Random.Range(0,arrangementTargetStore.Count);        
+                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[arrangemenTargetIndex].PlayerArrangementTargetModel);
                 this.stateManager.Interrupt(new GoMonoState(this));
             }
         }

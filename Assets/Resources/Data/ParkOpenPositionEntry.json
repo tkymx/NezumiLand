@@ -70,6 +70,42 @@
             "Z": -32.0
         },
         "PositionType": "DisAppear"
-    }    
+    },
+    {
+        "Id": 9,
+        "Position": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 32.0
+        },
+        "PositionType": "Appear"
+    },
+    {
+        "Id": 10,
+        "Position": {
+            "X": 32.0,
+            "Y": 0.0,
+            "Z": 0.0
+        },
+        "PositionType": "Appear"
+    },
+    {
+        "Id": 11,
+        "Position": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -32.0
+        },
+        "PositionType": "Appear"
+    },
+    {
+        "Id": 12,
+        "Position": {
+            "X": -32.0,
+            "Y": 0.0,
+            "Z": 0.0
+        },
+        "PositionType": "Appear"
+    }
 ]
 }

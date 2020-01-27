@@ -209,7 +209,7 @@ namespace NL
         {
             // ハート情報の更新
             GameManager.Instance.GameUIManager.HeartPresenter.Show();
-            GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCOunt);
+            GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCount);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace NL
         {
             this.currentHeartCount += increaseCount;
             this.parkOpenObtainHeartService.Execute(increaseCount);
-            GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCOunt);
+            GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCount);
         }        
     }    
 }

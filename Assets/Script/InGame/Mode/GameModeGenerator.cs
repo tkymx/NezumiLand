@@ -52,5 +52,9 @@ namespace NL {
         public static MousePurchaseMode GenerateMousePurchaseMode () {
             return new MousePurchaseMode ();
         }
+
+        public static ParkOpenMode GenerateParkOpenMode () {
+            return new ParkOpenMode();
+        }
     }
 }

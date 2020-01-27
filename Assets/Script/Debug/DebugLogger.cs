@@ -19,6 +19,9 @@ namespace NL {
         [SerializeField]
         private Button parkOpenButton = null;
 
+       [SerializeField]
+        private Button addHeartButton = null;
+
         [SerializeField]
         private GameObject mainContetns = null;
 
@@ -59,14 +62,18 @@ namespace NL {
                 var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
                 var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
 
+                // 開始
                 GameManager.Instance.ParkOpenManager.Open(parkOpenGroupRepository.Get(1));
+            });
+            addHeartButton.onClick.AddListener(()=>{
+                GameManager.Instance.ParkOpenManager.AddHeart(10);
             });
             Application.logMessageReceived += HandleLog;
         }
 
         private void Update () {
-            text.text = "";
-            text.text += "EventContents : " + GameManager.Instance.EventManager.CurrentEventContents.ToString () + LR;
+            text.text = LR;
+            text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString () + LR;
             text.text += GameManager.Instance.ParkOpenManager.ToString() + LR;
             text.text += string.Join(LR,message);
         }

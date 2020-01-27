@@ -10,7 +10,7 @@ namespace NL {
         public float ElapsedTime;
         public int NextWave;
         public uint ParkOpenGroupId;
-
+        public int CurrentHeartCount;
     }
 
     public interface IPlayerParkOpenRepository {
@@ -39,7 +39,8 @@ namespace NL {
                     false,
                     0,
                     0,
-                    null
+                    null,
+                    0
                 );
                 return playerParkOpenModel;
             }
@@ -55,7 +56,8 @@ namespace NL {
                 foundEntry.IsOpen, 
                 foundEntry.ElapsedTime, 
                 foundEntry.NextWave, 
-                parkOpeGroupModel);
+                parkOpeGroupModel,
+                foundEntry.CurrentHeartCount);
         }
 
         public void Store (PlayerParkOpenModel playerParkOpenModel) {
@@ -65,7 +67,8 @@ namespace NL {
                 IsOpen = playerParkOpenModel.IsOpen,
                 ElapsedTime = playerParkOpenModel.ElapsedTime,
                 NextWave = playerParkOpenModel.NextWave,
-                ParkOpenGroupId = playerParkOpenModel.ParkOpenGroupModel != null ? playerParkOpenModel.ParkOpenGroupModel.Id : 0
+                ParkOpenGroupId = playerParkOpenModel.ParkOpenGroupModel != null ? playerParkOpenModel.ParkOpenGroupModel.Id : 0,
+                CurrentHeartCount = playerParkOpenModel.currentHeartCount
             };
 
             var entry = this.GetEntry(playerParkOpenModel.Id);

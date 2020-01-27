@@ -23,8 +23,14 @@ namespace  NL
         public IState onUpdate () {
             this.appearCharacterViewModel.UpdatePlaying();
             if (!isAlivable ()) {
+
+                // お金の追加
                 var earnCurrency = new Currency(10);
                 GameManager.Instance.EarnCurrencyManager.CreateOrAdd(appearCharacterViewModel.PlayerAppearCharacterViewModel.PlayerArrangementTargetModel, earnCurrency);
+
+                // パーク開放時はハートを設置
+                GameManager.Instance.ParkOpenManager.AddHeart(1);
+                
                 return new GoAwayState(appearCharacterViewModel);
             }
             return null;

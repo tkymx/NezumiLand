@@ -8,6 +8,8 @@ namespace NL {
     [System.Serializable]
     public class ParkOpenGroupEntry : EntryBase {
         public uint[] ParkOpenWaveIds;
+        public int MaxHeartCount;
+        public int GoalHeartCount;
     }
 
     public interface IParkOpenGroupRepository {
@@ -33,7 +35,9 @@ namespace NL {
 
             return new ParkOpenGroupModel (
                 entry.Id,
-                parkOpenWaveModels.ToArray());
+                parkOpenWaveModels.ToArray(),
+                entry.MaxHeartCount,
+                entry.GoalHeartCount);
         }
 
         public IEnumerable<ParkOpenGroupModel> GetAll () {

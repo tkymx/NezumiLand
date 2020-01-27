@@ -10,14 +10,20 @@ namespace NL
     public class ParkOpenGroupModel : ModelBase
     {
         public ParkOpenWaveModel[] ParkOpenWaves { get; private set; }
+        public int MaxHeartCount { get; private set; }
+        public int GoalHeartCOunt { get; private set; }
 
         public ParkOpenGroupModel(
             uint id,
-            ParkOpenWaveModel[] parkOpenWaves
+            ParkOpenWaveModel[] parkOpenWaves,
+            int maxHeartCount,
+            int gloalHeartCount
         )
         {
             this.Id = id;
             this.ParkOpenWaves = parkOpenWaves;
+            this.MaxHeartCount = maxHeartCount;
+            this.GoalHeartCOunt = GoalHeartCOunt;
         }
     }
 }

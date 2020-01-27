@@ -77,6 +77,10 @@ namespace NL {
         private SelectModeUIPresenter selectModeUIPresenter = null;
         public SelectModeUIPresenter SelectModeUIPresenter => selectModeUIPresenter;
 
+        [SerializeField]
+        private HeartPresenter heartPresenter = null;
+        public HeartPresenter HeartPresenter => heartPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -103,6 +107,7 @@ namespace NL {
             this.imagePresenter.Initialize ();
             this.arrangementModeUIPresenter.Initialize();
             this.selectModeUIPresenter.Initialize();
+            this.heartPresenter.Initialize();
         }
 
         public void UpdateByFrame() {

@@ -3,7 +3,9 @@
         "Id": 1,
         "ParkOpenWaveIds":[
             1,2,3
-        ]
+        ],
+        "MaxHeartCount": 100,
+        "GoalHeartCount": 60
     }
 ]
 }

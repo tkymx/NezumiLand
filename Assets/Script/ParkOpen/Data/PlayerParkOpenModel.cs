@@ -14,13 +14,15 @@ namespace NL
         public float ElapsedTime { get; private set; }
         public int NextWave { get; private set; }
         public ParkOpenGroupModel ParkOpenGroupModel { get; private set; }
+        public int currentHeartCount { get; private set; }
 
         public PlayerParkOpenModel(
             uint id,
             bool isOpen,
             float elapsedTime,
             int nextWave,
-            ParkOpenGroupModel parkOpenGroupModel
+            ParkOpenGroupModel parkOpenGroupModel,
+            int currentHeartCount
         )
         {
             this.Id = id;
@@ -28,19 +30,27 @@ namespace NL
             this.ElapsedTime = elapsedTime;
             this.NextWave = nextWave;
             this.ParkOpenGroupModel = parkOpenGroupModel;
+            this.currentHeartCount = currentHeartCount;
         }
 
         public void Update(
             bool isOpen,
             float elapsedTime,
             int nextWave,
-            ParkOpenGroupModel parkOpenGroupModel
+            ParkOpenGroupModel parkOpenGroupModel,
+            int currentHeartCount
         )
         {
             this.IsOpen = isOpen;
             this.ElapsedTime = elapsedTime;
             this.NextWave = nextWave;
             this.ParkOpenGroupModel = parkOpenGroupModel;
+            this.currentHeartCount = currentHeartCount;
+        }
+
+        public void AddHeartCount(int increaseCount = 1)
+        {
+            this.currentHeartCount += increaseCount;
         }
     }
 }

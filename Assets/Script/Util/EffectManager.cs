@@ -26,6 +26,12 @@ namespace NL {
             text.text = earn.Value.ToString () + "yen獲得";
         }
 
+        public void PlayHeartEffect (Vector3 position) {
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/heart");
+            var screenPoint = camera.WorldToScreenPoint (position);
+            var instance = Object.Appear2D (effectPrefab, root, screenPoint);
+        }
+
         public void PlayEarnItemEffect (ArrangementItemAmount item, Vector3 position) {
             var effectPrefab = ResourceLoader.LoadPrefab ("UI/earn_effect");
             var screenPoint = camera.WorldToScreenPoint (position);

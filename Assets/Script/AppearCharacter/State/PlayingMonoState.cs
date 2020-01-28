@@ -30,7 +30,8 @@ namespace  NL
 
                 // パーク開放時はハートを設置
                 GameManager.Instance.ParkOpenManager.AddHeart(1);
-                
+                GameManager.Instance.EffectManager.PlayHeartEffect(appearCharacterViewModel.Position);
+
                 return new GoAwayState(appearCharacterViewModel);
             }
             return null;

@@ -114,6 +114,7 @@ namespace NL {
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
             var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
             var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
+            var parkOpenCardRepository = new ParkOpenCardRepository(ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -121,7 +122,9 @@ namespace NL {
             var playerMonoViewRepository = new PlayerMonoViewRepository(monoInfoRepository, PlayerContextMap.DefaultMap);
             var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
             var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
-            var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
+            var playerParkOpenCardRepository = new PlayerParkOpenCardRepository(parkOpenCardRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenDeckRepository = new PlayerParkOpenDeckRepository(playerParkOpenCardRepository, PlayerContextMap.DefaultMap);
+            var playerInfoRepository = new PlayerInfoRepository(playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);

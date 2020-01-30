@@ -161,7 +161,7 @@ namespace NL {
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
-            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository);
+            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository, playerParkOpenRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
             this.inputManager.Initialize ();

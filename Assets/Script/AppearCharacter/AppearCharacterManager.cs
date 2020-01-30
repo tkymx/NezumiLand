@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace NL {
 
@@ -20,6 +21,13 @@ namespace NL {
         private AppearCharacterChangeTransformService appearCharacterChangeTransformService = null;
         private AppearCharacterSetTargetArrangementService appearCharacterSetTargetArrangementService = null;
         private AppearCharacterSetPlayingTimeService appearCharacterSetPlayingTimeService = null;
+
+        /// <summary>
+        /// パーク内の公開時のキャラクター数
+        /// </summary>
+        /// <param name="appearCharacterViewModel.IsParkOpenCharacter"></param>
+        /// <returns></returns>
+        public int ParkOpenCharacterCount => appearCharacterViewModels.Where(appearCharacterViewModel => appearCharacterViewModel.IsParkOpenCharacter).Count();
 
         public AppearCharacterManager(GameObject root, IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {

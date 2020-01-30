@@ -23,6 +23,8 @@ namespace NL {
         // 消失する地点
         public Vector3 DisappearPosition => PlayerAppearCharacterViewModel.MovePath.DisapearPosition;
 
+        public bool IsParkOpenCharacter => PlayerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen;
+
         public void InterruptState(AppearCharacterState appearCharacterState) 
         {
             if (appearCharacterState == AppearCharacterState.GoMono) {

@@ -210,6 +210,9 @@ namespace NL
             // ハート情報の更新
             GameManager.Instance.GameUIManager.HeartPresenter.Show();
             GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCount);
+
+            // 入場者情報
+            GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Show();
         }
 
         /// <summary>
@@ -256,6 +259,7 @@ namespace NL
             this.OnCompleted.Execute(0);                    
             this.isCompleted = true;
             GameManager.Instance.GameUIManager.HeartPresenter.Close();
+            GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Close();
         }
 
         public void UpdateParkOpenInfo()

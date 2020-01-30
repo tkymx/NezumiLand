@@ -81,13 +81,18 @@ namespace NL {
         private HeartPresenter heartPresenter = null;
         public HeartPresenter HeartPresenter => heartPresenter;
 
+        [SerializeField]
+        private ParkOpenCharacterCountPresenter parkOpenCharacterCountPresenter = null;
+        public ParkOpenCharacterCountPresenter ParkOpenCharacterCountPresenter => parkOpenCharacterCountPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
             IMonoInfoRepository monoInfoRepository, 
             IPlayerMonoInfoRepository playerMonoInfoRepository, 
             IMousePurchaceTableRepository mousePurchaceTableRepository,
-            IPlayerMouseStockRepository playerMouseStockRepository
+            IPlayerMouseStockRepository playerMouseStockRepository,
+            IPlayerParkOpenRepository playerParkOpenRepository
         ) {
             this.monoTabPresenter.Initialize (playerMonoInfoRepository);
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
@@ -108,12 +113,14 @@ namespace NL {
             this.arrangementModeUIPresenter.Initialize();
             this.selectModeUIPresenter.Initialize();
             this.heartPresenter.Initialize();
+            this.parkOpenCharacterCountPresenter.Initialize(playerParkOpenRepository);
         }
 
         public void UpdateByFrame() {
             this.toolBarmanager.UpdateByrame();
             this.onegaiConditionNotificationPresenter.UpdateByFrame();
             this.fieldActionUIPresenter.UpdateByFrame();
+            this.parkOpenCharacterCountPresenter.UpdateByFrame();
         }
     }
 }

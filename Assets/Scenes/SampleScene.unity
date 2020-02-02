@@ -2304,7 +2304,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -0.000006936905}
+  m_AnchoredPosition: {x: 5, y: 0.000008321847}
   m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &276578565
@@ -3448,7 +3448,7 @@ MonoBehaviour:
   parkOpenButton: {fileID: 924994}
   addHeartButton: {fileID: 1417200402}
   createKariDeck: {fileID: 1050561493}
-  mainContetns: {fileID: 1050561490}
+  mainContetns: {fileID: 371960592}
   text: {fileID: 276578565}
   removePlayerData: {fileID: 425641885}
 --- !u!224 &369337740 stripped

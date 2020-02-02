@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace NL {
     public class DebugLogger : SingletonMonoBehaviour<DebugLogger> {
@@ -23,6 +24,9 @@ namespace NL {
         private Button addHeartButton = null;
 
         [SerializeField]
+        private Button createKariDeck = null;
+
+        [SerializeField]
         private GameObject mainContetns = null;
 
         [SerializeField]
@@ -30,6 +34,21 @@ namespace NL {
 
         [SerializeField]
         private Button removePlayerData = null;
+
+        // リポジトリ
+        ParkOpenCardRepository parkOpenCardRepository;
+        IPlayerParkOpenCardRepository playerParkOpenCardRepository;
+        IPlayerParkOpenDeckRepository playerParkOpenDeckRepository;
+
+        public void Initialize(
+            ParkOpenCardRepository parkOpenCardRepository,
+            IPlayerParkOpenCardRepository playerParkOpenCardRepository,
+            IPlayerParkOpenDeckRepository playerParkOpenDeckRepository)
+        {
+            this.parkOpenCardRepository = parkOpenCardRepository;
+            this.playerParkOpenCardRepository = playerParkOpenCardRepository;
+            this.playerParkOpenDeckRepository = playerParkOpenDeckRepository;
+        }
 
         private void Start() {
             removePlayerData.onClick.AddListener(()=>{
@@ -67,6 +86,29 @@ namespace NL {
             });
             addHeartButton.onClick.AddListener(()=>{
                 GameManager.Instance.ParkOpenManager.AddHeart(10);
+            });
+            createKariDeck.onClick.AddListener(()=>{
+
+                // デッキがない場合は作成
+                if (this.playerParkOpenDeckRepository.GetAll().Count <= 0) {
+                    GameManager.Instance.ParkOpenCardManager.CreateDeck();
+                }
+
+                // カードを持っていない場合は取得
+                if (this.playerParkOpenCardRepository.GetAll().Count <= 0) {
+                    Debug.Assert(this.parkOpenCardRepository.GetAll().Any(), "獲得できるカードがありません");
+                    GameManager.Instance.ParkOpenCardManager.ObtainCard(this.parkOpenCardRepository.GetAll().First());
+                }
+
+                // デッキに搭載
+                var deck = this.playerParkOpenDeckRepository.GetAll()[0];
+                var card = this.playerParkOpenCardRepository.GetAll()[0]; 
+                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.First, card);
+                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.Second, card);
+                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.Third, card);
+
+                // メインのデッキにする
+                GameManager.Instance.ParkOpenCardManager.SetMainDeck(deck);
             });
             Application.logMessageReceived += HandleLog;
         }

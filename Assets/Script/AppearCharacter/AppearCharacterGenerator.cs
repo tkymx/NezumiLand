@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NL
 {
-    public class AppearCharacterGenerator : MonoBehaviour
+    public class AppearCharacterGenerator
     {
         private AppearCharacterModel appearCharacterModel;
 

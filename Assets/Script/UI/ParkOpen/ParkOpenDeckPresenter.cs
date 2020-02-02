@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace NL
 {
-    public class ParkOpeDeckPresenter : UiWindowPresenterBase
+    public class ParkOpenDeckPresenter : UiWindowPresenterBase
     {
         [SerializeField]
         private ParkOpenCardPresenter parkOpenCardPresenter1 = null;
+        [SerializeField]
         private ParkOpenCardPresenter parkOpenCardPresenter2 = null;
+        [SerializeField]
         private ParkOpenCardPresenter parkOpenCardPresenter3 = null;
 
         public void Initialize() {
@@ -19,9 +21,9 @@ namespace NL
         }
 
         public void SetContents(PlayerParkOpenDeckModel playerParkOpenDeckModel) {
-            ParkOpeDeckPresenter.SetContents(this.parkOpenCardPresenter1, playerParkOpenDeckModel.PlayerParkOpenCardModel1);
-            ParkOpeDeckPresenter.SetContents(this.parkOpenCardPresenter2, playerParkOpenDeckModel.PlayerParkOpenCardModel2);
-            ParkOpeDeckPresenter.SetContents(this.parkOpenCardPresenter3, playerParkOpenDeckModel.PlayerParkOpenCardModel3);
+            ParkOpenDeckPresenter.SetContents(this.parkOpenCardPresenter1, playerParkOpenDeckModel.FirstCardModel);
+            ParkOpenDeckPresenter.SetContents(this.parkOpenCardPresenter2, playerParkOpenDeckModel.SecondCardModel);
+            ParkOpenDeckPresenter.SetContents(this.parkOpenCardPresenter3, playerParkOpenDeckModel.ThirdCardModel);
         }
 
         private static void SetContents(ParkOpenCardPresenter parkOpenCardPresenter, PlayerParkOpenCardModel playerParkOpenCardModel)

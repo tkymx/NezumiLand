@@ -15,6 +15,7 @@ namespace NL
         public int NextWave { get; private set; }
         public ParkOpenGroupModel ParkOpenGroupModel { get; private set; }
         public int currentHeartCount { get; private set; }
+        public PlayerParkOpenDeckModel CurrentParkOpenDeckModel { get; private set; }
 
         public PlayerParkOpenModel(
             uint id,
@@ -22,7 +23,8 @@ namespace NL
             float elapsedTime,
             int nextWave,
             ParkOpenGroupModel parkOpenGroupModel,
-            int currentHeartCount
+            int currentHeartCount,
+            PlayerParkOpenDeckModel currentParkOpenDeckModel
         )
         {
             this.Id = id;
@@ -31,6 +33,7 @@ namespace NL
             this.NextWave = nextWave;
             this.ParkOpenGroupModel = parkOpenGroupModel;
             this.currentHeartCount = currentHeartCount;
+            this.CurrentParkOpenDeckModel = currentParkOpenDeckModel;
         }
 
         public void Update(
@@ -51,6 +54,10 @@ namespace NL
         public void AddHeartCount(int increaseCount = 1)
         {
             this.currentHeartCount += increaseCount;
+        }
+
+        public void SetParkOpenDeck(PlayerParkOpenDeckModel playerParkOpenDeckModel) {
+            this.CurrentParkOpenDeckModel = playerParkOpenDeckModel;
         }
     }
 }

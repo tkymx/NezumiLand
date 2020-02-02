@@ -97,12 +97,12 @@ namespace NL {
                 var index = this.entrys.IndexOf (entry);
                 this.entrys[index] = new PlayerParkOpenDeckEntry () {
                     Id = playerParkOpenDeckModel.Id,
-                    HasPlayerParkOpenCardId1 = playerParkOpenDeckModel.PlayerParkOpenCardModel1 != null,
-                    HasPlayerParkOpenCardId2 = playerParkOpenDeckModel.PlayerParkOpenCardModel2 != null,
-                    HasPlayerParkOpenCardId3 = playerParkOpenDeckModel.PlayerParkOpenCardModel3 != null,
-                    PlayerParkOpenCardId1 = playerParkOpenDeckModel.PlayerParkOpenCardModel1 != null ? playerParkOpenDeckModel.PlayerParkOpenCardModel1.Id : 0,
-                    PlayerParkOpenCardId2 = playerParkOpenDeckModel.PlayerParkOpenCardModel2 != null ? playerParkOpenDeckModel.PlayerParkOpenCardModel2.Id : 0,
-                    PlayerParkOpenCardId3 = playerParkOpenDeckModel.PlayerParkOpenCardModel3 != null ? playerParkOpenDeckModel.PlayerParkOpenCardModel3.Id : 0
+                    HasPlayerParkOpenCardId1 = playerParkOpenDeckModel.FirstCardModel != null,
+                    HasPlayerParkOpenCardId2 = playerParkOpenDeckModel.SecondCardModel != null,
+                    HasPlayerParkOpenCardId3 = playerParkOpenDeckModel.ThirdCardModel != null,
+                    PlayerParkOpenCardId1 = playerParkOpenDeckModel.FirstCardModel != null ? playerParkOpenDeckModel.FirstCardModel.Id : 0,
+                    PlayerParkOpenCardId2 = playerParkOpenDeckModel.SecondCardModel != null ? playerParkOpenDeckModel.SecondCardModel.Id : 0,
+                    PlayerParkOpenCardId3 = playerParkOpenDeckModel.ThirdCardModel != null ? playerParkOpenDeckModel.ThirdCardModel.Id : 0
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + playerParkOpenDeckModel.Id.ToString());

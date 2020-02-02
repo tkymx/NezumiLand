@@ -9,8 +9,6 @@ namespace NL {
         public float ElapsedTime;
         public long Currency;        
         public long ArrangementItemAmount;
-        public bool HasPlayerParkOpenDeckId;
-        public uint PlayerParkOpenDeckId;
     }
 
     public interface IPlayerInfoRepository {
@@ -25,10 +23,8 @@ namespace NL {
         private readonly uint ownId = 0;
         private readonly long defaultCurrency = 100;
         private readonly long defaultArrangementItemAmount = 100;
-        private readonly IPlayerParkOpenDeckRepository playerParkOpenDeckRepository = null;
 
-        public PlayerInfoRepository (IPlayerParkOpenDeckRepository playerParkOpenDeckRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerInfoEntrys) {
-            this.playerParkOpenDeckRepository = playerParkOpenDeckRepository;
+        public PlayerInfoRepository (PlayerContextMap playerContextMap) : base (playerContextMap.PlayerInfoEntrys) {
         }
 
         public PlayerInfoModel GetOwn () {
@@ -38,24 +34,16 @@ namespace NL {
                     this.ownId,
                     0,
                     new Currency(this.defaultCurrency),
-                    new ArrangementItemAmount(this.defaultArrangementItemAmount),
-                    null
+                    new ArrangementItemAmount(this.defaultArrangementItemAmount)
                 );
                 return playerInfoModel;
-            }
-
-            PlayerParkOpenDeckModel playerParkOpenDeckModel = null;
-            if (foundEntry.HasPlayerParkOpenDeckId) {
-                playerParkOpenDeckModel = this.playerParkOpenDeckRepository.Get(foundEntry.PlayerParkOpenDeckId);
-                Debug.Assert(playerParkOpenDeckModel != null, "playerParkOpenDeckModelがありません");
             }
 
             return new PlayerInfoModel (
                 foundEntry.Id, 
                 foundEntry.ElapsedTime,
                 new Currency(foundEntry.Currency),
-                new ArrangementItemAmount(foundEntry.ArrangementItemAmount),
-                playerParkOpenDeckModel);
+                new ArrangementItemAmount(foundEntry.ArrangementItemAmount));
         }
 
         public void Store (PlayerInfoModel playerInfoModel) {
@@ -64,9 +52,7 @@ namespace NL {
                     Id = playerInfoModel.Id,
                     ElapsedTime = playerInfoModel.ElapsedTime,
                     Currency = playerInfoModel.Currency.Value,
-                    ArrangementItemAmount = playerInfoModel.ArrangementItemAmount.Value,
-                    HasPlayerParkOpenDeckId = playerInfoModel.CurrentParkOpenDeckModel != null,
-                    PlayerParkOpenDeckId = playerInfoModel.CurrentParkOpenDeckModel != null ? playerInfoModel.CurrentParkOpenDeckModel.Id : 0
+                    ArrangementItemAmount = playerInfoModel.ArrangementItemAmount.Value
                 };
             if (entry != null) {
                 var index = this.entrys.IndexOf (entry);

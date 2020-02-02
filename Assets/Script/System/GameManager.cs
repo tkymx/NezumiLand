@@ -8,6 +8,9 @@ namespace NL {
         private Camera mainCamera = null;
         public Camera MainCamera => mainCamera;
 
+        [SerializeField]
+        private DebugLogger debugLogger = null;
+
         public GameObject rootObject;
         public GameObject rootEffectUI;
 
@@ -98,6 +101,9 @@ namespace NL {
         private ParkOpenManager parkOpenManager;
         public ParkOpenManager ParkOpenManager => parkOpenManager;
 
+        private ParkOpenCardManager parkOpenCardManager;
+        public ParkOpenCardManager ParkOpenCardManager => parkOpenCardManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -124,14 +130,20 @@ namespace NL {
             var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenCardRepository = new PlayerParkOpenCardRepository(parkOpenCardRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenDeckRepository = new PlayerParkOpenDeckRepository(playerParkOpenCardRepository, PlayerContextMap.DefaultMap);
-            var playerInfoRepository = new PlayerInfoRepository(playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
+            var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
-            var playerParkOpenRepository = new PlayerParkOpenRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenRepository = new PlayerParkOpenRepository(parkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
+
+            // デバグ機能
+            debugLogger.Initialize(
+                parkOpenCardRepository,
+                playerParkOpenCardRepository, 
+                playerParkOpenDeckRepository);
 
             // instance
             this.inputManager = new InputManager();
@@ -161,6 +173,7 @@ namespace NL {
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
             this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
+            this.parkOpenCardManager = new ParkOpenCardManager(playerParkOpenRepository, playerParkOpenCardRepository, playerParkOpenDeckRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);

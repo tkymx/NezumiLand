@@ -85,6 +85,10 @@ namespace NL {
         private ParkOpenCharacterCountPresenter parkOpenCharacterCountPresenter = null;
         public ParkOpenCharacterCountPresenter ParkOpenCharacterCountPresenter => parkOpenCharacterCountPresenter;
 
+        [SerializeField]
+        private ParkOpenDeckPresenter parkOpenDeckPresenter = null;
+        public ParkOpenDeckPresenter ParkOpenDeckPresenter => this.parkOpenDeckPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -114,6 +118,7 @@ namespace NL {
             this.selectModeUIPresenter.Initialize();
             this.heartPresenter.Initialize();
             this.parkOpenCharacterCountPresenter.Initialize(playerParkOpenRepository);
+            this.parkOpenDeckPresenter.Initialize();
         }
 
         public void UpdateByFrame() {

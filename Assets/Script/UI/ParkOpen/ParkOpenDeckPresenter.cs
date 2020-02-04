@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL
 {
@@ -12,6 +13,12 @@ namespace NL
         private ParkOpenCardPresenter parkOpenCardPresenter2 = null;
         [SerializeField]
         private ParkOpenCardPresenter parkOpenCardPresenter3 = null;
+
+        /// <summary>
+        /// カードがタップされたときのイベント
+        /// </summary>
+        /// <value></value>
+        public TypeObservable<PlayerParkOpenDeckModel.CountType> OnTouchUseCardObservable { get; private set; }
 
         private ParkOpenCardPresenter GetParkOpenCardPresenter(PlayerParkOpenDeckModel.CountType countType)
         {
@@ -32,6 +39,9 @@ namespace NL
         }
 
         public void Initialize() {
+
+            this.OnTouchUseCardObservable = new TypeObservable<PlayerParkOpenDeckModel.CountType>();
+
             this.parkOpenCardPresenter1.Initialize();
             this.parkOpenCardPresenter2.Initialize();
             this.parkOpenCardPresenter3.Initialize();
@@ -44,20 +54,24 @@ namespace NL
 
         public void SetTouchEvent(PlayerParkOpenDeckModel.CountType countType)
         {
-            var playerParkOpenDeckModel = GetParkOpenCardPresenter(countType);
-            this.disposables.Add(playerParkOpenDeckModel.OnTouchCardObservable.Subscribe(_ => {
+            var playerParkOpenCardPresenter = GetParkOpenCardPresenter(countType);
+            this.disposables.Add(playerParkOpenCardPresenter.OnTouchCardObservable.Subscribe(_ => {
                 CancelAnother(countType);
-                playerParkOpenDeckModel.TogglePrepare();
+                playerParkOpenCardPresenter.TogglePrepare();
             }));
-            this.disposables.Add(playerParkOpenDeckModel.OnCancelObservable.Subscribe(_ => {
-                playerParkOpenDeckModel.CancelPrepare();
+            this.disposables.Add(playerParkOpenCardPresenter.OnCancelObservable.Subscribe(_ => {
+                playerParkOpenCardPresenter.CancelPrepare();
             }));
-            this.disposables.Add(playerParkOpenDeckModel.OnUseObservable.Subscribe(_ => {
-                // カードを消費する
+            this.disposables.Add(playerParkOpenCardPresenter.OnUseObservable.Subscribe(_ => {
+                this.OnTouchUseCardObservable.Execute(countType);
             }));
         }
 
-        public void CancelAnother(PlayerParkOpenDeckModel.CountType countType)
+        /// <summary>
+        /// 指定カード以外をキャンセルする
+        /// </summary>
+        /// <param name="countType"></param>
+        private void CancelAnother(PlayerParkOpenDeckModel.CountType countType)
         {
             if (countType != PlayerParkOpenDeckModel.CountType.First) {
                 GetParkOpenCardPresenter(PlayerParkOpenDeckModel.CountType.First).CancelPrepare();
@@ -68,6 +82,19 @@ namespace NL
             if (countType != PlayerParkOpenDeckModel.CountType.Third) {
                 GetParkOpenCardPresenter(PlayerParkOpenDeckModel.CountType.Third).CancelPrepare();
             }
+        }
+
+        public void ResetCard()
+        {
+            parkOpenCardPresenter1.ResetCard();
+            parkOpenCardPresenter2.ResetCard();
+            parkOpenCardPresenter3.ResetCard();
+        }
+
+        public void UseCard(PlayerParkOpenDeckModel.CountType countType)
+        {
+            var parkOpenCardPresenter = GetParkOpenCardPresenter(countType);
+            parkOpenCardPresenter.UseCard();
         }
 
         public void SetContents(PlayerParkOpenDeckModel playerParkOpenDeckModel) {

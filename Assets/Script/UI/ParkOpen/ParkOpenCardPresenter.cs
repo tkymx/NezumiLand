@@ -73,6 +73,16 @@ namespace NL
             this.ParkOpenCardView.UpdateView(parkOpenCardModel.Name, parkOpenCardModel.Description, sprite);            
         }
 
+        public void UseCard()
+        {
+            this.ParkOpenCardView.gameObject.SetActive(false);
+        }
+
+        public void ResetCard()
+        {
+            this.ParkOpenCardView.gameObject.SetActive(true);
+        }
+
         public override void onPrepareShow()
         {
             this.isPrepareState = false;

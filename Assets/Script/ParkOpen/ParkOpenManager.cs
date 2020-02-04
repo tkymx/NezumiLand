@@ -51,15 +51,18 @@ namespace NL
         {
             this.parkOpenDirector.AddHeart(increaseCount);
         }
-
+        
         private void SetEventInternal(ParkOpenGroupModel parkOpenGroupModel)
         {
-            // イベントのセット
             this.ClearDisposables();
+
+            // ウェーブが開始した時
             this.disposables.Add(this.parkOpenDirector.OnStartWave.Subscribe(parkOpenWaveModel => {
                 GameManager.Instance.ParkOpenAppearManager.AppearWave(parkOpenWaveModel);
                 this.parkOpenDirector.UpdateParkOpenInfo();
             }));
+
+            // 開放が終了した時
             this.disposables.Add(this.parkOpenDirector.OnCompleted.Subscribe(_ => {
                 this.OnCompleted.Execute(parkOpenGroupModel);
                 this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
@@ -91,7 +94,8 @@ namespace NL
 
         public void Dispose()
         {
-            this.ClearDisposables();            
+            this.ClearDisposables();
+            this.parkOpenDirector.Dispose();            
         }
 
         public override string ToString()

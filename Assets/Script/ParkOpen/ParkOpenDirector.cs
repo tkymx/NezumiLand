@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace NL
     /// <summary>
     /// パークオープン時とどうではないときの処理を分けている
     /// </summary>
-    public interface IParkOpenDirector
+    public interface IParkOpenDirector : IDisposable
     {
         TypeObservable<ParkOpenWaveModel> OnStartWave { get; }
         TypeObservable<int> OnCompleted { get; }
@@ -43,7 +44,100 @@ namespace NL
         {
 
         }
+
+        public void Dispose()
+        {
+
+        }
     }
+
+    class ParkOpenWaveCounter
+    {
+        /// <summary>
+        /// 開放の時間
+        /// 20秒でいいのか、もっと増やすのかは相談
+        /// </summary>
+        private readonly float OpenTime = 20;
+
+
+        /// <summary>
+        /// ウェーブのカウント
+        /// </summary>
+        private int waveCount;
+
+        /// <summary>
+        /// 経過時間
+        /// </summary>
+        /// <value></value>
+        public float ElapsedTime { get; private set; }
+
+        /// <summary>
+        /// 次のウェーブ
+        /// </summary>
+        /// <value></value>
+        public int NextWave { get; private set; }
+
+        /// <summary>
+        /// 一つの Wave の間隔の時間
+        /// 発生位置が中間である必要があるため、＋１
+        /// </summary>
+        private float WaveInterval => OpenTime / (waveCount + 1); 
+
+        /// <summary>
+        /// 次の出現までの時間
+        /// </summary>
+        public float NextAppearTime => WaveInterval * (NextWave + 1);
+
+        /// <summary>
+        /// 最終Wave かどうか？
+        /// </summary>
+        private bool IsFinalWave => this.NextWave >= waveCount;
+
+        private bool isCompleted = false;
+
+        public TypeObservable<int> OnCompletedObservable { get; private set; }
+
+        public TypeObservable<int> OnStartWaveObservable { get; private set; }
+
+        public ParkOpenWaveCounter(int waveCount, float elapsedTime = 0, int nextWave = 0)
+        {
+            this.OnCompletedObservable = new TypeObservable<int>();
+            this.OnStartWaveObservable = new TypeObservable<int>();
+            this.waveCount = waveCount;
+            this.ElapsedTime = elapsedTime;
+            this.NextWave = nextWave;
+            this.isCompleted = false;
+        }
+
+        public void UpdateByFrame()
+        {
+            if (this.isCompleted) {
+                return;
+            }
+
+            this.ElapsedTime += GameManager.Instance.TimeManager.DeltaTime ();
+            if (this.ElapsedTime > NextAppearTime)
+            {
+                // 最後だったら終了
+                if (this.IsFinalWave) {
+                    this.isCompleted = true;
+                    this.OnCompletedObservable.Execute(0);
+                }
+                else
+                {
+                    // wave開始
+                    this.OnStartWaveObservable.Execute(this.NextWave);
+                    // 次の Wave にする
+                    this.NextWave++;             
+                }
+            }
+        }
+
+        public override string ToString() {
+            return string.Format("ElapsedTime:{0}\nNextAppearTime:{1}\n", ElapsedTime, NextAppearTime);
+        }        
+
+    }    
 
     /// <summary>
     /// ParkOpenDirector
@@ -52,13 +146,10 @@ namespace NL
     /// </summary>
     public class ParkOpenDirector : IParkOpenDirector
     {
-        private readonly float OpenTime = 20;   //TODO: 20秒でいいのか、もっと増やすのかは相談
-
-        private int nextWave;
-        private float elapsedTime = 0;
         private int currentHeartCount = 0;
-        private bool isCompleted = false;
+
         private ParkOpenGroupModel parkOpenGroupModel;
+        private ParkOpenWaveCounter waveCounter;
 
         private ParkOpenObtainHeartService parkOpenObtainHeartService = null;
         private ParkOpenUpdateService parkOpenUpdateService = null;
@@ -75,38 +166,56 @@ namespace NL
         /// <value></value>
         public TypeObservable<int> OnCompleted { get; private set; }
 
+        private List<IDisposable> disposables = new List<IDisposable>();
+
         public ParkOpenDirector(ParkOpenGroupModel parkOpenGroupModel, IPlayerParkOpenRepository playerParkOpenRepository)
         {
-            this.InitializeInternal(playerParkOpenRepository);
             this.parkOpenGroupModel = parkOpenGroupModel;
+            this.currentHeartCount = 0;
 
-            this.InitializeUpdate(); 
+            this.InitializeInternal(playerParkOpenRepository);
+            this.InitializeWave(parkOpenGroupModel.ParkOpenWaves.Length);
+
+            this.PrepareParkOpen(); 
         }
 
         public ParkOpenDirector(PlayerParkOpenModel playerParkOpenModel, IPlayerParkOpenRepository playerParkOpenRepository)
         {
-            this.InitializeInternal(playerParkOpenRepository);
-            this.elapsedTime = playerParkOpenModel.ElapsedTime;
-            this.nextWave = playerParkOpenModel.NextWave;
             this.parkOpenGroupModel = playerParkOpenModel.ParkOpenGroupModel;
             this.currentHeartCount = playerParkOpenModel.currentHeartCount;
 
-            this.InitializeUpdate();
+            this.InitializeInternal(playerParkOpenRepository);
+            this.InitializeWave(parkOpenGroupModel.ParkOpenWaves.Length, playerParkOpenModel.ElapsedTime, playerParkOpenModel.NextWave);
+
+            this.PrepareParkOpen();
+            this.ReSetCardUse(playerParkOpenModel);
         }
 
         private void InitializeInternal(IPlayerParkOpenRepository playerParkOpenRepository)
         {
             this.parkOpenObtainHeartService = new ParkOpenObtainHeartService(playerParkOpenRepository);
             this.parkOpenUpdateService = new ParkOpenUpdateService(playerParkOpenRepository);
-            this.isCompleted = false;
-            this.elapsedTime = 0;
-            this.nextWave = 0;
-            this.currentHeartCount = 0;
             this.OnStartWave = new TypeObservable<ParkOpenWaveModel>();
             this.OnCompleted = new TypeObservable<int>();
         }
 
-        private void InitializeUpdate ()
+        private void InitializeWave(int waveCount, float elapsedTime = 0, int nextWave = 0)
+        {
+            this.waveCounter = new ParkOpenWaveCounter(waveCount, elapsedTime, nextWave);
+            
+            this.disposables.Add(this.waveCounter.OnStartWaveObservable.Subscribe(waveIndex => {
+                this.OnStartWave.Execute(this.parkOpenGroupModel.ParkOpenWaves[this.waveCounter.NextWave]);
+            }));
+
+            this.disposables.Add(this.waveCounter.OnCompletedObservable.Subscribe(_ => {
+                this.Complete();
+            }));
+        }
+
+        /// <summary>
+        /// UIの設定
+        /// </summary>
+        private void PrepareParkOpen ()
         {
             // ハート情報の更新
             GameManager.Instance.GameUIManager.HeartPresenter.Show();
@@ -115,72 +224,54 @@ namespace NL
             // 入場者情報
             GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Show();
 
-            // デッキの表示
-            var mainDeck = GameManager.Instance.ParkOpenCardManager.GetMainDeck();
-            GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.Show();
-            GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.SetContents(mainDeck);
+            // デッキ
+            GameManager.Instance.ParkOpenCardManager.PrepareParkOpen();
         }
 
         /// <summary>
-        /// 一つの Wave の間隔の時間
-        /// 発生位置が中間である必要があるため、＋１
+        /// 再表示の際のカードの可視を設定
         /// </summary>
-        private float WaveInterval => OpenTime / (this.parkOpenGroupModel.ParkOpenWaves.Length + 1); 
-
-        /// <summary>
-        /// 次の出現までの時間
-        /// </summary>
-        private float NextAppearTime => WaveInterval * (nextWave + 1);
-
-        /// <summary>
-        /// 最終Wave かどうか？
-        /// </summary>
-        private bool IsFinalWave => this.nextWave >= parkOpenGroupModel.ParkOpenWaves.Length;
-
-        public void UpdateByFrame()
+        /// <param name="playerParkOpenModel"></param>
+        private void ReSetCardUse(PlayerParkOpenModel playerParkOpenModel)
         {
-            if (this.isCompleted) {
-                return;
+            if (playerParkOpenModel.CanUseCard1) {
+                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.First);
             }
-
-            this.elapsedTime += GameManager.Instance.TimeManager.DeltaTime ();
-            if (this.elapsedTime > NextAppearTime)
-            {
-                // 最後だったら終了
-                if (this.IsFinalWave) {
-                    this.Complete();
-                }
-                else
-                {
-                    // wave開始
-                    this.OnStartWave.Execute(parkOpenGroupModel.ParkOpenWaves[this.nextWave]);
-                    // 次の Wave にする
-                    this.nextWave++;             
-                }
+            if (playerParkOpenModel.CanUseCard2) {
+                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.Second);
+            }
+            if (playerParkOpenModel.CanUseCard3) {
+                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.Third);
             }
         }
 
         private void Complete ()
         {
             this.OnCompleted.Execute(0);                    
-            this.isCompleted = true;
+
+            // ハート
             GameManager.Instance.GameUIManager.HeartPresenter.Close();
+
+            // 人数
             GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Close();
-            GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.Close();
+
+            // デッキ
+            GameManager.Instance.ParkOpenCardManager.FinalizeParkOpen();
+        }
+
+        public void UpdateByFrame()
+        {
+            this.waveCounter.UpdateByFrame();
         }
 
         public void UpdateParkOpenInfo()
         {
             this.parkOpenUpdateService.Execute(
                 true, 
-                this.elapsedTime, 
-                this.nextWave, 
+                this.waveCounter.ElapsedTime, 
+                this.waveCounter.NextWave, 
                 this.parkOpenGroupModel,
                 this.currentHeartCount);
-        }
-
-        public override string ToString() {
-            return string.Format("ElapsedTime:{0}\nNextAppearTime:{1}\n",elapsedTime, NextAppearTime);
         }
 
         public void AddHeart(int increaseCount)
@@ -188,6 +279,19 @@ namespace NL
             this.currentHeartCount += increaseCount;
             this.parkOpenObtainHeartService.Execute(increaseCount);
             GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCount);
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in this.disposables)
+            {
+                disposable.Dispose();
+            }
+            this.disposables.Clear();
+        }
+
+        public override string ToString() {
+            return this.waveCounter.ToString();
         }        
     }    
 }

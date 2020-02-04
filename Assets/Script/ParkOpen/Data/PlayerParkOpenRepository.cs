@@ -13,6 +13,9 @@ namespace NL {
         public int CurrentHeartCount;
         public bool HasPlayerParkOpenDeckId;
         public uint PlayerParkOpenDeckId;
+        public bool CanUseCard1;
+        public bool CanUseCard2;
+        public bool CanUseCard3;
     }
 
     public interface IPlayerParkOpenRepository {
@@ -45,7 +48,10 @@ namespace NL {
                     0,
                     null,
                     0,
-                    null
+                    null,
+                    false,
+                    false,
+                    false
                 );
                 return playerParkOpenModel;
             }
@@ -69,7 +75,10 @@ namespace NL {
                 foundEntry.NextWave, 
                 parkOpeGroupModel,
                 foundEntry.CurrentHeartCount,
-                playerParkOpenDeckModel);
+                playerParkOpenDeckModel,
+                foundEntry.CanUseCard1,
+                foundEntry.CanUseCard2,
+                foundEntry.CanUseCard3);
         }
 
         public void Store (PlayerParkOpenModel playerParkOpenModel) {
@@ -82,7 +91,10 @@ namespace NL {
                 ParkOpenGroupId = playerParkOpenModel.ParkOpenGroupModel != null ? playerParkOpenModel.ParkOpenGroupModel.Id : 0,
                 CurrentHeartCount = playerParkOpenModel.currentHeartCount,
                 HasPlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null,
-                PlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null ? playerParkOpenModel.CurrentParkOpenDeckModel.Id : 0
+                PlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null ? playerParkOpenModel.CurrentParkOpenDeckModel.Id : 0,
+                CanUseCard1 = playerParkOpenModel.CanUseCard1,
+                CanUseCard2 = playerParkOpenModel.CanUseCard2,
+                CanUseCard3 = playerParkOpenModel.CanUseCard3
             };
 
             var entry = this.GetEntry(playerParkOpenModel.Id);

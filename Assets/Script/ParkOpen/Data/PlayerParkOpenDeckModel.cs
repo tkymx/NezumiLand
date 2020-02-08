@@ -19,7 +19,7 @@ namespace NL
         public PlayerParkOpenCardModel SecondCardModel => this.GetDeckCardModel(CountType.Second);
         public PlayerParkOpenCardModel ThirdCardModel => this.GetDeckCardModel(CountType.Third);
 
-        private PlayerParkOpenCardModel GetDeckCardModel(CountType countType)
+        public PlayerParkOpenCardModel GetDeckCardModel(CountType countType)
         {
             if (!this.playerParkOpenCardModelDics.ContainsKey(countType))
             {

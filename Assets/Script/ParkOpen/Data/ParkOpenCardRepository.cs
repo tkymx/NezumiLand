@@ -10,6 +10,7 @@ namespace NL {
         public string Name;
         public string ImageName;
         public string Description;
+        public uint ParkOpenCardActionId;
     }
 
     public interface IParkOpenCardRepository {
@@ -18,15 +19,25 @@ namespace NL {
     }
 
     public class ParkOpenCardRepository : RepositoryBase<ParkOpenCardEntry>, IParkOpenCardRepository {
-        public ParkOpenCardRepository (ContextMap contextMap) : base (contextMap.ParkOpenCardEntrys) { }
+
+        private readonly IParkOpenCardActionRepository parkOpenCardActionRepository = null;
+
+        public ParkOpenCardRepository (IParkOpenCardActionRepository parkOpenCardActionRepository, ContextMap contextMap) : base (contextMap.ParkOpenCardEntrys) 
+        {
+            this.parkOpenCardActionRepository = parkOpenCardActionRepository;
+        }
 
         public ParkOpenCardModel CreateFromEntry (ParkOpenCardEntry entry)
         {
+            var parkOpenCardActionModel = this.parkOpenCardActionRepository.Get(entry.ParkOpenCardActionId);
+            Debug.Assert(parkOpenCardActionModel != null, "parkOpenCardActionModelが存在しません");
+
             return new ParkOpenCardModel (
                 entry.Id,
                 entry.Name,
                 entry.ImageName,
-                entry.Description);            
+                entry.Description,
+                parkOpenCardActionModel);
         }
 
         public IEnumerable<ParkOpenCardModel> GetAll () {

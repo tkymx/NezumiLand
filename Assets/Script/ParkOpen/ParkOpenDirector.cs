@@ -277,8 +277,8 @@ namespace NL
         public void AddHeart(int increaseCount)
         {
             this.currentHeartCount += increaseCount;
-            this.parkOpenObtainHeartService.Execute(increaseCount);
             GameManager.Instance.GameUIManager.HeartPresenter.UpdateHeart(currentHeartCount, this.parkOpenGroupModel.MaxHeartCount, this.parkOpenGroupModel.GoalHeartCount);
+            this.parkOpenObtainHeartService.Execute(increaseCount);
         }
 
         public void Dispose()

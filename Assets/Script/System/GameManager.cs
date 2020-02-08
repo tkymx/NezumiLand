@@ -120,7 +120,8 @@ namespace NL {
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
             var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
             var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
-            var parkOpenCardRepository = new ParkOpenCardRepository(ContextMap.DefaultMap);
+            var parkOpenCardActionRepository = new ParkOpenCardActionRepository(ContextMap.DefaultMap);
+            var parkOpenCardRepository = new ParkOpenCardRepository(parkOpenCardActionRepository, ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -151,7 +152,7 @@ namespace NL {
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager (this.rootObject, playerOnegaiRepository, playerArrangementTargetRepository);
             this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
-            this.effectManager = new EffectManager (mainCamera, rootEffectUI);
+            this.effectManager = new EffectManager (mainCamera, rootObject, rootEffectUI);
             this.gameModeManager = new GameModeManager ();
             this.gameModeManager.EnqueueChangeModeWithHistory (GameModeGenerator.GenerateSelectMode ());
             this.fieldRaycastManager = new FieldRaycastManager (this.mainCamera);
@@ -223,6 +224,7 @@ namespace NL {
             this.cameraMoveManager.UpdateByFrame();
             this.earnCurrencyManager.UpdateByFrame();
             this.parkOpenManager.UpdateByFrame();
+            this.parkOpenCardManager.UpdateByFrame();
 
             // UI関連
             this.gameUIManager.UpdateByFrame();

@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace NL
 {
-    public class ParkOpenCardManager 
+    public class ParkOpenCardManager : Disposable
     {
         // レポジトリ
         private IPlayerParkOpenRepository playerParkOpenRepository = null;
+
+        // 実行クラス
+        private ParkOpenActionExecuter parkOpenActionExecuter = null;
 
         // サービス
         private ParkOpenCardCreateService parkOpenCardCreateService = null;
@@ -15,15 +18,33 @@ namespace NL
         private ParkOpenSetMainDeckService parkOpenSetMainDeckService = null;
         private ParkOpenUseCardService parkOpenUseCardService = null;
 
+        /// <summary>
+        /// カードの動作が終了を関し
+        /// </summary>
+        /// <value></value>
+        public TypeObservable<ParkOpenCardModel> OnComplateCardUse { get; private set; }
+
         public ParkOpenCardManager (IPlayerParkOpenRepository playerParkOpenRepository, IPlayerParkOpenCardRepository playerParkOpenCardRepository, IPlayerParkOpenDeckRepository playerParkOpenDeckRepository)
         {
             this.playerParkOpenRepository = playerParkOpenRepository;
+            this.parkOpenActionExecuter = new ParkOpenActionExecuter();
+
+            this.OnComplateCardUse = new TypeObservable<ParkOpenCardModel>();
 
             this.parkOpenCardCreateService = new ParkOpenCardCreateService(playerParkOpenCardRepository);
             this.parkOpenDeckCreateService = new ParkOpenDeckCreateService(playerParkOpenDeckRepository);
             this.parkOpenSelectDeckCardService = new ParkOpenSelectDeckCardService(playerParkOpenDeckRepository);
             this.parkOpenSetMainDeckService = new ParkOpenSetMainDeckService(playerParkOpenRepository);
             this.parkOpenUseCardService = new ParkOpenUseCardService(playerParkOpenRepository);
+
+            this.disposables.Add(this.parkOpenActionExecuter.OnComplate.Subscribe(parkOpenCardModel => {
+                this.OnComplateCardUse.Execute(parkOpenCardModel);
+            }));
+        }
+
+        public void UpdateByFrame()
+        {
+            this.parkOpenActionExecuter.UpdateByFrame();
         }
 
         /// <summary>
@@ -105,7 +126,15 @@ namespace NL
 
         private void UsePlayingCard(PlayerParkOpenDeckModel.CountType countType)
         {
+            // アクションを実行する
+            var currentDeck = this.playerParkOpenRepository.GetOwn().CurrentParkOpenDeckModel;
+            var playerParkOpenCardModel = currentDeck.GetDeckCardModel(countType);
+            this.parkOpenActionExecuter.Start(playerParkOpenCardModel.ParkOpenCardModel);
+
+            // 見た目の変更を行う
             GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(countType);
+
+            // データの変更
             this.parkOpenUseCardService.ExecuteCard(countType);
         }
 

@@ -3,7 +3,8 @@
         "Id": 1,
         "Name": "サンプル",
         "ImageName": "Sample",
-        "Description": "サンプル状態で死亡が確定する。\n改行"
+        "Description": "サンプル状態で死亡が確定する。\n改行",
+        "ParkOpenCardActionId": 1
     }
 ]
 }

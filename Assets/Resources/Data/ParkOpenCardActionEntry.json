@@ -1,0 +1,13 @@
+{"InnerArray":[
+    {
+        "Id": 1,
+        "ParkOpenCardActionType": "CountToHeart",
+        "Args": [
+            1.0,
+            "heart_factory",
+            0.0,
+            -10.0
+        ]
+    }
+]
+}

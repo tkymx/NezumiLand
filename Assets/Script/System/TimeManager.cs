@@ -58,9 +58,5 @@ namespace NL {
                 this.updateTime = 0;
             }
         }
-
-        public override string ToString() {
-            return DayTextConverter.ConvertString(this.elapsedTime);
-        }
     }
 }

@@ -11,6 +11,7 @@ namespace NL
     {
         TypeObservable<ParkOpenWaveModel> OnStartWave { get; }
         TypeObservable<int> OnCompleted { get; }
+        ParkOpenTimeAmount CurrentParkOpenTimeAmount { get; }
         void UpdateByFrame();
         void UpdateParkOpenInfo();
         void AddHeart(int increaseCount);
@@ -22,6 +23,8 @@ namespace NL
 
         public TypeObservable<ParkOpenWaveModel> OnStartWave { get; private set; }
         public TypeObservable<int> OnCompleted { get; private set; }
+
+        public ParkOpenTimeAmount CurrentParkOpenTimeAmount => new ParkOpenTimeAmount(0,ParkOpenWaveCounter.OpenTime);
 
         public NopParkOpenDirector(IPlayerParkOpenRepository playerParkOpenRepository)
         {
@@ -57,7 +60,7 @@ namespace NL
         /// 開放の時間
         /// 20秒でいいのか、もっと増やすのかは相談
         /// </summary>
-        private readonly float OpenTime = 20;
+        public static readonly float OpenTime = 20;
 
 
         /// <summary>
@@ -81,12 +84,18 @@ namespace NL
         /// 一つの Wave の間隔の時間
         /// 発生位置が中間である必要があるため、＋１
         /// </summary>
-        private float WaveInterval => OpenTime / (waveCount + 1); 
+        private float WaveInterval => ParkOpenWaveCounter.OpenTime / (waveCount + 1); 
 
         /// <summary>
         /// 次の出現までの時間
         /// </summary>
         public float NextAppearTime => WaveInterval * (NextWave + 1);
+
+        /// <summary>
+        /// 時間情報
+        /// </summary>
+        /// <returns></returns>
+        public ParkOpenTimeAmount CurrentParkOpenTimeAmount => new ParkOpenTimeAmount(this.ElapsedTime,ParkOpenWaveCounter.OpenTime);
 
         /// <summary>
         /// 最終Wave かどうか？
@@ -166,6 +175,12 @@ namespace NL
         /// <value></value>
         public TypeObservable<int> OnCompleted { get; private set; }
 
+        /// <summary>
+        /// 時間情報
+        /// </summary>
+        /// <returns></returns>
+        public ParkOpenTimeAmount CurrentParkOpenTimeAmount => this.waveCounter.CurrentParkOpenTimeAmount;
+
         private List<IDisposable> disposables = new List<IDisposable>();
 
         public ParkOpenDirector(ParkOpenGroupModel parkOpenGroupModel, IPlayerParkOpenRepository playerParkOpenRepository)
@@ -226,6 +241,9 @@ namespace NL
 
             // デッキ
             GameManager.Instance.ParkOpenCardManager.PrepareParkOpen();
+
+            // 時間
+            GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Show();
         }
 
         /// <summary>
@@ -257,6 +275,9 @@ namespace NL
 
             // デッキ
             GameManager.Instance.ParkOpenCardManager.FinalizeParkOpen();
+
+            // 時間
+            GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Close();
         }
 
         public void UpdateByFrame()

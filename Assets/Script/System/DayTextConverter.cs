@@ -11,18 +11,24 @@ namespace NL
         // 1 時間   6 秒
         // 10 分    1 秒
 
-        private static float SecondToDay = 20;                              //60
-        private static float MinutesToDay = SecondToDay / 10.0f;            //6
-        private static int SecondToMinutes = (int)(60.0 / MinutesToDay);   //10
+        // 一日が経過する秒数
+        private float SecondToDay = 20;                              //60
+        private float MinutesToDay => SecondToDay / 10.0f;            //6
+        private int SecondToMinutes => (int)(60.0 / MinutesToDay);   //10
 
-        public static DateTime Convert(float time) {
+        public DayTextConverter(float secondToDay)
+        {
+            this.SecondToDay = secondToDay;
+        }
+
+        public DateTime Convert(float time) {
             DateTime startDate = new DateTime(2020, 4, 1, 0, 0, 0);
             DateTime currentDate = startDate + ConvertSpan(time);
 
             return currentDate;
         }
 
-        public static TimeSpan ConvertSpan(float time) {
+        public TimeSpan ConvertSpan(float time) {
             DateTime startDate = new DateTime(2020, 4, 1, 0, 0, 0);
 
             int elapsedDay = (int)(time / SecondToDay);                 // (int)( 113 / 30 ) = 3日
@@ -42,12 +48,17 @@ namespace NL
             return span;
         }
 
-        public static string ConvertString(float time) {
+        public string ConvertString(float time) {
             var date = Convert(time);
-            return string.Format("{0,2}月{1,2}日 {2,2}時{3,2}分", date.Month, date.Day, date.Hour, date.Minute);
+            return string.Format("{0:D2}月{1:D2}日 {2:D2}時{3:D2}分", date.Month, date.Day, date.Hour, date.Minute);
         }
 
-        public static float OneDayProgress (float time) {
+        public string ConvertStringPerDay(float time) {
+            var date = Convert(time);
+            return string.Format("{0:D2}時{1:D2}分", date.Hour, date.Minute);
+        }
+
+        public float OneDayProgress (float time) {
             int elapsedDay = (int)(time / SecondToDay);                 // (int)( 113 / 30 ) = 3日
             return (time - elapsedDay * SecondToDay) / SecondToDay;
         }

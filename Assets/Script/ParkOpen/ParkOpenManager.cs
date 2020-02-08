@@ -12,6 +12,11 @@ namespace NL
         private List<IDisposable> disposables = null;
 
         /// <summary>
+        /// 現在の時間の進行状況
+        /// </summary>
+        public ParkOpenTimeAmount CurrentParkOpenTimeAmount => this.parkOpenDirector.CurrentParkOpenTimeAmount;
+
+        /// <summary>
         /// 遊園地開放の終了
         /// </summary>
         /// <value></value>

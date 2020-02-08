@@ -17,6 +17,10 @@ namespace NL
         }
 
         public void UpdateByFrame() {
+            if (!IsShow()) {
+                return;
+            }
+            
             this.parkOpenCharacterCountView.UpdateView(GameManager.Instance.AppearCharacterManager.ParkOpenCharacterCount.ToString());
         }
     }    

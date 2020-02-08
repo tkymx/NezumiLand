@@ -29,6 +29,10 @@ namespace NL {
         }
 
         public void UpdateByFrame () {
+            if (!IsShow()) {
+                return;
+            }
+            
             yetArrangementMessage.SetActive(!GameManager.Instance.ArrangementManager.HasReserveArrangementTarget ());
             startButton.interactable = GameManager.Instance.ArrangementManager.HasReserveArrangementTarget ();
         }

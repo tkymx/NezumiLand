@@ -26,7 +26,7 @@ namespace  NL
             var conversationMode =  GameModeGenerator.GenerateConversationMode(this.playerAppearCharacterReserveModel.ConversationModel);
             GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(conversationMode);
             return GameManager.Instance.GameModeManager.GetModeEndObservable(conversationMode)
-                .SelectMany(_ => {
+                .SelectMany<int,int>(_ => {
                     if (this.playerAppearCharacterReserveModel.RewardModel == null) {
                         return new ImmediatelyObservable<int>(_);
                     }

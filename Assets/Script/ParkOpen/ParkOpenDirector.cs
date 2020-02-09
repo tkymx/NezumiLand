@@ -10,7 +10,7 @@ namespace NL
     public interface IParkOpenDirector : IDisposable
     {
         TypeObservable<ParkOpenWaveModel> OnStartWave { get; }
-        TypeObservable<int> OnCompleted { get; }
+        TypeObservable<ParkOpenResultAmount> OnCompleted { get; }
         ParkOpenTimeAmount CurrentParkOpenTimeAmount { get; }
         void UpdateByFrame();
         void UpdateParkOpenInfo();
@@ -22,14 +22,14 @@ namespace NL
         private ParkOpenUpdateService parkOpenUpdateService = null;
 
         public TypeObservable<ParkOpenWaveModel> OnStartWave { get; private set; }
-        public TypeObservable<int> OnCompleted { get; private set; }
+        public TypeObservable<ParkOpenResultAmount> OnCompleted { get; private set; }
 
         public ParkOpenTimeAmount CurrentParkOpenTimeAmount => new ParkOpenTimeAmount(0,ParkOpenWaveCounter.OpenTime);
 
         public NopParkOpenDirector(IPlayerParkOpenRepository playerParkOpenRepository)
         {
             this.OnStartWave = new TypeObservable<ParkOpenWaveModel>();
-            this.OnCompleted = new TypeObservable<int>();
+            this.OnCompleted = new TypeObservable<ParkOpenResultAmount>();
             this.parkOpenUpdateService = new ParkOpenUpdateService(playerParkOpenRepository);
         }
 
@@ -173,7 +173,7 @@ namespace NL
         /// 公園開放が終わった時
         /// </summary>
         /// <value></value>
-        public TypeObservable<int> OnCompleted { get; private set; }
+        public TypeObservable<ParkOpenResultAmount> OnCompleted { get; private set; }
 
         /// <summary>
         /// 時間情報
@@ -211,7 +211,7 @@ namespace NL
             this.parkOpenObtainHeartService = new ParkOpenObtainHeartService(playerParkOpenRepository);
             this.parkOpenUpdateService = new ParkOpenUpdateService(playerParkOpenRepository);
             this.OnStartWave = new TypeObservable<ParkOpenWaveModel>();
-            this.OnCompleted = new TypeObservable<int>();
+            this.OnCompleted = new TypeObservable<ParkOpenResultAmount>();
         }
 
         private void InitializeWave(int waveCount, float elapsedTime = 0, int nextWave = 0)
@@ -265,8 +265,6 @@ namespace NL
 
         private void Complete ()
         {
-            this.OnCompleted.Execute(0);                    
-
             // ハート
             GameManager.Instance.GameUIManager.HeartPresenter.Close();
 
@@ -278,6 +276,8 @@ namespace NL
 
             // 時間
             GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Close();
+
+            this.OnCompleted.Execute(new ParkOpenResultAmount(currentHeartCount, this.parkOpenGroupModel.GoalHeartCount));                    
         }
 
         public void UpdateByFrame()

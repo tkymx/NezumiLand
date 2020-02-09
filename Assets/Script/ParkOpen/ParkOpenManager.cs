@@ -68,11 +68,21 @@ namespace NL
             }));
 
             // 開放が終了した時
-            this.disposables.Add(this.parkOpenDirector.OnCompleted.Subscribe(_ => {
-                this.OnCompleted.Execute(parkOpenGroupModel);
-                this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
-                this.parkOpenDirector.UpdateParkOpenInfo();
-            }));
+            this.disposables.Add(this.parkOpenDirector.OnCompleted
+                .Do(parkOpenResultAmount => {
+                    // 結果画面を表示する
+                    GameManager.Instance.GameUIManager.ParkOpenResultPresenter.Show();
+                    GameManager.Instance.GameUIManager.ParkOpenResultPresenter.SetContents(parkOpenResultAmount);
+                })
+                .SelectMany(_ => {
+                    // 結果表示終了を待つ
+                    return GameManager.Instance.GameUIManager.ParkOpenResultPresenter.OnClose;
+                })
+                .Subscribe(_ => {
+                    this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
+                    this.parkOpenDirector.UpdateParkOpenInfo();
+                    this.OnCompleted.Execute(parkOpenGroupModel);
+                }));
         }
 
         private float elapsedTime = 0;

@@ -93,6 +93,10 @@ namespace NL {
         private ParkOpenTimePresenter parkOpenTimePresenter = null;
         public ParkOpenTimePresenter ParkOpenTimePresenter => this.parkOpenTimePresenter;
 
+        [SerializeField]
+        private ParkOpenResultPresenter parkOpenResultPresenter = null;
+        public ParkOpenResultPresenter ParkOpenResultPresenter => this.parkOpenResultPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -124,6 +128,7 @@ namespace NL {
             this.parkOpenCharacterCountPresenter.Initialize(playerParkOpenRepository);
             this.parkOpenDeckPresenter.Initialize();
             this.parkOpenTimePresenter.Initialize();
+            this.parkOpenResultPresenter.Initialize();
         }
 
         public void UpdateByFrame() {

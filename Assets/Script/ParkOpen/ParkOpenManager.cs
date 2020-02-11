@@ -32,20 +32,26 @@ namespace NL
 
         public void Open(ParkOpenGroupModel parkOpenGroupModel)
         {
-            Debug.Assert(this.parkOpenDirector is NopParkOpenDirector, "すでに実行中のDirectorが存在します。");
-            this.parkOpenDirector = new ParkOpenDirector(parkOpenGroupModel, playerParkOpenRepository);
-            this.SetEventInternal(parkOpenGroupModel);
-            this.parkOpenDirector.UpdateParkOpenInfo();            
-            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
+            var parkOpenDirector = new ParkOpenDirector(parkOpenGroupModel, playerParkOpenRepository);
+            Open(parkOpenDirector, parkOpenGroupModel);
         }
 
         public void Open(PlayerParkOpenModel playerParkOpenModel)
         {
+            var parkOpenDirector = new ParkOpenDirector(playerParkOpenModel, playerParkOpenRepository);
+            Open(parkOpenDirector, playerParkOpenModel.ParkOpenGroupModel);
+        }
+
+        private void Open(IParkOpenDirector parkOpenDirector, ParkOpenGroupModel parkOpenGroupModel)
+        {
             Debug.Assert(this.parkOpenDirector is NopParkOpenDirector, "すでに実行中のDirectorが存在します。");
-            this.parkOpenDirector = new ParkOpenDirector(playerParkOpenModel, playerParkOpenRepository);
-            this.SetEventInternal(playerParkOpenModel.ParkOpenGroupModel);
-            this.parkOpenDirector.UpdateParkOpenInfo();
-            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
+
+            this.disposables.Add(GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect").OnComplated.Subscribe(_ => {
+                this.parkOpenDirector = parkOpenDirector;
+                this.SetEventInternal(parkOpenGroupModel);
+                this.parkOpenDirector.UpdateParkOpenInfo();
+                GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
+            }));            
         }
 
         /// <summary>
@@ -57,6 +63,10 @@ namespace NL
             this.parkOpenDirector.AddHeart(increaseCount);
         }
         
+        /// <summary>
+        /// 遊び場公開のイベント周りの設定
+        /// </summary>
+        /// <param name="parkOpenGroupModel"></param>
         private void SetEventInternal(ParkOpenGroupModel parkOpenGroupModel)
         {
             this.ClearDisposables();
@@ -69,6 +79,11 @@ namespace NL
 
             // 開放が終了した時
             this.disposables.Add(this.parkOpenDirector.OnCompleted
+                .SelectMany(parkOpenResultAmount => {
+                    return GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenFinishEffect")
+                        .OnComplated
+                        .Select(_ => parkOpenResultAmount);
+                })
                 .Do(parkOpenResultAmount => {
                     // 結果画面を表示する
                     GameManager.Instance.GameUIManager.ParkOpenResultPresenter.Show();

@@ -12,16 +12,34 @@ namespace NL
 
         private float elapsetdTime = 0;
 
+        private TypeObservable<int> onComplated;
+        public override TypeObservable<int> OnComplated => onComplated;
+
+        public TimeEffectHandler()
+        {
+            this.onComplated = new TypeObservable<int>();
+        }
+
+        public override void Initialize()
+        {
+            this.elapsetdTime = 0;
+        }
+
         public void Update()
         {
-            if (IsComplated()){
+            if (isComplated()){
                 return;
             }
             
             elapsetdTime += GameManager.Instance.TimeManager.DeltaTime();
+
+            // 条件を満たすと一度だけ発火
+            if (isComplated()){
+                this.onComplated.Execute(0);
+            }
         }
 
-        public override bool IsComplated()
+        private bool isComplated()
         {
             return timeLimit < elapsetdTime;
         }

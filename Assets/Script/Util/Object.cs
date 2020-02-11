@@ -31,10 +31,12 @@ namespace NL {
             instance.transform.SetParent(parent.transform, parent);
         }
 
-        public static GameObject Appear2D (GameObject prefab, GameObject parent, Vector3 position) {
+        public static GameObject Appear2D (GameObject prefab, GameObject parent, Vector2? position = null) {
             GameObject instance = GameObject.Instantiate (prefab);
             instance.transform.SetParent (parent.transform, false);
-            instance.transform.position = position;
+            if (position != null) {
+                instance.transform.position = position.Value;
+            }
             return instance;
         }
 

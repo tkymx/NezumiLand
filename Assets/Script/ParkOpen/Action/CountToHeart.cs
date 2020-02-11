@@ -9,12 +9,14 @@ namespace NL
         /// <summary>
         /// 人数分だけハートをもらう効果
         /// </summary>
-        public class CountToHeart : ParkOpenCardAction.IParkOpenCardAction
+        public class CountToHeart : Disposable, ParkOpenCardAction.IParkOpenCardAction
         {
             private ParkOpenCardModel parkOpenCardModel;
             public ParkOpenCardModel ParkOpenCardModel => parkOpenCardModel;
 
             private EffectHandlerBase effectHandler = null;
+
+            private bool isCompleted = false;
 
             public void OnStart(ParkOpenCardModel parkOpenCardModel)
             {
@@ -35,13 +37,18 @@ namespace NL
 
                 // エフェクトを出す
                 this.effectHandler = GameManager.Instance.EffectManager.PlayEffect(prefabName, position);
+
+                // 終了を待つ
+                this.disposables.Add(this.effectHandler.OnComplated.Subscribe(_ => {
+                    this.isCompleted = true;
+                }));
             }
             public void OnUpdate()
             {
             }
             public bool IsAlive()
             {
-                return !this.effectHandler.IsComplated();
+                return !this.isCompleted;
             }
             public void OnComplate()
             {

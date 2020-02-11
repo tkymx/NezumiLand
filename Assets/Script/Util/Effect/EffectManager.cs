@@ -25,8 +25,18 @@ namespace NL {
             var prefab = ResourceLoader.LoadModel(prefabName);
             var instance = Object.AppearToFloor(prefab, this.root3D, position);
             var handler = instance.GetComponent<EffectHandlerBase>();
+            handler.Initialize();
             return handler;
         }
+
+        public EffectHandlerBase PlayEffect2D(string prefabName, Vector2? position = null)
+        {
+            var prefab = ResourceLoader.LoadPrefab("UI/"+prefabName);
+            var instance = Object.Appear2D(prefab, this.root2D, position);
+            var handler = instance.GetComponent<EffectHandlerBase>();
+            handler.Initialize();
+            return handler;
+        }        
 
         public void PlayEarnEffect (Currency earn, Vector3 position) {
             var effectPrefab = ResourceLoader.LoadPrefab ("UI/earn_effect");

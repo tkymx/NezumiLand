@@ -9,15 +9,17 @@ namespace NL
         [SerializeField]
         private ParkOpenStartView parkOpenStartView = null;
 
-        public TypeObservable<int> OnStartObservable { get; private set; }
+        public TypeObservable<bool> OnIsStartObservable { get; private set; }
 
         public void Initialize() {
-            this.OnStartObservable = new TypeObservable<int>();
+            this.OnIsStartObservable = new TypeObservable<bool>();
             this.parkOpenStartView.Initialize();
             this.disposables.Add(parkOpenStartView.OnStartObservable.Subscribe(_ => {
-                this.OnStartObservable.Execute(_);
+                this.OnIsStartObservable.Execute(true);
+                this.Close();
             }));
             this.disposables.Add(parkOpenStartView.OnBackObservable.Subscribe(_ => {
+                this.OnIsStartObservable.Execute(false);
                 this.Close();
             }));
             this.Close();

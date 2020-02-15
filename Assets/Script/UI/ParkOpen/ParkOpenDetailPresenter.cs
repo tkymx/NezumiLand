@@ -20,11 +20,13 @@ namespace NL
         public void Initialize() {
             this.OnStartObservable = new TypeObservable<ParkOpenGroupModel>();
             this.parkOpenDetailView.Initialize();
+
+            // 開始ボタンを押した場合
             this.disposables.Add(parkOpenDetailView.OnStartObservable.Subscribe(_ => {
                 Debug.Assert(this.currentSetParkOpenGroupModel != null, "グループ情報がセットされていません");
                 this.OnStartObservable.Execute(this.currentSetParkOpenGroupModel);                
-                this.Close();
             }));
+            
             this.Close();
         }
 

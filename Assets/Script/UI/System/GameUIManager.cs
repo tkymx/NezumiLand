@@ -105,6 +105,10 @@ namespace NL {
         private ParkOpenDetailPresenter parkOpenDetailPresenter = null;
         public ParkOpenDetailPresenter ParkOpenDetailPresenter => parkOpenDetailPresenter;
 
+        [SerializeField]
+        private ParkOpenStartPresenter parkOpenStartPresenter = null;
+        public ParkOpenStartPresenter ParkOpenStartPresenter => this.parkOpenStartPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -139,6 +143,7 @@ namespace NL {
             this.parkOpenResultPresenter.Initialize();
             this.parkOpenGroupsPresenter.Initialize();
             this.parkOpenDetailPresenter.Initialize();
+            this.parkOpenStartPresenter.Initialize();
         }
 
         public void UpdateByFrame() {

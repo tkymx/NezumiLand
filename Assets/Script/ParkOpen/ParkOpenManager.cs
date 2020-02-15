@@ -51,7 +51,7 @@ namespace NL
                 this.SetEventInternal(parkOpenGroupModel);
                 this.parkOpenDirector.UpdateParkOpenInfo();
                 GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
-            }));            
+            }));
         }
 
         /// <summary>

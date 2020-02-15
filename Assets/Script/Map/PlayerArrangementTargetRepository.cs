@@ -33,6 +33,14 @@ namespace NL {
         public int X;
         
         public int Z;
+
+        public Vector2 ToVector2 () {
+            return new Vector2(X,Z);
+        }
+      
+        public Vector3 ToVector3 () {
+            return new Vector3(X,0,Z);
+        }
     }    
 
     [System.Serializable]

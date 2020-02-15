@@ -10,6 +10,13 @@ namespace NL {
         public uint[] ParkOpenWaveIds;
         public int MaxHeartCount;
         public int GoalHeartCount;
+        // View
+        public string ViewGroupName;
+        public Position2Entry ViewSelectorPosition;
+        public string ViewIconName;
+        // Reward
+        public uint RewardCurrency;
+        public uint RewardArrangementItemAmount;
     }
 
     public interface IParkOpenGroupRepository {
@@ -37,7 +44,16 @@ namespace NL {
                 entry.Id,
                 parkOpenWaveModels.ToArray(),
                 entry.MaxHeartCount,
-                entry.GoalHeartCount);
+                entry.GoalHeartCount,
+                new ParkOpenGroupViewInfo(
+                    entry.ViewGroupName,
+                    entry.ViewSelectorPosition.ToVector2(),
+                    entry.ViewIconName
+                ),
+                new ParkOpenGroupReward(
+                    new Currency(entry.RewardCurrency),
+                    new ArrangementItemAmount(entry.RewardArrangementItemAmount)
+                ));
         }
 
         public IEnumerable<ParkOpenGroupModel> GetAll () {

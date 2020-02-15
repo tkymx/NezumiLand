@@ -30,6 +30,7 @@ namespace NL {
         public List<ParkOpenGroupEntry> ParkOpenGroupEntrys { get; private set; }
         public List<ParkOpenCardEntry> ParkOpenCardEntrys { get; private set; }
         public List<ParkOpenCardActionEntry> ParkOpenCardActionEntrys { get; private set; }
+        public List<ParkOpenGroupsEntry> ParkOpenGroupsEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -57,6 +58,7 @@ namespace NL {
             this.ParkOpenGroupEntrys = LoadEntryFromJson<ParkOpenGroupEntry> (ResourceLoader.LoadData ("ParkOpenGroupEntry")).ToList();
             this.ParkOpenCardEntrys = LoadEntryFromJson<ParkOpenCardEntry> (ResourceLoader.LoadData ("ParkOpenCardEntry")).ToList();
             this.ParkOpenCardActionEntrys = LoadEntryFromJson<ParkOpenCardActionEntry> (ResourceLoader.LoadData ("ParkOpenCardActionEntry")).ToList();
+            this.ParkOpenGroupsEntrys = LoadEntryFromJson<ParkOpenGroupsEntry> (ResourceLoader.LoadData ("ParkOpenGroupsEntry")).ToList();
         }
 
         private static T[] LoadEntryFromJson<T> (string json) {

@@ -40,6 +40,15 @@ namespace NL {
             return instance;
         }
 
+        public static GameObject AppearLocal2D (GameObject prefab, GameObject parent, Vector2? position = null) {
+            GameObject instance = GameObject.Instantiate (prefab);
+            instance.transform.SetParent (parent.transform, false);
+            if (position != null) {
+                instance.transform.localPosition = position.Value;
+            }
+            return instance;
+        }        
+
         public static void DisAppear (GameObject instance) {
             GameObject.Destroy (instance);
         }

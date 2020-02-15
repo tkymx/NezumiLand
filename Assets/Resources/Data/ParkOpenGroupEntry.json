@@ -5,7 +5,31 @@
             1,2,3
         ],
         "MaxHeartCount": 100,
-        "GoalHeartCount": 80
+        "GoalHeartCount": 80,
+        "ViewGroupName": "Stage1 東の国",
+        "ViewSelectorPosition": {
+            "X": 0,
+            "Z": 0
+        },
+        "ViewIconName": "mouse",
+        "RewardCurrency": 100,
+        "RewardArrangementItemAmount": 50
+    },
+    {
+        "Id": 2,
+        "ParkOpenWaveIds":[
+            1,2,3
+        ],
+        "MaxHeartCount": 100,
+        "GoalHeartCount": 80,
+        "ViewGroupName": "Stage2 西の国",
+        "ViewSelectorPosition": {
+            "X": 50,
+            "Z": 50
+        },
+        "ViewIconName": "mouse",
+        "RewardCurrency": 100,
+        "RewardArrangementItemAmount": 50
     }
 ]
 }

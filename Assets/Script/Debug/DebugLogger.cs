@@ -77,12 +77,16 @@ namespace NL {
                 GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
             });
             parkOpenButton.onClick.AddListener(() => {
+                /*
                 var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
                 var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
                 var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
 
                 // 開始
                 GameManager.Instance.ParkOpenManager.Open(parkOpenGroupRepository.Get(1));
+                */
+
+                GameManager.Instance.ParkOpenGroupSelectManager.StartSelect();
             });
             addHeartButton.onClick.AddListener(()=>{
                 GameManager.Instance.ParkOpenManager.AddHeart(10);

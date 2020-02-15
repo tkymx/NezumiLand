@@ -56,5 +56,9 @@ namespace NL {
         public static ParkOpenMode GenerateParkOpenMode () {
             return new ParkOpenMode();
         }
+
+        public static ParkOpenGroupSelectMode GenerateParkOpenGroupSelectMode () {
+            return new ParkOpenGroupSelectMode();
+        }        
     }
 }

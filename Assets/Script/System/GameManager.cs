@@ -104,6 +104,9 @@ namespace NL {
         private ParkOpenCardManager parkOpenCardManager;
         public ParkOpenCardManager ParkOpenCardManager => parkOpenCardManager;
 
+        private ParkOpenGroupSelectManager parkOpenGroupSelectManager;
+        public ParkOpenGroupSelectManager ParkOpenGroupSelectManager => parkOpenGroupSelectManager;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -122,6 +125,7 @@ namespace NL {
             var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
             var parkOpenCardActionRepository = new ParkOpenCardActionRepository(ContextMap.DefaultMap);
             var parkOpenCardRepository = new ParkOpenCardRepository(parkOpenCardActionRepository, ContextMap.DefaultMap);
+            var parkOpenGroupsRepository = new ParkOpenGroupsRepository(parkOpenGroupRepository, ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerMonoInfoRepository = PlayerMonoInfoRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -175,6 +179,7 @@ namespace NL {
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
             this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
             this.parkOpenCardManager = new ParkOpenCardManager(playerParkOpenRepository, playerParkOpenCardRepository, playerParkOpenDeckRepository);
+            this.parkOpenGroupSelectManager = new ParkOpenGroupSelectManager(parkOpenGroupsRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);

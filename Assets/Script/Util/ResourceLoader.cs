@@ -90,6 +90,15 @@ namespace NL {
             return sprite;
         }
 
+        public static Sprite LoadParkOpenGroupIconSprite (string cardName) {
+            var path = "ParkOpenGroupIcon/" + cardName;
+            Sprite sprite = Resources.Load<Sprite> (path);
+            if (sprite == null) {
+                Debug.LogError (path + "が存在しません。");
+            }
+            return sprite;
+        }
+
         public static string LoadData (string modelName) {
             return LoadText ("Data/" + modelName);
         }

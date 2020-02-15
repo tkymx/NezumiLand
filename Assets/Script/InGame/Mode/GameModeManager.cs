@@ -86,6 +86,7 @@ namespace NL {
             this.currentGameMode.OnUpdate ();
         }
 
+        //TODO おいおいは、モードのはじめと終わりで制御できるようになりたい
         public bool IsCameraMobableMode => 
             this.currentGameMode is SelectMode || 
             this.currentGameMode is ArrangementMode || 

@@ -31,7 +31,7 @@ namespace NL {
 
         public EffectHandlerBase PlayEffect2D(string prefabName, Vector2? position = null)
         {
-            var prefab = ResourceLoader.LoadPrefab("UI/"+prefabName);
+            var prefab = ResourceLoader.LoadPrefab("UI/prefab/"+prefabName);
             var instance = Object.Appear2D(prefab, this.root2D, position);
             var handler = instance.GetComponent<EffectHandlerBase>();
             handler.Initialize();
@@ -39,7 +39,7 @@ namespace NL {
         }        
 
         public void PlayEarnEffect (Currency earn, Vector3 position) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/earn_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/earn_effect");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
             var text = instance.GetComponent<Text> ();
@@ -47,13 +47,13 @@ namespace NL {
         }
 
         public void PlayHeartEffect (Vector3 position) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/heart");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/heart");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
         }
 
         public void PlayEarnItemEffect (ArrangementItemAmount item, Vector3 position) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/earn_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/earn_effect");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
             var text = instance.GetComponent<Text> ();
@@ -61,7 +61,7 @@ namespace NL {
         }        
 
         public void PlayConsumeEffect (Currency fee, Vector3 position) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/consume_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/consume_effect");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
             var text = instance.GetComponent<Text> ();
@@ -69,7 +69,7 @@ namespace NL {
         }
 
         public void PlayError (string errorMessage, Vector3 position) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/consume_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/consume_effect");
             var screenPoint = camera.WorldToScreenPoint (position);
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
             var text = instance.GetComponent<Text> ();
@@ -77,7 +77,7 @@ namespace NL {
         }
 
         public void PlayErrorFrom2D (string errorMessage, Vector2 screenPoint) {
-            var effectPrefab = ResourceLoader.LoadPrefab ("UI/consume_effect");
+            var effectPrefab = ResourceLoader.LoadPrefab ("UI/prefab/consume_effect");
             var instance = Object.Appear2D (effectPrefab, root2D, screenPoint);
             var text = instance.GetComponent<Text> ();
             text.text = errorMessage;

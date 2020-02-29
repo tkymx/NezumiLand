@@ -9,6 +9,9 @@ namespace NL
         [SerializeField]
         private ParkOpenStartView parkOpenStartView = null;
 
+        [SerializeField]
+        private ParkOpenStartRewardListPresenter parkOpenStartRewardListPresenter = null;
+
         public TypeObservable<bool> OnIsStartObservable { get; private set; }
 
         public void Initialize() {
@@ -26,7 +29,10 @@ namespace NL
         }
 
         public void SetContents(ParkOpenGroupModel parkOpenGroupModel) {
-            this.parkOpenStartView.UpdateView(parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName);            
+            this.parkOpenStartView.UpdateView(
+                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName,
+                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription);            
+            this.parkOpenStartRewardListPresenter.SetElement(parkOpenGroupModel.ClearReward.RewardAmounts);
         }
     }    
 }

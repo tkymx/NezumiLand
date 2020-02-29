@@ -11,6 +11,9 @@ namespace NL
         private Text title = null;
 
         [SerializeField]
+        private Text description = null;
+
+        [SerializeField]
         private Button startButton = null;
 
         [SerializeField]
@@ -31,8 +34,9 @@ namespace NL
             });
         }
 
-        public void UpdateView(string title) {
+        public void UpdateView(string title, string description) {
             this.title.text = title;
+            this.description.text = description;
         }
     }   
 }

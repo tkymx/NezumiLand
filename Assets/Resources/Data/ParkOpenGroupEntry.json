@@ -6,14 +6,14 @@
         ],
         "MaxHeartCount": 100,
         "GoalHeartCount": 80,
+        "ClearRewardId": 8,
         "ViewGroupName": "Stage1 東の国",
+        "ViewGroupDescription": "東の国はいつも忙しい。新しい勇者が生まれることをいつも期待しているからだ。",
         "ViewSelectorPosition": {
             "X": 0,
             "Z": 0
         },
-        "ViewIconName": "mouse",
-        "RewardCurrency": 100,
-        "RewardArrangementItemAmount": 50
+        "ViewIconName": "mouse"
     },
     {
         "Id": 2,
@@ -22,14 +22,14 @@
         ],
         "MaxHeartCount": 100,
         "GoalHeartCount": 80,
+        "ClearRewardId": 8,
         "ViewGroupName": "Stage2 西の国",
+        "ViewGroupDescription": "西の国はいつも憂いに満ちている。憂いの意味も知らずに",
         "ViewSelectorPosition": {
             "X": 50,
             "Z": 50
         },
-        "ViewIconName": "mouse",
-        "RewardCurrency": 100,
-        "RewardArrangementItemAmount": 50
+        "ViewIconName": "mouse"
     }
 ]
 }

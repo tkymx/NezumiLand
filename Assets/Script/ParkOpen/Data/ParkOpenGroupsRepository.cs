@@ -7,12 +7,15 @@ namespace NL {
 
     [System.Serializable]
     public class ParkOpenGroupsEntry : EntryBase {
+        public string Type;
+        public string BackgroundSpriteName;
         public uint[] ParkOpenGroupIds;
     }
 
     public interface IParkOpenGroupsRepository {
         IEnumerable<ParkOpenGroupsModel> GetAll ();
         ParkOpenGroupsModel Get (uint id);
+        ParkOpenGroupsModel GetByType (ParkOpenGroupsType type);
     }
 
     public class ParkOpenGroupsRepository : RepositoryBase<ParkOpenGroupsEntry>, IParkOpenGroupsRepository {
@@ -32,9 +35,16 @@ namespace NL {
                 return parkOpenGroup;
             });
 
+            var type = ParkOpenGroupsType.None;
+            if (Enum.TryParse (entry.Type, out ParkOpenGroupsType outType)) {
+                type = outType;
+            }
+
             return new ParkOpenGroupsModel (
                 entry.Id,
-                parkOpenGourps);          
+                type,
+                entry.BackgroundSpriteName,
+                parkOpenGourps);
         }
 
         public IEnumerable<ParkOpenGroupsModel> GetAll () {
@@ -49,5 +59,15 @@ namespace NL {
             Debug.Assert(entry != null, id + "が見つかりません");
             return this.CreateFromEntry(entry);
         }
+
+        public ParkOpenGroupsModel GetByType (ParkOpenGroupsType type)
+        {
+            var selectedEntrys = entrys.Where(entry => {
+                return entry.Type == type.ToString();
+            });
+            Debug.Assert(selectedEntrys.Count() <= 1, "当てはまる情報が２つ以上あります");
+            return this.CreateFromEntry(selectedEntrys.First());
+        }
+
     }
 }

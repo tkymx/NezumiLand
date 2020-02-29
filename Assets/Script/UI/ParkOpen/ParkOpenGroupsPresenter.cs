@@ -33,17 +33,18 @@ namespace NL
             this.parkOpenGroupModelToCellViewDic = new Dictionary<ParkOpenGroupModel, ParkOpenGroupCellView>();
 
             this.parkOpenGroupsView.Initialize();
-            this.disposables.Add(parkOpenGroupsView.OnBackObservable.Subscribe(_ => {
-                this.Close();
+            
+            // 選択をキャンセルする
+            this.disposables.Add(parkOpenGroupsView.OnSelectCancelObservable.Subscribe(_ => {
+                this.Select(null);
             }));
-            this.Close();
 
             this.defaultFrame = ResourceLoader.LoadParkOpenGroupIconSprite("frame");
         }
 
         public void SetContents(ParkOpenGroupsModel parkOpenGroupsModel)
         {
-            // 寄贈の要素を消去
+            // 既存の要素を消去
             foreach (Transform child in parkOpenGroupCellRoot.transform) {
                 Object.DisAppear (child.gameObject);
             }
@@ -88,6 +89,10 @@ namespace NL
                 this.OnStartParkOpenGroupObservable.Execute(parkOpenGroup);
             }));
 
+            // 背景を変更
+            var backgourndImage = ResourceLoader.LoadParkParkOpenGroupBackgound(parkOpenGroupsModel.BackgroundSpriteName);
+            this.parkOpenGroupsView.UpdateView(backgourndImage);
+
             // 選択解除
             this.Select(null);
         }
@@ -100,6 +105,10 @@ namespace NL
         // グループの選択を行う
         private void Select(ParkOpenGroupModel parkOpenGroupModel)
         {
+            if (parkOpenGroupModel == null) {
+                GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Close();                
+            }
+            
             foreach (var keyValue in this.parkOpenGroupModelToCellViewDic)
             {
                 keyValue.Value.SetSelectVisible(keyValue.Key.Equals(parkOpenGroupModel));

@@ -12,9 +12,11 @@ namespace NL {
 
         public virtual void Initialize () {
             OnClick = new TypeObservable<int> ();
-            cellButton.onClick.AddListener (() => {
-                OnClick.Execute (0);
-            });
+            if (cellButton != null) {
+                cellButton.onClick.AddListener (() => {
+                    OnClick.Execute (0);
+                });
+            }
         }
 
         public void Enable () {

@@ -8,32 +8,20 @@ namespace NL
     public struct ParkOpenGroupViewInfo
     {
         public string GroupName { get; private set; }
+        public string GroupDescription { get; private set; }
         public Vector2 SelectorPosition { get; private set; }
         public string IconName { get; private set; }
 
         public ParkOpenGroupViewInfo(
             string groupName,
+            string groupDescription,
             Vector2 selectorPosition,
             string iconName)
         {
             this.GroupName = groupName;
+            this.GroupDescription = groupDescription;
             this.SelectorPosition = selectorPosition;
             this.IconName = iconName;
-        }
-    }
-
-    // 遊び場公開の報酬情報
-    public struct ParkOpenGroupReward
-    {
-        public Currency Currency { get; private set; }
-        public ArrangementItemAmount ArrangementItemAmount { get; private set; }
-
-        public ParkOpenGroupReward(
-            Currency currency,
-            ArrangementItemAmount arrangementItemAmount)
-        {
-            this.Currency = currency;
-            this.ArrangementItemAmount = arrangementItemAmount;
         }
     }
 
@@ -46,7 +34,7 @@ namespace NL
         public int MaxHeartCount { get; private set; }
         public int GoalHeartCount { get; private set; }
         public ParkOpenGroupViewInfo ParkOpenGroupViewInfo { get; private set; }
-        public ParkOpenGroupReward ParkOpenGroupReward { get; private set; }
+        public RewardModel ClearReward { get; private set; }
 
         public ParkOpenGroupModel(
             uint id,
@@ -54,7 +42,7 @@ namespace NL
             int maxHeartCount,
             int goalHeartCount,
             ParkOpenGroupViewInfo parkOpenGroupViewInfo,
-            ParkOpenGroupReward parkOpenGroupReward
+            RewardModel clearReward
         )
         {
             this.Id = id;
@@ -62,7 +50,7 @@ namespace NL
             this.MaxHeartCount = maxHeartCount;
             this.GoalHeartCount = goalHeartCount;
             this.ParkOpenGroupViewInfo = parkOpenGroupViewInfo;
-            this.ParkOpenGroupReward = parkOpenGroupReward;
+            this.ClearReward = clearReward;
         }
     }
 }

@@ -11,14 +11,14 @@ namespace NL
         private Image background = null;
 
         [SerializeField]
-        private Button back = null;
+        private Button selectCancelButton = null;
 
-        public TypeObservable<int> OnBackObservable { get; private set; }
+        public TypeObservable<int> OnSelectCancelObservable { get; private set; }
 
         public void Initialize() {
-            this.OnBackObservable = new TypeObservable<int>();
-            this.back.onClick.AddListener(()=>{
-                this.OnBackObservable.Execute(0);
+            this.OnSelectCancelObservable = new TypeObservable<int>();
+            this.selectCancelButton.onClick.AddListener(()=>{
+                this.OnSelectCancelObservable.Execute(0);
             });
         }
 

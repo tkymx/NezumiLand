@@ -14,13 +14,13 @@ namespace NL {
         public void OnEnter () {
 
             // 閉じられたら通常のステートへ
-            this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenGroupsPresenter.OnClose
+            this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.OnClose
                 .Subscribe(_ => {
                     GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
                 }));
 
             // 出撃が押されたら出撃する
-            this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenGroupsPresenter.OnStartParkOpenGroupObservable
+            this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.OnStartParkOpenGroupObservable
                 .SelectMany(parkOpenGroupModel => {
                     GameManager.Instance.GameUIManager.ParkOpenStartPresenter.Show();
                     GameManager.Instance.GameUIManager.ParkOpenStartPresenter.SetContents(parkOpenGroupModel);
@@ -33,8 +33,8 @@ namespace NL {
                     // Start する場合は開放するが、しない場合はそのまま
                     if (parkOpenGroupModel != null)
                     {
-                        GameManager.Instance.GameUIManager.ParkOpenGroupsPresenter.Close();
-                        GameManager.Instance.GameUIManager.ParkOpenGroupsPresenter.Close();
+                        GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
+                        GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
                         GameManager.Instance.ParkOpenManager.Open(parkOpenGroupModel);
                     }
                 }));
@@ -48,7 +48,7 @@ namespace NL {
             this.disposables.Clear();
 
             // セーフティー
-            GameManager.Instance.GameUIManager.ParkOpenGroupsPresenter.Close();
+            GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
         }
     }
 }

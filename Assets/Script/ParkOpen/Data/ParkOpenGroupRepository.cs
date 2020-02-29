@@ -10,13 +10,12 @@ namespace NL {
         public uint[] ParkOpenWaveIds;
         public int MaxHeartCount;
         public int GoalHeartCount;
+        public uint ClearRewardId;
         // View
         public string ViewGroupName;
+        public string ViewGroupDescription;
         public Position2Entry ViewSelectorPosition;
         public string ViewIconName;
-        // Reward
-        public uint RewardCurrency;
-        public uint RewardArrangementItemAmount;
     }
 
     public interface IParkOpenGroupRepository {
@@ -27,9 +26,11 @@ namespace NL {
     public class ParkOpenGroupRepository : RepositoryBase<ParkOpenGroupEntry>, IParkOpenGroupRepository {
 
         private IParkOpenWaveRepository parkOpenWaveRepository;
+        private IRewardRepository rewardRepository;
 
-        public ParkOpenGroupRepository (IParkOpenWaveRepository parkOpenWaveRepository, ContextMap contextMap) : base (contextMap.ParkOpenGroupEntrys) {
+        public ParkOpenGroupRepository (IParkOpenWaveRepository parkOpenWaveRepository, IRewardRepository rewardRepository, ContextMap contextMap) : base (contextMap.ParkOpenGroupEntrys) {
             this.parkOpenWaveRepository = parkOpenWaveRepository;
+            this.rewardRepository = rewardRepository;
         }
 
         public ParkOpenGroupModel CreateFromEntry (ParkOpenGroupEntry entry)
@@ -40,6 +41,9 @@ namespace NL {
                 return parkOpenWaveModel;
             }); 
 
+            var clearRewardModel = this.rewardRepository.Get(entry.ClearRewardId);
+            Debug.Assert(clearRewardModel != null, "報酬がありません ID = " + entry.ClearRewardId.ToString());
+
             return new ParkOpenGroupModel (
                 entry.Id,
                 parkOpenWaveModels.ToArray(),
@@ -47,13 +51,11 @@ namespace NL {
                 entry.GoalHeartCount,
                 new ParkOpenGroupViewInfo(
                     entry.ViewGroupName,
+                    entry.ViewGroupDescription,
                     entry.ViewSelectorPosition.ToVector2(),
                     entry.ViewIconName
                 ),
-                new ParkOpenGroupReward(
-                    new Currency(entry.RewardCurrency),
-                    new ArrangementItemAmount(entry.RewardArrangementItemAmount)
-                ));
+                clearRewardModel);
         }
 
         public IEnumerable<ParkOpenGroupModel> GetAll () {

@@ -11,10 +11,7 @@ namespace NL
         private Text title = null;
 
         [SerializeField]
-        private Text coinCount = null;
-
-        [SerializeField]
-        private Text itemCount = null;
+        private Text description = null;
 
         [SerializeField]
         private Button startButton = null;
@@ -28,10 +25,9 @@ namespace NL
             });
         }
 
-        public void UpdateView(string title, string coinCount, string itemCount) {
+        public void UpdateView(string title, string description) {
             this.title.text = title;
-            this.coinCount.text = coinCount;
-            this.itemCount.text = itemCount;
+            this.description.text = description;
         }
     }   
 }

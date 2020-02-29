@@ -1,6 +1,16 @@
 {"InnerArray":[
     {
         "Id": 1,
+        "Type": "Story",
+        "BackgroundSpriteName": "story",
+        "ParkOpenGroupIds":[
+            1, 2
+        ]
+    },
+    {
+        "Id": 2,
+        "Type": "Village",
+        "BackgroundSpriteName": "village",
         "ParkOpenGroupIds":[
             1, 2
         ]

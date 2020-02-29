@@ -26,7 +26,7 @@ namespace NL
                 Debug.Assert(this.currentSetParkOpenGroupModel != null, "グループ情報がセットされていません");
                 this.OnStartObservable.Execute(this.currentSetParkOpenGroupModel);                
             }));
-            
+
             this.Close();
         }
 
@@ -34,8 +34,7 @@ namespace NL
             this.currentSetParkOpenGroupModel = parkOpenGroupModel;
             this.parkOpenDetailView.UpdateView(
                 parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName, 
-                parkOpenGroupModel.ParkOpenGroupReward.Currency.ToString(), 
-                parkOpenGroupModel.ParkOpenGroupReward.ArrangementItemAmount.ToString());
+                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription);
         }
     }    
 }

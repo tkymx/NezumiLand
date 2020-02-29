@@ -122,7 +122,7 @@ namespace NL {
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
             var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
-            var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
+            var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, rewardRepository, ContextMap.DefaultMap);
             var parkOpenCardActionRepository = new ParkOpenCardActionRepository(ContextMap.DefaultMap);
             var parkOpenCardRepository = new ParkOpenCardRepository(parkOpenCardActionRepository, ContextMap.DefaultMap);
             var parkOpenGroupsRepository = new ParkOpenGroupsRepository(parkOpenGroupRepository, ContextMap.DefaultMap);
@@ -183,7 +183,7 @@ namespace NL {
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
-            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository, playerParkOpenRepository);
+            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository, playerParkOpenRepository, parkOpenGroupsRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
             this.inputManager.Initialize ();

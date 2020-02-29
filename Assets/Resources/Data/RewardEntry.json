@@ -208,6 +208,21 @@
                 "Args":[]
             }        
         ]
+    },
+    {
+        "Id": 8,
+        "RewardSingleEntrys": [
+            {
+                "Type": "Currency",
+                "Amount": 50000,
+                "Args":[]
+            },
+            {
+                "Type": "Item",
+                "Amount": 50000,
+                "Args":[]
+            }        
+        ]
     }    
 ]
 }

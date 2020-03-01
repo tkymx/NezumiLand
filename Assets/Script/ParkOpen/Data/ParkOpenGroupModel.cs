@@ -35,6 +35,8 @@ namespace NL
         public int GoalHeartCount { get; private set; }
         public ParkOpenGroupViewInfo ParkOpenGroupViewInfo { get; private set; }
         public RewardModel ClearReward { get; private set; }
+        public RewardModel FirstClearReward { get; private set; }
+        public List<ParkOpenRewardAmount> SpecialClearRewards { get; private set; }
 
         public ParkOpenGroupModel(
             uint id,
@@ -42,7 +44,9 @@ namespace NL
             int maxHeartCount,
             int goalHeartCount,
             ParkOpenGroupViewInfo parkOpenGroupViewInfo,
-            RewardModel clearReward
+            RewardModel clearReward,
+            RewardModel firstClearReward,
+            List<ParkOpenRewardAmount> SpecialClearRewards
         )
         {
             this.Id = id;
@@ -51,6 +55,8 @@ namespace NL
             this.GoalHeartCount = goalHeartCount;
             this.ParkOpenGroupViewInfo = parkOpenGroupViewInfo;
             this.ClearReward = clearReward;
+            this.FirstClearReward = firstClearReward;
+            this.SpecialClearRewards = SpecialClearRewards;
         }
     }
 }

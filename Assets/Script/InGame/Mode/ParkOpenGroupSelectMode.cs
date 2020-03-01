@@ -30,9 +30,11 @@ namespace NL {
                         });
                 })
                 .Subscribe(parkOpenGroupModel => {
-                    // Start する場合は開放するが、しない場合はそのまま
+                    // Start する場合は開放する
                     if (parkOpenGroupModel != null)
                     {
+                        GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
+                        GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Close();
                         GameManager.Instance.ParkOpenManager.Open(parkOpenGroupModel);
                     }
                 }));

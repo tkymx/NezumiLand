@@ -7,6 +7,9 @@
         "MaxHeartCount": 100,
         "GoalHeartCount": 80,
         "ClearRewardId": 8,
+        "FirstClearRewardId": 8,
+        "SpecialClearRewardObtainHearts": [90,100],
+        "SpecialClearRewardIds": [8,8],
         "ViewGroupName": "Stage1 東の国",
         "ViewGroupDescription": "東の国はいつも忙しい。新しい勇者が生まれることをいつも期待しているからだ。",
         "ViewSelectorPosition": {
@@ -23,6 +26,9 @@
         "MaxHeartCount": 100,
         "GoalHeartCount": 80,
         "ClearRewardId": 8,
+        "FirstClearRewardId": 8,
+        "SpecialClearRewardObtainHearts": [90],
+        "SpecialClearRewardIds": [8],
         "ViewGroupName": "Stage2 西の国",
         "ViewGroupDescription": "西の国はいつも憂いに満ちている。憂いの意味も知らずに",
         "ViewSelectorPosition": {

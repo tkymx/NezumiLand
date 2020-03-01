@@ -31,8 +31,8 @@ namespace NL
         public void SetContents(ParkOpenGroupModel parkOpenGroupModel) {
             this.parkOpenStartView.UpdateView(
                 parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName,
-                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription);            
-            this.parkOpenStartRewardListPresenter.SetElement(parkOpenGroupModel.ClearReward.RewardAmounts);
+                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription);
+            this.parkOpenStartRewardListPresenter.SetRewardContents(parkOpenGroupModel);
         }
     }    
 }

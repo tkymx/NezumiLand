@@ -7,10 +7,10 @@ namespace NL {
         where CellView : ListCellViewBase 
     {
         [SerializeField]
-        private GameObject cellPrefab = null;
+        protected GameObject cellPrefab = null;
 
         [SerializeField]
-        private GameObject cellViewRoot = null;
+        protected GameObject cellViewRoot = null;
 
         protected Dictionary<Element, CellView> displayElementCellDictionary;
         private List<Element> elements;
@@ -34,7 +34,7 @@ namespace NL {
 
             // 要素の追加を行う
             foreach (var element in this.elements) {
-                var instance = Object.Appear2D (cellPrefab, cellViewRoot, Vector2.zero);
+                var instance = Object.Appear2D (this.onGetCellPrefab(element), cellViewRoot, Vector2.zero);
                 var cellView = instance.GetComponent<CellView> ();
                 cellView.Initialize ();
                 onReloadCell (element, cellView);
@@ -42,6 +42,10 @@ namespace NL {
             }
         }
 
+        protected virtual GameObject onGetCellPrefab(Element element)
+        {
+            return this.cellPrefab;
+        }
         protected abstract void onReloadCell (Element element, CellView cellView);
     }
 }

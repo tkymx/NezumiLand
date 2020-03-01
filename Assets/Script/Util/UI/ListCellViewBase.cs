@@ -20,11 +20,15 @@ namespace NL {
         }
 
         public void Enable () {
-            this.cellButton.interactable = true;
+            if (cellButton != null) {
+                this.cellButton.interactable = true;
+            }
         }
 
         public void Diasble () {
-            this.cellButton.interactable = false;
+            if (cellButton != null) {
+                this.cellButton.interactable = false;
+            }
         }
     }
 }

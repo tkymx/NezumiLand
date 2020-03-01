@@ -9,6 +9,12 @@ namespace NL
         [SerializeField]
         private ParkOpenResultView parkOpenResultView = null;
 
+        [SerializeField]
+        private ParkOpenResultObtainRewardInfoPresenter parkOpenResultObtainRewardInfoPresenter = null;
+
+        [SerializeField]
+        private HeartPresenter heartPresenter = null;
+
         public void Initialize() {
             this.parkOpenResultView.Initialize();
             this.disposables.Add(parkOpenResultView.OnBackObservable.Subscribe(_ => {
@@ -23,6 +29,8 @@ namespace NL
                 parkOpenResultAmount.GoalHeartCount.ToString(),
                 parkOpenResultAmount.IsSuccess
             );
+            this.parkOpenResultObtainRewardInfoPresenter.SetElement(parkOpenResultAmount.SpecialRewardResults);
+            this.heartPresenter.UpdateHeart(parkOpenResultAmount.CurrentHeartCount, parkOpenResultAmount.TargetGroupModel.MaxHeartCount, parkOpenResultAmount.GoalHeartCount);
         }
     }    
 }

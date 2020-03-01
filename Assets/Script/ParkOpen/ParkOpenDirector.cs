@@ -277,7 +277,7 @@ namespace NL
             // 時間
             GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Close();
 
-            this.OnCompleted.Execute(new ParkOpenResultAmount(currentHeartCount, this.parkOpenGroupModel.GoalHeartCount));                    
+            this.OnCompleted.Execute(new ParkOpenResultAmount(this.parkOpenGroupModel, currentHeartCount, this.parkOpenGroupModel.GoalHeartCount, this.parkOpenGroupModel.SpecialClearRewards));                    
         }
 
         public void UpdateByFrame()

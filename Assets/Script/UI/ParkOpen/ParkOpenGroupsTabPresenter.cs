@@ -59,5 +59,10 @@ namespace NL {
             base.onPrepareShow ();
             this.SelectTab (ParkOpenGroupsType.Story);
         }
+
+        public override void onPrepareClose() {
+            base.onPrepareClose();
+            GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Close();
+        }
     }
 }

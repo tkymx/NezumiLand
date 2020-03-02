@@ -19,6 +19,9 @@ namespace NL
         [SerializeField]
         private Button backButton = null;
 
+        [SerializeField]
+        private Text goalHeartCount = null;
+
         public TypeObservable<int> OnStartObservable { get; private set; }
         public TypeObservable<int> OnBackObservable { get; private set; }
 
@@ -34,9 +37,10 @@ namespace NL
             });
         }
 
-        public void UpdateView(string title, string description) {
+        public void UpdateView(string title, string description, string goalHeartCount) {
             this.title.text = title;
             this.description.text = description;
+            this.goalHeartCount.text = "目標ハート数:" + goalHeartCount;
         }
     }   
 }

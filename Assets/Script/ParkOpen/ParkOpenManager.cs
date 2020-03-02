@@ -46,11 +46,14 @@ namespace NL
         {
             Debug.Assert(this.parkOpenDirector is NopParkOpenDirector, "すでに実行中のDirectorが存在します。");
 
+            //モードを更新
+            GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
+
+            // エフェクトのあとにスタート
             this.disposables.Add(GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect").OnComplated.Subscribe(_ => {
                 this.parkOpenDirector = parkOpenDirector;
                 this.SetEventInternal(parkOpenGroupModel);
                 this.parkOpenDirector.UpdateParkOpenInfo();
-                GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
             }));
         }
 
@@ -89,13 +92,29 @@ namespace NL
                     GameManager.Instance.GameUIManager.ParkOpenResultPresenter.Show();
                     GameManager.Instance.GameUIManager.ParkOpenResultPresenter.SetContents(parkOpenResultAmount);
                 })
-                .SelectMany(_ => {
+                .SelectMany(parkOpenResultAmount => {
                     // 結果表示終了を待つ
-                    return GameManager.Instance.GameUIManager.ParkOpenResultPresenter.OnClose;
+                    return GameManager.Instance.GameUIManager.ParkOpenResultPresenter
+                        .OnClose
+                        .Select(_ => parkOpenResultAmount);
                 })
-                .Subscribe(_ => {
+                .Do(_ => {
+                    // 終了とする
                     this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
                     this.parkOpenDirector.UpdateParkOpenInfo();
+                })
+                .SelectMany<ParkOpenResultAmount, int>(parkOpenResultAmount => {
+                    if (!parkOpenResultAmount.IsSuccess) {
+                        return new ImmediatelyObservable<int>(0);
+                    }
+
+                    // 報酬の受け取り
+                    var rewardReceiver = new RewardReceiver(parkOpenResultAmount.TargetGroupModel.ClearReward);
+                    rewardReceiver.ReceiveRewardAndShowModel();
+                    return rewardReceiver.OnEndReceiveObservable;
+                })
+                .Subscribe(_ => {
+                    // 終了
                     this.OnCompleted.Execute(parkOpenGroupModel);
                 }));
         }

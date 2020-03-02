@@ -34,7 +34,6 @@ namespace NL {
                     if (parkOpenGroupModel != null)
                     {
                         GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
-                        GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Close();
                         GameManager.Instance.ParkOpenManager.Open(parkOpenGroupModel);
                     }
                 }));
@@ -42,8 +41,6 @@ namespace NL {
         public void OnUpdate () {
         }
         public void OnExit () {
-            GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
-            GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Close();
             
             this.disposables.ForEach(disposable => {
                 disposable.Dispose();

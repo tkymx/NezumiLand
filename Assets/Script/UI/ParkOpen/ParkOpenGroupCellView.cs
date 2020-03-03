@@ -22,6 +22,9 @@ namespace NL
         [SerializeField]
         private Button selectButton = null;
 
+        [SerializeField]
+        private GameObject specialIndicator = null;
+
         public TypeObservable<int> OnSelectObservable { get; private set; }
 
         public void Initialize() {
@@ -31,10 +34,11 @@ namespace NL
             });
         }
 
-        public void UpdateView(Sprite frameImage, Sprite iconImage, bool isClear) {
+        public void UpdateView(Sprite frameImage, Sprite iconImage, bool isClear, bool isSpecial) {
             this.frameImage.sprite = frameImage;
             this.iconImage.sprite = iconImage;
             this.clearIndicator.SetActive(isClear);
+            this.specialIndicator.SetActive(isSpecial);
         }
 
         public void SetSelectVisible(bool isSelect)

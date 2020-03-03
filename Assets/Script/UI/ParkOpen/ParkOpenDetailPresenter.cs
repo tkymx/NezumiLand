@@ -9,32 +9,34 @@ namespace NL
         [SerializeField]
         private ParkOpenDetailView parkOpenDetailView = null;
 
-        private ParkOpenGroupModel currentSetParkOpenGroupModel = null;
+        private PlayerParkOpenGroupModel currentSetPlayerParkOpenGroupModel = null;
 
         /// <summary>
         /// 出発が押された時
         /// </summary>
         /// <value></value>
-        public TypeObservable<ParkOpenGroupModel> OnStartObservable { get; private set; }
+        public TypeObservable<PlayerParkOpenGroupModel> OnStartObservable { get; private set; }
 
         public void Initialize() {
-            this.OnStartObservable = new TypeObservable<ParkOpenGroupModel>();
+            this.OnStartObservable = new TypeObservable<PlayerParkOpenGroupModel>();
             this.parkOpenDetailView.Initialize();
 
             // 開始ボタンを押した場合
             this.disposables.Add(parkOpenDetailView.OnStartObservable.Subscribe(_ => {
-                Debug.Assert(this.currentSetParkOpenGroupModel != null, "グループ情報がセットされていません");
-                this.OnStartObservable.Execute(this.currentSetParkOpenGroupModel);                
+                Debug.Assert(this.currentSetPlayerParkOpenGroupModel != null, "グループ情報がセットされていません");
+                this.OnStartObservable.Execute(this.currentSetPlayerParkOpenGroupModel);                
             }));
 
             this.Close();
         }
 
-        public void SetContents(ParkOpenGroupModel parkOpenGroupModel) {
-            this.currentSetParkOpenGroupModel = parkOpenGroupModel;
+        public void SetContents(PlayerParkOpenGroupModel playerParkOpenGroupModel) {
+            this.currentSetPlayerParkOpenGroupModel = playerParkOpenGroupModel;
             this.parkOpenDetailView.UpdateView(
-                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName, 
-                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription);
+                playerParkOpenGroupModel.ParkOpenGroupModel.ParkOpenGroupViewInfo.GroupName, 
+                playerParkOpenGroupModel.ParkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription,
+                playerParkOpenGroupModel.ParkOpenGroupModel.GoalHeartCount.ToString(),
+                playerParkOpenGroupModel.IsSpecial);
         }
     }    
 }

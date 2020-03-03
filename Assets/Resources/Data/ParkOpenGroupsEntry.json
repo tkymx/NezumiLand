@@ -12,7 +12,7 @@
         "Type": "Village",
         "BackgroundSpriteName": "village",
         "ParkOpenGroupIds":[
-            1, 2
+            3, 4
         ]
     }
 ]

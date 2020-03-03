@@ -104,6 +104,9 @@ namespace NL {
         private ParkOpenCardManager parkOpenCardManager;
         public ParkOpenCardManager ParkOpenCardManager => parkOpenCardManager;
 
+        private ParkOpenGroupManager parkOpenGroupManager;
+        public ParkOpenGroupManager ParkOpenGroupManager => parkOpenGroupManager;
+
         private ParkOpenGroupSelectManager parkOpenGroupSelectManager;
         public ParkOpenGroupSelectManager ParkOpenGroupSelectManager => parkOpenGroupSelectManager;
 
@@ -140,6 +143,7 @@ namespace NL {
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenRepository = new PlayerParkOpenRepository(parkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenGroupRepository = new PlayerParkOpenGroupRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -179,11 +183,21 @@ namespace NL {
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
             this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
             this.parkOpenCardManager = new ParkOpenCardManager(playerParkOpenRepository, playerParkOpenCardRepository, playerParkOpenDeckRepository);
+            this.parkOpenGroupManager = new ParkOpenGroupManager(parkOpenGroupRepository, playerParkOpenGroupRepository);
             this.parkOpenGroupSelectManager = new ParkOpenGroupSelectManager(parkOpenGroupsRepository);
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);
-            this.gameUIManager.Initialize (onegaiRepository, playerOnegaiRepository,monoInfoRepository, playerMonoInfoRepository, mousePurchaceTableRepository, playerMouseStockRepository, playerParkOpenRepository, parkOpenGroupsRepository);
+            this.gameUIManager.Initialize (
+                onegaiRepository, 
+                playerOnegaiRepository,
+                monoInfoRepository, 
+                playerMonoInfoRepository, 
+                mousePurchaceTableRepository, 
+                playerMouseStockRepository, 
+                playerParkOpenRepository, 
+                parkOpenGroupsRepository, 
+                playerParkOpenGroupRepository);
             this.mouseHomeManager.Initialize ();
             this.onegaiHomeManager.Initialize ();
             this.inputManager.Initialize ();

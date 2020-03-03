@@ -19,14 +19,14 @@ namespace NL {
         /// 遊び場開放をしたときのオブザーバブル
         /// </summary>
         /// <value></value>
-        public TypeObservable<ParkOpenGroupModel> OnStartParkOpenGroupObservable { get; private set; }
+        public TypeObservable<PlayerParkOpenGroupModel> OnStartParkOpenGroupObservable { get; private set; }
 
-        public void Initialize (IParkOpenGroupsRepository parkOpenGroupsRepository) {
-            this.OnStartParkOpenGroupObservable = new TypeObservable<ParkOpenGroupModel>();
+        public void Initialize (IParkOpenGroupsRepository parkOpenGroupsRepository, IPlayerParkOpenGroupRepository playerParkOpenGroupRepository) {
+            this.OnStartParkOpenGroupObservable = new TypeObservable<PlayerParkOpenGroupModel>();
             this.parkOpenGroupsRepository = parkOpenGroupsRepository;
 
             this.parkOpenGroupsTabView.Initialize();
-            this.parkOpenGroupsPresenter.Initialize();
+            this.parkOpenGroupsPresenter.Initialize(playerParkOpenGroupRepository);
 
             // タブを押された時
             this.disposables.Add(this.parkOpenGroupsTabView.OnClickTypeObservable.Subscribe(type => {
@@ -40,8 +40,8 @@ namespace NL {
             }));
 
             // 選択された時
-            this.disposables.Add(this.parkOpenGroupsPresenter.OnStartParkOpenGroupObservable.Subscribe(parkOpenGroupModel => {
-                this.OnStartParkOpenGroupObservable.Execute(parkOpenGroupModel);
+            this.disposables.Add(this.parkOpenGroupsPresenter.OnStartParkOpenGroupObservable.Subscribe(playerParkOpenGroupModel => {
+                this.OnStartParkOpenGroupObservable.Execute(playerParkOpenGroupModel);
             }));
 
             this.Close ();

@@ -9,14 +9,14 @@ namespace NL {
 
         public struct SpecialRewardResult
         {
-            public ParkOpenRewardAmount ParkOpenRewardAmount { get; }
+            public ParkOpenHeartRewardAmount ParkOpenHeartRewardAmount { get; }
             public bool IsClear { get; }
 
             public SpecialRewardResult(
-                ParkOpenRewardAmount parkOpenRewardAmount,
+                ParkOpenHeartRewardAmount parkOpenRewardAmount,
                 int currentHeartCount
             ) {
-                this.ParkOpenRewardAmount = parkOpenRewardAmount;
+                this.ParkOpenHeartRewardAmount = parkOpenRewardAmount;
                 this.IsClear = parkOpenRewardAmount.ObtainHeartCount <= currentHeartCount;
             }
         }
@@ -40,7 +40,7 @@ namespace NL {
             }
         }
 
-        public ParkOpenResultAmount (ParkOpenGroupModel targetGroupModel, int currentHeartCount, int goalHeartCount, List<ParkOpenRewardAmount> parkOpenRewardAmounts) {
+        public ParkOpenResultAmount (ParkOpenGroupModel targetGroupModel, int currentHeartCount, int goalHeartCount, List<ParkOpenHeartRewardAmount> parkOpenRewardAmounts) {
             this.targetGroupModel = targetGroupModel;
             this.currentHeartCount = currentHeartCount;
             this.goalHeartCount = goalHeartCount;

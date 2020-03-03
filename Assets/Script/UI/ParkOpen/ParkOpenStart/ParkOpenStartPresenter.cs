@@ -28,12 +28,12 @@ namespace NL
             this.Close();
         }
 
-        public void SetContents(ParkOpenGroupModel parkOpenGroupModel) {
+        public void SetContents(PlayerParkOpenGroupModel playerParkOpenGroupModel) {
             this.parkOpenStartView.UpdateView(
-                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupName,
-                parkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription,
-                parkOpenGroupModel.GoalHeartCount.ToString());
-            this.parkOpenStartRewardListPresenter.SetRewardContents(parkOpenGroupModel);
+                playerParkOpenGroupModel.ParkOpenGroupModel.ParkOpenGroupViewInfo.GroupName,
+                playerParkOpenGroupModel.ParkOpenGroupModel.ParkOpenGroupViewInfo.GroupDescription,
+                playerParkOpenGroupModel.ParkOpenGroupModel.GoalHeartCount.ToString());
+            this.parkOpenStartRewardListPresenter.SetRewardContents(playerParkOpenGroupModel);
         }
     }    
 }

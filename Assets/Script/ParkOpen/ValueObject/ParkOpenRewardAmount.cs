@@ -7,12 +7,12 @@ namespace NL
     /// <summary>
     /// 開放の報酬情報
     /// </summary>
-    public struct ParkOpenRewardAmount
+    public struct ParkOpenHeartRewardAmount
     {
         public int ObtainHeartCount { get; private set; }
         public RewardModel Reward { get; private set; }
 
-        public ParkOpenRewardAmount(
+        public ParkOpenHeartRewardAmount(
             int obtainHeartCount,
             RewardModel reward
         )

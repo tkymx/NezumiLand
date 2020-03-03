@@ -12,8 +12,9 @@ namespace NL {
         public int GoalHeartCount;
         public uint ClearRewardId;
         public uint FirstClearRewardId;
-        public int[] SpecialClearRewardObtainHearts;
-        public uint[] SpecialClearRewardIds;
+        public uint SpecialClearRewardId;
+        public int[] ObtainHeartCounts;
+        public uint[] ObtainHeartRewardIds;
         // View
         public string ViewGroupName;
         public string ViewGroupDescription;
@@ -50,16 +51,19 @@ namespace NL {
             var firstClearRewardModel = this.rewardRepository.Get(entry.FirstClearRewardId);
             Debug.Assert(firstClearRewardModel != null, "報酬がありません ID = " + entry.FirstClearRewardId.ToString());
 
-            var specialClearRewardAmounts = new List<ParkOpenRewardAmount>();
-            for (int rewardIndex = 0; rewardIndex < entry.SpecialClearRewardIds.Count(); rewardIndex++)
+            var specialClearRewardModel = this.rewardRepository.Get(entry.SpecialClearRewardId);
+            Debug.Assert(specialClearRewardModel != null, "報酬がありません ID = " + entry.SpecialClearRewardId.ToString());
+
+            var obtainedHeartRewardAmounts = new List<ParkOpenHeartRewardAmount>();
+            for (int rewardIndex = 0; rewardIndex < entry.ObtainHeartCounts.Count(); rewardIndex++)
             {
-                var heartCount = entry.SpecialClearRewardObtainHearts[rewardIndex];
-                var rewardId = entry.SpecialClearRewardIds[rewardIndex];
+                var heartCount = entry.ObtainHeartCounts[rewardIndex];
+                var rewardId = entry.ObtainHeartRewardIds[rewardIndex];
 
-                var specialClearRewardModel = this.rewardRepository.Get(rewardId);
-                Debug.Assert(specialClearRewardModel != null, "報酬がありません ID = " + rewardId.ToString());
+                var obtainHeartRewardModel = this.rewardRepository.Get(rewardId);
+                Debug.Assert(obtainHeartRewardModel != null, "報酬がありません ID = " + rewardId.ToString());
 
-                specialClearRewardAmounts.Add(new ParkOpenRewardAmount(heartCount,specialClearRewardModel));
+                obtainedHeartRewardAmounts.Add(new ParkOpenHeartRewardAmount(heartCount,obtainHeartRewardModel));
             }
 
             return new ParkOpenGroupModel (
@@ -75,7 +79,8 @@ namespace NL {
                 ),
                 clearRewardModel,
                 firstClearRewardModel,
-                specialClearRewardAmounts);
+                specialClearRewardModel,
+                obtainedHeartRewardAmounts);
         }
 
         public IEnumerable<ParkOpenGroupModel> GetAll () {

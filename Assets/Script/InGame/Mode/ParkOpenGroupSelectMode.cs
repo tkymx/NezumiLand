@@ -21,20 +21,20 @@ namespace NL {
 
             // 出撃が押されたら出撃する
             this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.OnStartParkOpenGroupObservable
-                .SelectMany(parkOpenGroupModel => {
+                .SelectMany(playerParkOpenGroupModel => {
                     GameManager.Instance.GameUIManager.ParkOpenStartPresenter.Show();
-                    GameManager.Instance.GameUIManager.ParkOpenStartPresenter.SetContents(parkOpenGroupModel);
+                    GameManager.Instance.GameUIManager.ParkOpenStartPresenter.SetContents(playerParkOpenGroupModel);
                     return GameManager.Instance.GameUIManager.ParkOpenStartPresenter.OnIsStartObservable
                         .Select(isStart => {
-                            return isStart ? parkOpenGroupModel : null;
+                            return isStart ? playerParkOpenGroupModel : null;
                         });
                 })
-                .Subscribe(parkOpenGroupModel => {
+                .Subscribe(playerParkOpenGroupModel => {
                     // Start する場合は開放する
-                    if (parkOpenGroupModel != null)
+                    if (playerParkOpenGroupModel != null)
                     {
                         GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
-                        GameManager.Instance.ParkOpenManager.Open(parkOpenGroupModel);
+                        GameManager.Instance.ParkOpenManager.Open(playerParkOpenGroupModel.ParkOpenGroupModel);
                     }
                 }));
         }

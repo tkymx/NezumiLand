@@ -16,6 +16,12 @@ namespace NL
         [SerializeField]
         private Button startButton = null;
 
+        [SerializeField]
+        private GameObject specialIndicator = null;
+
+        [SerializeField]
+        private Text goalHeart = null;
+
         public TypeObservable<int> OnStartObservable { get; private set; }
 
         public void Initialize() {
@@ -25,9 +31,11 @@ namespace NL
             });
         }
 
-        public void UpdateView(string title, string description) {
+        public void UpdateView(string title, string description, string goalHeart, bool isSpecial) {
             this.title.text = title;
             this.description.text = description;
+            this.specialIndicator.SetActive(isSpecial);
+            this.goalHeart.text = "目標ハート " + goalHeart;
         }
     }   
 }

@@ -98,15 +98,24 @@ namespace NL
                         .OnClose
                         .Select(_ => parkOpenResultAmount);
                 })
-                .Do(_ => {
-                    // 終了とする
-                    this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
-                    this.parkOpenDirector.UpdateParkOpenInfo();
-                })
                 .SelectMany<ParkOpenResultAmount, int>(parkOpenResultAmount => {
                     if (!parkOpenResultAmount.IsSuccess) {
                         return new ImmediatelyObservable<int>(0);
                     }
+                    
+                    // 以下はトランザクションにしたい。。。。。
+                    
+                    // 終了とする
+                    this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
+                    this.parkOpenDirector.UpdateParkOpenInfo();
+                    
+                    // 結果のフラグを立てる
+                    if (parkOpenResultAmount.IsSuccess) {
+                        GameManager.Instance.ParkOpenGroupManager.ClearGroup(parkOpenResultAmount.TargetGroupModel);
+                    }
+
+                    // 次のクエストの状態のロットを行う
+                    GameManager.Instance.ParkOpenGroupManager.LotParkOpenGroup();
 
                     // 報酬の受け取り
                     var rewardReceiver = new RewardReceiver(parkOpenResultAmount.TargetGroupModel.ClearReward);

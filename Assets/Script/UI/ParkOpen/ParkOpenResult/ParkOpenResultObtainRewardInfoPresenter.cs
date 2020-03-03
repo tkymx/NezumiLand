@@ -6,7 +6,7 @@ namespace NL {
     public class ParkOpenResultObtainRewardInfoPresenter : ListPresenterBase<ParkOpenResultAmount.SpecialRewardResult, ParkOpenResultObtainRewardInfoCellView> {
         protected override void onReloadCell (ParkOpenResultAmount.SpecialRewardResult element, ParkOpenResultObtainRewardInfoCellView cellView) {
             cellView.UpdateView(
-                string.Format("{0}ハート獲得達成", element.ParkOpenRewardAmount.ObtainHeartCount),
+                string.Format("{0}ハート獲得達成", element.ParkOpenHeartRewardAmount.ObtainHeartCount),
                 element.IsClear ? "成功" : "失敗"
             );
         }

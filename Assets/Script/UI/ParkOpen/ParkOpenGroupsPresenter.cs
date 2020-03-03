@@ -22,14 +22,18 @@ namespace NL
 
         private List<IDisposable> cellDisposables = new List<IDisposable>();
 
+        private IPlayerParkOpenGroupRepository playerParkOpenGroupRepository = null;
+
         /// <summary>
         /// 遊び場開放をしたときのオブザーバブル
         /// </summary>
         /// <value></value>
-        public TypeObservable<ParkOpenGroupModel> OnStartParkOpenGroupObservable { get; private set; }
+        public TypeObservable<PlayerParkOpenGroupModel> OnStartParkOpenGroupObservable { get; private set; }
 
-        public void Initialize() {
-            this.OnStartParkOpenGroupObservable = new TypeObservable<ParkOpenGroupModel>();
+        public void Initialize(IPlayerParkOpenGroupRepository playerParkOpenGroupRepository) {
+
+            this.playerParkOpenGroupRepository = playerParkOpenGroupRepository;
+            this.OnStartParkOpenGroupObservable = new TypeObservable<PlayerParkOpenGroupModel>();
             this.parkOpenGroupModelToCellViewDic = new Dictionary<ParkOpenGroupModel, ParkOpenGroupCellView>();
 
             this.parkOpenGroupsView.Initialize();
@@ -59,9 +63,10 @@ namespace NL
             this.cellDisposables.Clear();
 
             // セルの生成
-            foreach (var parkOpenGroup in parkOpenGroupsModel.ParkOpenGroupModels)
+            var playerParkOpenGroups = this.playerParkOpenGroupRepository.GetDisplayale(parkOpenGroupsModel);
+            foreach (var playerParkOpenGroup in playerParkOpenGroups)
             {
-                var instance = Object.AppearLocal2D(this.parkOpenGroupCellPrefab, this.parkOpenGroupCellRoot, parkOpenGroup.ParkOpenGroupViewInfo.SelectorPosition);
+                var instance = Object.AppearLocal2D(this.parkOpenGroupCellPrefab, this.parkOpenGroupCellRoot, playerParkOpenGroup.ParkOpenGroupModel.ParkOpenGroupViewInfo.SelectorPosition);
                 var parkOpenGroupCellView = instance.GetComponent<ParkOpenGroupCellView>();
                 Debug.Assert(parkOpenGroupCellView != null, "ParkOpenGroupCellViewが存在しません");
 
@@ -69,24 +74,24 @@ namespace NL
                 parkOpenGroupCellView.Initialize();
 
                 // 情報を設定
-                var icon = ResourceLoader.LoadParkOpenGroupIconSprite(parkOpenGroup.ParkOpenGroupViewInfo.IconName);
-                parkOpenGroupCellView.UpdateView(defaultFrame, icon, false /*後でプレイヤーデータから取得*/);
+                var icon = ResourceLoader.LoadParkOpenGroupIconSprite(playerParkOpenGroup.ParkOpenGroupModel.ParkOpenGroupViewInfo.IconName);
+                parkOpenGroupCellView.UpdateView(defaultFrame, icon, playerParkOpenGroup.IsClear, playerParkOpenGroup.IsSpecial);
 
                 // イベントの設定
                 this.cellDisposables.Add(parkOpenGroupCellView.OnSelectObservable.Subscribe(_ => {
-                    this.Select(parkOpenGroup);
+                    this.Select(playerParkOpenGroup.ParkOpenGroupModel);
 
                     GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.Show();
-                    GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.SetContents(parkOpenGroup);
+                    GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.SetContents(playerParkOpenGroup);
                 }));
 
                 // 追加
-                this.parkOpenGroupModelToCellViewDic.Add(parkOpenGroup, parkOpenGroupCellView);
+                this.parkOpenGroupModelToCellViewDic.Add(playerParkOpenGroup.ParkOpenGroupModel, parkOpenGroupCellView);
             }
 
             // スタートのオブザーバブル
-            this.cellDisposables.Add(GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.OnStartObservable.Subscribe(parkOpenGroup => {
-                this.OnStartParkOpenGroupObservable.Execute(parkOpenGroup);
+            this.cellDisposables.Add(GameManager.Instance.GameUIManager.ParkOpenDetailPresenter.OnStartObservable.Subscribe(playerParkOpenGroup => {
+                this.OnStartParkOpenGroupObservable.Execute(playerParkOpenGroup);
             }));
 
             // 背景を変更

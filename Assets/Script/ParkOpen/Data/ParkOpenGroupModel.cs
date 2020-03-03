@@ -36,7 +36,8 @@ namespace NL
         public ParkOpenGroupViewInfo ParkOpenGroupViewInfo { get; private set; }
         public RewardModel ClearReward { get; private set; }
         public RewardModel FirstClearReward { get; private set; }
-        public List<ParkOpenRewardAmount> SpecialClearRewards { get; private set; }
+        public RewardModel SpecialClearReward { get; private set; }
+        public List<ParkOpenHeartRewardAmount> ObtainedHeartRewards { get; private set; }
 
         public ParkOpenGroupModel(
             uint id,
@@ -46,7 +47,8 @@ namespace NL
             ParkOpenGroupViewInfo parkOpenGroupViewInfo,
             RewardModel clearReward,
             RewardModel firstClearReward,
-            List<ParkOpenRewardAmount> SpecialClearRewards
+            RewardModel specialClearReward,
+            List<ParkOpenHeartRewardAmount> obtainedHeartRewards
         )
         {
             this.Id = id;
@@ -56,7 +58,8 @@ namespace NL
             this.ParkOpenGroupViewInfo = parkOpenGroupViewInfo;
             this.ClearReward = clearReward;
             this.FirstClearReward = firstClearReward;
-            this.SpecialClearRewards = SpecialClearRewards;
+            this.SpecialClearReward = specialClearReward;
+            this.ObtainedHeartRewards = obtainedHeartRewards;
         }
     }
 }

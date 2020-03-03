@@ -117,7 +117,8 @@ namespace NL {
             IMousePurchaceTableRepository mousePurchaceTableRepository,
             IPlayerMouseStockRepository playerMouseStockRepository,
             IPlayerParkOpenRepository playerParkOpenRepository,
-            IParkOpenGroupsRepository parkOpenGroupsRepository
+            IParkOpenGroupsRepository parkOpenGroupsRepository,
+            IPlayerParkOpenGroupRepository playerParkOpenGroupRepository
         ) {
             this.monoTabPresenter.Initialize (playerMonoInfoRepository);
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
@@ -142,7 +143,7 @@ namespace NL {
             this.parkOpenDeckPresenter.Initialize();
             this.parkOpenTimePresenter.Initialize();
             this.parkOpenResultPresenter.Initialize();
-            this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository);
+            this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository, playerParkOpenGroupRepository);
             this.parkOpenDetailPresenter.Initialize();
             this.parkOpenStartPresenter.Initialize();
         }

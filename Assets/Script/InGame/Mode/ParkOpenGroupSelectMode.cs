@@ -34,7 +34,7 @@ namespace NL {
                     if (playerParkOpenGroupModel != null)
                     {
                         GameManager.Instance.GameUIManager.ParkOpenGroupsTabPresenter.Close();
-                        GameManager.Instance.ParkOpenManager.Open(playerParkOpenGroupModel.ParkOpenGroupModel);
+                        GameManager.Instance.ParkOpenManager.Open(playerParkOpenGroupModel);
                     }
                 }));
         }

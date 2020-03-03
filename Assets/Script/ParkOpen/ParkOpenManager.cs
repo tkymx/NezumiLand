@@ -30,19 +30,19 @@ namespace NL
             this.playerParkOpenRepository = playerParkOpenRepository;
         }
 
-        public void Open(ParkOpenGroupModel parkOpenGroupModel)
+        public void Open(PlayerParkOpenGroupModel playerParkOpenGroupModel)
         {
-            var parkOpenDirector = new ParkOpenDirector(parkOpenGroupModel, playerParkOpenRepository);
-            Open(parkOpenDirector, parkOpenGroupModel);
+            var parkOpenDirector = new ParkOpenDirector(playerParkOpenGroupModel, playerParkOpenRepository);
+            Open(parkOpenDirector, playerParkOpenGroupModel);
         }
 
         public void Open(PlayerParkOpenModel playerParkOpenModel)
         {
             var parkOpenDirector = new ParkOpenDirector(playerParkOpenModel, playerParkOpenRepository);
-            Open(parkOpenDirector, playerParkOpenModel.ParkOpenGroupModel);
+            Open(parkOpenDirector, playerParkOpenModel.PlayerParkOpenGroupModel);
         }
 
-        private void Open(IParkOpenDirector parkOpenDirector, ParkOpenGroupModel parkOpenGroupModel)
+        private void Open(IParkOpenDirector parkOpenDirector, PlayerParkOpenGroupModel playerParkOpenGroupModel)
         {
             Debug.Assert(this.parkOpenDirector is NopParkOpenDirector, "すでに実行中のDirectorが存在します。");
 
@@ -52,7 +52,7 @@ namespace NL
             // エフェクトのあとにスタート
             this.disposables.Add(GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect").OnComplated.Subscribe(_ => {
                 this.parkOpenDirector = parkOpenDirector;
-                this.SetEventInternal(parkOpenGroupModel);
+                this.SetEventInternal(playerParkOpenGroupModel);
                 this.parkOpenDirector.UpdateParkOpenInfo();
             }));
         }
@@ -70,7 +70,7 @@ namespace NL
         /// 遊び場公開のイベント周りの設定
         /// </summary>
         /// <param name="parkOpenGroupModel"></param>
-        private void SetEventInternal(ParkOpenGroupModel parkOpenGroupModel)
+        private void SetEventInternal(PlayerParkOpenGroupModel playerParkOpenGroupModel)
         {
             this.ClearDisposables();
 
@@ -99,33 +99,68 @@ namespace NL
                         .Select(_ => parkOpenResultAmount);
                 })
                 .SelectMany<ParkOpenResultAmount, int>(parkOpenResultAmount => {
-                    if (!parkOpenResultAmount.IsSuccess) {
-                        return new ImmediatelyObservable<int>(0);
-                    }
                     
                     // 以下はトランザクションにしたい。。。。。
-                    
+
                     // 終了とする
                     this.parkOpenDirector = new NopParkOpenDirector(this.playerParkOpenRepository);
                     this.parkOpenDirector.UpdateParkOpenInfo();
-                    
-                    // 結果のフラグを立てる
-                    if (parkOpenResultAmount.IsSuccess) {
-                        GameManager.Instance.ParkOpenGroupManager.ClearGroup(parkOpenResultAmount.TargetGroupModel);
-                    }
 
                     // 次のクエストの状態のロットを行う
                     GameManager.Instance.ParkOpenGroupManager.LotParkOpenGroup();
 
-                    // 報酬の受け取り
-                    var rewardReceiver = new RewardReceiver(parkOpenResultAmount.TargetGroupModel.ClearReward);
-                    rewardReceiver.ReceiveRewardAndShowModel();
+                    // 結果のフラグを立てる
+                    if (parkOpenResultAmount.IsSuccess) {
+                        GameManager.Instance.ParkOpenGroupManager.ToClearGroup(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel);
+                    }
+
+                    if (!parkOpenResultAmount.IsSuccess) {
+                        return new ImmediatelyObservable<int>(0);
+                    }
+
+                    // 成功していたら報酬を受け取る
+
+                    var rewardReceiver = new RewardReceiver(this.FetchAquirableReward(parkOpenResultAmount));
+                    rewardReceiver.ReceiveRewardAndShowModel();                    
                     return rewardReceiver.OnEndReceiveObservable;
                 })
                 .Subscribe(_ => {
                     // 終了
-                    this.OnCompleted.Execute(parkOpenGroupModel);
+                    this.OnCompleted.Execute(playerParkOpenGroupModel.ParkOpenGroupModel);
                 }));
+        }
+
+        /// <summary>
+        /// 各報酬の集計を行う
+        /// </summary>
+        /// <param name="parkOpenResultAmount"></param>
+        /// <returns></returns>
+        private List<IRewardAmount> FetchAquirableReward(ParkOpenResultAmount parkOpenResultAmount)
+        {
+            List<IRewardAmount> rewardAmounts = new List<IRewardAmount>();
+
+            // 通常報酬
+            rewardAmounts.AddRange(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel.ClearReward.RewardAmounts);
+
+            // 初回クリア報酬
+            if (parkOpenResultAmount.IsFirstClear) {
+                rewardAmounts.AddRange(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel.FirstClearReward.RewardAmounts);
+            }
+
+            // 特別報酬
+            if (parkOpenResultAmount.TargetPlayerGroupModel.IsSpecial) {
+                rewardAmounts.AddRange(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel.SpecialClearReward.RewardAmounts);                                
+            }
+
+            // 成果報酬
+            foreach (var specialRewardResult in parkOpenResultAmount.SpecialRewardResults)
+            {
+                if (specialRewardResult.IsClear) {
+                    rewardAmounts.AddRange(specialRewardResult.ParkOpenHeartRewardAmount.Reward.RewardAmounts);
+                }
+            }
+
+            return rewardAmounts;
         }
 
         private float elapsedTime = 0;

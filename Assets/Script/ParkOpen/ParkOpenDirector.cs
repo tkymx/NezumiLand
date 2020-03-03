@@ -157,7 +157,9 @@ namespace NL
     {
         private int currentHeartCount = 0;
 
-        private ParkOpenGroupModel parkOpenGroupModel;
+        private PlayerParkOpenGroupModel playerParkOpenGroupModel;
+        private ParkOpenGroupModel parkOpenGroupModel => playerParkOpenGroupModel.ParkOpenGroupModel;
+
         private ParkOpenWaveCounter waveCounter;
 
         private ParkOpenObtainHeartService parkOpenObtainHeartService = null;
@@ -183,20 +185,20 @@ namespace NL
 
         private List<IDisposable> disposables = new List<IDisposable>();
 
-        public ParkOpenDirector(ParkOpenGroupModel parkOpenGroupModel, IPlayerParkOpenRepository playerParkOpenRepository)
+        public ParkOpenDirector(PlayerParkOpenGroupModel playerParkOpenGroupModel, IPlayerParkOpenRepository playerParkOpenRepository)
         {
-            this.parkOpenGroupModel = parkOpenGroupModel;
+            this.playerParkOpenGroupModel = playerParkOpenGroupModel;
             this.currentHeartCount = 0;
 
             this.InitializeInternal(playerParkOpenRepository);
-            this.InitializeWave(parkOpenGroupModel.ParkOpenWaves.Length);
+            this.InitializeWave(playerParkOpenGroupModel.ParkOpenGroupModel.ParkOpenWaves.Length);
 
             this.PrepareParkOpen(); 
         }
 
         public ParkOpenDirector(PlayerParkOpenModel playerParkOpenModel, IPlayerParkOpenRepository playerParkOpenRepository)
         {
-            this.parkOpenGroupModel = playerParkOpenModel.ParkOpenGroupModel;
+            this.playerParkOpenGroupModel = playerParkOpenModel.PlayerParkOpenGroupModel;
             this.currentHeartCount = playerParkOpenModel.currentHeartCount;
 
             this.InitializeInternal(playerParkOpenRepository);
@@ -277,7 +279,7 @@ namespace NL
             // 時間
             GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Close();
 
-            this.OnCompleted.Execute(new ParkOpenResultAmount(this.parkOpenGroupModel, currentHeartCount, this.parkOpenGroupModel.GoalHeartCount, this.parkOpenGroupModel.ObtainedHeartRewards));                    
+            this.OnCompleted.Execute(new ParkOpenResultAmount(this.playerParkOpenGroupModel, currentHeartCount, this.parkOpenGroupModel.GoalHeartCount, this.parkOpenGroupModel.ObtainedHeartRewards));                    
         }
 
         public void UpdateByFrame()
@@ -291,7 +293,7 @@ namespace NL
                 true, 
                 this.waveCounter.ElapsedTime, 
                 this.waveCounter.NextWave, 
-                this.parkOpenGroupModel,
+                this.playerParkOpenGroupModel,
                 this.currentHeartCount);
         }
 

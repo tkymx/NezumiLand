@@ -13,13 +13,13 @@ namespace NL
             this.playerParkOpenRepository = playerParkOpenRepository;
         }
 
-        public void Execute(bool isOpen, float elapsedTime = 0, int nextWave = 0, ParkOpenGroupModel parkOpenGroupModel = null, int currentHeartCount = 0) {
+        public void Execute(bool isOpen, float elapsedTime = 0, int nextWave = 0, PlayerParkOpenGroupModel playerParkOpenGroupModel = null, int currentHeartCount = 0) {
             var playerParkOpenModel = this.playerParkOpenRepository.GetOwn();
             playerParkOpenModel.Update(
                 isOpen,
                 elapsedTime,
                 nextWave,
-                parkOpenGroupModel,
+                playerParkOpenGroupModel,
                 currentHeartCount
             );
             this.playerParkOpenRepository.Store(playerParkOpenModel);

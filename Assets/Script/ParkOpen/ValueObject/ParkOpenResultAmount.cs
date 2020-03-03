@@ -21,8 +21,8 @@ namespace NL {
             }
         }
 
-        private ParkOpenGroupModel targetGroupModel;
-        public ParkOpenGroupModel TargetGroupModel => targetGroupModel;
+        private PlayerParkOpenGroupModel targetPlayerGroupModel;
+        public PlayerParkOpenGroupModel TargetPlayerGroupModel => targetPlayerGroupModel;
 
         private int currentHeartCount;
         public int CurrentHeartCount => currentHeartCount;
@@ -40,8 +40,14 @@ namespace NL {
             }
         }
 
-        public ParkOpenResultAmount (ParkOpenGroupModel targetGroupModel, int currentHeartCount, int goalHeartCount, List<ParkOpenHeartRewardAmount> parkOpenRewardAmounts) {
-            this.targetGroupModel = targetGroupModel;
+        public bool IsFirstClear {
+            get {
+                return this.IsSuccess && !this.TargetPlayerGroupModel.IsClear;
+            }
+        }
+
+        public ParkOpenResultAmount (PlayerParkOpenGroupModel targetPlayerGroupModel, int currentHeartCount, int goalHeartCount, List<ParkOpenHeartRewardAmount> parkOpenRewardAmounts) {
+            this.targetPlayerGroupModel = targetPlayerGroupModel;
             this.currentHeartCount = currentHeartCount;
             this.goalHeartCount = goalHeartCount;
             this.specialRewardResults = parkOpenRewardAmounts

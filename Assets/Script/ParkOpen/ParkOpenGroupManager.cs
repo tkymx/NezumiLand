@@ -19,7 +19,7 @@ namespace NL
             this.parkOpenGroupSetGroupOpenTypeService = new ParkOpenGroupSetGroupOpenTypeService(parkOpenGroupRepository, playerParkOpenGroupRepository);
         }
 
-        public void ClearGroup(ParkOpenGroupModel parkOpenGroupModel)
+        public void ToClearGroup(ParkOpenGroupModel parkOpenGroupModel)
         {
             this.parkOpenGroupClearService.Execute(parkOpenGroupModel);
         }

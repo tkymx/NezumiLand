@@ -9,7 +9,7 @@ namespace NL {
         public bool IsOpen;
         public float ElapsedTime;
         public int NextWave;
-        public uint ParkOpenGroupId;
+        public uint PlayerParkOpenGroupId;
         public int CurrentHeartCount;
         public bool HasPlayerParkOpenDeckId;
         public uint PlayerParkOpenDeckId;
@@ -29,12 +29,12 @@ namespace NL {
     public class PlayerParkOpenRepository : PlayerRepositoryBase<PlayerParkOpenEntry>, IPlayerParkOpenRepository {
         private readonly uint ownId = 0;
 
-        private readonly IParkOpenGroupRepository parkOpenGroupRepository;
+        private readonly IPlayerParkOpenGroupRepository playerParkOpenGroupRepository;
         private readonly IPlayerParkOpenDeckRepository playerParkOpenDeckRepository = null;
 
-        public PlayerParkOpenRepository (IParkOpenGroupRepository parkOpenGroupRepository, IPlayerParkOpenDeckRepository playerParkOpenDeckRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerParkOpenEntrys) 
+        public PlayerParkOpenRepository (IPlayerParkOpenGroupRepository playerParkOpenGroupRepository, IPlayerParkOpenDeckRepository playerParkOpenDeckRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerParkOpenEntrys) 
         {
-            this.parkOpenGroupRepository = parkOpenGroupRepository;
+            this.playerParkOpenGroupRepository = playerParkOpenGroupRepository;
             this.playerParkOpenDeckRepository = playerParkOpenDeckRepository;
         }
 
@@ -56,10 +56,10 @@ namespace NL {
                 return playerParkOpenModel;
             }
 
-            ParkOpenGroupModel parkOpeGroupModel = null;
+            PlayerParkOpenGroupModel playerParkOpeGroupModel = null;
             if (foundEntry.IsOpen) {
-                parkOpeGroupModel = this.parkOpenGroupRepository.Get(foundEntry.ParkOpenGroupId);
-                Debug.Assert(parkOpeGroupModel != null, "parkOpeGroupModelがありません" + foundEntry.ParkOpenGroupId.ToString());
+                playerParkOpeGroupModel = this.playerParkOpenGroupRepository.Get(foundEntry.PlayerParkOpenGroupId);
+                Debug.Assert(playerParkOpeGroupModel != null, "parkOpeGroupModelがありません" + foundEntry.PlayerParkOpenGroupId.ToString());
             }
 
             PlayerParkOpenDeckModel playerParkOpenDeckModel = null;
@@ -73,7 +73,7 @@ namespace NL {
                 foundEntry.IsOpen, 
                 foundEntry.ElapsedTime, 
                 foundEntry.NextWave, 
-                parkOpeGroupModel,
+                playerParkOpeGroupModel,
                 foundEntry.CurrentHeartCount,
                 playerParkOpenDeckModel,
                 foundEntry.CanUseCard1,
@@ -88,7 +88,7 @@ namespace NL {
                 IsOpen = playerParkOpenModel.IsOpen,
                 ElapsedTime = playerParkOpenModel.ElapsedTime,
                 NextWave = playerParkOpenModel.NextWave,
-                ParkOpenGroupId = playerParkOpenModel.ParkOpenGroupModel != null ? playerParkOpenModel.ParkOpenGroupModel.Id : 0,
+                PlayerParkOpenGroupId = playerParkOpenModel.PlayerParkOpenGroupModel != null ? playerParkOpenModel.PlayerParkOpenGroupModel.Id : 0,
                 CurrentHeartCount = playerParkOpenModel.currentHeartCount,
                 HasPlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null,
                 PlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null ? playerParkOpenModel.CurrentParkOpenDeckModel.Id : 0,

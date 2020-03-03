@@ -30,7 +30,7 @@ namespace NL
                 parkOpenResultAmount.IsSuccess
             );
             this.parkOpenResultObtainRewardInfoPresenter.SetElement(parkOpenResultAmount.SpecialRewardResults);
-            this.heartPresenter.UpdateHeart(parkOpenResultAmount.CurrentHeartCount, parkOpenResultAmount.TargetGroupModel.MaxHeartCount, parkOpenResultAmount.GoalHeartCount);
+            this.heartPresenter.UpdateHeart(parkOpenResultAmount.CurrentHeartCount, parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel.MaxHeartCount, parkOpenResultAmount.GoalHeartCount);
         }
     }    
 }

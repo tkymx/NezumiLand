@@ -142,8 +142,8 @@ namespace NL {
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
             var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
-            var playerParkOpenRepository = new PlayerParkOpenRepository(parkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenGroupRepository = new PlayerParkOpenGroupRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenRepository = new PlayerParkOpenRepository(playerParkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);

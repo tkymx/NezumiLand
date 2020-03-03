@@ -13,7 +13,7 @@ namespace NL
         public bool IsOpen { get; private set; }
         public float ElapsedTime { get; private set; }
         public int NextWave { get; private set; }
-        public ParkOpenGroupModel ParkOpenGroupModel { get; private set; }
+        public PlayerParkOpenGroupModel PlayerParkOpenGroupModel { get; private set; }
         public int currentHeartCount { get; private set; }
         public PlayerParkOpenDeckModel CurrentParkOpenDeckModel { get; private set; }
         public bool CanUseCard1 { get; private set; }
@@ -25,7 +25,7 @@ namespace NL
             bool isOpen,
             float elapsedTime,
             int nextWave,
-            ParkOpenGroupModel parkOpenGroupModel,
+            PlayerParkOpenGroupModel playerParkOpenGroupModel,
             int currentHeartCount,
             PlayerParkOpenDeckModel currentParkOpenDeckModel,
             bool canUseCard1,
@@ -37,7 +37,7 @@ namespace NL
             this.IsOpen = isOpen;
             this.ElapsedTime = elapsedTime;
             this.NextWave = nextWave;
-            this.ParkOpenGroupModel = parkOpenGroupModel;
+            this.PlayerParkOpenGroupModel = playerParkOpenGroupModel;
             this.currentHeartCount = currentHeartCount;
             this.CurrentParkOpenDeckModel = currentParkOpenDeckModel;
             this.CanUseCard1 = canUseCard1;
@@ -49,14 +49,14 @@ namespace NL
             bool isOpen,
             float elapsedTime,
             int nextWave,
-            ParkOpenGroupModel parkOpenGroupModel,
+            PlayerParkOpenGroupModel playerParkOpenGroupModel,
             int currentHeartCount
         )
         {
             this.IsOpen = isOpen;
             this.ElapsedTime = elapsedTime;
             this.NextWave = nextWave;
-            this.ParkOpenGroupModel = parkOpenGroupModel;
+            this.PlayerParkOpenGroupModel = playerParkOpenGroupModel;
             this.currentHeartCount = currentHeartCount;
         }
 

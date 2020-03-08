@@ -196,6 +196,7 @@ namespace NL {
                 mousePurchaceTableRepository, 
                 playerMouseStockRepository, 
                 playerParkOpenRepository, 
+                parkOpenGroupRepository,
                 parkOpenGroupsRepository, 
                 playerParkOpenGroupRepository);
             this.mouseHomeManager.Initialize ();

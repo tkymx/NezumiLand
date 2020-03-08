@@ -70,6 +70,9 @@ namespace NL {
             if (rewardAmount.RewardType == RewardType.Mono) {
                 return GameManager.Instance.GameUIManager.RewardMonoInfoPresenter;
             }
+            if (rewardAmount.RewardType == RewardType.ParkOpenGroup) {
+                return GameManager.Instance.GameUIManager.RewardParkOpenGroupPresenter;
+            }
             return GameManager.Instance.GameUIManager.RewardPresenter;
         }
     }

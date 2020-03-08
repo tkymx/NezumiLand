@@ -46,6 +46,10 @@ namespace NL {
         public RewardMonoPresenter RewardMonoInfoPresenter => rewardMonoInfoPresenter;
 
         [SerializeField]
+        private RewardParkOpenGroupPresenter rewardParkOpenGroupPresenter = null;
+        public RewardParkOpenGroupPresenter RewardParkOpenGroupPresenter => rewardParkOpenGroupPresenter;
+
+        [SerializeField]
         private CommonPresenter commonPresenter = null;
         public CommonPresenter CommonPresenter => commonPresenter;
 
@@ -117,6 +121,7 @@ namespace NL {
             IMousePurchaceTableRepository mousePurchaceTableRepository,
             IPlayerMouseStockRepository playerMouseStockRepository,
             IPlayerParkOpenRepository playerParkOpenRepository,
+            IParkOpenGroupRepository parkOpenGroupRepository,
             IParkOpenGroupsRepository parkOpenGroupsRepository,
             IPlayerParkOpenGroupRepository playerParkOpenGroupRepository
         ) {
@@ -130,6 +135,7 @@ namespace NL {
             this.onegaiDetailPresenter.Initialize();
             this.rewardOnegaiPresenter.Initialize(playerOnegaiRepository);
             this.rewardMonoInfoPresenter.Initialize(monoInfoRepository);
+            this.rewardParkOpenGroupPresenter.Initialize(parkOpenGroupRepository);
             this.commonPresenter.Initialize();
             this.monoDetailPresenter.Initialize();
             this.mousePurchasePresenter.Initialize(mousePurchaceTableRepository, playerMouseStockRepository);

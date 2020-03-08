@@ -223,6 +223,16 @@
                 "Args":[]
             }        
         ]
-    }    
+    },
+    {
+        "Id": 9,
+        "RewardSingleEntrys": [
+            {
+                "Type": "ParkOpenGroup",
+                "Amount": 1,
+                "Args":[4]
+            }
+        ]
+    }        
 ]
 }

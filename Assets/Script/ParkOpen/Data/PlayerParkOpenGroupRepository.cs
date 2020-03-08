@@ -10,6 +10,7 @@ namespace NL {
     public class PlayerParkOpenGroupEntry : EntryBase 
     {
         public uint ParkOpenGroupId;
+        public bool IsOpen;
         public bool IsClear;
         public string CurrentOpenType;
     }
@@ -44,6 +45,7 @@ namespace NL {
             return new PlayerParkOpenGroupModel(
                 entry.Id,
                 parkOpenGroupModel,
+                entry.IsOpen,
                 entry.IsClear,
                 openType
             );
@@ -65,6 +67,7 @@ namespace NL {
         {
             return parkOpenGroupsModel.ParkOpenGroupModels
                 .Select(parkOpenGroupModel => this.Get(parkOpenGroupModel.Id))
+                .Where(playerParkOpenGroupModel => playerParkOpenGroupModel.IsOpen )
                 .ToList();
         }
 
@@ -75,6 +78,7 @@ namespace NL {
             var entry = new PlayerParkOpenGroupEntry () {
                 Id = id,
                 ParkOpenGroupId = parkOpenGroupModel.Id,
+                IsOpen = parkOpenGroupModel.IsInitialOpen ? true : false,
                 IsClear = false,
                 CurrentOpenType = PlayerParkOpenGroupModel.OpenType.Normal.ToString()
             };
@@ -90,6 +94,7 @@ namespace NL {
                 this.entrys[index] = new PlayerParkOpenGroupEntry () {
                     Id = playerParkOpenGroupModel.Id,
                     ParkOpenGroupId = playerParkOpenGroupModel.ParkOpenGroupModel.Id,
+                    IsOpen = playerParkOpenGroupModel.IsOpen,
                     IsClear = playerParkOpenGroupModel.IsClear,
                     CurrentOpenType = playerParkOpenGroupModel.CurrentOpenType.ToString()
                 };
@@ -108,6 +113,7 @@ namespace NL {
                     this.entrys[index] = new PlayerParkOpenGroupEntry () {
                         Id = playerParkOpenGroupModel.Id,
                         ParkOpenGroupId = playerParkOpenGroupModel.ParkOpenGroupModel.Id,
+                        IsOpen = playerParkOpenGroupModel.IsOpen,
                         IsClear = playerParkOpenGroupModel.IsClear,
                         CurrentOpenType = playerParkOpenGroupModel.CurrentOpenType.ToString()
                     };

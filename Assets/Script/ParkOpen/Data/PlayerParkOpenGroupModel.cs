@@ -17,6 +17,7 @@ namespace NL
         };
 
         public ParkOpenGroupModel ParkOpenGroupModel { get; private set; }
+        public bool IsOpen { get; private set; }
         public bool IsClear { get; private set; }
         public OpenType CurrentOpenType { get; private set; }
 
@@ -28,11 +29,13 @@ namespace NL
         public PlayerParkOpenGroupModel(
             uint id,
             ParkOpenGroupModel parkOpenGroupModel,
+            bool isOpen,
             bool isClear,
             OpenType currentOpenType)
         {
             this.Id = id;
             this.ParkOpenGroupModel = parkOpenGroupModel;
+            this.IsOpen = isOpen;
             this.IsClear = isClear;
             this.CurrentOpenType = currentOpenType;
         }
@@ -49,6 +52,11 @@ namespace NL
             if (rate < SPECIAL_RATE) {
                 this.CurrentOpenType = PlayerParkOpenGroupModel.OpenType.Special;
             }
+        }
+
+        public void ToOpen()
+        {
+            this.IsOpen = true;
         }
     }   
 }

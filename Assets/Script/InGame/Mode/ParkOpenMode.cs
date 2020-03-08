@@ -9,8 +9,8 @@ namespace NL {
         IDisposable disposable = null;
 
         public void OnEnter () { 
+            GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.ParkOpen);
 
-            // 終了したらセレクトモードへ
             this.disposable = GameManager.Instance.ParkOpenManager.OnCompleted
                 .Subscribe(_ => {
                     GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateSelectMode());
@@ -19,6 +19,8 @@ namespace NL {
         public void OnUpdate () { 
         }
         public void OnExit () { 
+            GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.All);
+
             if (this.disposable != null) {
                 this.disposable.Dispose();
                 this.disposable = null;

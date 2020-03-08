@@ -10,7 +10,8 @@ namespace NL {
         ClearOnegai,
         InMonoSelectMode,
         InArrangementMode,
-        AfterArrangement
+        AfterArrangement,
+        ClearParkOpenGroup
     }
 
     public class EventConditionModel: ModelBase {

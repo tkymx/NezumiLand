@@ -118,6 +118,9 @@ namespace NL
                         return new ImmediatelyObservable<int>(0);
                     }
 
+                    // 成功していたらイベントを進める
+                    GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.ClearParkOpenGroup(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel));
+
                     // 成功していたら報酬を受け取る
 
                     var rewardReceiver = new RewardReceiver(this.FetchAquirableReward(parkOpenResultAmount));

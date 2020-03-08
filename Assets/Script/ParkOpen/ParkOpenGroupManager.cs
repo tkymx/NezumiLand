@@ -10,6 +10,7 @@ namespace NL
         private IPlayerParkOpenGroupRepository playerParkOpenGroupRepository;
         private ParkOpenGroupClearService parkOpenGroupClearService;
         private ParkOpenGroupSetGroupOpenTypeService parkOpenGroupSetGroupOpenTypeService;
+        private ParkOpenGroupOpenService parkOpenGroupOpenService;
         
         public ParkOpenGroupManager(IParkOpenGroupRepository parkOpenGroupRepository, IPlayerParkOpenGroupRepository playerParkOpenGroupRepository)
         {
@@ -17,6 +18,7 @@ namespace NL
             this.playerParkOpenGroupRepository = playerParkOpenGroupRepository;
             this.parkOpenGroupClearService = new ParkOpenGroupClearService(playerParkOpenGroupRepository);
             this.parkOpenGroupSetGroupOpenTypeService = new ParkOpenGroupSetGroupOpenTypeService(parkOpenGroupRepository, playerParkOpenGroupRepository);
+            this.parkOpenGroupOpenService = new ParkOpenGroupOpenService(playerParkOpenGroupRepository);
         }
 
         public void ToClearGroup(ParkOpenGroupModel parkOpenGroupModel)
@@ -29,6 +31,15 @@ namespace NL
             this.parkOpenGroupSetGroupOpenTypeService.Execute();
         }
 
+        public void ToOpen(ParkOpenGroupModel parkOpenGroupModel)
+        {
+            this.parkOpenGroupOpenService.Execute(parkOpenGroupModel);
+        }
+
+        public void ToOpen(uint parkOpenGroupModelId)
+        {
+            this.parkOpenGroupOpenService.Execute(parkOpenGroupModelId);
+        }
     }
     
 }

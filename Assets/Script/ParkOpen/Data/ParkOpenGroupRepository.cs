@@ -15,6 +15,7 @@ namespace NL {
         public uint SpecialClearRewardId;
         public int[] ObtainHeartCounts;
         public uint[] ObtainHeartRewardIds;
+        public bool IsInitialOpen;
         // View
         public string ViewGroupName;
         public string ViewGroupDescription;
@@ -80,7 +81,8 @@ namespace NL {
                 clearRewardModel,
                 firstClearRewardModel,
                 specialClearRewardModel,
-                obtainedHeartRewardAmounts);
+                obtainedHeartRewardAmounts,
+                entry.IsInitialOpen);
         }
 
         public IEnumerable<ParkOpenGroupModel> GetAll () {

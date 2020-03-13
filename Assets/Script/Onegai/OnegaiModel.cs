@@ -11,10 +11,17 @@ namespace NL {
         ArrangementCount,
     }
 
+    public enum OnegaiType {
+        Unknown,
+        Main,
+        Sub
+    }
+
     public class OnegaiModel : ModelBase {
         public string Title { get; private set; }
         public string Detail { get; private set; }
         public string Author { get; private set; }
+        public OnegaiType Type { get; private set; }
         public OnegaiCondition OnegaiCondition { get; private set; }
         public OnegaiConditionArg OnegaiConditionArg { get; private set; }
         public Satisfaction Satisfaction { get; private set; }
@@ -37,6 +44,7 @@ namespace NL {
             string title,
             string detail,
             string Author,
+            string onegaiType,
             string onegaiCondition,
             string onegaiConditionArg,
             long satisfaction,
@@ -47,6 +55,11 @@ namespace NL {
             this.Title = title;
             this.Detail = detail;
             this.Author = Author;
+
+            this.Type = OnegaiType.Unknown;
+            if (Enum.TryParse (onegaiType, out OnegaiType outOnegaiType)) {
+                this.Type = outOnegaiType;
+            }
 
             this.OnegaiCondition = OnegaiCondition.None;
             if (Enum.TryParse (onegaiCondition, out OnegaiCondition outOnegaiCondition)) {

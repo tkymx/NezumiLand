@@ -7,32 +7,15 @@ namespace NL {
 
     [System.Serializable]
     public class OnegaiEntry : EntryBase {
-
-        
         public string Title;
-
-        
         public string Detail;
-
-        
         public string Author;
-
-        
+        public string OnegaiType;
         public string OnegaiCondition;
-
-        
         public string OnegaiConditionArg;
-
-        
         public long Satisfaction;
-
-        
         public bool IsInitialLock;
-
-        
         public bool IsSchedule;
-
-        
         public uint ScheduleId;
     }
 
@@ -80,6 +63,7 @@ namespace NL {
                 entry.Title,
                 entry.Detail,
                 entry.Author,
+                entry.OnegaiType,
                 entry.OnegaiCondition,
                 entry.OnegaiConditionArg,
                 entry.Satisfaction,

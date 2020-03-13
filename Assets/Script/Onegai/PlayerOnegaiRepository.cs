@@ -5,21 +5,19 @@ using UnityEngine;
 
 namespace NL {
     [System.Serializable]
-    public class PlayerOnegaiEntry : EntryBase {
-        
+    public class PlayerOnegaiEntry : EntryBase {        
         public uint OnegaiId;
-
-        
         public string OnegaiState;
-
-        
         public float StartOnegaiTime;
     }
 
     public interface IPlayerOnegaiRepository {
         IEnumerable<PlayerOnegaiModel> GetAll ();
         IEnumerable<PlayerOnegaiModel> GetAlreadyClose ();
-        IEnumerable<PlayerOnegaiModel> GetDisplayable ();
+
+        PlayerOnegaiModel GetCurrentMain ();
+        IEnumerable<PlayerOnegaiModel> GetSub (OnegaiState onegaiState);
+
         PlayerOnegaiModel GetById (uint id);
         List<PlayerOnegaiModel> GetByIds (List<uint> ids);
         Satisfaction GetAllSatisfaction ();
@@ -52,14 +50,32 @@ namespace NL {
         }
 
         public IEnumerable<PlayerOnegaiModel> GetAlreadyClose () {
-            return GetDisplayable()
+            return this.entrys
+                .Where(entry => entry.OnegaiState != OnegaiState.Lock.ToString())
+                .Select (entry => GeneratePlayerOnegaiModel(entry))
                 .Where (model => model.IsClose(GameManager.Instance.TimeManager.ElapsedTime));
         }
 
-        public IEnumerable<PlayerOnegaiModel> GetDisplayable () {
+        public PlayerOnegaiModel GetCurrentMain ()
+        {
+            var unlockMain = this.entrys
+                .Where(entry => entry.OnegaiState == OnegaiState.UnLock.ToString())
+                .Select (entry => GeneratePlayerOnegaiModel(entry))
+                .Where (model => model.OnegaiModel.Type == OnegaiType.Main);
+
+            if (!unlockMain.Any()) {
+                return null;
+            }
+
+            return unlockMain.First();
+        }
+
+        public IEnumerable<PlayerOnegaiModel> GetSub (OnegaiState onegaiState)
+        {
             return this.entrys
-                .Where(entry => entry.OnegaiState != OnegaiState.Lock.ToString())
-                .Select (entry => GeneratePlayerOnegaiModel(entry));
+                .Where(entry => entry.OnegaiState == onegaiState.ToString())
+                .Select (entry => GeneratePlayerOnegaiModel(entry))
+                .Where (model => model.OnegaiModel.Type == OnegaiType.Sub);
         }
 
         public PlayerOnegaiModel GetById (uint id) {

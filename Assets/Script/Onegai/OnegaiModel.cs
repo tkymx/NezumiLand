@@ -14,7 +14,8 @@ namespace NL {
     public enum OnegaiType {
         Unknown,
         Main,
-        Sub
+        Sub,
+        Person
     }
 
     public class OnegaiModel : ModelBase {

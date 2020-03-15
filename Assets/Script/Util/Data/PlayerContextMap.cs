@@ -30,6 +30,8 @@ namespace NL {
         public List<PlayerParkOpenCardEntry> PlayerParkOpenCardEntrys { get; private set; }
         public List<PlayerParkOpenDeckEntry> PlayerParkOpenDeckEntrys { get; private set; }
         public List<PlayerParkOpenGroupEntry> PlayerParkOpenGroupEntrys { get; private set; }
+        public List<PlayerAppearConversationCharacterDirectorEntry> PlayerAppearConversationCharacterDirectorEntrys { get; private set; }
+        public List<PlayerAppearParkOpenCharacterDirectorEntry> PlayerAppearParkOpenCharacterDirectorEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new PlayerContextMap ();
@@ -52,6 +54,8 @@ namespace NL {
             this.PlayerParkOpenCardEntrys = LoadEntryFromJsonFromName<PlayerParkOpenCardEntry> ("PlayerParkOpenCardEntry").ToList();
             this.PlayerParkOpenDeckEntrys = LoadEntryFromJsonFromName<PlayerParkOpenDeckEntry> ("PlayerParkOpenDeckEntry").ToList();
             this.PlayerParkOpenGroupEntrys = LoadEntryFromJsonFromName<PlayerParkOpenGroupEntry> ("PlayerParkOpenGroupEntry").ToList();
+            this.PlayerAppearConversationCharacterDirectorEntrys = LoadEntryFromJsonFromName<PlayerAppearConversationCharacterDirectorEntry> ("PlayerAppearConversationCharacterDirectorEntry").ToList();
+            this.PlayerAppearParkOpenCharacterDirectorEntrys = LoadEntryFromJsonFromName<PlayerAppearParkOpenCharacterDirectorEntry> ("PlayerAppearParkOpenCharacterDirectorEntry").ToList();
         }
 
         [System.Serializable]

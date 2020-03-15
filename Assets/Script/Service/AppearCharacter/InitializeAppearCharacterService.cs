@@ -26,7 +26,7 @@ namespace NL
             // Viewの追加
             foreach (var playerAppearCharacterViewModel in this.playerAppearCharacterViewRepository.GetAll())
             {
-                var generator = new AppearCharacterGenerator(playerAppearCharacterViewModel.AppearCharacterModel);
+                var generator = new AppearCharacterGenerator();
                 var appearCharacterViewModel = generator.Generate(playerAppearCharacterViewModel);
                 GameManager.Instance.AppearCharacterManager.EnqueueRegister(appearCharacterViewModel);
             }

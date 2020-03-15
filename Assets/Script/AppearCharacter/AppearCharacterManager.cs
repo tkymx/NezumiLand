@@ -29,7 +29,11 @@ namespace NL {
         /// <returns></returns>
         public int ParkOpenCharacterCount => appearCharacterViewModels.Where(appearCharacterViewModel => appearCharacterViewModel.IsParkOpenCharacter).Count();
 
-        public AppearCharacterManager(GameObject root, IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
+        public AppearCharacterManager(
+            GameObject root, 
+            IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository, 
+            IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
+            IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository)
         {
             this.root = root;
 
@@ -37,9 +41,9 @@ namespace NL {
             this.reservedRegisterModels = new List<AppearCharacterViewModel>();
             this.reservedRemovableModels = new List<AppearCharacterViewModel>();
 
-            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearCharacterViewRepository);
+            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository, playerAppearCharacterViewRepository);
             this.appearCharacterRemoveService = new AppearCharacterRemoveService(playerAppearCharacterViewRepository);
-            this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearCharacterViewRepository);
+            this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearConversationCharacterDirectorRepository);
             this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
             this.appearCharacterChangeTransformService = new AppearCharacterChangeTransformService(playerAppearCharacterViewRepository);
             this.appearCharacterSetTargetArrangementService = new AppearCharacterSetTargetArrangementService(playerAppearCharacterViewRepository);
@@ -69,20 +73,33 @@ namespace NL {
             this.reservedRemovableModels.Clear();
         }
 
-        public PlayerAppearCharacterViewModel Create (
+        public PlayerAppearCharacterViewModel CreateWithConversationDirector (
             Transform view,
-            AppearCharacterModel appearCharacterModel, 
-            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, 
-            MovePath movePath) 
+            MovePath movePath,
+            AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel,
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) 
         {
-            return this.appearCharacterCreateService.Execute(
-                appearCharacterModel,
+            return this.appearCharacterCreateService.ExecuteWithConversatoinDirector(
+                appearConversationCharacterDirectorModel.AppearCharacterModel,
                 view.position,
                 view.rotation.eulerAngles,
-                appearCharacterLifeDirectorType,
-                playerAppearCharacterReserveModel,
-                movePath
+                movePath,
+                appearConversationCharacterDirectorModel,
+                playerAppearCharacterReserveModel
+            );
+        }
+
+        public PlayerAppearCharacterViewModel CreateWithParkOpenDirector (
+            Transform view,
+            MovePath movePath,
+            AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel) 
+        {
+            return this.appearCharacterCreateService.ExecuteWithParkOpenDirector(
+                appearParkOpenCharacterDirectorModel.AppearCharacterModel,
+                view.position,
+                view.rotation.eulerAngles,
+                movePath,
+                appearParkOpenCharacterDirectorModel
             );
         }
 
@@ -98,8 +115,8 @@ namespace NL {
             this.reservedRemovableModels.Add(appearCharacterViewModel);
         }
 
-        public void ToReeiveRewards (PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
-            this.appearCharacterReceiveRewardsService.Execute(playerAppearCharacterViewModel);
+        public void ToReeiveRewards (PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
+            this.appearCharacterReceiveRewardsService.Execute(playerAppearConversationCharacterDirectorModel);
         }
 
         public void ChangeState (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, IState state) {
@@ -115,6 +132,9 @@ namespace NL {
             }
             else if (state is RemovedState) {
                 appearCharacterState = AppearCharacterState.Removed;
+            }
+            else if (state is EmptyState) {
+                appearCharacterState = AppearCharacterState.None;
             }
             else {
                 Debug.Assert(false, "状態が不定です。");

@@ -123,8 +123,10 @@ namespace NL {
             var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
             var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
+            var appearParkOpenCharacterDirectorRepository = new AppearParkOpenCharacterDirectorRepository(appearCharacterRepository, ContextMap.DefaultMap);
+            var appearConversationCharacterDirectorRepository = new AppearConversationCharacterDirectorRepository(appearCharacterRepository, conversationRepository, rewardRepository, ContextMap.DefaultMap);
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
-            var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
+            var parkOpenWaveRepository = new ParkOpenWaveRepository(appearParkOpenCharacterDirectorRepository, ContextMap.DefaultMap);
             var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, rewardRepository, ContextMap.DefaultMap);
             var parkOpenCardActionRepository = new ParkOpenCardActionRepository(ContextMap.DefaultMap);
             var parkOpenCardRepository = new ParkOpenCardRepository(parkOpenCardActionRepository, ContextMap.DefaultMap);
@@ -139,11 +141,13 @@ namespace NL {
             var playerParkOpenCardRepository = new PlayerParkOpenCardRepository(parkOpenCardRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenDeckRepository = new PlayerParkOpenDeckRepository(playerParkOpenCardRepository, PlayerContextMap.DefaultMap);
             var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
-            var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearCharacterRepository, conversationRepository, rewardRepository, PlayerContextMap.DefaultMap);
-            var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
+            var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearConversationCharacterDirectorRepository, appearParkOpenCharacterDirectorRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenGroupRepository = new PlayerParkOpenGroupRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenRepository = new PlayerParkOpenRepository(playerParkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
+            var playerAppearConversationCharacterDirectorRepository = new PlayerAppearConversationCharacterDirectorRepository(appearConversationCharacterDirectorRepository, playerAppearCharacterReserveRepository, PlayerContextMap.DefaultMap);
+            var playerAppearParkOpenCharacterDirectorRepository = new PlayerAppearParkOpenCharacterDirectorRepository(appearParkOpenCharacterDirectorRepository, PlayerContextMap.DefaultMap);
+            var playerAppearCharacterViewRepository = new PlayerAppearCharacterViewRepository(appearCharacterRepository, playerAppearCharacterReserveRepository, playerArrangementTargetRepository, playerAppearConversationCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository, PlayerContextMap.DefaultMap);
 
             // ゲームのコンテキストマップ
             GameContextMap.Initialize(playerArrangementTargetRepository);
@@ -172,7 +176,7 @@ namespace NL {
             this.mouseStockManager = new MouseStockManager (this.rootObject, playerMouseStockRepository, playerMouseViewRepository);
             this.eventManager = new EventManager(playerEventRepository);
             this.constantlyEventPusher = new ConstantlyEventPusher(playerOnegaiRepository);
-            this.appearCharacterManager = new AppearCharacterManager(this.rootObject, playerAppearCharacterViewRepository);
+            this.appearCharacterManager = new AppearCharacterManager(this.rootObject, playerAppearCharacterViewRepository, playerAppearConversationCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository);
             this.dailyAppearCharacterRegistManager = new DailyAppearCharacterRegistManager(playerAppearCharacterReserveRepository);
             this.onegaiMediaterManager = new OnegaiMediaterManager(playerOnegaiRepository);
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);

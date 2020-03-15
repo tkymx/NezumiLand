@@ -27,12 +27,14 @@ namespace NL {
             this.dailyAppearCharacterRegistReserveNextSkipService = new DailyAppearCharacterRegistReserveNextSkipService(playerAppearCharacterReserveRepository);
         }
 
-        public void RegistReserve(AppearCharacterModel appearCharacterModel, ConversationModel conversationModel, RewardModel rewardModel, IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition) 
+        public void RegistReserve(
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType, 
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase, 
+            IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition) 
         {
             var playerAppearCharacterReserveModel = this.dailyAppearCharacterRegistReserveCreateService.Execute(
-                appearCharacterModel,
-                conversationModel,
-                rewardModel,
+                appearCharacterLifeDirectorType,
+                appearCharacterDirectorModelBase,
                 dailyAppearCharacterRegistCondition
             );
             this.RegistReserve(playerAppearCharacterReserveModel);

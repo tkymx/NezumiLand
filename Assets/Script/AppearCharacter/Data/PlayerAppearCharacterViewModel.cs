@@ -16,26 +16,25 @@ namespace NL
     public enum AppearCharacterLifeDirectorType
     {
         None,
-        Reserve,
+        Conversation,
         ParkOpen
     }
 
     public class PlayerAppearCharacterViewModel : ModelBase
     {
         public AppearCharacterModel AppearCharacterModel { get; private set; }
+        public AppearCharacterState AppearCharacterState { get; private set; }
+
+        // state で使用
         public Vector3 Position { get; private set; }
         public Vector3 Rotation { get; private set; }
-        public PlayerAppearCharacterReserveModel PlayerAppearCharacterReserveModelInDirector { get; private set; }
-        public bool IsReceiveReward { get; private set; }
-        public AppearCharacterState AppearCharacterState { get; private set; }
-        public PlayerArrangementTargetModel PlayerArrangementTargetModel { get; private set; }
         public float CurrentPlayingTime { get; private set; }
-        public AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType { get; private set; }
         public MovePath MovePath { get; private set; }
+        public PlayerArrangementTargetModel PlayerArrangementTargetModel { get; private set; }
 
-        public void ToReceiveRewards() {
-            this.IsReceiveReward = true;
-        }
+        // director で使用
+        public AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType { get; private set; }
+        public PlayerAppearCharacterDirectorModelBase PlayerAppearCharacterDirectorModelBase { get; private set; }
 
         public void ChangeState(AppearCharacterState appearCharacterState) {
             this.AppearCharacterState = appearCharacterState;
@@ -46,12 +45,12 @@ namespace NL
             this.Rotation = rotation;
         } 
 
-        public void SetTargetArrangement(PlayerArrangementTargetModel playerArrangementTargetModel) {
-            this.PlayerArrangementTargetModel = playerArrangementTargetModel;
-        }
-
         public void SetCurrentPlayingTime (float currentPlayingTime) {
             this.CurrentPlayingTime = currentPlayingTime;
+        }
+
+        public void SetTargetArrangement(PlayerArrangementTargetModel playerArrangementTargetModel) {
+            this.PlayerArrangementTargetModel = playerArrangementTargetModel;
         }
 
         public PlayerAppearCharacterViewModel(
@@ -59,24 +58,22 @@ namespace NL
             AppearCharacterModel appearCharacterModel,
             Vector3 position, 
             Vector3 rotation, 
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel, 
-            bool isReceiveReward,
             AppearCharacterState appearCharacterState,
-            PlayerArrangementTargetModel playerArrangementTargetModel,
             float currentPlayingTime,
+            PlayerArrangementTargetModel playerArrangementTargetModel,
             AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            PlayerAppearCharacterDirectorModelBase playerAppearCharacterDirectorModelBase,
             MovePath movePath)
         {
             this.Id = id;
             this.AppearCharacterModel = appearCharacterModel;
             this.Position = position;
             this.Rotation = rotation;
-            this.PlayerAppearCharacterReserveModelInDirector = playerAppearCharacterReserveModel;
-            this.IsReceiveReward = isReceiveReward;
             this.AppearCharacterState = appearCharacterState;
-            this.PlayerArrangementTargetModel = playerArrangementTargetModel;
             this.CurrentPlayingTime = currentPlayingTime;
+            this.PlayerArrangementTargetModel = playerArrangementTargetModel;
             this.AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType;
+            this.PlayerAppearCharacterDirectorModelBase = playerAppearCharacterDirectorModelBase;
             this.MovePath = movePath;
         }
 

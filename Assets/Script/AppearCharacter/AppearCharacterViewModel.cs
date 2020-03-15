@@ -28,7 +28,6 @@ namespace NL {
         public void InterruptState(AppearCharacterState appearCharacterState) 
         {
             if (appearCharacterState == AppearCharacterState.GoMono) {
-                Debug.Assert(PlayerAppearCharacterViewModel.PlayerArrangementTargetModel != null, "playerArrangementTargetModel が null です");
                 stateManager.Interrupt (new GoMonoState (this));
             }
             else if (appearCharacterState == AppearCharacterState.GoAway) {
@@ -39,29 +38,31 @@ namespace NL {
             }
             else if (appearCharacterState == AppearCharacterState.Removed) {
                 stateManager.Interrupt (new RemovedState ());
-            }                        
+            }
+            else if (appearCharacterState == AppearCharacterState.None) {
+                stateManager.Interrupt (new EmptyState ());
+            }
             else {
                 Debug.Assert(false, "ありえない状態" + appearCharacterState.ToString());
             }
         }
 
-        public void SetInitialState () {
-            // 遊具があればそこに移動する（仮）いろいろなタイプで行動を分けられるようにしたい
-            var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
-            if (arrangementTargetStore.Count > 0) {  
-                var arrangemenTargetIndex = UnityEngine.Random.Range(0,arrangementTargetStore.Count);        
-                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(this.PlayerAppearCharacterViewModel, arrangementTargetStore[arrangemenTargetIndex].PlayerArrangementTargetModel);
-                this.stateManager.Interrupt(new GoMonoState(this));
-            }
-        }
-
         private IAppearCharacterLifeDirector CreateDirector(PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
-            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen) {
-                return new ParkOpenAppearCharacterLifeDirector();
-            } else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Reserve) {
-                return new ReserveAppearCharacterLifeDirector(playerAppearCharacterViewModel, playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector);
-            } else {
+            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen) 
+            {
+                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearParkOpenCharacterDirectorModel;
+                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModelではありません");
+                return new ParkOpenAppearCharacterLifeDirector(this, directerModel);
+            } 
+            else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation) 
+            {
+                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearConversationCharacterDirectorModel;
+                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModelではありません");
+                return new ReserveAppearCharacterLifeDirector(directerModel);
+            } 
+            else 
+            {
                 Debug.Assert(false, "ありえない状態" + playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString());
             }
             return null;

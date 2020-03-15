@@ -25,12 +25,12 @@ namespace NL {
         }
 
         public void Generate() {
-            var generator = new AppearCharacterGenerator(PlayerAppearCharacterReserveModel.AppearCharacterModel);
-            GameManager.Instance.AppearCharacterManager.EnqueueRegister(generator.GenerateReserve(PlayerAppearCharacterReserveModel));
+            var generator = new AppearCharacterGenerator();
+            GameManager.Instance.AppearCharacterManager.EnqueueRegister(generator.GenerateFromReserve(PlayerAppearCharacterReserveModel));
         }
 
         public override string ToString() {
-            return this.PlayerAppearCharacterReserveModel.AppearCharacterModel.Id.ToString() + " " + this.PlayerAppearCharacterReserveModel.DailyAppearCharacterRegistCondition.ToString();  
+            return this.PlayerAppearCharacterReserveModel.AppearCharacterDirectorModelBase.Id.ToString() + " " + this.PlayerAppearCharacterReserveModel.DailyAppearCharacterRegistCondition.ToString();  
         }
     }
 }

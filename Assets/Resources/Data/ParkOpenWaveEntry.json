@@ -3,7 +3,7 @@
         "Id": 1,
         "AppearCount": 2,
         "FluctuationCount": 1,
-        "AppearCharacterIds":[
+        "AppearParkOpenCharacterDirectorIds":[
             1
         ]
     },
@@ -11,7 +11,7 @@
         "Id": 2,
         "AppearCount": 3,
         "FluctuationCount": 2,
-        "AppearCharacterIds":[
+        "AppearParkOpenCharacterDirectorIds":[
             2
         ]
     },
@@ -19,7 +19,7 @@
         "Id": 3,
         "AppearCount": 5,
         "FluctuationCount": 2,
-        "AppearCharacterIds":[
+        "AppearParkOpenCharacterDirectorIds":[
             1,2
         ]
     }

@@ -7,6 +7,15 @@ namespace  NL
     /// </summary>
     public class ParkOpenAppearCharacterLifeDirector : IAppearCharacterLifeDirector 
     {
+        private AppearCharacterViewModel appearCharacterViewModel;
+        private PlayerAppearParkOpenCharacterDirectorModel playerAppearParkOpenCharacterDirectorModel;
+
+        public ParkOpenAppearCharacterLifeDirector(AppearCharacterViewModel appearCharacterViewModel, PlayerAppearParkOpenCharacterDirectorModel playerAppearParkOpenCharacterDirectorModel)
+        {
+            this.appearCharacterViewModel = appearCharacterViewModel;
+            this.playerAppearParkOpenCharacterDirectorModel = playerAppearParkOpenCharacterDirectorModel;
+        }
+
         public IObservable<int> OnTouch()
         {
             return new ImmediatelyObservable<int>(0);
@@ -17,11 +26,24 @@ namespace  NL
         }
         public void OnCreate()
         {
-
+            this.SetInitialState();
         }
         public void OnRemove()
         {
             
         }
+
+        public void SetInitialState () {
+            var arrangementTargetStore = GameManager.Instance.ArrangementManager.ArrangementTargetStore;
+            if (arrangementTargetStore.Count > 0) {  
+                // ターゲットの設定
+                var arrangemenTargetIndex = UnityEngine.Random.Range(0,arrangementTargetStore.Count);                        
+                GameManager.Instance.AppearCharacterManager.SetTargetArrangement(
+                    this.appearCharacterViewModel.PlayerAppearCharacterViewModel, 
+                    arrangementTargetStore[arrangemenTargetIndex].PlayerArrangementTargetModel);
+                
+                this.appearCharacterViewModel.InterruptState(AppearCharacterState.GoMono);
+            }
+        }        
     }
 }

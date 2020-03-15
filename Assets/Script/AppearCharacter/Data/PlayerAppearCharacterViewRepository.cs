@@ -10,15 +10,19 @@ namespace NL {
     public class PlayerAppearCharacterViewEntry : EntryBase 
     {        
         public uint AppearCharacterId;
+
+        // state 
         public Position3Entry Position;
         public Position3Entry Rotation;
-        public uint PlayerAppearCharacterReserveId;
-        public bool IsReceiveReward;
         public string AppearCharacterState;
-        public uint PlayerArrangementTargetId;
         public float CurrentPlayingTime;
-        public string AppearCharacterLifeDirectorType;
+        public bool HasPlayerArrangementTarget;
+        public uint PlayerArrangementTargetId;
         public MovePathEntry MovePath;
+
+        // director
+        public string AppearCharacterLifeDirectorType;
+        public uint PlayerAppearCharacterLifeDirectorModelId;
     }
 
     public interface IPlayerAppearCharacterViewRepository 
@@ -30,7 +34,7 @@ namespace NL {
             Vector3 position,
             Vector3 rotation,            
             AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
+            PlayerAppearCharacterDirectorModelBase PlayerAppearCharacterDirectorModel,
             MovePath movePath);
         void Store (PlayerAppearCharacterViewModel playerAppearCharacterViewModel);
         void Remove (PlayerAppearCharacterViewModel playerAppearCharacterViewModel);
@@ -42,20 +46,30 @@ namespace NL {
         private readonly IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository;
         private readonly IPlayerArrangementTargetRepository playerArrangementTargetRepository;
 
-        public PlayerAppearCharacterViewRepository (AppearCharacterRepository appearCharacterRepository, IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository, IPlayerArrangementTargetRepository playerArrangementTargetRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys) {
+        // Director
+        private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
+        private readonly IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository;
+
+        public PlayerAppearCharacterViewRepository (
+            AppearCharacterRepository appearCharacterRepository, 
+            IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository,  
+            IPlayerArrangementTargetRepository playerArrangementTargetRepository, 
+            IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
+            IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository,
+            PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys)     
+        {
             this.appearCharacterRepository = appearCharacterRepository;
             this.playerAppearCharacterReserveRepository = playerAppearCharacterReserveRepository;
-            this.playerArrangementTargetRepository = playerArrangementTargetRepository;
+            this.playerArrangementTargetRepository = playerArrangementTargetRepository;         
+            this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
+            this.playerAppearParkOpenCharacterDirectorRepository = playerAppearParkOpenCharacterDirectorRepository;   
         }
 
         private PlayerAppearCharacterViewModel CreateByEntry (PlayerAppearCharacterViewEntry entry) {
 
             var appearCharacterModel = this.appearCharacterRepository.Get(entry.AppearCharacterId);      
             Debug.Assert(appearCharacterModel != null, "appearCharacterModelが存在しません。");
-                  
-            var playerAppearCharacterReserveModel = this.playerAppearCharacterReserveRepository.Get(entry.PlayerAppearCharacterReserveId);            
-            var playerArrangementTargetModel = this.playerArrangementTargetRepository.Get(entry.PlayerArrangementTargetId);
-            
+
             var state = AppearCharacterState.None;
             if (Enum.TryParse (entry.AppearCharacterState, out AppearCharacterState outState)) {
                 state = outState;
@@ -66,17 +80,34 @@ namespace NL {
                 type = outType;
             }
 
+            PlayerArrangementTargetModel playerArrangementTargetModel = null;
+            if (entry.HasPlayerArrangementTarget) {
+                playerArrangementTargetModel = this.playerArrangementTargetRepository.Get(entry.PlayerArrangementTargetId);
+                Debug.Assert(playerArrangementTargetModel != null, "playerArrangementTargetModel が存在しません。");
+            }
+
+            PlayerAppearCharacterDirectorModelBase directorModel = null;
+            if (type == AppearCharacterLifeDirectorType.Conversation) 
+            {
+                directorModel = this.playerAppearConversationCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                Debug.Assert(directorModel != null, "PlayerAppearConversationCharacterDirector が存在しません。");
+            }
+            else if (type == AppearCharacterLifeDirectorType.ParkOpen)
+            {
+                directorModel = this.playerAppearParkOpenCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                Debug.Assert(directorModel != null, "PlayerAppearParkOpenCharacterDirector が存在しません。");
+            }
+
             return new PlayerAppearCharacterViewModel(
                 entry.Id,
                 appearCharacterModel,
                 entry.Position.ToVector3(),
                 entry.Rotation.ToVector3(),
-                playerAppearCharacterReserveModel,
-                entry.IsReceiveReward,
                 state,
-                playerArrangementTargetModel,
                 entry.CurrentPlayingTime,
+                playerArrangementTargetModel,
                 type,
+                directorModel,
                 new MovePath(
                     entry.MovePath.AppearPosition.ToVector3(),
                     entry.MovePath.DisappearPosition.ToVector3()
@@ -101,7 +132,7 @@ namespace NL {
             Vector3 position,
             Vector3 rotation,
             AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
+            PlayerAppearCharacterDirectorModelBase playerAppearCharacterDirectorModel,
             MovePath movePath
         ) {
             var id = this.MaximuId()+1;
@@ -111,12 +142,12 @@ namespace NL {
                 AppearCharacterId = appearCharacterModel.Id,
                 Position = Position3Entry.FromVector3(position),
                 Rotation = Position3Entry.FromVector3(rotation),
-                PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel != null ? playerAppearCharacterReserveModel.Id : 0,
-                IsReceiveReward = false /*はじめはまだ受け取っていない*/,
                 AppearCharacterState = AppearCharacterState.None.ToString(),
-                PlayerArrangementTargetId = 0,
                 CurrentPlayingTime = 0,
+                HasPlayerArrangementTarget = false,
+                PlayerArrangementTargetId = 0,
                 AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType.ToString(),
+                PlayerAppearCharacterLifeDirectorModelId = playerAppearCharacterDirectorModel.Id,
                 MovePath = new MovePathEntry () {
                     AppearPosition = Position3Entry.FromVector3(movePath.AppearPosition),
                     DisappearPosition = Position3Entry.FromVector3(movePath.DisapearPosition)
@@ -136,12 +167,12 @@ namespace NL {
                     AppearCharacterId = playerAppearCharacterViewModel.AppearCharacterModel.Id,
                     Position = Position3Entry.FromVector3(playerAppearCharacterViewModel.Position),
                     Rotation = Position3Entry.FromVector3(playerAppearCharacterViewModel.Rotation),
-                    PlayerAppearCharacterReserveId = playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector != null ? playerAppearCharacterViewModel.PlayerAppearCharacterReserveModelInDirector.Id : 0,
-                    IsReceiveReward = playerAppearCharacterViewModel.IsReceiveReward,
                     AppearCharacterState = playerAppearCharacterViewModel.AppearCharacterState.ToString(),
-                    PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id,
                     CurrentPlayingTime = playerAppearCharacterViewModel.CurrentPlayingTime,
+                    HasPlayerArrangementTarget = playerAppearCharacterViewModel.PlayerArrangementTargetModel != null,
+                    PlayerArrangementTargetId = playerAppearCharacterViewModel.PlayerArrangementTargetModel != null ? playerAppearCharacterViewModel.PlayerArrangementTargetModel.Id : 0,
                     AppearCharacterLifeDirectorType = playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString(),
+                    PlayerAppearCharacterLifeDirectorModelId = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase.Id,
                     MovePath = new MovePathEntry () {
                         AppearPosition = Position3Entry.FromVector3(playerAppearCharacterViewModel.MovePath.AppearPosition),
                         DisappearPosition = Position3Entry.FromVector3(playerAppearCharacterViewModel.MovePath.DisapearPosition)

@@ -6,10 +6,17 @@ namespace NL
 {
     public class AppearCharacterCreateService
     {
+        private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
+        private readonly IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository;
         private readonly IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository;
 
-        public AppearCharacterCreateService(IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
+        public AppearCharacterCreateService(
+            IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository, 
+            IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository,
+            IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {
+            this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
+            this.playerAppearParkOpenCharacterDirectorRepository = playerAppearParkOpenCharacterDirectorRepository;
             this.playerAppearCharacterViewRepository = playerAppearCharacterViewRepository;            
         }
 
@@ -18,7 +25,7 @@ namespace NL
             Vector3 position,
             Vector3 rotation,
             AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
+            PlayerAppearCharacterDirectorModelBase playerAppearCharacterDirectorModelBase,
             MovePath movePath
         ) {
             return playerAppearCharacterViewRepository.Create(
@@ -26,9 +33,52 @@ namespace NL
                 position,
                 rotation,
                 appearCharacterLifeDirectorType,
-                playerAppearCharacterReserveModel,
+                playerAppearCharacterDirectorModelBase,
                 movePath
             );
         }
+
+        public PlayerAppearCharacterViewModel ExecuteWithConversatoinDirector(
+            AppearCharacterModel appearCharacterModel,
+            Vector3 position,
+            Vector3 rotation,
+            MovePath movePath,
+            AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel,
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel
+        ) {
+            var directorModel = this.playerAppearConversationCharacterDirectorRepository.Create(
+                appearConversationCharacterDirectorModel,
+                playerAppearCharacterReserveModel);
+
+            return playerAppearCharacterViewRepository.Create(
+                appearCharacterModel,
+                position,
+                rotation,
+                AppearCharacterLifeDirectorType.Conversation,
+                directorModel,
+                movePath
+            );
+        }
+
+        public PlayerAppearCharacterViewModel ExecuteWithParkOpenDirector(
+            AppearCharacterModel appearCharacterModel,
+            Vector3 position,
+            Vector3 rotation,
+            MovePath movePath,
+            AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel
+        ) {
+            var directorModel = this.playerAppearParkOpenCharacterDirectorRepository.Create(
+                appearParkOpenCharacterDirectorModel);
+
+            return playerAppearCharacterViewRepository.Create(
+                appearCharacterModel,
+                position,
+                rotation,
+                AppearCharacterLifeDirectorType.ParkOpen,
+                directorModel,
+                movePath
+            );
+        }        
+
     }   
 }

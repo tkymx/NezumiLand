@@ -1,0 +1,34 @@
+{
+    "InnerArray": [
+        {
+            "Id": 1,
+            "AppearCharacterId": 1,
+            "ConversationId": 6,
+            "RewardId": 6
+        },
+        { 
+            "Id": 2,
+            "AppearCharacterId": 2,
+            "ConversationId": 7,
+            "RewardId": 6
+        },
+        { 
+            "Id": 3,
+            "AppearCharacterId": 2,
+            "ConversationId": 8,
+            "RewardId": 6
+        },
+        { 
+            "Id": 4,
+            "AppearCharacterId": 1,
+            "ConversationId": 9,
+            "RewardId": 6
+        },
+        { 
+            "Id": 5,
+            "AppearCharacterId": 2,
+            "ConversationId": 10,
+            "RewardId": 6
+        }
+    ]
+}

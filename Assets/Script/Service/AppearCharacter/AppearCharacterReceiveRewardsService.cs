@@ -6,16 +6,16 @@ namespace NL
 {
     public class AppearCharacterReceiveRewardsService
     {
-        private readonly IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository;
+        private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
 
-        public AppearCharacterReceiveRewardsService(IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
+        public AppearCharacterReceiveRewardsService(IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository)
         {
-            this.playerAppearCharacterViewRepository = playerAppearCharacterViewRepository;            
+            this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;            
         }
 
-        public void Execute(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
-            playerAppearCharacterViewModel.ToReceiveRewards();
-            playerAppearCharacterViewRepository.Store(playerAppearCharacterViewModel);            
+        public void Execute(PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
+            playerAppearConversationCharacterDirectorModel.ToReceiveRewards();
+            playerAppearConversationCharacterDirectorRepository.Store(playerAppearConversationCharacterDirectorModel);            
         }
     }   
 }

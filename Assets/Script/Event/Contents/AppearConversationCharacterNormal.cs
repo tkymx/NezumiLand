@@ -4,10 +4,14 @@ using UnityEngine;
 using System;
 
 namespace NL.EventContents {
+
+    /// <summary>
+    /// AppearConversationCharacterNormal
+    /// 会話するキャラクタを予約する
+    /// 予約されたキャラクタは確率で登場することになる
+    /// </summary>
     public class AppearConversationCharacterNormal : EventContentsBase {
-        private readonly ConversationModel conversationModel = null;
-        private readonly AppearCharacterModel appearCharacterModel = null;
-        private readonly RewardModel rewardModel = null;
+        private readonly AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel = null;
         private readonly float rate = 0;
 
         public AppearConversationCharacterNormal(PlayerEventModel playerEventModel) : base(playerEventModel)
@@ -16,23 +20,24 @@ namespace NL.EventContents {
             var conversationRepository = new ConversationRepository(ContextMap.DefaultMap);
             var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
             var rewardRepository = new RewardRepository(ContextMap.DefaultMap);
+            var appearConversationCharacterDirectorRepository = new AppearConversationCharacterDirectorRepository(
+                appearCharacterRepository,
+                conversationRepository,
+                rewardRepository,
+                ContextMap.DefaultMap);
 
-            Debug.Assert(playerEventModel.EventModel.EventContentsModel.Arg.Length >= 4, "AppearConversationCharacterNormal: コンテンツ引数の要素数が4未満です");
-            var appearCharacterId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
-            var conversationId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[1]);
-            var rewardId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[2]);
-            this.rate = float.Parse(playerEventModel.EventModel.EventContentsModel.Arg[3]);
-
-            this.appearCharacterModel = appearCharacterRepository.Get(appearCharacterId);
-            this.conversationModel = conversationRepository.Get(conversationId);
-            this.rewardModel = rewardRepository.Get(rewardId);
+            Debug.Assert(playerEventModel.EventModel.EventContentsModel.Arg.Length >= 2, "AppearConversationCharacterNormal: コンテンツ引数の要素数が 2 未満です");
+            var appearConversationCharacterDirectorId = uint.Parse(playerEventModel.EventModel.EventContentsModel.Arg[0]);
+            this.appearConversationCharacterDirectorModel = appearConversationCharacterDirectorRepository.Get(appearConversationCharacterDirectorId);
+            this.rate = float.Parse(playerEventModel.EventModel.EventContentsModel.Arg[1]);
         }
 
         public override EventContentsType EventContentsType => EventContentsType.AppearConversationCharacterNormal;
 
         public override void OnEnter() {
             GameManager.Instance.DailyAppearCharacterRegistManager.RegistReserve(
-                this.appearCharacterModel, this.conversationModel, this.rewardModel,
+                AppearCharacterLifeDirectorType.Conversation,
+                this.appearConversationCharacterDirectorModel,                
                 new DailyAppearCharacterRegistConditionByChance(this.rate));
         }
         public override void OnUpdate() {
@@ -44,7 +49,7 @@ namespace NL.EventContents {
         }
 
         public override string ToString() {
-            return this.EventContentsType.ToString() + " " + appearCharacterModel.Id.ToString() + " " + conversationModel.Id.ToString();
+            return this.EventContentsType.ToString() + " " + appearConversationCharacterDirectorModel.Id.ToString();
         }
     }
 }

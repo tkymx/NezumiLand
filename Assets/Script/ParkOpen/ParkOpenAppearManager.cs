@@ -17,16 +17,16 @@ namespace NL
         /// <summary>
         /// ランダム位置に適当なキャラクタを召喚
         /// </summary>
-        public void AppearRandom(AppearCharacterModel appearCharacterModel)
+        public void AppearRandom(AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel)
         {
-            var appearCharacterGenerator = new AppearCharacterGenerator(appearCharacterModel);
+            var appearCharacterGenerator = new AppearCharacterGenerator();
             var appearPositionModel = this.parkOpenPositionRepository.GerRandomPosition(ParkOpenPositionModel.PositionType.Appear);
             var disappearPositionModel = this.parkOpenPositionRepository.GerRandomPosition(ParkOpenPositionModel.PositionType.DisAppear);
             var movePath = new MovePath(
                 appearPositionModel.Position + GetRandomOffsetPosition(),
                 disappearPositionModel.Position + GetRandomOffsetPosition()
             );
-            GameManager.Instance.AppearCharacterManager.EnqueueRegister(appearCharacterGenerator.GenerateParkOpen(movePath));
+            GameManager.Instance.AppearCharacterManager.EnqueueRegister(appearCharacterGenerator.GenerateParkOpen(movePath, appearParkOpenCharacterDirectorModel));
         }
 
         public Vector3 GetRandomOffsetPosition()
@@ -40,8 +40,8 @@ namespace NL
             int loopCount = parkOpenWaveModel.AppearCount + UnityEngine.Random.Range(-parkOpenWaveModel.FluctuationCount,parkOpenWaveModel.FluctuationCount);
             for(int currentLoop = 0 ; currentLoop < loopCount ; currentLoop++ )
             {
-                int appearCharacterIndex = UnityEngine.Random.Range(0, parkOpenWaveModel.AppearCharacterModels.Length - 1 );
-                this.AppearRandom(parkOpenWaveModel.AppearCharacterModels[appearCharacterIndex]);
+                int appearCharacterIndex = UnityEngine.Random.Range(0, parkOpenWaveModel.AppearParkOpenCharacterDirectorModels.Length - 1 );
+                this.AppearRandom(parkOpenWaveModel.AppearParkOpenCharacterDirectorModels[appearCharacterIndex]);
             }
 
         }

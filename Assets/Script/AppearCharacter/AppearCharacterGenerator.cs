@@ -6,42 +6,56 @@ namespace NL
 {
     public class AppearCharacterGenerator
     {
-        private AppearCharacterModel appearCharacterModel;
-
-        public AppearCharacterGenerator(AppearCharacterModel appearCharacterModel)
+        public AppearCharacterGenerator()
         {
-            this.appearCharacterModel = appearCharacterModel;
         }
 
-        public AppearCharacterViewModel GenerateReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) {
+        public AppearCharacterViewModel GenerateFromReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) {
             //TODO:　予約時の座標のとり方正常化
             MovePath movePath = new MovePath(GetInitialPosition(), GetInitialPosition() );
 
-            var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
+            var modelPrefab = ResourceLoader.LoadModel(playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase.AppearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , movePath.AppearPosition);
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
+
+            // ViewModel 用のプレイヤーデータを作成
+            PlayerAppearCharacterViewModel playerAppearCharacterViewModel = null;
+            if (playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation)
+            {
+                playerAppearCharacterViewModel = GameManager.Instance.AppearCharacterManager.CreateWithConversationDirector(
+                    appearCharacterView.transform, 
+                    movePath,
+                    playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase as AppearConversationCharacterDirectorModel,
+                    playerAppearCharacterReserveModel);
+            }
+            else
+            {
+                Debug.Assert(playerAppearCharacterViewModel != null, "AppearCharacterLifeDirectorType のタイプがありません");
+            }
+
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
-                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, appearCharacterModel, AppearCharacterLifeDirectorType.Reserve, playerAppearCharacterReserveModel, movePath)
+                playerAppearCharacterViewModel
             );
-            generatedAppearCharacterViewModel.SetInitialState();
             return generatedAppearCharacterViewModel;
         }
 
-        public AppearCharacterViewModel GenerateParkOpen(MovePath movePath) {
-            var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
+        public AppearCharacterViewModel GenerateParkOpen(MovePath movePath, AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel) {
+            var modelPrefab = ResourceLoader.LoadModel(appearParkOpenCharacterDirectorModel.AppearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , movePath.AppearPosition);
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
-                GameManager.Instance.AppearCharacterManager.Create(appearCharacterView.transform, appearCharacterModel, AppearCharacterLifeDirectorType.ParkOpen, null, movePath)
+                GameManager.Instance.AppearCharacterManager.CreateWithParkOpenDirector(
+                    appearCharacterView.transform, 
+                    movePath,
+                    appearParkOpenCharacterDirectorModel)
             );
-            generatedAppearCharacterViewModel.SetInitialState();
             return generatedAppearCharacterViewModel;
         }        
 
         public AppearCharacterViewModel Generate(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
-            var modelPrefab = ResourceLoader.LoadModel(appearCharacterModel.Name);
+            var modelPrefab = ResourceLoader.LoadModel(playerAppearCharacterViewModel.AppearCharacterModel.Name);
             var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , playerAppearCharacterViewModel.Position);
             appearCharacterInstance.transform.rotation = Quaternion.Euler(playerAppearCharacterViewModel.Rotation);
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
@@ -56,10 +70,6 @@ namespace NL
         private static Vector3 GetInitialPosition() 
         {
             return new Vector3(Random.Range(-32,32),0,Random.Range(-32,32));
-        }
-
-        public override string ToString() {
-            return "AppearCharacterGenerator" + appearCharacterModel.Name;
         }
     }
 }

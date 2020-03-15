@@ -14,15 +14,13 @@ namespace NL
         }
 
         public PlayerAppearCharacterReserveModel Execute(            
-            AppearCharacterModel appearCharacterModel,
-            ConversationModel conversationModel,
-            RewardModel rewardModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase,
             IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition
         ) {
             return playerAppearCharacterReserveRepository.Create(
-                appearCharacterModel,
-                conversationModel,
-                rewardModel,
+                appearCharacterLifeDirectorType,
+                appearCharacterDirectorModelBase,
                 dailyAppearCharacterRegistCondition
             );
         }

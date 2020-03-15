@@ -9,7 +9,7 @@ namespace NL {
     public class ParkOpenWaveEntry : EntryBase {
         public int AppearCount;
         public int FluctuationCount;
-        public uint[] AppearCharacterIds;
+        public uint[] AppearParkOpenCharacterDirectorIds;
     }
 
     public interface IParkOpenWaveRepository {
@@ -19,25 +19,25 @@ namespace NL {
 
     public class ParkOpenWaveRepository : RepositoryBase<ParkOpenWaveEntry>, IParkOpenWaveRepository {
 
-        private IAppearCharacterRepository appearCharacterRepository;
+        private IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository;
 
-        public ParkOpenWaveRepository (IAppearCharacterRepository appearCharacterRepository, ContextMap contextMap) : base (contextMap.ParkOpenWaveEntrys) {
-            this.appearCharacterRepository = appearCharacterRepository;
+        public ParkOpenWaveRepository (IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository, ContextMap contextMap) : base (contextMap.ParkOpenWaveEntrys) {
+            this.appearParkOpenCharacterDirectorRepository = appearParkOpenCharacterDirectorRepository;
         }
 
         public ParkOpenWaveModel CreateFromEntry (ParkOpenWaveEntry entry)
         {
-            var appearCharacterModels = entry.AppearCharacterIds.Select(id => {
-                var appearCharacterModel = this.appearCharacterRepository.Get(id);
-                Debug.Assert(appearCharacterModel != null, "appearCharacterModelがありません。 " + id.ToString());
-                return appearCharacterModel;
+            var appearParkOpenCharacterDirectorModels = entry.AppearParkOpenCharacterDirectorIds.Select(id => {
+                var appearParkOpenCharacterDirectorModel = this.appearParkOpenCharacterDirectorRepository.Get(id);
+                Debug.Assert(appearParkOpenCharacterDirectorModel != null, "appearParkOpenCharacterDirectorModel がありません。 " + id.ToString());
+                return appearParkOpenCharacterDirectorModel;
             }); 
 
             return new ParkOpenWaveModel (
                 entry.Id,
                 entry.AppearCount,
                 entry.FluctuationCount,
-                appearCharacterModels.ToArray());
+                appearParkOpenCharacterDirectorModels.ToArray());
         }
 
         public IEnumerable<ParkOpenWaveModel> GetAll () {

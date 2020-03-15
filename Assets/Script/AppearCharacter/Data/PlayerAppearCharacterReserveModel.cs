@@ -6,26 +6,23 @@ namespace NL
 {
     public class PlayerAppearCharacterReserveModel : ModelBase
     {
-        public AppearCharacterModel AppearCharacterModel { get; private set; }
-        public  ConversationModel ConversationModel { get; private set; }
-        public RewardModel RewardModel { get; private set; }
+        public AppearCharacterLifeDirectorType AppearCharacterLifeDirectorType { get; private set; }
+        public AppearCharacterDirectorModelBase AppearCharacterDirectorModelBase { get; private set; }
         public IDailyAppearCharacterRegistCondition DailyAppearCharacterRegistCondition { get; private set; }
         public bool IsNextRemove { get; private set; }
         public bool IsNextSkip { get; private set; }
 
         public PlayerAppearCharacterReserveModel(
             uint id,
-            AppearCharacterModel appearCharacterModel,
-            ConversationModel conversationModel,
-            RewardModel rewardModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase,
             IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition,
             bool isNextRemove,
             bool isNextSkip)
         {
             this.Id = id;
-            this.AppearCharacterModel = appearCharacterModel;
-            this.ConversationModel = conversationModel;
-            this.RewardModel = rewardModel;
+            this.AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType;
+            this.AppearCharacterDirectorModelBase = appearCharacterDirectorModelBase;
             this.DailyAppearCharacterRegistCondition = dailyAppearCharacterRegistCondition;
             this.IsNextRemove = isNextRemove;
             this.IsNextSkip = isNextSkip;

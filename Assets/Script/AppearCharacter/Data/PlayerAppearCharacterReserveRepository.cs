@@ -8,9 +8,8 @@ namespace NL {
     [System.Serializable]
     public class PlayerAppearCharacterReserveEntry : EntryBase 
     {        
-        public uint AppearCharacterId;
-        public uint ConversationId;
-        public uint RewardId;
+        public string AppearCharacterLifeDirectorType;
+        public uint AppearCharacterDirectorId;
         public string State;
         public float Rate;
         public bool IsNextRemove;
@@ -22,9 +21,8 @@ namespace NL {
         PlayerAppearCharacterReserveModel Get (uint id);        
         List<PlayerAppearCharacterReserveModel> GetAll ();      
         PlayerAppearCharacterReserveModel Create (           
-            AppearCharacterModel appearCharacterModel,
-            ConversationModel conversationModel,
-            RewardModel rewardModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase,
             IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition);
         void Store (PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel);
         void Remove (PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel);
@@ -38,26 +36,45 @@ namespace NL {
             Force
         }
 
-        private readonly IAppearCharacterRepository appearCharacterRepository;
-        private readonly IConversationRepository conversationRepository;
-        private readonly IRewardRepository rewardRepository;
+        private readonly IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository;
+        private readonly IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository;
 
-        public PlayerAppearCharacterReserveRepository (IAppearCharacterRepository appearCharacterRepository, IConversationRepository conversationRepository, IRewardRepository rewardRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterReserveEntrys) {
-            this.appearCharacterRepository = appearCharacterRepository;
-            this.conversationRepository = conversationRepository;
-            this.rewardRepository = rewardRepository;
+        public PlayerAppearCharacterReserveRepository (
+            IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository,
+            IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository,
+            PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterReserveEntrys) 
+        {
+            this.appearConversationCharacterDirectorRepository = appearConversationCharacterDirectorRepository;
+            this.appearParkOpenCharacterDirectorRepository = appearParkOpenCharacterDirectorRepository;
         }
 
         private PlayerAppearCharacterReserveModel CreateByEntry (PlayerAppearCharacterReserveEntry entry) {
 
-            var appearCharacterModel = this.appearCharacterRepository.Get(entry.AppearCharacterId);
-            Debug.Assert(appearCharacterModel!=null, "appearCharacterModel が存在していません");
-            
-            var conversationModel = this.conversationRepository.Get(entry.ConversationId);
-            Debug.Assert(conversationModel!=null, "conversationModel が存在していません");
+            var lifeType = AppearCharacterLifeDirectorType.None;
+            if (Enum.TryParse (entry.AppearCharacterLifeDirectorType, out AppearCharacterLifeDirectorType outLifeType)) {
+                lifeType = outLifeType;
+            }
 
-            var rewardModel = this.rewardRepository.Get(entry.RewardId);
-            Debug.Assert(rewardModel!=null, "rewardModel が存在していません");
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase = null;
+            switch (lifeType) {
+                case AppearCharacterLifeDirectorType.Conversation: 
+                {
+                    appearCharacterDirectorModelBase = this.appearConversationCharacterDirectorRepository.Get(entry.AppearCharacterDirectorId);
+                    Debug.Assert(appearCharacterDirectorModelBase != null, "Reserveのモデル が存在しません " + entry.AppearCharacterDirectorId);
+                    break;
+                }
+                case AppearCharacterLifeDirectorType.ParkOpen: 
+                {
+                    appearCharacterDirectorModelBase = this.appearParkOpenCharacterDirectorRepository.Get(entry.AppearCharacterDirectorId);
+                    Debug.Assert(appearCharacterDirectorModelBase != null, "ParkOpenのモデル が存在しません " + entry.AppearCharacterDirectorId);
+                    break;
+                }
+                default: 
+                {
+                    Debug.Assert(false, "存在しないタイプが指定されました。 " + lifeType.ToString());
+                    break;
+                }
+            }
 
             var state = Condition.None;
             if (Enum.TryParse (entry.State, out Condition outState)) {
@@ -75,9 +92,8 @@ namespace NL {
 
             return new PlayerAppearCharacterReserveModel(
                 entry.Id,
-                appearCharacterModel,
-                conversationModel,
-                rewardModel,
+                lifeType,
+                appearCharacterDirectorModelBase,
                 condition,
                 entry.IsNextRemove,
                 entry.IsNextSkip
@@ -97,9 +113,8 @@ namespace NL {
         }
 
         public PlayerAppearCharacterReserveModel Create (
-            AppearCharacterModel appearCharacterModel,
-            ConversationModel conversationModel,
-            RewardModel rewardModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase,
             IDailyAppearCharacterRegistCondition dailyAppearCharacterRegistCondition
         ) {
             var id = this.MaximuId()+1;
@@ -117,9 +132,8 @@ namespace NL {
 
             var entry = new PlayerAppearCharacterReserveEntry () {
                 Id = id,
-                AppearCharacterId = appearCharacterModel.Id,
-                ConversationId = conversationModel.Id,
-                RewardId = rewardModel.Id,
+                AppearCharacterLifeDirectorType = appearCharacterLifeDirectorType.ToString(),
+                AppearCharacterDirectorId = appearCharacterDirectorModelBase.Id, 
                 State = condition.ToString(),
                 Rate = rate,
                 IsNextRemove = false,
@@ -148,9 +162,8 @@ namespace NL {
 
                 this.entrys[index] = new PlayerAppearCharacterReserveEntry () {
                     Id = playerAppearCharacterReserveModel.Id,
-                    AppearCharacterId = playerAppearCharacterReserveModel.AppearCharacterModel.Id,
-                    ConversationId = playerAppearCharacterReserveModel.ConversationModel.Id,
-                    RewardId = playerAppearCharacterReserveModel.RewardModel.Id,
+                    AppearCharacterLifeDirectorType = playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType.ToString(),
+                    AppearCharacterDirectorId = playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase.Id,
                     State = condition.ToString(),
                     Rate = rate,
                     IsNextRemove = playerAppearCharacterReserveModel.IsNextRemove,

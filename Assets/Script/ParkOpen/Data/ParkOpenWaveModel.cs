@@ -11,19 +11,19 @@ namespace NL
     {
         public int AppearCount { get; private set; }
         public int FluctuationCount { get; private set; }
-        public AppearCharacterModel[] AppearCharacterModels; 
+        public AppearParkOpenCharacterDirectorModel[] AppearParkOpenCharacterDirectorModels; 
 
         public ParkOpenWaveModel(
             uint id,
             int appearCount,
             int fluctuationCount,
-            AppearCharacterModel[] appearCharacterModels
+            AppearParkOpenCharacterDirectorModel[] appearParkOpenCharacterDirectorModels
         )
         {
             this.Id = id;
             this.AppearCount = appearCount;
             this.FluctuationCount = fluctuationCount;
-            this.AppearCharacterModels = appearCharacterModels;
+            this.AppearParkOpenCharacterDirectorModels = appearParkOpenCharacterDirectorModels;
         }
     }
 }

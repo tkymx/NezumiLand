@@ -1,0 +1,12 @@
+{
+    "InnerArray": [
+        {
+            "Id": 1,
+            "AppearCharacterId": 1
+        },
+        {
+            "Id": 2,
+            "AppearCharacterId": 2
+        }
+    ]
+}

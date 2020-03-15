@@ -70,11 +70,12 @@ namespace NL {
             });
             appearForParkOpen.onClick.AddListener(() => {
                 var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
-                var appearCharacterModel = appearCharacterRepository.Get(1);
+                var appearParkOpenCharacterDirectorRepository = new AppearParkOpenCharacterDirectorRepository(appearCharacterRepository, ContextMap.DefaultMap);
+                var appearParkOpenCharacterDirectorModel = appearParkOpenCharacterDirectorRepository.Get(1);
 
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearCharacterModel);
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
+                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
             });
             parkOpenButton.onClick.AddListener(() => {
                 /*

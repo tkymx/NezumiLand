@@ -63,6 +63,7 @@ namespace NL {
                 #endif                    
             });
             dailyAppearCharacterRegistButton.onClick.AddListener(()=>{
+                GameManager.Instance.AppearCharacterManager.RemoveAllSoon();
                 GameManager.Instance.DailyAppearCharacterRegistManager.Regist();
             });
             openCloseButton.onClick.AddListener(() => {

@@ -18,10 +18,10 @@ namespace NL {
         }
 
         public void OnEnter () { 
-            rewardReceiver.ReceiveRewardAndShowModel();
             this.receiveRewardDisposable = rewardReceiver.OnEndReceiveObservable.Subscribe(_ => {
                 GameManager.Instance.GameModeManager.Back();
             });
+            rewardReceiver.ReceiveRewardAndShowModel();
         }
         public void OnUpdate () {
         }

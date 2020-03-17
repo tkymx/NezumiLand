@@ -9,6 +9,7 @@ namespace NL {
         ForceConversation,
         AppearConversationCharacter,
         AppearConversationCharacterNormal,
+        AppearOnegaiCharacter,
         ScreenImages
     }
 

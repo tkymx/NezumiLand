@@ -28,7 +28,7 @@ namespace  NL
                     if (this.playerAppearConversationCharacterDirectorModel.AppearConversationCharacterDirectorModel.RewardModel == null) {
                         return new ImmediatelyObservable<int>(_);
                     }
-                    if (this.playerAppearConversationCharacterDirectorModel.IsReceiveReward) {
+                    if (this.playerAppearConversationCharacterDirectorModel.AppearCharactorWithReward.IsReceiveReward) {
                         return new ImmediatelyObservable<int>(_);
                     }
                     if (this.playerAppearConversationCharacterDirectorModel.AppearConversationCharacterDirectorModel.RewardModel.RewardAmounts.Count <= 0) {

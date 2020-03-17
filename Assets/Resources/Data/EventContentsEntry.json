@@ -101,6 +101,13 @@
             "Arg": [
                 4
             ]
+        },
+        { 
+            "Id": 15,
+            "EventContentsType": "AppearOnegaiCharacter",
+            "Arg": [
+                1
+            ]
         }
     ]
 }

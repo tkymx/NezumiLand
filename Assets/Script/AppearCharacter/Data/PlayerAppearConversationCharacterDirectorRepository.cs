@@ -47,7 +47,7 @@ namespace NL {
                 entry.Id,
                 appearConversationCharacterDirectorModel,
                 playerAppearCharacterReserveModel,
-                entry.IsReceiveReward
+                new AppearCharactorWithReward(entry.IsReceiveReward)
             );
         }
 
@@ -88,7 +88,7 @@ namespace NL {
                     Id = PlayerAppearConversationCharacterDirectorModel.Id,
                     AppearConversationCharacterDirectorId = PlayerAppearConversationCharacterDirectorModel.AppearConversationCharacterDirectorModel.Id,
                     PlayerAppearCharacterReserveId = PlayerAppearConversationCharacterDirectorModel.PlayerAppearCharacterReserveModel.Id,
-                    IsReceiveReward = PlayerAppearConversationCharacterDirectorModel.IsReceiveReward
+                    IsReceiveReward = PlayerAppearConversationCharacterDirectorModel.AppearCharactorWithReward.IsReceiveReward
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + PlayerAppearConversationCharacterDirectorModel.Id.ToString());

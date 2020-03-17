@@ -17,6 +17,7 @@ namespace NL
     {
         None,
         Conversation,
+        Onegai,
         ParkOpen
     }
 

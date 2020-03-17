@@ -28,6 +28,14 @@ namespace NL
                     playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase as AppearConversationCharacterDirectorModel,
                     playerAppearCharacterReserveModel);
             }
+            else if (playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Onegai)
+            {
+                playerAppearCharacterViewModel = GameManager.Instance.AppearCharacterManager.CreateWithOnegaiDirector(
+                    appearCharacterView.transform, 
+                    movePath,
+                    playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase as AppearOnegaiCharacterDirectorModel,
+                    playerAppearCharacterReserveModel);
+            }
             else
             {
                 Debug.Assert(playerAppearCharacterViewModel != null, "AppearCharacterLifeDirectorType のタイプがありません");

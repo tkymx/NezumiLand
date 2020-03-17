@@ -206,6 +206,19 @@
         "IsInitialLock": true,
         "IsSchedule": false,
         "ScheduleId": 0 
+    },
+    {
+        "Id": 17,
+        "Title": "くそもれる〜（サンプル）",
+        "Detail": "トイレをもっと増やしてくれないともれる〜\n\n【条件】トイレを5個配置する",
+        "Author": "小僧",
+        "OnegaiType": "Person",
+        "OnegaiCondition": "ArrangementCount",
+        "OnegaiConditionArg": "4,5",
+        "Satisfaction": "2000",
+        "IsInitialLock": true,
+        "IsSchedule": false,
+        "ScheduleId": 0 
     }
 ]
 }

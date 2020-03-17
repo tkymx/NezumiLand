@@ -7,15 +7,27 @@ namespace NL
     public class AppearCharacterReceiveRewardsService
     {
         private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
+        private readonly IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository;
 
-        public AppearCharacterReceiveRewardsService(IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository)
+        public AppearCharacterReceiveRewardsService(
+            IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
+            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository)
         {
-            this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;            
+            this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;   
+            this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;         
         }
 
+        // conversation
         public void Execute(PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
-            playerAppearConversationCharacterDirectorModel.ToReceiveRewards();
+            playerAppearConversationCharacterDirectorModel.AppearCharactorWithReward.ToReceiveRewards();
             playerAppearConversationCharacterDirectorRepository.Store(playerAppearConversationCharacterDirectorModel);            
         }
+
+        // onegai
+        public void Execute(PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
+            playerAppearOnegaiCharacterDirectorModel.AppearCharactorWithReward.ToReceiveRewards();
+            playerAppearOnegaiCharacterDirectorRepository.Store(playerAppearOnegaiCharacterDirectorModel);            
+        }
+
     }   
 }

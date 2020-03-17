@@ -58,7 +58,7 @@ namespace  NL
                 var playerOnegaiModel = this.playerOnegaiRepository.GetById(onegaiId);
                 Debug.Assert(playerOnegaiModel != null, "playerOnegaiModel が null です");
                 
-                // アンロックにする
+                // ロックにする
                 Debug.Assert(!playerOnegaiModel.IsLock(), playerOnegaiModel.Id.ToString() + "がLock状態ではありません");
                 playerOnegaiModel.ToLock();
 

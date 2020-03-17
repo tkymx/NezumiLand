@@ -20,6 +20,10 @@ namespace NL {
             this.OnegaiState = OnegaiState.Clear;
         }
 
+        public bool IsClear () {
+            return this.OnegaiState == OnegaiState.Clear;
+        }
+
         public void ToUnlock () {
             this.OnegaiState = OnegaiState.UnLock;
         }

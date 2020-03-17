@@ -52,14 +52,20 @@ namespace NL {
             if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen) 
             {
                 var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearParkOpenCharacterDirectorModel;
-                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModelではありません");
+                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModel ではありません");
                 return new ParkOpenAppearCharacterLifeDirector(this, directerModel);
             } 
             else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation) 
             {
                 var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearConversationCharacterDirectorModel;
-                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModelではありません");
+                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModel ではありません");
                 return new ReserveAppearCharacterLifeDirector(directerModel);
+            } 
+            else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Onegai) 
+            {
+                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearOnegaiCharacterDirectorModel;
+                Debug.Assert(directerModel != null, "PlayerAppearOnegaiCharacterDirectorModel ではありません");
+                return new AppearOnegaiCharacterLifeDirector(directerModel);
             } 
             else 
             {

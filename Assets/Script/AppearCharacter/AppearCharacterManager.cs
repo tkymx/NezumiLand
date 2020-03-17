@@ -25,14 +25,13 @@ namespace NL {
         /// <summary>
         /// パーク内の公開時のキャラクター数
         /// </summary>
-        /// <param name="appearCharacterViewModel.IsParkOpenCharacter"></param>
-        /// <returns></returns>
         public int ParkOpenCharacterCount => appearCharacterViewModels.Where(appearCharacterViewModel => appearCharacterViewModel.IsParkOpenCharacter).Count();
 
         public AppearCharacterManager(
             GameObject root, 
             IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository, 
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
+            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
             IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository)
         {
             this.root = root;
@@ -41,9 +40,9 @@ namespace NL {
             this.reservedRegisterModels = new List<AppearCharacterViewModel>();
             this.reservedRemovableModels = new List<AppearCharacterViewModel>();
 
-            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository, playerAppearCharacterViewRepository);
+            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository, playerAppearCharacterViewRepository);
             this.appearCharacterRemoveService = new AppearCharacterRemoveService(playerAppearCharacterViewRepository);
-            this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearConversationCharacterDirectorRepository);
+            this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository);
             this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
             this.appearCharacterChangeTransformService = new AppearCharacterChangeTransformService(playerAppearCharacterViewRepository);
             this.appearCharacterSetTargetArrangementService = new AppearCharacterSetTargetArrangementService(playerAppearCharacterViewRepository);
@@ -89,6 +88,22 @@ namespace NL {
             );
         }
 
+        public PlayerAppearCharacterViewModel CreateWithOnegaiDirector (
+            Transform view,
+            MovePath movePath,
+            AppearOnegaiCharacterDirectorModel appearOnegaiCharacterDirectorModel,
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) 
+        {
+            return this.appearCharacterCreateService.ExecuteWithOnegaiDirector(
+                appearOnegaiCharacterDirectorModel.AppearCharacterModel,
+                view.position,
+                view.rotation.eulerAngles,
+                movePath,
+                appearOnegaiCharacterDirectorModel,
+                playerAppearCharacterReserveModel
+            );
+        }        
+
         public PlayerAppearCharacterViewModel CreateWithParkOpenDirector (
             Transform view,
             MovePath movePath,
@@ -103,6 +118,8 @@ namespace NL {
             );
         }
 
+#region 登録消去周り
+
         public void EnqueueRegister (AppearCharacterViewModel appearCharacterViewModel) {
             this.reservedRegisterModels.Add(appearCharacterViewModel);
         }
@@ -115,9 +132,38 @@ namespace NL {
             this.reservedRemovableModels.Add(appearCharacterViewModel);
         }
 
-        public void ToReeiveRewards (PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
-            this.appearCharacterReceiveRewardsService.Execute(playerAppearConversationCharacterDirectorModel);
+        private void RemoveInternal (AppearCharacterViewModel appearCharacterViewModel) {
+            if (this.appearCharacterViewModels.IndexOf(appearCharacterViewModel) < 0) {
+                return;
+            }
+            appearCharacterViewModel.Dispose();
+            this.appearCharacterViewModels.Remove(appearCharacterViewModel);
+            this.appearCharacterRemoveService.Execute(appearCharacterViewModel.PlayerAppearCharacterViewModel);
         }
+
+        public void Remove(AppearCharacterViewModel appearCharacterViewModel) {
+            this.EnqueueRemove(appearCharacterViewModel);
+        }
+
+        public void RemoveAll() {
+            foreach (var reservedRegisterModel in this.appearCharacterViewModels) {
+                this.Remove(reservedRegisterModel);
+            }                        
+        }
+
+        public void RemoveAllSoon() {
+            this.RemoveAll();
+            foreach (var reservedRemovableModel in this.reservedRemovableModels)
+            {
+                this.RemoveInternal(reservedRemovableModel);
+            }
+            this.reservedRemovableModels.Clear();
+
+        }
+
+#endregion
+
+#region キャラクタの状態変化周り
 
         public void ChangeState (PlayerAppearCharacterViewModel playerAppearCharacterViewModel, IState state) {
             AppearCharacterState appearCharacterState = AppearCharacterState.None;
@@ -154,23 +200,20 @@ namespace NL {
             this.appearCharacterSetPlayingTimeService.Execute(playerAppearCharacterViewModel, currentPlayingTime);
         }
 
-        private void RemoveInternal (AppearCharacterViewModel appearCharacterViewModel) {
-            if (this.appearCharacterViewModels.IndexOf(appearCharacterViewModel) < 0) {
-                return;
-            }
-            appearCharacterViewModel.Dispose();
-            this.appearCharacterViewModels.Remove(appearCharacterViewModel);
-            this.appearCharacterRemoveService.Execute(appearCharacterViewModel.PlayerAppearCharacterViewModel);
+#endregion
+
+#region  director 固有のメソッド
+
+        // conversation director
+        public void ToReeiveRewards (PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
+            this.appearCharacterReceiveRewardsService.Execute(playerAppearConversationCharacterDirectorModel);
         }
 
-        public void Remove(AppearCharacterViewModel appearCharacterViewModel) {
-            this.EnqueueRemove(appearCharacterViewModel);
+        // onegai director
+        public void ToReeiveRewards (PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
+            this.appearCharacterReceiveRewardsService.Execute(playerAppearOnegaiCharacterDirectorModel);
         }
 
-        public void RemoveAll() {
-            foreach (var reservedRegisterModel in this.appearCharacterViewModels) {
-                this.Remove(reservedRegisterModel);
-            }                        
-        }
+#endregion        
     }
 }

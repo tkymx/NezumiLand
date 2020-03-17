@@ -161,6 +161,30 @@
             "ConversationCharacterDisplayNames": [
                 "ねずママ"
             ]
-        }
+        },
+        {
+            "Id": 11,
+            "ConversationTexts": [
+                "お願いを募集してます！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずママ"
+            ]
+        },
+        {
+            "Id": 12,
+            "ConversationTexts": [
+                "クリアしたなんてすごいわ！"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずママ"
+            ]
+        }      
     ]
 }

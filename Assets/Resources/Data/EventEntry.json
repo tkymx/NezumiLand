@@ -144,6 +144,15 @@
             "EventContentsId": 3,
             "EventRepeatType": "Once",
             "RewardId": 9
+        },
+        {
+            "Id": 17,
+            "EventConditionIds": [
+                1
+            ],
+            "EventContentsId": 15,
+            "EventRepeatType": "Once",
+            "RewardId": 6
         }
     ]
 }

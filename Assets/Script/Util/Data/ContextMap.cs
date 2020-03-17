@@ -33,6 +33,7 @@ namespace NL {
         public List<ParkOpenGroupsEntry> ParkOpenGroupsEntrys { get; private set; }
         public List<AppearConversationCharacterDirectorEntry> AppearConversationCharacterDirectorEntrys { get; private set; }
         public List<AppearParkOpenCharacterDirectorEntry> AppearParkOpenCharacterDirectorEntrys { get; private set; }
+        public List<AppearOnegaiCharacterDirectorEntry> AppearOnegaiCharacterDirectorEntrys { get; private set; }
 
         public static void Initialize () {
             defaultMap = new ContextMap ();
@@ -63,6 +64,7 @@ namespace NL {
             this.ParkOpenGroupsEntrys = LoadEntryFromJson<ParkOpenGroupsEntry> (ResourceLoader.LoadData ("ParkOpenGroupsEntry")).ToList();
             this.AppearConversationCharacterDirectorEntrys = LoadEntryFromJson<AppearConversationCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearConversationCharacterDirectorEntry")).ToList();
             this.AppearParkOpenCharacterDirectorEntrys = LoadEntryFromJson<AppearParkOpenCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearParkOpenCharacterDirectorEntry")).ToList();
+            this.AppearOnegaiCharacterDirectorEntrys = LoadEntryFromJson<AppearOnegaiCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearOnegaiCharacterDirectorEntry")).ToList();
         }
 
         private static T[] LoadEntryFromJson<T> (string json) {

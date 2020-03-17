@@ -48,6 +48,7 @@ namespace NL {
 
         // Director
         private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
+        private readonly IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository;
         private readonly IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository;
 
         public PlayerAppearCharacterViewRepository (
@@ -55,6 +56,7 @@ namespace NL {
             IPlayerAppearCharacterReserveRepository playerAppearCharacterReserveRepository,  
             IPlayerArrangementTargetRepository playerArrangementTargetRepository, 
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
+            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
             IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository,
             PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys)     
         {
@@ -62,6 +64,7 @@ namespace NL {
             this.playerAppearCharacterReserveRepository = playerAppearCharacterReserveRepository;
             this.playerArrangementTargetRepository = playerArrangementTargetRepository;         
             this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
+            this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;
             this.playerAppearParkOpenCharacterDirectorRepository = playerAppearParkOpenCharacterDirectorRepository;   
         }
 
@@ -96,6 +99,15 @@ namespace NL {
             {
                 directorModel = this.playerAppearParkOpenCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
                 Debug.Assert(directorModel != null, "PlayerAppearParkOpenCharacterDirector が存在しません。");
+            }
+            else if (type == AppearCharacterLifeDirectorType.Onegai)
+            {
+                directorModel = this.playerAppearOnegaiCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                Debug.Assert(directorModel != null, "playerAppearOnegaiCharacterDirector が存在しません ");
+            }
+            else 
+            {
+                Debug.Assert(false, "未確認のタイプです。" + type.ToString() );
             }
 
             return new PlayerAppearCharacterViewModel(

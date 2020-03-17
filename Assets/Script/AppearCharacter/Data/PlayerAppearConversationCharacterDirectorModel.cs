@@ -4,26 +4,37 @@ using UnityEngine;
 
 namespace NL
 {
+    public class AppearCharactorWithReward 
+    {
+        public bool IsReceiveReward { get; private set; }
+
+        public AppearCharactorWithReward(bool isReceiveReward)
+        {
+            this.IsReceiveReward = isReceiveReward;
+        }    
+
+        public void ToReceiveRewards() {
+            this.IsReceiveReward = true;
+        }
+    }
+
     public class PlayerAppearConversationCharacterDirectorModel : PlayerAppearCharacterDirectorModelBase
     {
         public AppearConversationCharacterDirectorModel AppearConversationCharacterDirectorModel { get; private set; }
         public PlayerAppearCharacterReserveModel PlayerAppearCharacterReserveModel { get; private set; } 
-        public bool IsReceiveReward { get; private set; }
+        public AppearCharactorWithReward AppearCharactorWithReward { get; private set; }
 
         public PlayerAppearConversationCharacterDirectorModel(
             uint id,
             AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel,
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel,
-            bool isReceiveReward)
+            AppearCharactorWithReward appearCharactorWithReward)
         {
             this.Id = id;
             this.AppearConversationCharacterDirectorModel = appearConversationCharacterDirectorModel;
             this.PlayerAppearCharacterReserveModel = playerAppearCharacterReserveModel;
-            this.IsReceiveReward = isReceiveReward;
+            this.AppearCharactorWithReward = appearCharactorWithReward;
         }
 
-        public void ToReceiveRewards() {
-            this.IsReceiveReward = true;
-        }
     }   
 }

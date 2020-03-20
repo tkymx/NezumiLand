@@ -10,6 +10,7 @@ namespace NL {
         public uint AppearCharacterId;
         public uint AfterConversationId;
         public uint BeforeConversationId;
+        public uint CancelConversationId;
         public uint OnegaiId;
         public uint RewardId;
     }
@@ -44,6 +45,9 @@ namespace NL {
             var beforeConversationModel = this.conversationRepository.Get(entry.BeforeConversationId);
             Debug.Assert(beforeConversationModel != null, "beforeConversationModel が存在しません " + entry.BeforeConversationId);
 
+            var cancelConversationModel = this.conversationRepository.Get(entry.CancelConversationId);
+            Debug.Assert(cancelConversationModel != null, "cancelConversationModel が存在しません " + entry.CancelConversationId);
+
             var onegaiModel = this.onegaiRepository.Get(entry.OnegaiId);
             Debug.Assert(onegaiModel != null, "onegaiModel が存在しません " + entry.OnegaiId);
 
@@ -55,6 +59,7 @@ namespace NL {
                 appearCharacterModel,
                 afterConversationModel,
                 beforeConversationModel,
+                cancelConversationModel,
                 onegaiModel,
                 rewardModel);            
         }

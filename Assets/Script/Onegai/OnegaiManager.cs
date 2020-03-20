@@ -6,68 +6,68 @@ namespace  NL
 {
     public class OnegaiManager
     {
+        private struct NextStateAmount
+        {
+            public OnegaiState OnegaiState;
+            public uint OnegaiId;
+        }
+
         private readonly IPlayerOnegaiRepository playerOnegaiRepository;
 
-        private Queue<uint> reserveUnLockOnegaiIdQueue = null;
-        private Queue<uint> reserveLockOnegaiIdQueue = null;
+        private Queue<NextStateAmount> reserveNextStateAmountQueue = null;
 
         public OnegaiManager (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.playerOnegaiRepository = playerOnegaiRepository;
-            this.reserveUnLockOnegaiIdQueue = new Queue<uint>();
-            this.reserveLockOnegaiIdQueue = new Queue<uint>();
+            this.reserveNextStateAmountQueue = new Queue<NextStateAmount>();
         }
 
         public void EnqueueUnLockReserve(uint onegaiId) {
-            this.reserveUnLockOnegaiIdQueue.Enqueue(onegaiId);
+            this.reserveNextStateAmountQueue.Enqueue(
+                new NextStateAmount(){
+                    OnegaiState = OnegaiState.UnLock,
+                    OnegaiId = onegaiId
+                });
         }
 
         public void EnqueueLockReserve(uint onegaiId) {
-            this.reserveLockOnegaiIdQueue.Enqueue(onegaiId);
+            this.reserveNextStateAmountQueue.Enqueue(
+                new NextStateAmount(){
+                    OnegaiState = OnegaiState.Lock,
+                    OnegaiId = onegaiId
+                });
         }
 
         public void UpdateImmidiately () {
             
-            Debug.Assert(this.reserveUnLockOnegaiIdQueue != null, "reserveUnLockQueue が null です");
-            Debug.Assert(this.reserveLockOnegaiIdQueue != null, "reserveLockQueue が null です");
+            Debug.Assert(this.reserveNextStateAmountQueue != null, "reserveUnLockQueue が null です");
 
-            // UnLock 予約を UnLock にする。
-            while(this.reserveUnLockOnegaiIdQueue.Count > 0) {
+            while(this.reserveNextStateAmountQueue.Count > 0) {
 
-                // プレイヤーデータを取得
-                var onegaiId = this.reserveUnLockOnegaiIdQueue.Dequeue();
-                var playerOnegaiModel = this.playerOnegaiRepository.GetById(onegaiId);
+                var nextStateAmount = this.reserveNextStateAmountQueue.Dequeue();
+                var playerOnegaiModel = this.playerOnegaiRepository.GetById(nextStateAmount.OnegaiId);
                 Debug.Assert(playerOnegaiModel != null, "playerOnegaiModel が null です");
-                
-                // アンロックにする
-                Debug.Assert(playerOnegaiModel.IsLock(), playerOnegaiModel.Id.ToString() + "がLock状態ではありません");
-                playerOnegaiModel.ToUnlock();
-                playerOnegaiModel.UpdateStartTime();
 
-                // キャッシュに入れる
-                GameManager.Instance.OnegaiMediaterManager.ChacheOnegai(playerOnegaiModel.OnegaiModel);
-                
+                if (nextStateAmount.OnegaiState == OnegaiState.UnLock)
+                {
+                    // アンロックにする
+                    playerOnegaiModel.ToUnlock();
+                    playerOnegaiModel.UpdateStartTime();
+
+                    // キャッシュに入れる
+                    GameManager.Instance.OnegaiMediaterManager.ChacheOnegai(playerOnegaiModel.OnegaiModel);
+                }
+                else if (nextStateAmount.OnegaiState == OnegaiState.Lock)
+                {
+                    // ロックにする
+                    playerOnegaiModel.ToLock();
+
+                    // キャッシュから外す
+                    GameManager.Instance.OnegaiMediaterManager.UnChacheOnegai(playerOnegaiModel.OnegaiModel);                    
+                }
+
                 // 保存する
                 this.playerOnegaiRepository.Store(playerOnegaiModel);
-            }
-
-            // Lock にする
-            while(this.reserveLockOnegaiIdQueue.Count > 0) {
-
-                // プレイヤーデータを取得
-                var onegaiId = this.reserveLockOnegaiIdQueue.Dequeue();
-                var playerOnegaiModel = this.playerOnegaiRepository.GetById(onegaiId);
-                Debug.Assert(playerOnegaiModel != null, "playerOnegaiModel が null です");
-                
-                // ロックにする
-                Debug.Assert(!playerOnegaiModel.IsLock(), playerOnegaiModel.Id.ToString() + "がLock状態ではありません");
-                playerOnegaiModel.ToLock();
-
-                // キャッシュに入れる
-                GameManager.Instance.OnegaiMediaterManager.UnChacheOnegai(playerOnegaiModel.OnegaiModel);
-                
-                // 保存する
-                this.playerOnegaiRepository.Store(playerOnegaiModel);
-            }            
+            }         
         }
 
         public void UpdateByFrame() {
@@ -75,7 +75,7 @@ namespace  NL
             //期限付きのものは期限があるかを確認
             foreach (var playerOnegaiModel in playerOnegaiRepository.GetAlreadyClose() )
             {
-                this.reserveLockOnegaiIdQueue.Enqueue(playerOnegaiModel.Id);                
+                this.EnqueueLockReserve(playerOnegaiModel.Id);
             }
 
             this.UpdateImmidiately();

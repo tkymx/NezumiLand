@@ -110,6 +110,7 @@ namespace NL {
             this.stateManager.UpdateByFrame();
             this.Move();
             this.UpdateTransform();
+            this.appearCharacterLifeDirector.OnUpdateByFrame();
         }
 
         private float playeringTime = 0;

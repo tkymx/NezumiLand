@@ -10,10 +10,16 @@ namespace NL
         [SerializeField]
         private OnegaiDetailView onegaiDetailView = null;
 
+        public TypeObservable<int> OnCancel { get; private set; }
+
         public void Initialize() {
+            this.OnCancel = new TypeObservable<int>();
             this.onegaiDetailView.Initialize();
             this.disposables.Add(this.onegaiDetailView.OnBack.Subscribe(_ => {
                 this.Close();
+            }));
+            this.disposables.Add(this.onegaiDetailView.OnCancel.Subscribe(_ => {
+                this.OnCancel.Execute(0);
             }));
             this.Close();
         }
@@ -26,6 +32,11 @@ namespace NL
                 playerOnegaiModel.HasSchedule (),
                 playerOnegaiModel.CloseTime (),
                 playerOnegaiModel.OnegaiModel.Satisfaction.ToString());
+        }
+
+        public void SetCnacelButtonEnabled(bool isEnabled)
+        {
+            this.onegaiDetailView.SetCnacelButtonEnabled(isEnabled);
         }
     }    
 }

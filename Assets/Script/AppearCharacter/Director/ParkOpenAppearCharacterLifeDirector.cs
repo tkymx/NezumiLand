@@ -28,6 +28,10 @@ namespace  NL
         {
             this.SetInitialState();
         }
+        public void OnUpdateByFrame()
+        {
+        }
+
         public void OnRemove()
         {
             

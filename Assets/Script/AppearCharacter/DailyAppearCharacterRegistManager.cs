@@ -74,17 +74,25 @@ namespace NL {
 
         public void Regist() 
         {
-            // 消去すべきかを判断する
+            // 消去対象の予約を取得する
+            var removableReserves = new List<DailyAppearCharacterGeneratorResistReserve> ();
             foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {
                 if (!dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel.IsNextRemove) {
                     continue;
                 }
 
-                this.dailyAppearCharacterGeneratorResistReserves.Remove(dailyAppearCharacterGeneratorResistReserve);
-                this.dailyAppearCharacterRegistReserveRemoveService.Execute(dailyAppearCharacterGeneratorResistReserve.PlayerAppearCharacterReserveModel);
+                removableReserves.Add(dailyAppearCharacterGeneratorResistReserve);
             }
 
+            // 予約を消去する
+            foreach(var removableReserve in removableReserves)
+            {
+                this.dailyAppearCharacterGeneratorResistReserves.Remove(removableReserve);
+                this.dailyAppearCharacterRegistReserveRemoveService.Execute(removableReserve.PlayerAppearCharacterReserveModel);
+            }
+
+            // 予約状況からキャラを生成する。
             foreach (var dailyAppearCharacterGeneratorResistReserve in dailyAppearCharacterGeneratorResistReserves)
             {
                 // 条件が満たしていたら

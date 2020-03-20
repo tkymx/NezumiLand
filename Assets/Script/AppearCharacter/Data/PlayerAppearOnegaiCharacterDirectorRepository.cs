@@ -12,6 +12,7 @@ namespace NL {
         public uint AppearOnegaiCharacterDirectorId;
         public uint PlayerAppearCharacterReserveId;
         public bool IsReceiveReward;
+        public bool IsCancel;
     }
 
     public interface IPlayerAppearOnegaiCharacterDirectorRepository 
@@ -47,7 +48,8 @@ namespace NL {
                 entry.Id,
                 appearOnegaiCharacterDirectorModel,
                 playerAppearCharacterReserveModel,
-                new AppearCharactorWithReward(entry.IsReceiveReward)
+                new AppearCharactorWithReward(entry.IsReceiveReward),
+                entry.IsCancel
             );
         }
 
@@ -74,6 +76,7 @@ namespace NL {
                 AppearOnegaiCharacterDirectorId = appearOnegaiCharacterDirectorModel.Id,
                 PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel.Id,
                 IsReceiveReward = false /*はじめはまだ受け取っていない*/,
+                IsCancel = false /*初回はキャンセルではない*/
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -88,7 +91,8 @@ namespace NL {
                     Id = PlayerAppearOnegaiCharacterDirectorModel.Id,
                     AppearOnegaiCharacterDirectorId = PlayerAppearOnegaiCharacterDirectorModel.AppearOnegaiCharacterDirectorModel.Id,
                     PlayerAppearCharacterReserveId = PlayerAppearOnegaiCharacterDirectorModel.PlayerAppearCharacterReserveModel.Id,
-                    IsReceiveReward = PlayerAppearOnegaiCharacterDirectorModel.AppearCharactorWithReward.IsReceiveReward
+                    IsReceiveReward = PlayerAppearOnegaiCharacterDirectorModel.AppearCharactorWithReward.IsReceiveReward,
+                    IsCancel = PlayerAppearOnegaiCharacterDirectorModel.IsCancel
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + PlayerAppearOnegaiCharacterDirectorModel.Id.ToString());

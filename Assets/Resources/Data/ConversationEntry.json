@@ -185,6 +185,18 @@
             "ConversationCharacterDisplayNames": [
                 "ねずママ"
             ]
-        }      
+        },
+        {
+            "Id": 13,
+            "ConversationTexts": [
+                "残念。。。"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "ねずママ"
+            ]
+        }          
     ]
 }

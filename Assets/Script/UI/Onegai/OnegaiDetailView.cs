@@ -23,14 +23,27 @@ namespace NL {
         [SerializeField]
         private Text satisfaction = null;
 
+        [SerializeField]
+        private Button cancelButton = null;
+
         private TypeObservable<int> onBack = null;
         public TypeObservable<int> OnBack => onBack;
 
-        public void Initialize() {
+        private TypeObservable<int> onCancel = null;
+        public TypeObservable<int> OnCancel => onCancel;
+
+        public void Initialize() {            
             onBack = new TypeObservable<int>();
             back.onClick.AddListener(() => {
                 onBack.Execute(0);
             });
+
+            onCancel = new TypeObservable<int>();
+            cancelButton.onClick.AddListener(() => {
+                onCancel.Execute(0);
+            });
+
+            this.SetCnacelButtonEnabled(false);
         }
 
         private float closeTime = 0;
@@ -41,6 +54,11 @@ namespace NL {
             this.authorText.text = author;
             this.closeTimeView.UpdateView(isCloseTIme, closeTime);
             this.satisfaction.text = "取得満足度: " + satisfaction;
+        }
+
+        public void SetCnacelButtonEnabled(bool isEnabled)
+        {
+            this.cancelButton.gameObject.SetActive(isEnabled);
         }
     }
 }

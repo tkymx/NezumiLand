@@ -55,6 +55,9 @@ namespace  NL
             // 次の出現を skip する設定
             GameManager.Instance.DailyAppearCharacterRegistManager.SetReserveNextSkippable(this.playerAppearConversationCharacterDirectorModel.PlayerAppearCharacterReserveModel, true);
         }
+        public void OnUpdateByFrame()
+        {
+        }
         public void OnRemove()
         {
             // 次の出現を skip しない設定

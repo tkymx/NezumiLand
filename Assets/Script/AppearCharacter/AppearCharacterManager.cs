@@ -21,6 +21,7 @@ namespace NL {
         private AppearCharacterChangeTransformService appearCharacterChangeTransformService = null;
         private AppearCharacterSetTargetArrangementService appearCharacterSetTargetArrangementService = null;
         private AppearCharacterSetPlayingTimeService appearCharacterSetPlayingTimeService = null;
+        private AppearOnegaiCharacterService appearOnegaiCharacterService = null;
 
         /// <summary>
         /// パーク内の公開時のキャラクター数
@@ -47,6 +48,7 @@ namespace NL {
             this.appearCharacterChangeTransformService = new AppearCharacterChangeTransformService(playerAppearCharacterViewRepository);
             this.appearCharacterSetTargetArrangementService = new AppearCharacterSetTargetArrangementService(playerAppearCharacterViewRepository);
             this.appearCharacterSetPlayingTimeService = new AppearCharacterSetPlayingTimeService(playerAppearCharacterViewRepository);
+            this.appearOnegaiCharacterService = new AppearOnegaiCharacterService(playerAppearOnegaiCharacterDirectorRepository);
         }
 
         public void UpdateByFrame()
@@ -212,6 +214,10 @@ namespace NL {
         // onegai director
         public void ToReeiveRewards (PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
             this.appearCharacterReceiveRewardsService.Execute(playerAppearOnegaiCharacterDirectorModel);
+        }
+
+        public void Cancel (PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
+            this.appearOnegaiCharacterService.Cancel(playerAppearOnegaiCharacterDirectorModel);
         }
 
 #endregion        

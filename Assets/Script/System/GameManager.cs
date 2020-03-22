@@ -9,6 +9,9 @@ namespace NL {
         public Camera MainCamera => mainCamera;
 
         [SerializeField]
+        private Transform cameraLookTarget = null;
+
+        [SerializeField]
         private DebugLogger debugLogger = null;
 
         public GameObject rootObject;
@@ -110,6 +113,9 @@ namespace NL {
         private ParkOpenGroupSelectManager parkOpenGroupSelectManager;
         public ParkOpenGroupSelectManager ParkOpenGroupSelectManager => parkOpenGroupSelectManager;
 
+        private GlobalSystemParameter globalSystemParameter;
+        public GlobalSystemParameter GlobalSystemParameter => globalSystemParameter;
+
         private void Start () {
             // コンテキストマップ
             ContextMap.Initialize ();
@@ -184,13 +190,14 @@ namespace NL {
             this.onegaiManager = new OnegaiManager(playerOnegaiRepository);
             this.monoReleaseManager = new MonoReleaseManager(playerMonoInfoRepository);
             this.reserveAmountManager = new ReserveAmountManager();
-            this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform);
+            this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform, this.cameraLookTarget);
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
             this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
             this.parkOpenCardManager = new ParkOpenCardManager(playerParkOpenRepository, playerParkOpenCardRepository, playerParkOpenDeckRepository);
             this.parkOpenGroupManager = new ParkOpenGroupManager(parkOpenGroupRepository, playerParkOpenGroupRepository);
             this.parkOpenGroupSelectManager = new ParkOpenGroupSelectManager(parkOpenGroupsRepository);
+            this.globalSystemParameter = new GlobalSystemParameter();
 
             // initialize
             this.arrangementPresenter.Initialize(playerArrangementTargetRepository);

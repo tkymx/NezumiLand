@@ -12,11 +12,13 @@ namespace NL
         enum State {
             Idle,
             PreMove,
-            Move
+            Move,
+            Pinch
         };
 
         private State currentState;
         private Vector3 startMousePosition;
+        private Vector3[] startPichPositions = new Vector3[2];
 
         /// <summary>
         /// 現在シングルタップしているか？
@@ -50,6 +52,26 @@ namespace NL
             }
         }
 
+        /// <summary>
+        /// ピンチしているかどうか？
+        /// </summary>
+        private bool isPinching = false;
+        public bool IsPinching {
+            get {
+                return this.isPinching;
+            }
+        }
+
+        /// <summary>
+        /// ピンチしているときのスタートからの距離
+        /// </summary>
+        float pinchingFromStart = 0.0f;
+        public float PinchingFromStart {
+            get {
+                return pinchingFromStart;
+            }
+        }
+
         public void Initialize () {
             this.currentState = State.Idle;
         }
@@ -58,11 +80,22 @@ namespace NL
 
             this.isSingleTap = false;
             this.isDragging = false;
+            this.isPinching = false;
             this.draggingFromStart = Vector3.zero;
 
             if (!GameManager.Instance.GameModeManager.IsCameraMobableMode) {
                 this.currentState = State.Idle;
                 return;
+            }
+
+            // 指に本以上ならピンチ
+            if (Input.touchCount >= 2) {
+                if (this.currentState != State.Pinch)
+                {
+                    this.currentState = State.Pinch;
+                    this.startPichPositions[0] = Input.touches[0].position;
+                    this.startPichPositions[1] = Input.touches[1].position;
+                }
             }
 
             switch (this.currentState) {
@@ -92,6 +125,20 @@ namespace NL
                     if (Input.GetMouseButtonUp(0)) {
                         this.currentState = State.Idle;
                     }
+                    break;
+                }
+                case State.Pinch: {
+                    if (Input.touchCount < 2) {
+                        this.currentState = State.Idle;
+                    }
+
+                    this.isPinching = true;
+
+                    // 幅の変更
+                    var startDistance = (this.startPichPositions[0] - this.startPichPositions[1]).magnitude;
+                    var currentDistance = (Input.touches[0].position - Input.touches[1].position).magnitude;
+                    this.pinchingFromStart = currentDistance - startDistance;
+
                     break;
                 }
                 default: {

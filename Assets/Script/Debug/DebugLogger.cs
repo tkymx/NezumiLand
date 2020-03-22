@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
+using UnityEngine.Events;
 
 namespace NL {
     public class DebugLogger : SingletonMonoBehaviour<DebugLogger> {
@@ -12,28 +14,16 @@ namespace NL {
         private Button openCloseButton = null;
 
         [SerializeField]
-        private Button dailyAppearCharacterRegistButton = null;
-
-        [SerializeField]
-        private Button appearForParkOpen = null;
-
-        [SerializeField]
-        private Button parkOpenButton = null;
-
-       [SerializeField]
-        private Button addHeartButton = null;
-
-        [SerializeField]
-        private Button createKariDeck = null;
-
-        [SerializeField]
         private GameObject mainContetns = null;
 
         [SerializeField]
         private Text text = null;
 
         [SerializeField]
-        private Button removePlayerData = null;
+        private GameObject debugButtonPrefab = null;
+
+        [SerializeField]
+        private GameObject debugOptionRoot = null;
 
         // リポジトリ
         ParkOpenCardRepository parkOpenCardRepository;
@@ -51,7 +41,12 @@ namespace NL {
         }
 
         private void Start() {
-            removePlayerData.onClick.AddListener(()=>{
+
+            openCloseButton.onClick.AddListener(() => {
+                mainContetns.SetActive(!mainContetns.activeSelf);
+            });
+
+            this.AddDebugButton("rm playerData", ()=>{
                 ResourceLoader.RemoveAllPlayerData();
                 GameManager.Instance.GameUIManager.CommonPresenter.SetContents("Debug","プレイヤーデータを消去しました。");
                 GameManager.Instance.GameUIManager.CommonPresenter.Show();
@@ -62,14 +57,13 @@ namespace NL {
                     Application.Quit();
                 #endif                    
             });
-            dailyAppearCharacterRegistButton.onClick.AddListener(()=>{
+            
+            this.AddDebugButton("Daily Appear Character Resist", ()=>{
                 GameManager.Instance.AppearCharacterManager.RemoveAllSoon();
                 GameManager.Instance.DailyAppearCharacterRegistManager.Regist();
             });
-            openCloseButton.onClick.AddListener(() => {
-                mainContetns.SetActive(!mainContetns.activeSelf);
-            });
-            appearForParkOpen.onClick.AddListener(() => {
+
+            this.AddDebugButton("Appear for Park Open",() => {
                 var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
                 var appearParkOpenCharacterDirectorRepository = new AppearParkOpenCharacterDirectorRepository(appearCharacterRepository, ContextMap.DefaultMap);
                 var appearParkOpenCharacterDirectorModel = appearParkOpenCharacterDirectorRepository.Get(1);
@@ -78,22 +72,12 @@ namespace NL {
                 GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
                 GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
             });
-            parkOpenButton.onClick.AddListener(() => {
-                /*
-                var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
-                var parkOpenWaveRepository = new ParkOpenWaveRepository(appearCharacterRepository, ContextMap.DefaultMap);
-                var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, ContextMap.DefaultMap);
-
-                // 開始
-                GameManager.Instance.ParkOpenManager.Open(parkOpenGroupRepository.Get(1));
-                */
-
-                GameManager.Instance.ParkOpenGroupSelectManager.StartSelect();
-            });
-            addHeartButton.onClick.AddListener(()=>{
+            
+            this.AddDebugButton("ハートを増やす",()=>{
                 GameManager.Instance.ParkOpenManager.AddHeart(10);
             });
-            createKariDeck.onClick.AddListener(()=>{
+
+            this.AddDebugButton("デッキを作る",()=>{
 
                 // デッキがない場合は作成
                 if (this.playerParkOpenDeckRepository.GetAll().Count <= 0) {
@@ -116,7 +100,20 @@ namespace NL {
                 // メインのデッキにする
                 GameManager.Instance.ParkOpenCardManager.SetMainDeck(deck);
             });
+
             Application.logMessageReceived += HandleLog;
+        }
+
+        private void AddDebugButton(string title, UnityAction onCLick)
+        {
+            var instance = GameObject.Instantiate(this.debugButtonPrefab);
+            instance.transform.SetParent(this.debugOptionRoot.transform, false);
+            var button = instance.GetComponent<Button>();
+            Debug.Assert(button!=null, "ボタンが設定されていません");
+            var text = instance.GetComponentInChildren<Text>();
+            Debug.Assert(text!=null, "テキストが存在しません");
+            text.text = title;
+            button.onClick.AddListener(onCLick);
         }
 
         private void Update () {

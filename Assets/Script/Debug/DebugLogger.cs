@@ -23,6 +23,9 @@ namespace NL {
         private GameObject debugButtonPrefab = null;
 
         [SerializeField]
+        private GameObject debugInputButtonPrefab = null;
+
+        [SerializeField]
         private GameObject debugOptionRoot = null;
 
         // リポジトリ
@@ -41,6 +44,8 @@ namespace NL {
         }
 
         private void Start() {
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
 
             openCloseButton.onClick.AddListener(() => {
                 mainContetns.SetActive(!mainContetns.activeSelf);
@@ -101,7 +106,32 @@ namespace NL {
                 GameManager.Instance.ParkOpenCardManager.SetMainDeck(deck);
             });
 
+            this.AddDebugInputButton("カメラ回転ファクター", value => {
+                var factor = float.Parse(value);
+                GameManager.Instance.GlobalSystemParameter.OverrideRotationMoveFactor(factor);
+            });
+
+            this.AddDebugInputButton("カメラピンチファクター", value => {
+                var factor = float.Parse(value);
+                GameManager.Instance.GlobalSystemParameter.OverridePinchMoveFactor(factor);
+            });
+
+            this.AddDebugInputButton("カメラピンチNear", value => {
+                var factor = float.Parse(value);
+                GameManager.Instance.GlobalSystemParameter.OverridePinchNearLength(factor);
+            });
+
+            this.AddDebugInputButton("カメラピンチFar", value => {
+                var factor = float.Parse(value);
+                GameManager.Instance.GlobalSystemParameter.OverridePinchFarLength(factor);
+            });
+
             Application.logMessageReceived += HandleLog;
+
+#else
+            openCloseButton.gameObject.SetActive(false);
+#endif
+
         }
 
         private void AddDebugButton(string title, UnityAction onCLick)
@@ -116,10 +146,27 @@ namespace NL {
             button.onClick.AddListener(onCLick);
         }
 
+        private void AddDebugInputButton(string title, UnityAction<string> onCLick)
+        {
+            var instance = GameObject.Instantiate(this.debugInputButtonPrefab);
+            instance.transform.SetParent(this.debugOptionRoot.transform, false);
+            var button = instance.GetComponentInChildren<Button>();
+            Debug.Assert(button!=null, "ボタンが設定されていません");
+            var text = instance.GetComponentInChildren<Text>();
+            Debug.Assert(text!=null, "テキストが存在しません");
+            text.text = title;
+            var input = instance.GetComponentInChildren<InputField>();
+            Debug.Assert(input!=null, "インプットが存在しません");
+            button.onClick.AddListener(() => {
+                onCLick(input.text);
+            });
+        }        
+
         private void Update () {
             text.text = LR;
             text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString () + LR;
             text.text += GameManager.Instance.ParkOpenManager.ToString() + LR;
+            text.text += "Input.touchCount : " + Input.touchCount.ToString() + LR;
             text.text += string.Join(LR,message);
         }
 

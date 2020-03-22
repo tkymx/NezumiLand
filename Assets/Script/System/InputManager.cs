@@ -82,6 +82,7 @@ namespace NL
             this.isDragging = false;
             this.isPinching = false;
             this.draggingFromStart = Vector3.zero;
+            this.pinchingFromStart = 0;
 
             if (!GameManager.Instance.GameModeManager.IsCameraMobableMode) {
                 this.currentState = State.Idle;
@@ -121,7 +122,7 @@ namespace NL
                     this.isDragging = true;
 
                     var delta = Input.mousePosition - this.startMousePosition;
-                    this.draggingFromStart = new Vector3(-delta.x * moveFactor, 0, -delta.y * moveFactor);
+                    this.draggingFromStart = new Vector3(-delta.x * moveFactor, -delta.y * moveFactor, 0);
                     if (Input.GetMouseButtonUp(0)) {
                         this.currentState = State.Idle;
                     }
@@ -130,6 +131,7 @@ namespace NL
                 case State.Pinch: {
                     if (Input.touchCount < 2) {
                         this.currentState = State.Idle;
+                        break;
                     }
 
                     this.isPinching = true;

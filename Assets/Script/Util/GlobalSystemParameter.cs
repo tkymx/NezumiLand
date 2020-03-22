@@ -20,6 +20,11 @@ namespace NL
         private float rotationMoveFactor = 0.035f;
         public float RotationMoveFactor => rotationMoveFactor;
 
+        // 位置
+
+        private float lookingDownHeight = 100;
+        public float LookingDownHeight => lookingDownHeight;
+
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
 
         public void OverridePinchMoveFactor(float factor)
@@ -41,6 +46,11 @@ namespace NL
         {
             this.rotationMoveFactor = factor;
         }    
+
+        public void OverrideLookingDownHeight(float value)
+        {
+            this.lookingDownHeight = value;
+        }
 
 #endif
     }

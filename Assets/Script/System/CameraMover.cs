@@ -33,12 +33,21 @@ namespace NL
             }
         }
 
+        public enum CameraMode
+        {
+            None,
+            Normal,
+            Arrangement
+        }
+
 
         [SerializeField]
         private Transform targetTransform;
 
         [SerializeField]
         private Transform targetCenterTransform;
+
+        private CameraMode currentMode;
 
         private PolarCoordinate polarCoordinate;
 
@@ -49,9 +58,12 @@ namespace NL
 
             this.polarCoordinate = new PolarCoordinate();
             this.polarCoordinate.From(targetTransform.localPosition);
+
+            this.currentMode = CameraMode.Normal;
         }
 
         private bool isDragging = false;
+        private Vector3 startPosition = Vector3.zero;
         private float startTheta = 0;
         private float startPahi = 0;
 
@@ -61,9 +73,95 @@ namespace NL
         // Update is called once per frame
         public void UpdateByFrame()
         {
-            UpdateDrag();
-            UpdatePinch();
+            switch(this.currentMode)
+            {
+                case CameraMode.Normal:
+                {
+                    UpdateDrag();
+                    UpdatePinch();
+                    break;
+                }
+                case CameraMode.Arrangement:
+                {
+                    UpdateTranslateWithDrag();
+                    break;
+                }
+                default:
+                {
+                    Debug.Assert(false, "不定なモードです。" + this.currentMode);
+                    break;
+                }
+            }
         }
+
+        public void ChangeMode(CameraMode cameraMode)
+        {
+            // 変更時の前処理
+            switch(this.currentMode)
+            {
+                case CameraMode.Normal:
+                {
+                    break;
+                }
+                case CameraMode.Arrangement:
+                {
+                    break;
+                }
+                default:
+                {
+                    Debug.Assert(false, "不定なモードです。" + this.currentMode);
+                    break;
+                }
+            }
+
+            // モードを変更
+            this.currentMode = cameraMode;
+            
+            // 変更時の後処理
+            switch(this.currentMode)
+            {
+                case CameraMode.Normal:
+                {
+                    // 極座標系に変更
+                    this.UpdateCoordinate();
+                    break;
+                }
+                case CameraMode.Arrangement:
+                {
+                    // 見下ろし画面に変更する
+                    this.LookingDown();
+                    break;
+                }
+                default:
+                {
+                    Debug.Assert(false, "不定なモードです。" + this.currentMode);
+                    break;
+                }
+            }
+        }
+
+        private void UpdateTranslateWithDrag()
+        {
+            // ドラッグしていないとき
+            if (!GameManager.Instance.InputManager.IsDragging) {
+                this.isDragging = false;
+                return;
+            }
+
+            // ドラッグの開始
+            if (!this.isDragging) {
+                this.isDragging = true;
+                this.startPosition = this.targetTransform.localPosition;
+            }
+
+            // ドラッグ処理
+            if (this.isDragging) {
+                this.targetTransform.localPosition = this.startPosition + new Vector3(
+                    GameManager.Instance.InputManager.DraggingFromStart.x,
+                    0,
+                    GameManager.Instance.InputManager.DraggingFromStart.y);
+            }
+        }        
 
         private void UpdateDrag()
         {
@@ -121,6 +219,12 @@ namespace NL
         private void UpdateCoordinate()
         {
             this.targetTransform.localPosition = this.polarCoordinate.To();
+            this.targetTransform.transform.LookAt(new Vector3());
+        }
+
+        private void LookingDown()
+        {
+            this.targetTransform.localPosition = new Vector3(0, GameManager.Instance.GlobalSystemParameter.LookingDownHeight, 0);
             this.targetTransform.transform.LookAt(new Vector3());
         }
     }    

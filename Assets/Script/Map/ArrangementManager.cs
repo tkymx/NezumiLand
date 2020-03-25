@@ -64,6 +64,11 @@ namespace NL {
         /// </summary>
         private UnReserveArrangementService unReserveArrangementService = null;
 
+        /// <summary>
+        /// 座標を変更するサービス
+        /// </summary>
+        private SetArrangementPositionsService setArrangementPositionsService = null;
+
         private IPlayerOnegaiRepository playerOnegaiRepository = null;
 
         private OnegaiMediater onegaiMediater = null;
@@ -78,6 +83,7 @@ namespace NL {
             this.arrangementTargetRemoveService = new ArrangementTargetRemoveService(playerArrangementTargetRepository);
             this.appearArrangementService = new AppearArrangementService(playerArrangementTargetRepository);
             this.unReserveArrangementService = new UnReserveArrangementService(playerArrangementTargetRepository);
+            this.setArrangementPositionsService = new SetArrangementPositionsService(playerArrangementTargetRepository);
 
             this.onegaiMediater = new OnegaiMediater(playerOnegaiRepository);
             this.playerOnegaiRepository = playerOnegaiRepository;
@@ -175,6 +181,65 @@ namespace NL {
 
             // 配置時のイベント
             GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.AfterArrangement());
+        }
+
+        public bool MoveArrangement (IPlayerArrangementTarget arrangementTarget, ArrangementReserveCancelView.Direction direction) {
+            Debug.Assert(this.arrangementTargetStore.Contains(arrangementTarget), "動かしたい、ターゲットがありません");
+
+            // 次の位置を作成
+            var nextArrangementPositions = new List<ArrangementPosition>();
+            foreach (var arrangementPosition in arrangementTarget.ArrangementPositions)
+            {
+                switch(direction)
+                {
+                    case ArrangementReserveCancelView.Direction.Left: 
+                    {
+                        nextArrangementPositions.Add( new ArrangementPosition(){
+                            x = arrangementPosition.x - 1,
+                            z = arrangementPosition.z
+                        });
+                        break;
+                    }
+                    case ArrangementReserveCancelView.Direction.Right: 
+                    {
+                        nextArrangementPositions.Add( new ArrangementPosition(){
+                            x = arrangementPosition.x + 1,
+                            z = arrangementPosition.z
+                        });
+                        break;
+                    }
+                    case ArrangementReserveCancelView.Direction.Up: 
+                    {
+                        nextArrangementPositions.Add( new ArrangementPosition(){
+                            x = arrangementPosition.x,
+                            z = arrangementPosition.z + 1
+                        });
+                        break;
+                    }
+                    case ArrangementReserveCancelView.Direction.Down: 
+                    {
+                        nextArrangementPositions.Add( new ArrangementPosition(){
+                            x = arrangementPosition.x,
+                            z = arrangementPosition.z - 1
+                        });
+                        break;
+                    }
+                    default:
+                    {
+                        Debug.Assert(false, "未確認の状態です。");
+                        break;
+                    }
+                }
+            }
+            // セットできるかを確認（自分は除外）
+            if (!IsSetArrangement(nextArrangementPositions, new List<IPlayerArrangementTarget>(){arrangementTarget}))
+            {
+                return false;                
+            }
+            // 座標を変更する
+            this.setArrangementPositionsService.Execute(arrangementTarget, nextArrangementPositions);
+
+            return true;
         }
 
         /// <summary>
@@ -277,10 +342,17 @@ namespace NL {
         public bool IsSetArrangement (IPlayerArrangementTarget arrangementTarget) {
             return IsSetArrangement (arrangementTarget.ArrangementPositions);
         }
-        public bool IsSetArrangement (List<ArrangementPosition> arrangementPositions) {
+        public bool IsSetArrangement (List<ArrangementPosition> arrangementPositions, List<IPlayerArrangementTarget> extractList = null) {
             foreach (var arrangementPosition in arrangementPositions) {
-                if (Find (arrangementPosition) != null) {
-                    return false;
+                var found = Find (arrangementPosition);
+                if (found != null) {
+                    if (extractList != null) {
+                        if (!extractList.Contains(found)) {
+                            return false;
+                        }
+                    }else{
+                        return false;
+                    }
                 }
             }
             return true;

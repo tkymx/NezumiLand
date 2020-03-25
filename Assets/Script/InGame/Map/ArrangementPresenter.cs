@@ -68,8 +68,15 @@ namespace NL {
             var instance = Object.AppearToFloor (this.arrangementCancelAnnotationPrefab, this.gameObject, arrangementTarget.CenterPosition);
             var view = instance.GetComponent<ArrangementReserveCancelView>();
             view.Initialize(this.mainCameta);
+            view.SetAnnnotationSize(arrangementTarget.MonoInfo.Width, arrangementTarget.MonoInfo.Height);
             this.disposables.Add(view.OnCancelObservable.Subscribe(_ => {
                 this.unReserveArrangementService.Execute(arrangementTarget);
+            }));
+            this.disposables.Add(view.OnClickDirection.Subscribe(direction => {
+                if(GameManager.Instance.ArrangementManager.MoveArrangement(arrangementTarget, direction))
+                {
+                    ReLoad();
+                }
             }));
 
             this.instances.Add (instance);

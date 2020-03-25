@@ -104,8 +104,15 @@ namespace  NL
                     GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Show();
                     GameManager.Instance.GameUIManager.OnegaiDetailPresenter.SetCnacelButtonEnabled(true);
 
-                    TypeObservable<int> subject = new TypeObservable<int>();
                     List<IDisposable> disposables = new List<IDisposable>();
+                    TypeObservable<int> subject = new TypeObservable<int>();
+                    Action doNext = () => {
+                        // 次に進む
+                        foreach(var disposable in disposables) {
+                            disposable.Dispose();
+                        }
+                        subject.Execute(0);
+                    };
 
                     // close ボタン
                     disposables.Add(GameManager.Instance.GameUIManager.OnegaiDetailPresenter.OnClose.Subscribe(__ => {
@@ -116,17 +123,12 @@ namespace  NL
                             var cancelConversationMode = GameModeGenerator.GenerateConversationMode(this.playerAppearOnegaiCharacterDirectorModel.AppearOnegaiCharacterDirectorModel.CancelConversationModel);
                             GameManager.Instance.GameModeManager.EnqueueChangeModeWithHistory(cancelConversationMode);
                             disposables.Add(GameManager.Instance.GameModeManager.GetModeEndObservable(cancelConversationMode).Subscribe(___ => {
-                                
-                                // 次に進む
-                                foreach(var disposable in disposables) {
-                                    disposable.Dispose();
-                                }
-                                subject.Execute(0);
+                                doNext();
                             }));
                         }
                         else
                         {
-                            subject.Execute(0);
+                            doNext();
                         }
                     }));
 

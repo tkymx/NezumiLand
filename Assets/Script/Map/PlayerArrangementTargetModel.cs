@@ -42,6 +42,24 @@ namespace NL
             this.PlayerMonoViewModel = playerMonoViewModel;
         }
 
+        public void SetPosition(List<ArrangementPosition> positions)
+        {
+            // 位置を設定
+            this.Positions = positions;
+
+            // 中心座標を取得
+            this.CenterPosition = Vector3.zero;
+            foreach (var position in positions)
+            {
+                this.CenterPosition += new Vector3(
+                    position.x * ArrangementAnnotater.ArrangementWidth,
+                    0,
+                    position.z * ArrangementAnnotater.ArrangementHeight
+                );
+            }
+            this.CenterPosition = this.CenterPosition / positions.Count;
+        }
+
         public void SetMonoInfo(MonoInfo monoInfo) {
             this.MonoInfo = monoInfo;
         }

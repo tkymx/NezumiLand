@@ -44,7 +44,7 @@ namespace NL
         }
 
         private string GetText(string cost, bool isCostOver) {
-            return "総額 " + cost + " 消費します。";
+            return "総額 " + cost + " 消費します";
         }
     }   
 }

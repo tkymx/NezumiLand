@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace NL {
     public class MenuSelectMode : IGameMode {
         private MenuSelectModeContext context;
+        private List<IDisposable> disposables;
 
         public MenuSelectMode (MenuSelectModeContext context) {
             this.context = context;
+            this.disposables = new List<IDisposable>();
         }
 
         public void OnEnter () {

@@ -91,6 +91,7 @@ namespace NL {
             this.currentGameMode is SelectMode || 
             this.currentGameMode is ArrangementMode || 
             this.currentGameMode is ArrangementMenuSelectMode ||
+            this.currentGameMode is RemoveArrangementMode || 
             this.currentGameMode is ParkOpenMode;
             
         public bool IsEventMode => this.currentGameMode is EventMode;

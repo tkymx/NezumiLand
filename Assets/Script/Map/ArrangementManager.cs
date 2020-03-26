@@ -15,9 +15,8 @@ namespace NL {
         /// <summary>
         /// 選択されている 配置ターゲット
         /// </summary>
-        private IPlayerArrangementTarget selectedArrangementTarget;
-        public IPlayerArrangementTarget SelectedArrangementTarget => selectedArrangementTarget;
-        public bool HasSelectedArrangementTarget => selectedArrangementTarget != null;
+        private List<IPlayerArrangementTarget> selectedArrangementTargets;
+        public List<IPlayerArrangementTarget> SelectedArrangementTargets => selectedArrangementTargets;
 
         /// <summary>
         /// 選択状況
@@ -75,7 +74,7 @@ namespace NL {
 
         public ArrangementManager (GameObject root, IPlayerOnegaiRepository playerOnegaiRepository, IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.arrangementTargetStore = new List<IPlayerArrangementTarget> ();
-            this.selectedArrangementTarget = null;
+            this.selectedArrangementTargets = new List<IPlayerArrangementTarget>();
             this.arrangementAnnotater = new ArrangementAnnotater (root);
             this.nearMap = new Dictionary<IPlayerArrangementTarget, List<IPlayerArrangementTarget>>();
             
@@ -246,19 +245,30 @@ namespace NL {
         /// 選択を外す
         /// </summary>
         public void RemoveSelection () {
-            this.selectedArrangementTarget = null;
+            this.selectedArrangementTargets.Clear();
             GameManager.Instance.ArrangementPresenter.ReLoad ();
             GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Close ();
+        }
+
+        /// <summary>
+        /// 選択を外す
+        /// </summary>
+        public void RemoveSelection (IPlayerArrangementTarget playerArrangementTarget) {
+            Debug.Assert(CheckIsSelect(playerArrangementTarget), "選択されていません");
+            this.selectedArrangementTargets.Remove(playerArrangementTarget);
+            GameManager.Instance.ArrangementPresenter.ReLoad ();
         }
 
         /// <summary>
         /// 選択されている配置ターゲットを消す
         /// </summary>
         public void RemoveSelectArrangement () {
-            this.RemoveArranement (this.selectedArrangementTarget);
-            this.selectedArrangementTarget = null;
-            GameManager.Instance.ArrangementPresenter.ReLoad ();
-            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Close ();
+            // オブジェクトを消す
+            foreach (var selectedArrangementTarget in this.selectedArrangementTargets)
+            {
+                this.RemoveArranement (selectedArrangementTarget);                
+            }
+            this.RemoveSelection();
         }
 
         /// <summary>
@@ -364,8 +374,22 @@ namespace NL {
         /// <param name="arrangementTarget"></param>
         public void Select (IPlayerArrangementTarget arrangementTarget) {
             Debug.Assert (arrangementTargetStore.Contains (arrangementTarget), "管理されていないターゲットです。");
-            selectedArrangementTarget = arrangementTarget;
-            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Show ();
+
+            if (this.selectedArrangementTargets.Contains(arrangementTarget)) {
+                return;
+            }
+
+            this.selectedArrangementTargets.Add(arrangementTarget);
+            GameManager.Instance.ArrangementPresenter.ReLoad ();
+        }
+
+        /// <summary>
+        /// 一つだけ選択する
+        /// </summary>
+        public void SelectOnly (IPlayerArrangementTarget arrangementTarget) {
+            this.RemoveSelection();
+            this.Select(arrangementTarget);
+            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Show (arrangementTarget);
         }
 
         /// <summary>
@@ -374,7 +398,7 @@ namespace NL {
         /// <param name="arrangementTarget"></param>
         /// <returns></returns>
         public bool CheckIsSelect (IPlayerArrangementTarget arrangementTarget) {
-            return selectedArrangementTarget == arrangementTarget;
+            return selectedArrangementTargets.Contains(arrangementTarget);
         }
 
         private IPlayerArrangementTarget Find (ArrangementPosition arrangementPosition) {

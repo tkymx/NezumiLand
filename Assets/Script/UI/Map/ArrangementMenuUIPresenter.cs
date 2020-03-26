@@ -32,27 +32,29 @@ namespace NL {
         [SerializeField]
         private Button closeButton = null;
 
+        private IPlayerArrangementTarget selectedArrangementTarget = null;
+
         // Start is called before the first frame update
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             deleteButton.onClick.AddListener (() => {
-                var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
-                var item = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.ArrangementItemAmount;
+                var removeFee = this.selectedArrangementTarget.MonoViewModel.RemoveFee;
+                var item = this.selectedArrangementTarget.MonoInfo.ArrangementItemAmount;
                 if (GameManager.Instance.Wallet.IsConsume (removeFee)) {
                     GameManager.Instance.Wallet.Consume (removeFee);
                     GameManager.Instance.ArrangementItemStore.Push (item);
-                    GameManager.Instance.EffectManager.PlayConsumeEffect (removeFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
-                    GameManager.Instance.EffectManager.PlayEarnItemEffect (item, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition + new Vector3(0,2.0f,0));
+                    GameManager.Instance.EffectManager.PlayConsumeEffect (removeFee, this.selectedArrangementTarget.CenterPosition);
+                    GameManager.Instance.EffectManager.PlayEarnItemEffect (item, this.selectedArrangementTarget.CenterPosition + new Vector3(0,2.0f,0));
                     GameManager.Instance.ArrangementManager.RemoveSelectArrangement ();
                     this.DoFinishProcess ();
                 }
             });
 
             levelUpButton.onClick.AddListener (() => {
-                var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+                var levelUpFee = this.selectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
                 if (GameManager.Instance.Wallet.IsConsume (levelUpFee)) {
                     GameManager.Instance.Wallet.Consume (levelUpFee);
-                    GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.LevelUp ();
-                    GameManager.Instance.EffectManager.PlayConsumeEffect (levelUpFee, GameManager.Instance.ArrangementManager.SelectedArrangementTarget.CenterPosition);
+                    this.selectedArrangementTarget.MonoViewModel.LevelUp ();
+                    GameManager.Instance.EffectManager.PlayConsumeEffect (levelUpFee, this.selectedArrangementTarget.CenterPosition);
                 }
             });
 
@@ -79,54 +81,56 @@ namespace NL {
             UpdateLevelUpFee ();
         }
 
-        public void Show () {
+        public void Show (IPlayerArrangementTarget selectedArrangementTarget) {
+            this.selectedArrangementTarget = selectedArrangementTarget;
             arrangementUI.SetActive (true);
             Update ();
         }
 
         public void Close () {
+            this.selectedArrangementTarget = null;
             arrangementUI.SetActive (false);
         }
 
         private void UpdateName () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 return;
             }
 
-            monoName.text = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoInfo.Name;
+            monoName.text = this.selectedArrangementTarget.MonoInfo.Name;
         }
 
         private void UpdateDetail () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 detail.text = "未選択状態";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 detail.text = "建築中";
                 return;
             }
 
-            detail.text = "Level:" + GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.CurrentLevel;
+            detail.text = "Level:" + this.selectedArrangementTarget.MonoViewModel.CurrentLevel;
             return;
         }
 
         private void UpdateRemoveButtonEnable () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 deleteButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 deleteButton.interactable = false;
                 return;
             }
 
-            var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
+            var removeFee = this.selectedArrangementTarget.MonoViewModel.RemoveFee;
             if (!GameManager.Instance.Wallet.IsConsume (removeFee)) {
                 deleteButton.interactable = false;
                 return;
@@ -136,37 +140,37 @@ namespace NL {
         }
 
         private void UpdateRemoveFee () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 deleteFee.text = "";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 deleteFee.text = "";
                 return;
             }
 
-            var removeFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.RemoveFee;
+            var removeFee = this.selectedArrangementTarget.MonoViewModel.RemoveFee;
             deleteFee.text = removeFee.ToString ();
         }
 
         private void UpdateLevelUpButtonEnable () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
+            if (!this.selectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
                 levelUpButton.interactable = false;
                 return;
             }
 
-            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+            var levelUpFee = this.selectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
             if (!GameManager.Instance.Wallet.IsConsume (levelUpFee)) {
                 levelUpButton.interactable = false;
                 return;
@@ -176,21 +180,21 @@ namespace NL {
         }
 
         private void UpdateLevelUpFee () {
-            if (!GameManager.Instance.ArrangementManager.HasSelectedArrangementTarget) {
+            if (this.selectedArrangementTarget == null) {
                 levelUpFeeText.text = "";
                 return;
             }
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.HasMonoViewModel) {
+            if (!this.selectedArrangementTarget.HasMonoViewModel) {
                 levelUpFeeText.text = "";
                 return;
             }
 
-            if (!GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
+            if (!this.selectedArrangementTarget.MonoViewModel.ExistNextLevelUp ()) {
                 levelUpFeeText.text = "最大レベルです";
                 return;
             }
 
-            var levelUpFee = GameManager.Instance.ArrangementManager.SelectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
+            var levelUpFee = this.selectedArrangementTarget.MonoViewModel.GetCurrentLevelUpFee ();
             levelUpFeeText.text = levelUpFee.ToString ();
         }
     }

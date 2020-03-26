@@ -113,6 +113,10 @@ namespace NL {
         private ParkOpenStartPresenter parkOpenStartPresenter = null;
         public ParkOpenStartPresenter ParkOpenStartPresenter => this.parkOpenStartPresenter;
 
+        [SerializeField]
+        private RemoveArrangementModeUIPresenter removeArrangementModeUIPresenter = null;
+        public RemoveArrangementModeUIPresenter RemoveArrangementModeUIPresenter => this.removeArrangementModeUIPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -152,6 +156,7 @@ namespace NL {
             this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository, playerParkOpenGroupRepository);
             this.parkOpenDetailPresenter.Initialize();
             this.parkOpenStartPresenter.Initialize();
+            this.removeArrangementModeUIPresenter.Initialize();
         }
 
         public void UpdateByFrame() {
@@ -160,6 +165,7 @@ namespace NL {
             this.fieldActionUIPresenter.UpdateByFrame();
             this.parkOpenCharacterCountPresenter.UpdateByFrame();
             this.parkOpenTimePresenter.UpdateByFrame();
+            this.removeArrangementModeUIPresenter.UpdateByFrame();
         }
     }
 }

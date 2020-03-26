@@ -28,8 +28,14 @@ namespace NL {
 
         private UnReserveArrangementService unReserveArrangementService = null;
 
+        /// <summary>
+        /// 配置物がタップされたときの
+        /// </summary>
+        public TypeObservable<IPlayerArrangementTarget> OnTouchArrangement { get; private set; }
+
         public void Initialize (IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.instances = new List<GameObject> ();
+            this.OnTouchArrangement = new TypeObservable<IPlayerArrangementTarget>();
             this.unReserveArrangementService = new UnReserveArrangementService(playerArrangementTargetRepository);
         }
 
@@ -99,12 +105,7 @@ namespace NL {
                 if (!isReserve) {
                     arrangementView.OnSelect
                         .Subscribe (_ => {
-                            // 予約状態の場合はメニューを出さない。
-                            if (arrangementTarget.PlayerArrangementTargetModel.State == ArrangementTargetState.Reserve) {
-                                return;
-                            }
-                            // メニューを変更する
-                            GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateArrangementMenuSelectMode (arrangementTarget));
+                            this.OnTouchArrangement.Execute(arrangementTarget);
                         });
                 }
 

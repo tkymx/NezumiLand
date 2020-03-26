@@ -12,6 +12,7 @@ namespace NL {
             All,
             Field,
             ParkOpen,
+            Mono
         }
 
         private Camera mainCamera;
@@ -52,13 +53,16 @@ namespace NL {
             if (this.maskMode == MaskMode.None) {
                 return new string [] {};
             }
+            if (this.maskMode == MaskMode.Mono) {
+                return new string[] { "SelectLayer" };
+            }
             if (this.maskMode == MaskMode.Field) {
                 return new string[] { "Floor" };
             }
             if (this.maskMode == MaskMode.ParkOpen) {
                 return new string[] { "Coin" };
             }
-            return new string[] { "SelectLayer", "Floor", "Mouse", "Coin" };
+            return new string[] { "SelectLayer", "Floor", "Mouse", "Coin", "Home" };
         }
 
         private bool CanTouch () {

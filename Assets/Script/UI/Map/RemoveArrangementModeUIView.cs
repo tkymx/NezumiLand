@@ -38,9 +38,13 @@ namespace NL
         }
 
         public void UpdateView(string cost, bool isCostOver) {
-            this.removeCostText.text = cost;
+            this.removeCostText.text = GetText(cost, isCostOver);
             this.removeButton.interactable = !isCostOver;
             this.removeCostText.color = isCostOver ? warningColor : defaultColor; 
+        }
+
+        private string GetText(string cost, bool isCostOver) {
+            return "総額 " + cost + " 消費します。";
         }
     }   
 }

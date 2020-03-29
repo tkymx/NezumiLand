@@ -117,6 +117,10 @@ namespace NL {
         private RemoveArrangementModeUIPresenter removeArrangementModeUIPresenter = null;
         public RemoveArrangementModeUIPresenter RemoveArrangementModeUIPresenter => this.removeArrangementModeUIPresenter;
 
+        [SerializeField]
+        private MoveArrangementModeUIPresenter moveArrangementModeUIPresenter = null;
+        public MoveArrangementModeUIPresenter MoveArrangementModeUIPresenter => this.moveArrangementModeUIPresenter;
+
         public void Initialize (
             OnegaiRepository onegaiRepository, 
             IPlayerOnegaiRepository playerOnegaiRepository, 
@@ -157,6 +161,7 @@ namespace NL {
             this.parkOpenDetailPresenter.Initialize();
             this.parkOpenStartPresenter.Initialize();
             this.removeArrangementModeUIPresenter.Initialize();
+            this.moveArrangementModeUIPresenter.Initialize();
         }
 
         public void UpdateByFrame() {

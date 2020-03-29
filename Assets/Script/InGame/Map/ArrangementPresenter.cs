@@ -18,15 +18,15 @@ namespace NL {
         private GameObject reserveArrangementPrefab = null;
 
         [SerializeField]
-        private GameObject arrangementCancelAnnotationPrefab = null;
-
-        [SerializeField]
         private Camera mainCameta = null;
 
         // のちのち view として作れれば良い
         private List<GameObject> instances;
 
-        private UnReserveArrangementService unReserveArrangementService = null;
+        // 設置のモード
+        private IArrangementPresenterDeployMode arrangementPresenterDeployMode;
+
+        private ArrangementPresenterDeployModeSetting arrangementPresenterDeployModeSetting;
 
         /// <summary>
         /// 配置物がタップされたときの
@@ -36,7 +36,17 @@ namespace NL {
         public void Initialize (IPlayerArrangementTargetRepository playerArrangementTargetRepository) {
             this.instances = new List<GameObject> ();
             this.OnTouchArrangement = new TypeObservable<IPlayerArrangementTarget>();
-            this.unReserveArrangementService = new UnReserveArrangementService(playerArrangementTargetRepository);
+            this.arrangementPresenterDeployModeSetting = new ArrangementPresenterDeployModeSetting(
+                this.mainCameta,
+                this,
+                this.gameObject,
+                this.arrangementPrefab,
+                this.selectedArrangementPrefab,
+                this.reserveArrangementPrefab,
+                playerArrangementTargetRepository
+            );
+
+            this.arrangementPresenterDeployMode = new ArrangementPresenterDeployMode(this.arrangementPresenterDeployModeSetting);
         }
 
         public void ReLoad () {
@@ -51,66 +61,41 @@ namespace NL {
 
             // 設置開始しているもの
             GameManager.Instance.ArrangementManager.ArrangementTargetStore.ForEach (arrangementTarget => {
-                if (GameManager.Instance.ArrangementManager.CheckIsSelect (arrangementTarget)) 
-                {
-                    // 選択状態
-                    this.appearArrangement (arrangementTarget, this.selectedArrangementPrefab);
-                } 
-                else if (arrangementTarget.ArrangementTargetState == ArrangementTargetState.Reserve) 
-                {
-                    // 予約状態
-                    this.appearArrangement (arrangementTarget, reserveArrangementPrefab);
-                    this.AddArrangementCancelAnnotation(arrangementTarget);
-                } 
-                else 
-                {
-                    // 設置状態
-                    this.appearArrangement (arrangementTarget, this.arrangementPrefab);
-                }
+                this.arrangementPresenterDeployMode.Arrangement(arrangementTarget);
             });
         }
 
-        private void AddArrangementCancelAnnotation (IPlayerArrangementTarget arrangementTarget) {
-            var instance = Object.AppearToFloor (this.arrangementCancelAnnotationPrefab, this.gameObject, arrangementTarget.CenterPosition);
-            var view = instance.GetComponent<ArrangementReserveCancelView>();
-            view.Initialize(this.mainCameta);
-            view.SetAnnnotationSize(arrangementTarget.MonoInfo.Width, arrangementTarget.MonoInfo.Height);
-            this.disposables.Add(view.OnCancelObservable.Subscribe(_ => {
-                this.unReserveArrangementService.Execute(arrangementTarget);
-            }));
-            this.disposables.Add(view.OnClickDirection.Subscribe(direction => {
-                if(GameManager.Instance.ArrangementManager.MoveArrangement(arrangementTarget, direction))
-                {
-                    ReLoad();
-                }
-            }));
-
-            this.instances.Add (instance);
+        public void AddInstance(GameObject arrangementInstance)
+        {
+            this.instances.Add(arrangementInstance);
         }
 
-        private void appearArrangement (IPlayerArrangementTarget arrangementTarget, GameObject prefab, bool isReserve = false) {
-            arrangementTarget.ArrangementPositions.ForEach (arrangementPosition => {
-                var instance = Object.AppearToFloor (prefab, gameObject, new Vector3 (
-                    arrangementPosition.x * ArrangementAnnotater.ArrangementWidth,
-                    0,
-                    arrangementPosition.z * ArrangementAnnotater.ArrangementHeight
-                ));
+        // 通常の配置モード
+        public void ChangeToArrangementDeployMode()
+        {
+            if (this.arrangementPresenterDeployMode is ArrangementPresenterDeployMode) {
+                return;
+            }
+            this.ChangeArrangementDeployMode(new ArrangementPresenterDeployMode(this.arrangementPresenterDeployModeSetting));
+        }
 
-                Debug.Assert (instance != null, "Arrangement が生成されていません");
-                Debug.Assert (instance.GetComponent<ArrangementView> () != null, "Arrangement の ArrangementView が設定されておりません。");
+        // 移動モード
+        public void ChangeToMoveArrangementDeployMode()
+        {
+            if (this.arrangementPresenterDeployMode is MoveArrangementPresenterDeployMode) {
+                return;
+            }
+            this.ChangeArrangementDeployMode(new MoveArrangementPresenterDeployMode(this.arrangementPresenterDeployModeSetting));
+        }
 
-                var arrangementView = instance.GetComponent<ArrangementView> ();
-
-                // 選択時の挙動を追加
-                if (!isReserve) {
-                    arrangementView.OnSelect
-                        .Subscribe (_ => {
-                            this.OnTouchArrangement.Execute(arrangementTarget);
-                        });
-                }
-
-                this.instances.Add (instance);
-            });
+        // 設置モードの変更
+        private void ChangeArrangementDeployMode(IArrangementPresenterDeployMode arrangementPresenterDeployMode)
+        {
+            if (this.arrangementPresenterDeployMode != null) 
+            {
+                this.arrangementPresenterDeployMode.Dispose();
+            }
+            this.arrangementPresenterDeployMode = arrangementPresenterDeployMode;
         }
     }
 }

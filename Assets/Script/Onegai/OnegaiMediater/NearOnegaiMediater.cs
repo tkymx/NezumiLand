@@ -42,7 +42,7 @@ namespace NL {
             var nearArrangementTargets = GameManager.Instance.ArrangementManager.GetNearArrangement (arrangementTarget);
             foreach (var nearArrangementTarget in nearArrangementTargets) {
                 var nearNearArrangementTargets = GameManager.Instance.ArrangementManager.GetNearArrangement(nearArrangementTarget);
-                nearNearArrangementTargets.Remove(arrangementTarget);
+                nearNearArrangementTargets.RemoveAll(target => target == arrangementTarget);
                 this.MediateInternal(nearArrangementTarget, nearNearArrangementTargets, true);
             }
             this.MediateInternal(arrangementTarget,new List<IPlayerArrangementTarget>(), true);

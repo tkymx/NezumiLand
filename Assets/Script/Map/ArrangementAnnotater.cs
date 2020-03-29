@@ -15,19 +15,17 @@ namespace NL {
 
         private GameObject objectParent;
 
-        // 選択状況
-        private bool isSelectByFrame;
-        public bool IsSelectByFrame => isSelectByFrame;
+        public TypeObservable<int> OnSelect { get; private set;}
 
         public void Select () {
-            this.isSelectByFrame = true;
+            this.OnSelect.Execute(0);
         }
 
         public ArrangementAnnotater (GameObject objectParent) {
+            this.OnSelect = new TypeObservable<int>();
             this.objectParent = objectParent;
             this.currentAnnotation = new List<GameObject> ();
             this.currentArrangementPositions = new List<ArrangementPosition> ();
-            this.isSelectByFrame = false;
 
             this.annotationPrefab = ResourceLoader.LoadPrefab ("Model/arrangement_annotation");
         }
@@ -58,11 +56,13 @@ namespace NL {
                 Object.DisAppear (appearObject);
             }
             this.currentAnnotation.Clear ();
-
-            this.isSelectByFrame = false;
         }
 
         public YesPlayerArrangementTarget GetCurrentTarget () {
+            if (this.currentArrangemtnInfo == null)
+            {
+                return null;
+            }
             return new YesPlayerArrangementTarget (this.currentAnnotation, currentArrangementPositions, currentArrangemtnInfo);
         }
     }

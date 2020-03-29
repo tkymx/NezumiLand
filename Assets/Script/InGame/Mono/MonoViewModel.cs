@@ -41,5 +41,10 @@ namespace NL {
         }
 
         public void UpdateByFrame () { }
+
+        public void SetPosition (Vector3 position)
+        {
+            this.monoView.SetPosition(position);
+        }
     }
 }

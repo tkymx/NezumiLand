@@ -18,7 +18,7 @@ namespace NL {
 
         public void OnEnter () {
             GameManager.Instance.GameUIManager.RemoveArrangementModeUIPresenter.Show ();
-            GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.Mono);
+            GameManager.Instance.FieldRaycastManager.SetMaskMode(FieldRaycastManager.MaskMode.RemoveArrangement);
             GameManager.Instance.TimeManager.Pause ();
             GameManager.Instance.CameraMoveManager.ChangeMode(CameraMoveManager.CameraMode.Arrangement);
 

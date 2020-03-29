@@ -26,7 +26,10 @@ namespace NL {
         public GameUIManager GameUIManager => gameUIManager;
 
         private ArrangementManager arrangementManager;
-        public ArrangementManager ArrangementManager => arrangementManager;
+        public ArrangementManager ArrangementManager => this.arrangementManager;
+
+        private ArrangementMoveIndicatorManager arrangementMoveIndicatorManager;
+        public ArrangementMoveIndicatorManager ArrangementMoveIndicatorManager => this.arrangementMoveIndicatorManager;
 
         private MonoManager monoManager;
         public MonoManager MonoManager => monoManager;
@@ -171,6 +174,7 @@ namespace NL {
             this.wallet = new Wallet (new Currency (0),playerInfoRepository); // 所持金の初期値も外出ししたい
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager (this.rootObject, playerOnegaiRepository, playerArrangementTargetRepository);
+            this.arrangementMoveIndicatorManager = new ArrangementMoveIndicatorManager(playerArrangementTargetRepository);
             this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
             this.effectManager = new EffectManager (mainCamera, rootObject, rootEffectUI);
             this.gameModeManager = new GameModeManager ();

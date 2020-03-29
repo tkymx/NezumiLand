@@ -21,6 +21,11 @@ namespace NL {
         // 位置情報
         public List<ArrangementPosition> ArrangementPositions => playerArrangementTargetModel.Positions;
 
+        public void SetPosition(List<ArrangementPosition> positions)
+        {
+            this.playerArrangementTargetModel.SetPosition(positions);
+        }
+
         // モノ
         public MonoViewModel MonoViewModel { get; private set; }
         public bool HasMonoViewModel => MonoViewModel != null;
@@ -40,10 +45,10 @@ namespace NL {
         public List<ArrangementPosition> GetEdgePositions () {
             var edgePositions = new List<ArrangementPosition> ();
             var diffs = new List<ArrangementDiff> () {
-                new ArrangementDiff () { dx = -1, dz = -1 },
-                new ArrangementDiff () { dx = 1, dz = 1 },
-                new ArrangementDiff () { dx = -1, dz = 1 },
-                new ArrangementDiff () { dx = 1, dz = -1 }
+                new ArrangementDiff () { dx = 0, dz = 1 },
+                new ArrangementDiff () { dx = 0, dz = -1 },
+                new ArrangementDiff () { dx = 1, dz = 0 },
+                new ArrangementDiff () { dx = -1, dz = 0 }
             };
 
             foreach (var arrangementPosition in ArrangementPositions) {
@@ -71,6 +76,9 @@ namespace NL {
         
         // 現在の状態を保持
         public ArrangementTargetState ArrangementTargetState => playerArrangementTargetModel.State;
+
+        // レイヤー
+        public ArrangementLayer ArrangementLayer => ArrangementLayer.Main;
 
         // 表示状態にする
         public void ToAppear() {

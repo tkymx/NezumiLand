@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 namespace NL
 {
-    public class ArrangementReserveCancelView : MonoBehaviour
+    public class ArrangementMoveView : MonoBehaviour
     {
         private readonly float DefaultSize = 100;
 
         [SerializeField]
         private Button onCancel = null;
+
+        [SerializeField]
+        private Button onOk = null;
 
         [SerializeField]
         private Button onLeft = null;
@@ -29,16 +32,22 @@ namespace NL
 
         public TypeObservable<int> OnCancelObservable { get; private set; } 
 
+        public TypeObservable<int> OnOKObservable { get; private set; } 
+
         public TypeObservable<ArrangementManager.Direction> OnClickDirection { get; private set; }
 
         public void Initialize (Camera mainCamera) {
             this.mainCanvas.worldCamera = mainCamera;
 
             this.OnCancelObservable = new TypeObservable<int>();
+            this.OnOKObservable = new TypeObservable<int>();
             this.OnClickDirection = new TypeObservable<ArrangementManager.Direction>();
 
             this.onCancel.onClick.AddListener(() => {
                 this.OnCancelObservable.Execute(0);
+            });
+            this.onOk.onClick.AddListener(() => {
+                this.OnOKObservable.Execute(0);
             });
             this.onLeft.onClick.AddListener(() => {
                 this.OnClickDirection.Execute(ArrangementManager.Direction.Left);

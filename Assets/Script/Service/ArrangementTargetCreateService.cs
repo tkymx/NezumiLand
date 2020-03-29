@@ -23,5 +23,17 @@ namespace NL
             );
             return new PlayerArrangementTarget(playerArrangementTargetModel);
         }
+
+        public PlayerArrangementTarget ExecuteForMoveIndicator (IPlayerArrangementTarget arrangementTarget) {
+            var playerArrangementTargetModel = playerArrangementTargetRepository.Create(
+                arrangementTarget.CenterPosition,
+                arrangementTarget.Range,
+                arrangementTarget.ArrangementPositions,
+                ArrangementTargetState.MoveIndicator,
+                null,
+                null
+            );
+            return new PlayerArrangementTarget(playerArrangementTargetModel);
+        }        
     }   
 }

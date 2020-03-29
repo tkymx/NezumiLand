@@ -12,9 +12,9 @@ namespace NL
             this.playerArrangementTargetRepository = playerArrangementTargetRepository;
         }
 
-        public void Execute (IPlayerArrangementTarget arrangementTarget) {
-            Debug.Assert(arrangementTarget.PlayerArrangementTargetModel!=null, "ArrangementTargetRemoveServiceが実行できません");
-            playerArrangementTargetRepository.Remove(arrangementTarget.PlayerArrangementTargetModel);
+        public void Execute (PlayerArrangementTargetModel playerArrangementTargetModel) {
+            Debug.Assert(playerArrangementTargetModel !=null, "ArrangementTargetRemoveServiceが実行できません");
+            playerArrangementTargetRepository.Remove(playerArrangementTargetModel);
         }
     }   
 }

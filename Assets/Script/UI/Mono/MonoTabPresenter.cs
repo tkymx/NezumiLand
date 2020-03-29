@@ -22,6 +22,9 @@ namespace NL {
         private Button removeModeButton = null;
 
         [SerializeField]
+        private Button moveModeButton = null;
+
+        [SerializeField]
         private Button closeButton = null;
 
         public void Initialize (IPlayerMonoInfoRepository playerMonoInfoRepository) {
@@ -41,6 +44,10 @@ namespace NL {
 
             removeModeButton.onClick.AddListener(() => {
                 GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateRemoveArrangementMode ());
+            });
+
+            moveModeButton.onClick.AddListener(() => {
+                GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateMoveArrangementMode ());
             });
 
             closeButton.onClick.AddListener(() => {

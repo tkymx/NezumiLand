@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 namespace NL {
     public class ArrangementMode : IGameMode {
@@ -9,10 +10,12 @@ namespace NL {
         private ArrangementModeContext context;
         private ArrangementTargetCreateService arrangementTargetCreateService = null;
         private ReserveArrangementService reserveArrangementService = null;
+        private List<IDisposable> disposables;
 
         public ArrangementMode (Camera mainCamera, ArrangementModeContext context) {
             this.mainCamera = mainCamera;
             this.context = context;
+            this.disposables = new List<IDisposable>();
 
             this.arrangementTargetCreateService = new ArrangementTargetCreateService(context.PlayerArrangementTargetRepository);
             this.reserveArrangementService = new ReserveArrangementService(context.PlayerArrangementTargetRepository);
@@ -27,18 +30,17 @@ namespace NL {
             GameManager.Instance.TimeManager.Pause ();
             GameManager.Instance.CameraMoveManager.ChangeMode(CameraMoveManager.CameraMode.Arrangement);
 
+            this.disposables.Add(GameManager.Instance.ArrangementManager.ArrangementAnnotater.OnSelect.Subscribe(_ => {
+                OrderMouseIfSelect();
+            }));
+
             GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.InArrangementMode());
         }
 
         public void OnUpdate () {
-            OrderMouseIfSelect();
         }
 
         private void OrderMouseIfSelect () {
-            if (!GameManager.Instance.ArrangementManager.ArrangementAnnotater.IsSelectByFrame) {
-                return;
-            }
-
             var currentTarget = GameManager.Instance.ArrangementManager.ArrangementAnnotater.GetCurrentTarget ();
             if (!GameManager.Instance.ArrangementManager.IsSetArrangement (currentTarget)) {
 
@@ -66,6 +68,12 @@ namespace NL {
             GameManager.Instance.MonoSelectManager.RemoveSelect ();
             GameManager.Instance.TimeManager.Play ();
             GameManager.Instance.CameraMoveManager.ChangeMode(CameraMoveManager.CameraMode.Normal);
+
+            foreach (var disposable in this.disposables)
+            {
+                disposable.Dispose();
+            }
+            this.disposables.Clear();
         }
     }
 }

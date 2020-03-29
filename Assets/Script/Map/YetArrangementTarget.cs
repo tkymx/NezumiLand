@@ -2,13 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 namespace NL {
     public class YesPlayerArrangementTarget : IPlayerArrangementTarget {
-        Vector3 centerPosition;
-        float range;
-        List<ArrangementPosition> arrangementPositions;
-        ArrangementTargetState arrangementTargetState;
+        protected Vector3 centerPosition;
+        protected float range;
+        protected List<ArrangementPosition> arrangementPositions;
+        protected ArrangementTargetState arrangementTargetState;
+        protected ArrangementLayer arrangementLayer;
+
+        public YesPlayerArrangementTarget(Vector3 centerPosition, float range, List<ArrangementPosition> arrangementPositions, ArrangementTargetState arrangementTargetState, MonoInfo monoInfo, ArrangementLayer arrangementLayer)
+        {
+            this.centerPosition = centerPosition;
+            this.range = range;
+            this.arrangementPositions = arrangementPositions;
+            this.arrangementTargetState = arrangementTargetState;
+            this.MonoInfo = monoInfo;
+            this.arrangementLayer = arrangementLayer;
+        }
 
         public YesPlayerArrangementTarget (List<GameObject> gameObjectList, List<ArrangementPosition> arrangementPositions, ArrangementInfo arrangementInfo) {
             // 中心座標
@@ -26,11 +38,14 @@ namespace NL {
 
             // はじめは予約
             this.arrangementTargetState = ArrangementTargetState.Reserve;
+
+            // レイヤー
+            this.arrangementLayer = ArrangementLayer.Main;
         }
 
         public PlayerArrangementTargetModel PlayerArrangementTargetModel {
             get {
-                throw new System.NotImplementedException();
+                return null;
             }
         }
 
@@ -40,6 +55,19 @@ namespace NL {
 
         // 位置情報
         public List<ArrangementPosition> ArrangementPositions => arrangementPositions;
+
+        public virtual void SetPosition(List<ArrangementPosition> positions)
+        {
+            // 中心座標
+            this.centerPosition = new Vector3 ();
+            foreach (var position in positions) {
+                this.centerPosition += new Vector3(position.x * ArrangementAnnotater.ArrangementWidth, 0 , position.z * ArrangementAnnotater.ArrangementHeight);
+            }
+            this.centerPosition = centerPosition / positions.Count ();
+
+            // 配列位置
+            this.arrangementPositions = positions;         
+        }
 
         // モノ
         public MonoViewModel MonoViewModel { get; private set; }
@@ -57,39 +85,14 @@ namespace NL {
 
         // エッジを取得
         public List<ArrangementPosition> GetEdgePositions () {
-            var edgePositions = new List<ArrangementPosition> ();
-            var diffs = new List<ArrangementDiff> () {
-                new ArrangementDiff () { dx = -1, dz = -1 },
-                new ArrangementDiff () { dx = 1, dz = 1 },
-                new ArrangementDiff () { dx = -1, dz = 1 },
-                new ArrangementDiff () { dx = 1, dz = -1 }
-            };
-
-            foreach (var arrangementPosition in arrangementPositions) {
-                foreach (var diff in diffs) {
-                    var diffPosition = new ArrangementPosition () {
-                        x = arrangementPosition.x + diff.dx,
-                        z = arrangementPosition.z + diff.dz
-                    };
-
-                    var foundOwnIndex = arrangementPositions.FindIndex (position => position == diffPosition);
-                    if (foundOwnIndex >= 0) {
-                        continue;
-                    }
-
-                    var foundEdgeIndex = edgePositions.FindIndex (position => position == diffPosition);
-                    if (foundEdgeIndex >= 0) {
-                        continue;
-                    }
-
-                    edgePositions.Add (diffPosition);
-                }
-            }
-            return edgePositions;
+            throw new NotImplementedException();
         }
         
         // 現在の状態を保持
         public ArrangementTargetState ArrangementTargetState => arrangementTargetState;
+
+        // レイヤー
+        public ArrangementLayer ArrangementLayer => this.arrangementLayer;
 
         // 表示状態にする
         public void ToAppear() {

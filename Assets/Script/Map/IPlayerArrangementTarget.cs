@@ -7,7 +7,14 @@ namespace NL {
     public enum ArrangementTargetState {
         None,
         Reserve,
-        Appear
+        Appear,
+        MoveIndicator
+    }
+
+    public enum ArrangementLayer {
+        None,
+        Main,
+        MoveIndicator
     }
 
     /// <summary>
@@ -29,6 +36,9 @@ namespace NL {
 
         // 配置位置
         List<ArrangementPosition> ArrangementPositions { get; }
+
+        // 配置の変更
+        void SetPosition(List<ArrangementPosition> positions);
 
         // 今後配置されるもの
         MonoInfo MonoInfo { get; }
@@ -53,6 +63,9 @@ namespace NL {
 
         // 現在の状態
         ArrangementTargetState ArrangementTargetState { get; }
+
+        // レイヤー
+        ArrangementLayer ArrangementLayer { get; }
 
         void ToAppear();
     }

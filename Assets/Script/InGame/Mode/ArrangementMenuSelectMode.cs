@@ -15,6 +15,7 @@ namespace NL {
 
         public void OnEnter () {
             GameManager.Instance.ArrangementManager.SelectOnly (context.ArrangementTarget);
+            GameManager.Instance.GameUIManager.ArrangementMenuUIPresenter.Show (context.ArrangementTarget);
             GameManager.Instance.ArrangementPresenter.ReLoad ();
 
             // 配置物がタップされたらメニューを表示

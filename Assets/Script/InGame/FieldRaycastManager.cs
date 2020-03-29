@@ -12,7 +12,8 @@ namespace NL {
             All,
             Field,
             ParkOpen,
-            Mono
+            RemoveArrangement,
+            MoveArrangement
         }
 
         private Camera mainCamera;
@@ -53,8 +54,11 @@ namespace NL {
             if (this.maskMode == MaskMode.None) {
                 return new string [] {};
             }
-            if (this.maskMode == MaskMode.Mono) {
+            if (this.maskMode == MaskMode.RemoveArrangement) {
                 return new string[] { "SelectLayer" };
+            }
+            if (this.maskMode == MaskMode.MoveArrangement) {
+                return new string[] { "SelectLayer", "Floor" };
             }
             if (this.maskMode == MaskMode.Field) {
                 return new string[] { "Floor" };

@@ -64,5 +64,9 @@ namespace NL {
         public static RemoveArrangementMode GenerateRemoveArrangementMode() {
             return new RemoveArrangementMode();
         }
+
+        public static MoveArrangementMode GenerateMoveArrangementMode() {
+            return new MoveArrangementMode();
+        }        
     }
 }

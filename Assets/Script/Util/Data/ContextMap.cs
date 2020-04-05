@@ -28,8 +28,6 @@ namespace NL {
         public List<ParkOpenPositionEntry> ParkOpenPositionEntrys { get; private set; }
         public List<ParkOpenWaveEntry> ParkOpenWaveEntrys { get; private set; }
         public List<ParkOpenGroupEntry> ParkOpenGroupEntrys { get; private set; }
-        public List<ParkOpenCardEntry> ParkOpenCardEntrys { get; private set; }
-        public List<ParkOpenCardActionEntry> ParkOpenCardActionEntrys { get; private set; }
         public List<ParkOpenGroupsEntry> ParkOpenGroupsEntrys { get; private set; }
         public List<AppearConversationCharacterDirectorEntry> AppearConversationCharacterDirectorEntrys { get; private set; }
         public List<AppearParkOpenCharacterDirectorEntry> AppearParkOpenCharacterDirectorEntrys { get; private set; }
@@ -59,8 +57,6 @@ namespace NL {
             this.ParkOpenPositionEntrys = LoadEntryFromJson<ParkOpenPositionEntry> (ResourceLoader.LoadData ("ParkOpenPositionEntry")).ToList();
             this.ParkOpenWaveEntrys = LoadEntryFromJson<ParkOpenWaveEntry> (ResourceLoader.LoadData ("ParkOpenWaveEntry")).ToList();
             this.ParkOpenGroupEntrys = LoadEntryFromJson<ParkOpenGroupEntry> (ResourceLoader.LoadData ("ParkOpenGroupEntry")).ToList();
-            this.ParkOpenCardEntrys = LoadEntryFromJson<ParkOpenCardEntry> (ResourceLoader.LoadData ("ParkOpenCardEntry")).ToList();
-            this.ParkOpenCardActionEntrys = LoadEntryFromJson<ParkOpenCardActionEntry> (ResourceLoader.LoadData ("ParkOpenCardActionEntry")).ToList();
             this.ParkOpenGroupsEntrys = LoadEntryFromJson<ParkOpenGroupsEntry> (ResourceLoader.LoadData ("ParkOpenGroupsEntry")).ToList();
             this.AppearConversationCharacterDirectorEntrys = LoadEntryFromJson<AppearConversationCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearConversationCharacterDirectorEntry")).ToList();
             this.AppearParkOpenCharacterDirectorEntrys = LoadEntryFromJson<AppearParkOpenCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearParkOpenCharacterDirectorEntry")).ToList();

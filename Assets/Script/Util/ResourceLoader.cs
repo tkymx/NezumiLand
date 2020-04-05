@@ -81,17 +81,8 @@ namespace NL {
             return sprite;
         }          
 
-        public static Sprite LoadCardSprite (string cardName) {
-            var path = "CardImage/" + cardName;
-            Sprite sprite = Resources.Load<Sprite> (path);
-            if (sprite == null) {
-                Debug.LogError (path + "が存在しません。");
-            }
-            return sprite;
-        }
-
-        public static Sprite LoadParkOpenGroupIconSprite (string cardName) {
-            var path = "ParkOpenGroupIcon/" + cardName;
+        public static Sprite LoadParkOpenGroupIconSprite (string iconName) {
+            var path = "ParkOpenGroupIcon/" + iconName;
             Sprite sprite = Resources.Load<Sprite> (path);
             if (sprite == null) {
                 Debug.LogError (path + "が存在しません。");

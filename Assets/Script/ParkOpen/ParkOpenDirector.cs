@@ -205,7 +205,6 @@ namespace NL
             this.InitializeWave(parkOpenGroupModel.ParkOpenWaves.Length, playerParkOpenModel.ElapsedTime, playerParkOpenModel.NextWave);
 
             this.PrepareParkOpen();
-            this.ReSetCardUse(playerParkOpenModel);
         }
 
         private void InitializeInternal(IPlayerParkOpenRepository playerParkOpenRepository)
@@ -241,28 +240,8 @@ namespace NL
             // 入場者情報
             GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Show();
 
-            // デッキ
-            GameManager.Instance.ParkOpenCardManager.PrepareParkOpen();
-
             // 時間
             GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Show();
-        }
-
-        /// <summary>
-        /// 再表示の際のカードの可視を設定
-        /// </summary>
-        /// <param name="playerParkOpenModel"></param>
-        private void ReSetCardUse(PlayerParkOpenModel playerParkOpenModel)
-        {
-            if (playerParkOpenModel.CanUseCard1) {
-                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.First);
-            }
-            if (playerParkOpenModel.CanUseCard2) {
-                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.Second);
-            }
-            if (playerParkOpenModel.CanUseCard3) {
-                GameManager.Instance.GameUIManager.ParkOpenDeckPresenter.UseCard(PlayerParkOpenDeckModel.CountType.Third);
-            }
         }
 
         private void Complete ()
@@ -272,9 +251,6 @@ namespace NL
 
             // 人数
             GameManager.Instance.GameUIManager.ParkOpenCharacterCountPresenter.Close();
-
-            // デッキ
-            GameManager.Instance.ParkOpenCardManager.FinalizeParkOpen();
 
             // 時間
             GameManager.Instance.GameUIManager.ParkOpenTimePresenter.Close();

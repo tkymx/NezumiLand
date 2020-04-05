@@ -11,11 +11,6 @@ namespace NL {
         public int NextWave;
         public uint PlayerParkOpenGroupId;
         public int CurrentHeartCount;
-        public bool HasPlayerParkOpenDeckId;
-        public uint PlayerParkOpenDeckId;
-        public bool CanUseCard1;
-        public bool CanUseCard2;
-        public bool CanUseCard3;
     }
 
     public interface IPlayerParkOpenRepository {
@@ -30,12 +25,10 @@ namespace NL {
         private readonly uint ownId = 0;
 
         private readonly IPlayerParkOpenGroupRepository playerParkOpenGroupRepository;
-        private readonly IPlayerParkOpenDeckRepository playerParkOpenDeckRepository = null;
 
-        public PlayerParkOpenRepository (IPlayerParkOpenGroupRepository playerParkOpenGroupRepository, IPlayerParkOpenDeckRepository playerParkOpenDeckRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerParkOpenEntrys) 
+        public PlayerParkOpenRepository (IPlayerParkOpenGroupRepository playerParkOpenGroupRepository, PlayerContextMap playerContextMap) : base (playerContextMap.PlayerParkOpenEntrys) 
         {
             this.playerParkOpenGroupRepository = playerParkOpenGroupRepository;
-            this.playerParkOpenDeckRepository = playerParkOpenDeckRepository;
         }
 
         public PlayerParkOpenModel GetOwn () {
@@ -47,11 +40,7 @@ namespace NL {
                     0,
                     0,
                     null,
-                    0,
-                    null,
-                    false,
-                    false,
-                    false
+                    0
                 );
                 return playerParkOpenModel;
             }
@@ -62,23 +51,13 @@ namespace NL {
                 Debug.Assert(playerParkOpeGroupModel != null, "parkOpeGroupModelがありません" + foundEntry.PlayerParkOpenGroupId.ToString());
             }
 
-            PlayerParkOpenDeckModel playerParkOpenDeckModel = null;
-            if (foundEntry.HasPlayerParkOpenDeckId) {
-                playerParkOpenDeckModel = this.playerParkOpenDeckRepository.Get(foundEntry.PlayerParkOpenDeckId);
-                Debug.Assert(playerParkOpenDeckModel != null, "playerParkOpenDeckModelがありません");
-            }
-
             return new PlayerParkOpenModel (
                 foundEntry.Id, 
                 foundEntry.IsOpen, 
                 foundEntry.ElapsedTime, 
                 foundEntry.NextWave, 
                 playerParkOpeGroupModel,
-                foundEntry.CurrentHeartCount,
-                playerParkOpenDeckModel,
-                foundEntry.CanUseCard1,
-                foundEntry.CanUseCard2,
-                foundEntry.CanUseCard3);
+                foundEntry.CurrentHeartCount);
         }
 
         public void Store (PlayerParkOpenModel playerParkOpenModel) {
@@ -89,12 +68,7 @@ namespace NL {
                 ElapsedTime = playerParkOpenModel.ElapsedTime,
                 NextWave = playerParkOpenModel.NextWave,
                 PlayerParkOpenGroupId = playerParkOpenModel.PlayerParkOpenGroupModel != null ? playerParkOpenModel.PlayerParkOpenGroupModel.Id : 0,
-                CurrentHeartCount = playerParkOpenModel.currentHeartCount,
-                HasPlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null,
-                PlayerParkOpenDeckId = playerParkOpenModel.CurrentParkOpenDeckModel != null ? playerParkOpenModel.CurrentParkOpenDeckModel.Id : 0,
-                CanUseCard1 = playerParkOpenModel.CanUseCard1,
-                CanUseCard2 = playerParkOpenModel.CanUseCard2,
-                CanUseCard3 = playerParkOpenModel.CanUseCard3
+                CurrentHeartCount = playerParkOpenModel.currentHeartCount
             };
 
             var entry = this.GetEntry(playerParkOpenModel.Id);

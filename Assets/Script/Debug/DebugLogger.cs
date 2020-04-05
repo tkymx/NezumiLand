@@ -28,19 +28,8 @@ namespace NL {
         [SerializeField]
         private GameObject debugOptionRoot = null;
 
-        // リポジトリ
-        ParkOpenCardRepository parkOpenCardRepository;
-        IPlayerParkOpenCardRepository playerParkOpenCardRepository;
-        IPlayerParkOpenDeckRepository playerParkOpenDeckRepository;
-
-        public void Initialize(
-            ParkOpenCardRepository parkOpenCardRepository,
-            IPlayerParkOpenCardRepository playerParkOpenCardRepository,
-            IPlayerParkOpenDeckRepository playerParkOpenDeckRepository)
+        public void Initialize()
         {
-            this.parkOpenCardRepository = parkOpenCardRepository;
-            this.playerParkOpenCardRepository = playerParkOpenCardRepository;
-            this.playerParkOpenDeckRepository = playerParkOpenDeckRepository;
         }
 
         private void Start() {
@@ -81,31 +70,7 @@ namespace NL {
             this.AddDebugButton("ハートを増やす",()=>{
                 GameManager.Instance.ParkOpenManager.AddHeart(10);
             });
-
-            this.AddDebugButton("デッキを作る",()=>{
-
-                // デッキがない場合は作成
-                if (this.playerParkOpenDeckRepository.GetAll().Count <= 0) {
-                    GameManager.Instance.ParkOpenCardManager.CreateDeck();
-                }
-
-                // カードを持っていない場合は取得
-                if (this.playerParkOpenCardRepository.GetAll().Count <= 0) {
-                    Debug.Assert(this.parkOpenCardRepository.GetAll().Any(), "獲得できるカードがありません");
-                    GameManager.Instance.ParkOpenCardManager.ObtainCard(this.parkOpenCardRepository.GetAll().First());
-                }
-
-                // デッキに搭載
-                var deck = this.playerParkOpenDeckRepository.GetAll()[0];
-                var card = this.playerParkOpenCardRepository.GetAll()[0]; 
-                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.First, card);
-                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.Second, card);
-                GameManager.Instance.ParkOpenCardManager.SetCardToDeck(deck, PlayerParkOpenDeckModel.CountType.Third, card);
-
-                // メインのデッキにする
-                GameManager.Instance.ParkOpenCardManager.SetMainDeck(deck);
-            });
-
+            
             this.AddDebugInputButton("カメラ回転ファクター", value => {
                 var factor = float.Parse(value);
                 GameManager.Instance.GlobalSystemParameter.OverrideRotationMoveFactor(factor);

@@ -107,9 +107,6 @@ namespace NL {
         private ParkOpenManager parkOpenManager;
         public ParkOpenManager ParkOpenManager => parkOpenManager;
 
-        private ParkOpenCardManager parkOpenCardManager;
-        public ParkOpenCardManager ParkOpenCardManager => parkOpenCardManager;
-
         private ParkOpenGroupManager parkOpenGroupManager;
         public ParkOpenGroupManager ParkOpenGroupManager => parkOpenGroupManager;
 
@@ -138,8 +135,6 @@ namespace NL {
             var parkOpenPositionRepository = new ParkOpenPositionRepository(ContextMap.DefaultMap);
             var parkOpenWaveRepository = new ParkOpenWaveRepository(appearParkOpenCharacterDirectorRepository, ContextMap.DefaultMap);
             var parkOpenGroupRepository = new ParkOpenGroupRepository(parkOpenWaveRepository, rewardRepository, ContextMap.DefaultMap);
-            var parkOpenCardActionRepository = new ParkOpenCardActionRepository(ContextMap.DefaultMap);
-            var parkOpenCardRepository = new ParkOpenCardRepository(parkOpenCardActionRepository, ContextMap.DefaultMap);
             var parkOpenGroupsRepository = new ParkOpenGroupsRepository(parkOpenGroupRepository, ContextMap.DefaultMap);
             var playerOnegaiRepository = PlayerOnegaiRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
             var playerEventRepository = PlayerEventRepository.GetRepository(ContextMap.DefaultMap, PlayerContextMap.DefaultMap);
@@ -148,13 +143,11 @@ namespace NL {
             var playerMonoViewRepository = new PlayerMonoViewRepository(monoInfoRepository, PlayerContextMap.DefaultMap);
             var playerArrangementTargetRepository = new PlayerArrangementTargetRepository(monoInfoRepository, playerMonoViewRepository, PlayerContextMap.DefaultMap);
             var playerMouseViewRepository = new PlayerMouseViewRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
-            var playerParkOpenCardRepository = new PlayerParkOpenCardRepository(parkOpenCardRepository, PlayerContextMap.DefaultMap);
-            var playerParkOpenDeckRepository = new PlayerParkOpenDeckRepository(playerParkOpenCardRepository, PlayerContextMap.DefaultMap);
             var playerInfoRepository = new PlayerInfoRepository(PlayerContextMap.DefaultMap);
             var playerAppearCharacterReserveRepository = new PlayerAppearCharacterReserveRepository(appearConversationCharacterDirectorRepository, appearOnegaiCharacterDirectorRepository, appearParkOpenCharacterDirectorRepository, PlayerContextMap.DefaultMap);
             var playerEarnCurrencyRepository = new PlayerEarnCurrencyRepository(playerArrangementTargetRepository, PlayerContextMap.DefaultMap);
             var playerParkOpenGroupRepository = new PlayerParkOpenGroupRepository(parkOpenGroupRepository, PlayerContextMap.DefaultMap);
-            var playerParkOpenRepository = new PlayerParkOpenRepository(playerParkOpenGroupRepository, playerParkOpenDeckRepository, PlayerContextMap.DefaultMap);
+            var playerParkOpenRepository = new PlayerParkOpenRepository(playerParkOpenGroupRepository, PlayerContextMap.DefaultMap);
             var playerAppearConversationCharacterDirectorRepository = new PlayerAppearConversationCharacterDirectorRepository(appearConversationCharacterDirectorRepository, playerAppearCharacterReserveRepository, PlayerContextMap.DefaultMap);
             var playerAppearOnegaiCharacterDirectorRepository = new PlayerAppearOnegaiCharacterDirectorRepository(appearOnegaiCharacterDirectorRepository, playerAppearCharacterReserveRepository, PlayerContextMap.DefaultMap);
             var playerAppearParkOpenCharacterDirectorRepository = new PlayerAppearParkOpenCharacterDirectorRepository(appearParkOpenCharacterDirectorRepository, PlayerContextMap.DefaultMap);
@@ -164,10 +157,7 @@ namespace NL {
             GameContextMap.Initialize(playerArrangementTargetRepository);
 
             // デバグ機能
-            debugLogger.Initialize(
-                parkOpenCardRepository,
-                playerParkOpenCardRepository, 
-                playerParkOpenDeckRepository);
+            debugLogger.Initialize();
 
             // instance
             this.inputManager = new InputManager();
@@ -198,7 +188,6 @@ namespace NL {
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
             this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
-            this.parkOpenCardManager = new ParkOpenCardManager(playerParkOpenRepository, playerParkOpenCardRepository, playerParkOpenDeckRepository);
             this.parkOpenGroupManager = new ParkOpenGroupManager(parkOpenGroupRepository, playerParkOpenGroupRepository);
             this.parkOpenGroupSelectManager = new ParkOpenGroupSelectManager(parkOpenGroupsRepository);
             this.globalSystemParameter = new GlobalSystemParameter();
@@ -261,7 +250,6 @@ namespace NL {
             this.cameraMoveManager.UpdateByFrame();
             this.earnCurrencyManager.UpdateByFrame();
             this.parkOpenManager.UpdateByFrame();
-            this.parkOpenCardManager.UpdateByFrame();
 
             // UI関連
             this.gameUIManager.UpdateByFrame();

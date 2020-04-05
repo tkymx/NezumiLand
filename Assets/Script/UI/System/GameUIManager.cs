@@ -90,10 +90,6 @@ namespace NL {
         public ParkOpenCharacterCountPresenter ParkOpenCharacterCountPresenter => parkOpenCharacterCountPresenter;
 
         [SerializeField]
-        private ParkOpenDeckPresenter parkOpenDeckPresenter = null;
-        public ParkOpenDeckPresenter ParkOpenDeckPresenter => this.parkOpenDeckPresenter;
-
-        [SerializeField]
         private ParkOpenTimePresenter parkOpenTimePresenter = null;
         public ParkOpenTimePresenter ParkOpenTimePresenter => this.parkOpenTimePresenter;
 
@@ -154,7 +150,6 @@ namespace NL {
             this.selectModeUIPresenter.Initialize();
             this.heartPresenter.Initialize();
             this.parkOpenCharacterCountPresenter.Initialize(playerParkOpenRepository);
-            this.parkOpenDeckPresenter.Initialize();
             this.parkOpenTimePresenter.Initialize();
             this.parkOpenResultPresenter.Initialize();
             this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository, playerParkOpenGroupRepository);

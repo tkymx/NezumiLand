@@ -187,7 +187,7 @@ namespace NL {
             this.cameraMoveManager = new CameraMoveManager(this.mainCamera.transform, this.cameraLookTarget);
             this.earnCurrencyManager = new EarnCurrencyManager(this.rootObject, playerEarnCurrencyRepository);
             this.parkOpenAppearManager = new ParkOpenAppearManager(parkOpenPositionRepository, appearCharacterRepository);
-            this.parkOpenManager = new ParkOpenManager(playerParkOpenRepository);
+            this.parkOpenManager = new ParkOpenManager(conversationRepository, playerParkOpenRepository);
             this.parkOpenGroupManager = new ParkOpenGroupManager(parkOpenGroupRepository, playerParkOpenGroupRepository);
             this.parkOpenGroupSelectManager = new ParkOpenGroupSelectManager(parkOpenGroupsRepository);
             this.globalSystemParameter = new GlobalSystemParameter();

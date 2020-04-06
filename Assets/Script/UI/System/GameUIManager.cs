@@ -110,6 +110,10 @@ namespace NL {
         public ParkOpenStartPresenter ParkOpenStartPresenter => this.parkOpenStartPresenter;
 
         [SerializeField]
+        private ParkOpenInitialCommentPresenter parkOpenInitialCommentPresenter = null;
+        public ParkOpenInitialCommentPresenter ParkOpenInitialCommentPresenter => this.parkOpenInitialCommentPresenter;
+
+        [SerializeField]
         private RemoveArrangementModeUIPresenter removeArrangementModeUIPresenter = null;
         public RemoveArrangementModeUIPresenter RemoveArrangementModeUIPresenter => this.removeArrangementModeUIPresenter;
 
@@ -155,6 +159,7 @@ namespace NL {
             this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository, playerParkOpenGroupRepository);
             this.parkOpenDetailPresenter.Initialize();
             this.parkOpenStartPresenter.Initialize();
+            this.parkOpenInitialCommentPresenter.Initialize();
             this.removeArrangementModeUIPresenter.Initialize();
             this.moveArrangementModeUIPresenter.Initialize();
         }
@@ -166,6 +171,7 @@ namespace NL {
             this.parkOpenCharacterCountPresenter.UpdateByFrame();
             this.parkOpenTimePresenter.UpdateByFrame();
             this.removeArrangementModeUIPresenter.UpdateByFrame();
+            this.parkOpenInitialCommentPresenter.UpdateByFrame();
         }
     }
 }

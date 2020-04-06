@@ -197,6 +197,18 @@
             "ConversationCharacterDisplayNames": [
                 "ねずママ"
             ]
-        }          
+        },
+        {
+            "Id": 50000001,
+            "ConversationTexts": [
+                "これから開園するよ〜"
+            ],
+            "ConversationCharacterNames": [
+                "Nezumi"
+            ],
+            "ConversationCharacterDisplayNames": [
+                "園長ねずみ"
+            ]
+        }            
     ]
 }

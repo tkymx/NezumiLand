@@ -6,6 +6,9 @@ namespace NL
 {
     public class ParkOpenManager : IDisposable {
 
+        private readonly uint InitialConversationId = 50000001;
+
+        private readonly IConversationRepository conversationRepository = null;
         private readonly IPlayerParkOpenRepository playerParkOpenRepository = null;
 
         private IParkOpenDirector parkOpenDirector = null;
@@ -22,39 +25,64 @@ namespace NL
         /// <value></value>
         public TypeObservable<ParkOpenGroupModel> OnCompleted { get; private set; }
 
-        public ParkOpenManager(IPlayerParkOpenRepository playerParkOpenRepository)
+        private ConversationModel initialConversationModel = null;
+
+        public ParkOpenManager(IConversationRepository conversationRepository, IPlayerParkOpenRepository playerParkOpenRepository)
         {
             this.disposables = new List<IDisposable>();
             this.parkOpenDirector = new NopParkOpenDirector(playerParkOpenRepository);
             this.OnCompleted = new TypeObservable<ParkOpenGroupModel>();
             this.playerParkOpenRepository = playerParkOpenRepository;
+
+            this.initialConversationModel = conversationRepository.Get(InitialConversationId);
+            Debug.Assert(this.initialConversationModel != null, "会話が見つかりません" + InitialConversationId.ToString());
         }
 
         public void Open(PlayerParkOpenGroupModel playerParkOpenGroupModel)
         {
             var parkOpenDirector = new ParkOpenDirector(playerParkOpenGroupModel, playerParkOpenRepository);
-            Open(parkOpenDirector, playerParkOpenGroupModel);
+            Open(parkOpenDirector, playerParkOpenGroupModel, true);
         }
 
         public void Open(PlayerParkOpenModel playerParkOpenModel)
         {
             var parkOpenDirector = new ParkOpenDirector(playerParkOpenModel, playerParkOpenRepository);
-            Open(parkOpenDirector, playerParkOpenModel.PlayerParkOpenGroupModel);
+            Open(parkOpenDirector, playerParkOpenModel.PlayerParkOpenGroupModel, false);
         }
 
-        private void Open(IParkOpenDirector parkOpenDirector, PlayerParkOpenGroupModel playerParkOpenGroupModel)
+        private void Open(IParkOpenDirector parkOpenDirector, PlayerParkOpenGroupModel playerParkOpenGroupModel, bool isInitial)
         {
             Debug.Assert(this.parkOpenDirector is NopParkOpenDirector, "すでに実行中のDirectorが存在します。");
 
             //モードを更新
             GameManager.Instance.GameModeManager.EnqueueChangeMode(GameModeGenerator.GenerateParkOpenMode());
 
-            // エフェクトのあとにスタート
-            this.disposables.Add(GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect").OnComplated.Subscribe(_ => {
+            // 開放をオープンする
+            Action startParkOpen = () => {
                 this.parkOpenDirector = parkOpenDirector;
                 this.SetEventInternal(playerParkOpenGroupModel);
                 this.parkOpenDirector.UpdateParkOpenInfo();
-            }));
+            };
+
+            // 開始コメント
+            if (isInitial)
+            {
+                GameManager.Instance.GameUIManager.ParkOpenInitialCommentPresenter.StartComment(this.initialConversationModel);
+                this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenInitialCommentPresenter.OnEndObservable
+                    .SelectMany(_ => {
+                        // 開始エフェクト
+                        var effectHandler = GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect");
+                        return effectHandler.OnComplated;
+                    })
+                    .Subscribe(_ => {
+                        startParkOpen();
+                    }));
+            }
+            else
+            {
+                startParkOpen();
+            }
+
         }
 
         /// <summary>
@@ -122,7 +150,6 @@ namespace NL
                     GameManager.Instance.EventManager.PushEventParameter(new NL.EventCondition.ClearParkOpenGroup(parkOpenResultAmount.TargetPlayerGroupModel.ParkOpenGroupModel));
 
                     // 成功していたら報酬を受け取る
-
                     var rewardReceiver = new RewardReceiver(this.FetchAquirableReward(parkOpenResultAmount));
                     rewardReceiver.ReceiveRewardAndShowModel();                    
                     return rewardReceiver.OnEndReceiveObservable;

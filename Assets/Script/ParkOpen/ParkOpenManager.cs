@@ -6,8 +6,6 @@ namespace NL
 {
     public class ParkOpenManager : IDisposable {
 
-        private readonly uint InitialConversationId = 50000001;
-
         private readonly IConversationRepository conversationRepository = null;
         private readonly IPlayerParkOpenRepository playerParkOpenRepository = null;
 
@@ -25,7 +23,7 @@ namespace NL
         /// <value></value>
         public TypeObservable<ParkOpenGroupModel> OnCompleted { get; private set; }
 
-        private ConversationModel initialConversationModel = null;
+        private ParkOpenComment parkOpenComment = null;
 
         public ParkOpenManager(IConversationRepository conversationRepository, IPlayerParkOpenRepository playerParkOpenRepository)
         {
@@ -33,9 +31,7 @@ namespace NL
             this.parkOpenDirector = new NopParkOpenDirector(playerParkOpenRepository);
             this.OnCompleted = new TypeObservable<ParkOpenGroupModel>();
             this.playerParkOpenRepository = playerParkOpenRepository;
-
-            this.initialConversationModel = conversationRepository.Get(InitialConversationId);
-            Debug.Assert(this.initialConversationModel != null, "会話が見つかりません" + InitialConversationId.ToString());
+            this.parkOpenComment = new ParkOpenComment(conversationRepository);
         }
 
         public void Open(PlayerParkOpenGroupModel playerParkOpenGroupModel)
@@ -67,8 +63,7 @@ namespace NL
             // 開始コメント
             if (isInitial)
             {
-                GameManager.Instance.GameUIManager.ParkOpenInitialCommentPresenter.StartComment(this.initialConversationModel);
-                this.disposables.Add(GameManager.Instance.GameUIManager.ParkOpenInitialCommentPresenter.OnEndObservable
+                this.disposables.Add(this.parkOpenComment.StartInitialComment()
                     .SelectMany(_ => {
                         // 開始エフェクト
                         var effectHandler = GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect");

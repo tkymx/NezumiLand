@@ -114,6 +114,10 @@ namespace NL {
         public ParkOpenInitialCommentPresenter ParkOpenInitialCommentPresenter => this.parkOpenInitialCommentPresenter;
 
         [SerializeField]
+        private ConversationPresenter parkOpenCommentConversationPresernter = null;
+        public ConversationPresenter ParkOpenCommentConversationPresernter => parkOpenCommentConversationPresernter;
+
+        [SerializeField]
         private RemoveArrangementModeUIPresenter removeArrangementModeUIPresenter = null;
         public RemoveArrangementModeUIPresenter RemoveArrangementModeUIPresenter => this.removeArrangementModeUIPresenter;
 
@@ -160,6 +164,7 @@ namespace NL {
             this.parkOpenDetailPresenter.Initialize();
             this.parkOpenStartPresenter.Initialize();
             this.parkOpenInitialCommentPresenter.Initialize();
+            this.parkOpenCommentConversationPresernter.Initialize();
             this.removeArrangementModeUIPresenter.Initialize();
             this.moveArrangementModeUIPresenter.Initialize();
         }

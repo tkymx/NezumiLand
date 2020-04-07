@@ -6406,6 +6406,7 @@ MonoBehaviour:
   parkOpenDetailPresenter: {fileID: 1137267606}
   parkOpenStartPresenter: {fileID: 1137267610}
   parkOpenInitialCommentPresenter: {fileID: 921223563}
+  parkOpenCommentConversationPresernter: {fileID: 921223565}
   removeArrangementModeUIPresenter: {fileID: 1265075528}
   moveArrangementModeUIPresenter: {fileID: 1265075529}
 --- !u!1 &457920692
@@ -6599,7 +6600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &460958508
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6613,13 +6614,13 @@ RectTransform:
   m_Children:
   - {fileID: 1312740402}
   - {fileID: 2040396509}
-  m_Father: {fileID: 1483741536}
-  m_RootOrder: 1
+  m_Father: {fileID: 921223560}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 237.44913, y: 500}
+  m_SizeDelta: {x: 0.05419922, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &472345011
 GameObject:
@@ -13107,6 +13108,7 @@ GameObject:
   - component: {fileID: 921223561}
   - component: {fileID: 921223564}
   - component: {fileID: 921223563}
+  - component: {fileID: 921223565}
   m_Layer: 5
   m_Name: ParkOpen
   m_TagString: Untagged
@@ -13129,6 +13131,7 @@ RectTransform:
   - {fileID: 1046133993}
   - {fileID: 785694941}
   - {fileID: 1483741536}
+  - {fileID: 460958508}
   m_Father: {fileID: 650360787}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13179,7 +13182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainWindowGameObject: {fileID: 1483741535}
   parkOpenInitialCommentView: {fileID: 1483741540}
-  parkOpenConversationPresenter: {fileID: 1483741537}
 --- !u!114 &921223564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13194,6 +13196,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainWindowGameObject: {fileID: 785694940}
   parkOpenTimeView: {fileID: 785694942}
+--- !u!114 &921223565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921223559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a0ebbc72a64d443380d0474d744abf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainWindowGameObject: {fileID: 460958507}
+  conversationView: {fileID: 1312740403}
+  conversationCharacterView: {fileID: 2040396510}
 --- !u!1 &927888571
 GameObject:
   m_ObjectHideFlags: 0
@@ -20608,14 +20625,13 @@ GameObject:
   - component: {fileID: 1483741540}
   - component: {fileID: 1483741539}
   - component: {fileID: 1483741538}
-  - component: {fileID: 1483741537}
   m_Layer: 5
   m_Name: ParkOpenInitialCommentPresenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1483741536
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20628,7 +20644,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1533635840}
-  - {fileID: 460958508}
   m_Father: {fileID: 921223560}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20637,21 +20652,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1483741537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483741535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a0ebbc72a64d443380d0474d744abf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainWindowGameObject: {fileID: 460958507}
-  conversationView: {fileID: 1312740403}
-  conversationCharacterView: {fileID: 2040396510}
 --- !u!114 &1483741538
 MonoBehaviour:
   m_ObjectHideFlags: 0

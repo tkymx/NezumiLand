@@ -14,7 +14,8 @@
         "BaseSatisfaction": 5,
         "ArrangementCount": 20,
         "ReleaseConditionText": "チュートリアル後に開放",
-        "MakingTime": 1
+        "MakingTime": 1,
+        "PromotionCount": 5
     },
     {
         "Id": 2,
@@ -31,7 +32,8 @@
         "BaseSatisfaction": 20,
         "ArrangementCount": 3,
         "ReleaseConditionText": "はじめから開放",
-        "MakingTime": 3
+        "MakingTime": 3,
+        "PromotionCount": 5
     },
     {
         "Id": 3,
@@ -48,7 +50,8 @@
         "BaseSatisfaction": 20,
         "ArrangementCount": 3,
         "ReleaseConditionText": "チュートリアル後に開放",
-        "MakingTime": 3
+        "MakingTime": 3,
+        "PromotionCount": 5
     },
     {
         "Id": 4,
@@ -65,7 +68,8 @@
         "BaseSatisfaction": 5,
         "ArrangementCount": 5,
         "ReleaseConditionText": "チュートリアル後に開放",
-        "MakingTime": 2
+        "MakingTime": 2,
+        "PromotionCount": 5
     },
     {
         "Id": 5,
@@ -82,7 +86,8 @@
         "BaseSatisfaction": 200,
         "ArrangementCount": 2,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 4
+        "MakingTime": 4,
+        "PromotionCount": 5
     },
     {
         "Id": 6,
@@ -99,7 +104,8 @@
         "BaseSatisfaction": 200,
         "ArrangementCount": 2,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 4
+        "MakingTime": 4,
+        "PromotionCount": 5
     },
     {
         "Id": 7,
@@ -116,7 +122,8 @@
         "BaseSatisfaction": 200,
         "ArrangementCount": 2,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 4
+        "MakingTime": 4,
+        "PromotionCount": 5
     },
     {
         "Id": 8,
@@ -133,7 +140,8 @@
         "BaseSatisfaction": 200,
         "ArrangementCount": 2,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 4
+        "MakingTime": 4,
+        "PromotionCount": 5
     },
     {
         "Id": 9,
@@ -150,7 +158,8 @@
         "BaseSatisfaction": 200,
         "ArrangementCount": 2,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 4
+        "MakingTime": 4,
+        "PromotionCount": 5
     },
     {
         "Id": 10,
@@ -167,7 +176,8 @@
         "BaseSatisfaction": 100,
         "ArrangementCount": 4,
         "ReleaseConditionText": "満足度が 100 で開放",
-        "MakingTime": 3
+        "MakingTime": 3,
+        "PromotionCount": 5
     },
     {
         "Id": 11,
@@ -184,7 +194,8 @@
         "BaseSatisfaction": 3300,
         "ArrangementCount": 1,
         "ReleaseConditionText": "満足度が 1000 で開放",
-        "MakingTime": 5
+        "MakingTime": 5,
+        "PromotionCount": 5
     },
     {
         "Id": 12,
@@ -201,7 +212,8 @@
         "BaseSatisfaction": 3300,
         "ArrangementCount": 1,
         "ReleaseConditionText": "満足度が 1000 で開放",
-        "MakingTime": 5
+        "MakingTime": 5,
+        "PromotionCount": 5
     },
     {
         "Id": 13,
@@ -218,7 +230,8 @@
         "BaseSatisfaction": 3300,
         "ArrangementCount": 1,
         "ReleaseConditionText": "満足度が 1000 で開放",
-        "MakingTime": 5
+        "MakingTime": 5,
+        "PromotionCount": 5
     },
     {
         "Id": 14,
@@ -235,7 +248,8 @@
         "BaseSatisfaction": 10000,
         "ArrangementCount": 1,
         "ReleaseConditionText": "満足度が 10000 で開放",
-        "MakingTime": 10
+        "MakingTime": 10,
+        "PromotionCount": 5
     }
 ]
 }

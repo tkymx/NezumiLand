@@ -791,7 +791,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8671027422360259646}
-  - component: {fileID: 6881333155853995087}
   - component: {fileID: 7977482825115714059}
   m_Layer: 14
   m_Name: arrangement_move_annotation
@@ -815,24 +814,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6881333155853995087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8671027422360259645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3751d6bb84c24f84a433543f2cfde9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onCancel: {fileID: 8671027421152409240}
-  onLeft: {fileID: 3176049859881391175}
-  onRight: {fileID: 6814543804660144140}
-  onUp: {fileID: 3722929043703211452}
-  onDown: {fileID: 8294846837225599412}
-  mainCanvas: {fileID: 8671027421509977670}
 --- !u!114 &7977482825115714059
 MonoBehaviour:
   m_ObjectHideFlags: 0

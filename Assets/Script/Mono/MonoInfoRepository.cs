@@ -5,34 +5,21 @@ using System.Runtime.Serialization;
 namespace NL {
     [System.Serializable]
     public class MonoInfoEntry : EntryBase {
-
         public string Name;
-
         public string Type;
-
         public int Width;
-
         public int Height;
-
         public long MakingFee;
-
         public long MakingItemAmount;
-
         public long RemoveFee;
-
         public string ModelName;
-
         public long[] LevelUpFee;
-
         public long[] LevelUpSatisfaction;
-
         public long BaseSatisfaction;
-
         public long ArrangementCount;
-
         public string ReleaseConditionText;
-
         public float MakingTime;
+        public int PromotionCount;
     }
 
     public interface IMonoInfoRepository {
@@ -77,7 +64,8 @@ namespace NL {
                 entry.BaseSatisfaction,
                 entry.ArrangementCount,
                 entry.ReleaseConditionText,
-                entry.MakingTime);
+                entry.MakingTime,
+                entry.PromotionCount);
         }
 
         public IEnumerable<MonoInfo> GetByType (MonoType type) {

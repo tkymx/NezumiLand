@@ -26,7 +26,7 @@ namespace NL {
 
             // end conversation event
             this.disposables.Add(this.conversationView.OnEndConversation.Subscribe(_=>{
-                if (currentConversationModel.IsLastIndex(this.currentConversationIndex)) {
+                if (this.IsEndConversation()) {
                     this.Close();
                     this.onEndConversation.Execute(0);
                     return;
@@ -40,10 +40,24 @@ namespace NL {
         }
 
         public void StartConversation(ConversationModel conversationModel) {
+            Debug.Assert(IsEndConversation(), "まだ会話が終了していません");
+
             this.currentConversationModel = conversationModel;
             this.currentConversationIndex = 0;
             this.SetConversationIndex(currentConversationIndex);
             this.Show();
+
+            // 前の会話に反応する可能性があるので初期化
+            this.onEndConversation = new TypeObservable<int>();
+        }
+
+        private bool IsEndConversation()
+        {
+            if (this.currentConversationModel == null) {
+                return true;
+            }
+
+            return currentConversationModel.IsLastIndex(this.currentConversationIndex);
         }
 
         private void SetConversationIndex(int index) {

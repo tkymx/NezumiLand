@@ -165,7 +165,7 @@ namespace NL {
             this.arrangementItemStore = new ArrangementItemStore (new ArrangementItemAmount (0), playerInfoRepository); // 所持アイテムの初期値も外出ししたい
             this.arrangementManager = new ArrangementManager (this.rootObject, playerOnegaiRepository, playerArrangementTargetRepository);
             this.arrangementMoveIndicatorManager = new ArrangementMoveIndicatorManager(playerArrangementTargetRepository);
-            this.monoManager = new MonoManager (this.rootObject, playerMonoViewRepository);
+            this.monoManager = new MonoManager (this.mainCamera, this.rootObject, playerMonoViewRepository);
             this.effectManager = new EffectManager (mainCamera, rootObject, rootEffectUI);
             this.gameModeManager = new GameModeManager ();
             this.gameModeManager.EnqueueChangeModeWithHistory (GameModeGenerator.GenerateSelectMode ());

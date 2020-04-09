@@ -28,6 +28,7 @@ namespace NL {
         public ArrangementMaxCount ArrangementMaxCount { get; private set; }
         public string ReleaseConditionText { get; private set; }
         public float MakingTime { get; private set; }
+        public int PromotionCount { get; private set; }
 
         public string Size () {
             return this.Width.ToString() + "x" + this.Height.ToString(); 
@@ -48,7 +49,8 @@ namespace NL {
             long BaseSatisfaction,
             long ArrangementCount,
             string ReleaseConditionText,
-            float MakingTime
+            float MakingTime,
+            int PromotionCount
         ) {
             this.Id = Id;
             this.Name = Name;
@@ -70,6 +72,7 @@ namespace NL {
             this.ArrangementMaxCount = new ArrangementMaxCount (this.Id, ArrangementCount);
             this.ReleaseConditionText = ReleaseConditionText;
             this.MakingTime = MakingTime;
+            this.PromotionCount = PromotionCount;
         }
 
         public ArrangementResourceAmount ArrangementResourceAmount {

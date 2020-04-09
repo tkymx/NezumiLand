@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 namespace NL {
     /// <summary>
@@ -9,12 +10,15 @@ namespace NL {
     /// </summary>
     public class MonoManager {
         private GameObject root;
+        private Camera camera;
+
         private List<MonoViewModel> monoViewModels;
         private MonoViewCreateService monoViewCreateService = null;
         private MonoLevelUpServive monoLevelUpServive = null;
         private MonoViewRemoveService monoViewRemoveService = null;
 
-        public MonoManager (GameObject root, IPlayerMonoViewRepository playerMonoViewRepository) {
+        public MonoManager (Camera camera, GameObject root, IPlayerMonoViewRepository playerMonoViewRepository) {
+            this.camera = camera;
             this.root = root;
             this.monoViewModels = new List<MonoViewModel> ();
             this.monoViewCreateService = new MonoViewCreateService(playerMonoViewRepository);
@@ -67,11 +71,85 @@ namespace NL {
 
         public void RemoveMono (MonoViewModel monoViewModel) {
             Debug.Assert (this.monoViewModels.Contains (monoViewModel), "消去予定のものが存在しません");
-            Object.DisAppear (monoViewModel.MonoView.gameObject);
+            monoViewModel.Dispose();
             monoViewModels.Remove (monoViewModel);
 
             // 消去
             this.monoViewRemoveService.Execute(monoViewModel);
+        }
+
+        /// <summary>
+        /// 宣伝を行うための実行者を取得
+        /// </summary>
+        /// <returns></returns>
+        public MonoPromotionCreater GenerateMonoPromotionCreater()
+        {
+            return new MonoPromotionCreater(this.monoViewModels,this.camera, this.root);
+        }
+    }
+
+    public class MonoPromotionCreater
+    {
+        private List<MonoViewModel> monoViewModels;
+        private Camera camera;
+        private GameObject root;
+
+        /// <summary>
+        /// ものの宣伝をタップした。
+        /// </summary>
+        /// <value></value>
+        public TypeObservable<MonoViewModel> OnTouchPromotion { get; private set; }
+
+        /// <summary>
+        /// もののすべての宣伝をタップした。
+        /// </summary>
+        /// <value></value>
+        public TypeObservable<int> OnAllTouchPromotion { get; private set; }
+
+        private List<IDisposable> disposables;
+
+        public MonoPromotionCreater(List<MonoViewModel> monoViewModels,Camera camera, GameObject root)
+        {
+            this.monoViewModels = monoViewModels;
+            this.camera = camera;
+            this.root = root;
+
+            this.OnTouchPromotion = new TypeObservable<MonoViewModel>();
+            this.OnAllTouchPromotion = new TypeObservable<int>();
+            this.disposables = new List<IDisposable>();
+        }
+
+        public void ShowPromotion()
+        {
+            // disposable をすべて消す
+            foreach (var disposable in this.disposables)
+            {
+                disposable.Dispose();
+            }
+            this.disposables.Clear();
+
+            // 宣伝を設置する
+            foreach (var monoViewModel in this.monoViewModels)
+            {
+                this.disposables.Add(monoViewModel.ShowPromotion(camera, root).Subscribe(_ => {
+                    this.OnTouchPromotion.Execute(monoViewModel);
+
+                    // 宣伝が一つもなければすべてタッチしたとみなす。
+                    if (!this.IsShowPromotion())
+                    {
+                        this.OnAllTouchPromotion.Execute(0);
+                    }
+                }));
+            }
+        }
+
+        /// <summary>
+        /// 宣伝を持っているか？
+        /// </summary>
+        /// <returns></returns>
+        private bool IsShowPromotion()
+        {
+            return this.monoViewModels.Any(monoViewModel => monoViewModel.HasPromotion);
         }
     }
 }

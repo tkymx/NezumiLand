@@ -24,7 +24,6 @@ namespace NL
         public TypeObservable<ParkOpenGroupModel> OnCompleted { get; private set; }
 
         private ParkOpenComment parkOpenComment = null;
-        private ParkOpenPromotion parkOpenPromotion = null;
 
         public ParkOpenManager(IConversationRepository conversationRepository, IPlayerParkOpenRepository playerParkOpenRepository)
         {
@@ -34,7 +33,6 @@ namespace NL
             this.playerParkOpenRepository = playerParkOpenRepository;
 
             this.parkOpenComment = new ParkOpenComment(conversationRepository);
-            this.parkOpenPromotion = new ParkOpenPromotion();
         }
 
         public void Open(PlayerParkOpenGroupModel playerParkOpenGroupModel)
@@ -69,9 +67,6 @@ namespace NL
                 int allPromotionCount = 0;
                 // はじめのコメント
                 this.disposables.Add(this.parkOpenComment.StartInitialComment()
-                    .SelectMany(_ => this.parkOpenComment.StartBeforePromotionComment())
-                    .SelectMany(_ => this.parkOpenPromotion.ShowPromotion().Do(count => allPromotionCount = count))
-                    .SelectMany(_ => this.parkOpenComment.StartAfterPromotionComment())
                     .SelectMany(_ => {
                         // 開始エフェクト
                         var effectHandler = GameManager.Instance.EffectManager.PlayEffect2D("ParkOpenStartEffect");

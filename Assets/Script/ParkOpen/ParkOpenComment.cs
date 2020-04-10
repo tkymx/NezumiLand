@@ -10,8 +10,6 @@ namespace NL
     {
         // 初回会話
         private readonly uint InitialConversationId = 50000001;
-        private readonly uint BeforePromotionConversationId = 50000001;
-        private readonly uint AfterPromotionConversationId = 50000001;
 
         private readonly IConversationRepository conversationRepository;
 
@@ -41,20 +39,10 @@ namespace NL
                 });
         }
 
-        public IObservable<int> StartBeforePromotionComment()
-        {
-            return StartConversation(this.BeforePromotionConversationId);
-        }
-
-        public IObservable<int> StartAfterPromotionComment()
-        {
-            return StartConversation(this.AfterPromotionConversationId);            
-        }
-
         private IObservable<int> StartConversation(uint conversationId)
         {
-            var conversationModel = this.conversationRepository.Get(BeforePromotionConversationId);
-            Debug.Assert(conversationModel != null, "会話が取得できません" + BeforePromotionConversationId.ToString());
+            var conversationModel = this.conversationRepository.Get(conversationId);
+            Debug.Assert(conversationModel != null, "会話が取得できません" + conversationId.ToString());
 
             GameManager.Instance.GameUIManager.ParkOpenCommentConversationPresernter.Show();
             GameManager.Instance.GameUIManager.ParkOpenCommentConversationPresernter.StartConversation(conversationModel);

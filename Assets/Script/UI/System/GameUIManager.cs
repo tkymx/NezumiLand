@@ -114,10 +114,6 @@ namespace NL {
         public ParkOpenInitialCommentPresenter ParkOpenInitialCommentPresenter => this.parkOpenInitialCommentPresenter;
 
         [SerializeField]
-        private ParkOpenPromotionPresenter parkOpenPromotionPresenter = null;
-        public ParkOpenPromotionPresenter ParkOpenPromotionPresenter => this.parkOpenPromotionPresenter;
-
-        [SerializeField]
         private ConversationPresenter parkOpenCommentConversationPresernter = null;
         public ConversationPresenter ParkOpenCommentConversationPresernter => parkOpenCommentConversationPresernter;
 

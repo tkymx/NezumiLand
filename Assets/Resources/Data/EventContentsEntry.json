@@ -96,13 +96,6 @@
             ]
         },
         { 
-            "Id": 14,
-            "EventContentsType": "OpenParkOpen",
-            "Arg": [
-                4
-            ]
-        },
-        { 
             "Id": 15,
             "EventContentsType": "AppearOnegaiCharacter",
             "Arg": [

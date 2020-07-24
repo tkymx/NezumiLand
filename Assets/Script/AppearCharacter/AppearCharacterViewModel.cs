@@ -23,8 +23,6 @@ namespace NL {
         // 消失する地点
         public Vector3 DisappearPosition => PlayerAppearCharacterViewModel.MovePath.DisapearPosition;
 
-        public bool IsParkOpenCharacter => PlayerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen;
-
         public void InterruptState(AppearCharacterState appearCharacterState) 
         {
             if (appearCharacterState == AppearCharacterState.GoMono) {
@@ -49,13 +47,7 @@ namespace NL {
 
         private IAppearCharacterLifeDirector CreateDirector(PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
-            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.ParkOpen) 
-            {
-                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearParkOpenCharacterDirectorModel;
-                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModel ではありません");
-                return new ParkOpenAppearCharacterLifeDirector(this, directerModel);
-            } 
-            else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation) 
+            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation) 
             {
                 var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearConversationCharacterDirectorModel;
                 Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModel ではありません");

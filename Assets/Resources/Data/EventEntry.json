@@ -136,16 +136,6 @@
             "RewardId": 6
         },
         {
-            "Comment": "パークの開放用",
-            "Id": 16,
-            "EventConditionIds": [
-                8
-            ],
-            "EventContentsId": 3,
-            "EventRepeatType": "Once",
-            "RewardId": 9
-        },
-        {
             "Id": 17,
             "EventConditionIds": [
                 1

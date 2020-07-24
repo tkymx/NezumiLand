@@ -23,17 +23,11 @@ namespace NL {
         private AppearCharacterSetPlayingTimeService appearCharacterSetPlayingTimeService = null;
         private AppearOnegaiCharacterService appearOnegaiCharacterService = null;
 
-        /// <summary>
-        /// パーク内の公開時のキャラクター数
-        /// </summary>
-        public int ParkOpenCharacterCount => appearCharacterViewModels.Where(appearCharacterViewModel => appearCharacterViewModel.IsParkOpenCharacter).Count();
-
         public AppearCharacterManager(
             GameObject root, 
             IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository, 
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
-            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
-            IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository)
+            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository)
         {
             this.root = root;
 
@@ -41,7 +35,7 @@ namespace NL {
             this.reservedRegisterModels = new List<AppearCharacterViewModel>();
             this.reservedRemovableModels = new List<AppearCharacterViewModel>();
 
-            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository, playerAppearParkOpenCharacterDirectorRepository, playerAppearCharacterViewRepository);
+            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository, playerAppearCharacterViewRepository);
             this.appearCharacterRemoveService = new AppearCharacterRemoveService(playerAppearCharacterViewRepository);
             this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository);
             this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
@@ -105,20 +99,6 @@ namespace NL {
                 playerAppearCharacterReserveModel
             );
         }        
-
-        public PlayerAppearCharacterViewModel CreateWithParkOpenDirector (
-            Transform view,
-            MovePath movePath,
-            AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel) 
-        {
-            return this.appearCharacterCreateService.ExecuteWithParkOpenDirector(
-                appearParkOpenCharacterDirectorModel.AppearCharacterModel,
-                view.position,
-                view.rotation.eulerAngles,
-                movePath,
-                appearParkOpenCharacterDirectorModel
-            );
-        }
 
 #region 登録消去周り
 

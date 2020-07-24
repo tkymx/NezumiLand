@@ -7,11 +7,13 @@ using System.Linq;
 namespace NL {
     public class FieldRaycastManager {
 
+        /// <summary>
+        /// フィールドをタップする時に反応しないオブジェクトマスク
+        /// </summary>
         public enum MaskMode {
             None,
             All,
             Field,
-            ParkOpen,
             RemoveArrangement,
             MoveArrangement
         }
@@ -62,9 +64,6 @@ namespace NL {
             }
             if (this.maskMode == MaskMode.Field) {
                 return new string[] { "Floor" };
-            }
-            if (this.maskMode == MaskMode.ParkOpen) {
-                return new string[] { "Coin" };
             }
             return new string[] { "SelectLayer", "Floor", "Mouse", "Coin", "Home" };
         }

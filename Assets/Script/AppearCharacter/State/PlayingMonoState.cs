@@ -28,10 +28,6 @@ namespace  NL
                 var earnCurrency = new Currency(10);
                 GameManager.Instance.EarnCurrencyManager.CreateOrAdd(appearCharacterViewModel.PlayerAppearCharacterViewModel.PlayerArrangementTargetModel, earnCurrency);
 
-                // パーク開放時はハートを設置
-                GameManager.Instance.ParkOpenManager.AddHeart(1);
-                GameManager.Instance.EffectManager.PlayHeartEffect(appearCharacterViewModel.Position);
-
                 return new GoAwayState(appearCharacterViewModel);
             }
             return null;

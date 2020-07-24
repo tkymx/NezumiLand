@@ -17,8 +17,7 @@ namespace NL
     {
         None,
         Conversation,
-        Onegai,
-        ParkOpen
+        Onegai
     }
 
     public class PlayerAppearCharacterViewModel : ModelBase

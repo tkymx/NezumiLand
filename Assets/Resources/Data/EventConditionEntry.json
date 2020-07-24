@@ -46,13 +46,6 @@
         "Arg": [
             "10000"
         ]
-    },
-    {
-        "Id": 8,
-        "EventConditionType": "ClearParkOpenGroup",
-        "Arg": [
-            3
-        ]
     }
 ]
 }

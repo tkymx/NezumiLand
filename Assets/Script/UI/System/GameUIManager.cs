@@ -46,10 +46,6 @@ namespace NL {
         public RewardMonoPresenter RewardMonoInfoPresenter => rewardMonoInfoPresenter;
 
         [SerializeField]
-        private RewardParkOpenGroupPresenter rewardParkOpenGroupPresenter = null;
-        public RewardParkOpenGroupPresenter RewardParkOpenGroupPresenter => rewardParkOpenGroupPresenter;
-
-        [SerializeField]
         private CommonPresenter commonPresenter = null;
         public CommonPresenter CommonPresenter => commonPresenter;
 
@@ -82,42 +78,6 @@ namespace NL {
         public SelectModeUIPresenter SelectModeUIPresenter => selectModeUIPresenter;
 
         [SerializeField]
-        private HeartPresenter heartPresenter = null;
-        public HeartPresenter HeartPresenter => heartPresenter;
-
-        [SerializeField]
-        private ParkOpenCharacterCountPresenter parkOpenCharacterCountPresenter = null;
-        public ParkOpenCharacterCountPresenter ParkOpenCharacterCountPresenter => parkOpenCharacterCountPresenter;
-
-        [SerializeField]
-        private ParkOpenTimePresenter parkOpenTimePresenter = null;
-        public ParkOpenTimePresenter ParkOpenTimePresenter => this.parkOpenTimePresenter;
-
-        [SerializeField]
-        private ParkOpenResultPresenter parkOpenResultPresenter = null;
-        public ParkOpenResultPresenter ParkOpenResultPresenter => this.parkOpenResultPresenter;
-
-        [SerializeField]
-        private ParkOpenGroupsTabPresenter parkOpenGroupsTabPresenter = null;
-        public ParkOpenGroupsTabPresenter ParkOpenGroupsTabPresenter => parkOpenGroupsTabPresenter;
-
-        [SerializeField]
-        private ParkOpenDetailPresenter parkOpenDetailPresenter = null;
-        public ParkOpenDetailPresenter ParkOpenDetailPresenter => parkOpenDetailPresenter;
-
-        [SerializeField]
-        private ParkOpenStartPresenter parkOpenStartPresenter = null;
-        public ParkOpenStartPresenter ParkOpenStartPresenter => this.parkOpenStartPresenter;
-
-        [SerializeField]
-        private ParkOpenInitialCommentPresenter parkOpenInitialCommentPresenter = null;
-        public ParkOpenInitialCommentPresenter ParkOpenInitialCommentPresenter => this.parkOpenInitialCommentPresenter;
-
-        [SerializeField]
-        private ConversationPresenter parkOpenCommentConversationPresernter = null;
-        public ConversationPresenter ParkOpenCommentConversationPresernter => parkOpenCommentConversationPresernter;
-
-        [SerializeField]
         private RemoveArrangementModeUIPresenter removeArrangementModeUIPresenter = null;
         public RemoveArrangementModeUIPresenter RemoveArrangementModeUIPresenter => this.removeArrangementModeUIPresenter;
 
@@ -131,11 +91,7 @@ namespace NL {
             IMonoInfoRepository monoInfoRepository, 
             IPlayerMonoInfoRepository playerMonoInfoRepository, 
             IMousePurchaceTableRepository mousePurchaceTableRepository,
-            IPlayerMouseStockRepository playerMouseStockRepository,
-            IPlayerParkOpenRepository playerParkOpenRepository,
-            IParkOpenGroupRepository parkOpenGroupRepository,
-            IParkOpenGroupsRepository parkOpenGroupsRepository,
-            IPlayerParkOpenGroupRepository playerParkOpenGroupRepository
+            IPlayerMouseStockRepository playerMouseStockRepository
         ) {
             this.monoTabPresenter.Initialize (playerMonoInfoRepository);
             this.arrangementMenuUIPresenter.Initialize (playerOnegaiRepository);
@@ -147,7 +103,6 @@ namespace NL {
             this.onegaiDetailPresenter.Initialize();
             this.rewardOnegaiPresenter.Initialize(playerOnegaiRepository);
             this.rewardMonoInfoPresenter.Initialize(monoInfoRepository);
-            this.rewardParkOpenGroupPresenter.Initialize(parkOpenGroupRepository);
             this.commonPresenter.Initialize();
             this.monoDetailPresenter.Initialize();
             this.mousePurchasePresenter.Initialize(mousePurchaceTableRepository, playerMouseStockRepository);
@@ -156,15 +111,6 @@ namespace NL {
             this.imagePresenter.Initialize ();
             this.arrangementModeUIPresenter.Initialize();
             this.selectModeUIPresenter.Initialize();
-            this.heartPresenter.Initialize();
-            this.parkOpenCharacterCountPresenter.Initialize(playerParkOpenRepository);
-            this.parkOpenTimePresenter.Initialize();
-            this.parkOpenResultPresenter.Initialize();
-            this.parkOpenGroupsTabPresenter.Initialize(parkOpenGroupsRepository, playerParkOpenGroupRepository);
-            this.parkOpenDetailPresenter.Initialize();
-            this.parkOpenStartPresenter.Initialize();
-            this.parkOpenInitialCommentPresenter.Initialize();
-            this.parkOpenCommentConversationPresernter.Initialize();
             this.removeArrangementModeUIPresenter.Initialize();
             this.moveArrangementModeUIPresenter.Initialize();
         }
@@ -173,10 +119,7 @@ namespace NL {
             this.toolBarmanager.UpdateByrame();
             this.onegaiConditionNotificationPresenter.UpdateByFrame();
             this.fieldActionUIPresenter.UpdateByFrame();
-            this.parkOpenCharacterCountPresenter.UpdateByFrame();
-            this.parkOpenTimePresenter.UpdateByFrame();
             this.removeArrangementModeUIPresenter.UpdateByFrame();
-            this.parkOpenInitialCommentPresenter.UpdateByFrame();
         }
     }
 }

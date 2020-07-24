@@ -38,17 +38,14 @@ namespace NL {
 
         private readonly IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository;
         private readonly IAppearOnegaiCharacterDirectorRepository appearOnegaiCharacterDirectorRepository;
-        private readonly IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository;
 
         public PlayerAppearCharacterReserveRepository (
             IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository,
             IAppearOnegaiCharacterDirectorRepository appearOnegaiCharacterDirectorRepository,
-            IAppearParkOpenCharacterDirectorRepository appearParkOpenCharacterDirectorRepository,
             PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterReserveEntrys) 
         {
             this.appearConversationCharacterDirectorRepository = appearConversationCharacterDirectorRepository;
             this.appearOnegaiCharacterDirectorRepository = appearOnegaiCharacterDirectorRepository;
-            this.appearParkOpenCharacterDirectorRepository = appearParkOpenCharacterDirectorRepository;
         }
 
         private PlayerAppearCharacterReserveModel CreateByEntry (PlayerAppearCharacterReserveEntry entry) {
@@ -64,12 +61,6 @@ namespace NL {
                 {
                     appearCharacterDirectorModelBase = this.appearConversationCharacterDirectorRepository.Get(entry.AppearCharacterDirectorId);
                     Debug.Assert(appearCharacterDirectorModelBase != null, "Reserveのモデル が存在しません " + entry.AppearCharacterDirectorId);
-                    break;
-                }
-                case AppearCharacterLifeDirectorType.ParkOpen: 
-                {
-                    appearCharacterDirectorModelBase = this.appearParkOpenCharacterDirectorRepository.Get(entry.AppearCharacterDirectorId);
-                    Debug.Assert(appearCharacterDirectorModelBase != null, "ParkOpenのモデル が存在しません " + entry.AppearCharacterDirectorId);
                     break;
                 }
                 case AppearCharacterLifeDirectorType.Onegai:

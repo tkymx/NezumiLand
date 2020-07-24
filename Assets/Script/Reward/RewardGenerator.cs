@@ -39,16 +39,7 @@ namespace NL {
                 }
                 return new MonoRewardAmount(amount, monoInfoId);
             } 
-
-            if (rewardType == RewardType.ParkOpenGroup) {
-                Debug.Assert(args.Length >= 1, "RewardType.ParkOpenGroup の要素数が足りません");
-                uint parkOpenGroupId = 0;
-                if (args.Length >= 1) {
-                    parkOpenGroupId = uint.Parse(args[0]);
-                }
-                return new ParkOpenGroupRewardAmount(amount, parkOpenGroupId);
-            }    
-
+            
             Debug.Assert(false, "無効な報酬が設定されいています。 : " + type);
             return new InvalidRewardAmount();
         }

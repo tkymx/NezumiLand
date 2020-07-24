@@ -46,21 +46,7 @@ namespace NL
                 playerAppearCharacterViewModel
             );
             return generatedAppearCharacterViewModel;
-        }
-
-        public AppearCharacterViewModel GenerateParkOpen(MovePath movePath, AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel) {
-            var modelPrefab = ResourceLoader.LoadModel(appearParkOpenCharacterDirectorModel.AppearCharacterModel.Name);
-            var appearCharacterInstance = Object.AppearToFloor(modelPrefab, GameManager.Instance.AppearCharacterManager.Root , movePath.AppearPosition);
-            var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
-            var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
-                appearCharacterView,
-                GameManager.Instance.AppearCharacterManager.CreateWithParkOpenDirector(
-                    appearCharacterView.transform, 
-                    movePath,
-                    appearParkOpenCharacterDirectorModel)
-            );
-            return generatedAppearCharacterViewModel;
-        }        
+        }     
 
         public AppearCharacterViewModel Generate(PlayerAppearCharacterViewModel playerAppearCharacterViewModel) {
             var modelPrefab = ResourceLoader.LoadModel(playerAppearCharacterViewModel.AppearCharacterModel.Name);

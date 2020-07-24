@@ -56,20 +56,6 @@ namespace NL {
                 GameManager.Instance.AppearCharacterManager.RemoveAllSoon();
                 GameManager.Instance.DailyAppearCharacterRegistManager.Regist();
             });
-
-            this.AddDebugButton("Appear for Park Open",() => {
-                var appearCharacterRepository = new AppearCharacterRepository(ContextMap.DefaultMap);
-                var appearParkOpenCharacterDirectorRepository = new AppearParkOpenCharacterDirectorRepository(appearCharacterRepository, ContextMap.DefaultMap);
-                var appearParkOpenCharacterDirectorModel = appearParkOpenCharacterDirectorRepository.Get(1);
-
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
-                GameManager.Instance.ParkOpenAppearManager.AppearRandom(appearParkOpenCharacterDirectorModel);
-            });
-            
-            this.AddDebugButton("ハートを増やす",()=>{
-                GameManager.Instance.ParkOpenManager.AddHeart(10);
-            });
             
             this.AddDebugInputButton("カメラ回転ファクター", value => {
                 var factor = float.Parse(value);
@@ -130,7 +116,6 @@ namespace NL {
         private void Update () {
             text.text = LR;
             text.text += "Mode : " + GameManager.Instance.GameModeManager.ToString () + LR;
-            text.text += GameManager.Instance.ParkOpenManager.ToString() + LR;
             text.text += "Input.touchCount : " + Input.touchCount.ToString() + LR;
             text.text += string.Join(LR,message);
         }

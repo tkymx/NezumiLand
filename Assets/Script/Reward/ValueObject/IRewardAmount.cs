@@ -9,8 +9,7 @@ namespace NL {
         Currency,
         Item,
         Onegai,
-        Mono,
-        ParkOpenGroup
+        Mono
     }
 
     public interface IRewardAmount

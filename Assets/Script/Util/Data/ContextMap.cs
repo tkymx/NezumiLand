@@ -25,12 +25,7 @@ namespace NL {
         public List<AppearCharacterEntry> AppearCharacterEntrys { get; private set; }
         public List<MousePurchaceTableEntry> MousePurchaceTableEntrys { get; private set; }
         public List<ScheduleEntry> ScheduleEntrys { get; private set; }
-        public List<ParkOpenPositionEntry> ParkOpenPositionEntrys { get; private set; }
-        public List<ParkOpenWaveEntry> ParkOpenWaveEntrys { get; private set; }
-        public List<ParkOpenGroupEntry> ParkOpenGroupEntrys { get; private set; }
-        public List<ParkOpenGroupsEntry> ParkOpenGroupsEntrys { get; private set; }
         public List<AppearConversationCharacterDirectorEntry> AppearConversationCharacterDirectorEntrys { get; private set; }
-        public List<AppearParkOpenCharacterDirectorEntry> AppearParkOpenCharacterDirectorEntrys { get; private set; }
         public List<AppearOnegaiCharacterDirectorEntry> AppearOnegaiCharacterDirectorEntrys { get; private set; }
 
         public static void Initialize () {
@@ -54,12 +49,7 @@ namespace NL {
             this.AppearCharacterEntrys = LoadEntryFromJson<AppearCharacterEntry> (ResourceLoader.LoadData ("AppearCharacterEntry")).ToList();
             this.MousePurchaceTableEntrys = LoadEntryFromJson<MousePurchaceTableEntry> (ResourceLoader.LoadData ("MousePurchaceTableEntry")).ToList();
             this.ScheduleEntrys = LoadEntryFromJson<ScheduleEntry> (ResourceLoader.LoadData ("ScheduleEntry")).ToList();
-            this.ParkOpenPositionEntrys = LoadEntryFromJson<ParkOpenPositionEntry> (ResourceLoader.LoadData ("ParkOpenPositionEntry")).ToList();
-            this.ParkOpenWaveEntrys = LoadEntryFromJson<ParkOpenWaveEntry> (ResourceLoader.LoadData ("ParkOpenWaveEntry")).ToList();
-            this.ParkOpenGroupEntrys = LoadEntryFromJson<ParkOpenGroupEntry> (ResourceLoader.LoadData ("ParkOpenGroupEntry")).ToList();
-            this.ParkOpenGroupsEntrys = LoadEntryFromJson<ParkOpenGroupsEntry> (ResourceLoader.LoadData ("ParkOpenGroupsEntry")).ToList();
             this.AppearConversationCharacterDirectorEntrys = LoadEntryFromJson<AppearConversationCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearConversationCharacterDirectorEntry")).ToList();
-            this.AppearParkOpenCharacterDirectorEntrys = LoadEntryFromJson<AppearParkOpenCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearParkOpenCharacterDirectorEntry")).ToList();
             this.AppearOnegaiCharacterDirectorEntrys = LoadEntryFromJson<AppearOnegaiCharacterDirectorEntry> (ResourceLoader.LoadData ("AppearOnegaiCharacterDirectorEntry")).ToList();
         }
 

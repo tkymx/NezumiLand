@@ -11,11 +11,6 @@ namespace NL {
         public void OnEnter () { 
             GameManager.Instance.GameUIManager.SelectModeUIPresenter.Show();
 
-            // パークオープンの選択を実行
-            this.disposables.Add(GameManager.Instance.GameUIManager.SelectModeUIPresenter.OnClickParkOpenSelectObservable.Subscribe(_ => {
-                GameManager.Instance.ParkOpenGroupSelectManager.StartSelect();
-            }));
-
             // 配置物がタップされたらメニューを表示
             this.disposables.Add(GameManager.Instance.ArrangementPresenter.OnTouchArrangement.Subscribe(arrangementTarget => {
                 GameManager.Instance.GameModeManager.EnqueueChangeMode (GameModeGenerator.GenerateArrangementMenuSelectMode (arrangementTarget));

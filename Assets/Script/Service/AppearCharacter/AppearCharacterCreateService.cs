@@ -8,18 +8,15 @@ namespace NL
     {
         private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
         private readonly IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository;
-        private readonly IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository;
         private readonly IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository;
 
         public AppearCharacterCreateService(
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository, 
             IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
-            IPlayerAppearParkOpenCharacterDirectorRepository playerAppearParkOpenCharacterDirectorRepository,
             IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {
             this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
             this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;
-            this.playerAppearParkOpenCharacterDirectorRepository = playerAppearParkOpenCharacterDirectorRepository;
             this.playerAppearCharacterViewRepository = playerAppearCharacterViewRepository;            
         }
 
@@ -83,27 +80,6 @@ namespace NL
                 directorModel,
                 movePath
             );
-        }        
-
-        public PlayerAppearCharacterViewModel ExecuteWithParkOpenDirector(
-            AppearCharacterModel appearCharacterModel,
-            Vector3 position,
-            Vector3 rotation,
-            MovePath movePath,
-            AppearParkOpenCharacterDirectorModel appearParkOpenCharacterDirectorModel
-        ) {
-            var directorModel = this.playerAppearParkOpenCharacterDirectorRepository.Create(
-                appearParkOpenCharacterDirectorModel);
-
-            return playerAppearCharacterViewRepository.Create(
-                appearCharacterModel,
-                position,
-                rotation,
-                AppearCharacterLifeDirectorType.ParkOpen,
-                directorModel,
-                movePath
-            );
-        }        
-
+        }
     }   
 }

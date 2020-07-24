@@ -26,10 +26,7 @@ namespace NL {
         public List<PlayerAppearCharacterReserveEntry> PlayerAppearCharacterReserveEntrys { get; private set; }
         public List<PlayerAppearCharacterViewEntry> PlayerAppearCharacterViewEntrys { get; private set; }
         public List<PlayerEarnCurrencyEntry> PlayerEarnCurrencyEntrys { get; private set; }
-        public List<PlayerParkOpenEntry> PlayerParkOpenEntrys { get; private set; }
-        public List<PlayerParkOpenGroupEntry> PlayerParkOpenGroupEntrys { get; private set; }
         public List<PlayerAppearConversationCharacterDirectorEntry> PlayerAppearConversationCharacterDirectorEntrys { get; private set; }
-        public List<PlayerAppearParkOpenCharacterDirectorEntry> PlayerAppearParkOpenCharacterDirectorEntrys { get; private set; }
         public List<PlayerAppearOnegaiCharacterDirectorEntry> PlayerAppearOnegaiCharacterDirectorEntrys { get; private set; }
 
         public static void Initialize () {
@@ -49,10 +46,7 @@ namespace NL {
             this.PlayerAppearCharacterReserveEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterReserveEntry> ("PlayerAppearCharacterReserveEntry").ToList();
             this.PlayerAppearCharacterViewEntrys = LoadEntryFromJsonFromName<PlayerAppearCharacterViewEntry> ("PlayerAppearCharacterViewEntry").ToList();
             this.PlayerEarnCurrencyEntrys = LoadEntryFromJsonFromName<PlayerEarnCurrencyEntry> ("PlayerEarnCurrencyEntry").ToList();
-            this.PlayerParkOpenEntrys = LoadEntryFromJsonFromName<PlayerParkOpenEntry> ("PlayerParkOpenEntry").ToList();
-            this.PlayerParkOpenGroupEntrys = LoadEntryFromJsonFromName<PlayerParkOpenGroupEntry> ("PlayerParkOpenGroupEntry").ToList();
             this.PlayerAppearConversationCharacterDirectorEntrys = LoadEntryFromJsonFromName<PlayerAppearConversationCharacterDirectorEntry> ("PlayerAppearConversationCharacterDirectorEntry").ToList();
-            this.PlayerAppearParkOpenCharacterDirectorEntrys = LoadEntryFromJsonFromName<PlayerAppearParkOpenCharacterDirectorEntry> ("PlayerAppearParkOpenCharacterDirectorEntry").ToList();
             this.PlayerAppearOnegaiCharacterDirectorEntrys = LoadEntryFromJsonFromName<PlayerAppearOnegaiCharacterDirectorEntry> ("PlayerAppearOnegaiCharacterDirectorEntry").ToList();
         }
 

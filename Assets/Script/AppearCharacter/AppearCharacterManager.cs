@@ -190,16 +190,7 @@ namespace NL {
         public void ToReeiveRewards (PlayerAppearConversationCharacterDirectorModel playerAppearConversationCharacterDirectorModel) {
             this.appearCharacterReceiveRewardsService.Execute(playerAppearConversationCharacterDirectorModel);
         }
-
-        // onegai director
-        public void ToReeiveRewards (PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
-            this.appearCharacterReceiveRewardsService.Execute(playerAppearOnegaiCharacterDirectorModel);
-        }
-
-        public void Cancel (PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
-            this.appearOnegaiCharacterService.Cancel(playerAppearOnegaiCharacterDirectorModel);
-        }
-
+        
 #endregion        
     }
 }

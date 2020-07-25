@@ -22,12 +22,5 @@ namespace NL
             playerAppearConversationCharacterDirectorModel.AppearCharactorWithReward.ToReceiveRewards();
             playerAppearConversationCharacterDirectorRepository.Store(playerAppearConversationCharacterDirectorModel);            
         }
-
-        // onegai
-        public void Execute(PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
-            playerAppearOnegaiCharacterDirectorModel.AppearCharactorWithReward.ToReceiveRewards();
-            playerAppearOnegaiCharacterDirectorRepository.Store(playerAppearOnegaiCharacterDirectorModel);            
-        }
-
     }   
 }

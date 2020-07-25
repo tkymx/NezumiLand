@@ -33,7 +33,7 @@ namespace NL {
 
         public void EnableOnegaiIndicator(OnegaiState onegaiState) {
             DisableOnegaiIndicator();
-            if (onegaiState == OnegaiState.UnLock) {
+            if (onegaiState == OnegaiState.UnLock || onegaiState == OnegaiState.Lock) {
                 this.unlockOnegai.SetActive(true);
             }
             else if (onegaiState == OnegaiState.Clear) {

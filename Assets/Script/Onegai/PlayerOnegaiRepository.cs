@@ -75,7 +75,7 @@ namespace NL {
             return this.entrys
                 .Where(entry => entry.OnegaiState == onegaiState.ToString())
                 .Select (entry => GeneratePlayerOnegaiModel(entry))
-                .Where (model => model.OnegaiModel.Type == OnegaiType.Sub);
+                .Where (model => model.OnegaiModel.Type == OnegaiType.Sub || model.OnegaiModel.Type == OnegaiType.Person /*person の行き場がみつかるまで*/);
         }
 
         public PlayerOnegaiModel GetById (uint id) {

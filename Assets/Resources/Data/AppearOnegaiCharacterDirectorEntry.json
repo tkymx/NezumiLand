@@ -5,7 +5,7 @@
             "AppearCharacterId": 1,
             "AfterConversationId": 12,
             "BeforeConversationId": 11,
-            "CancelConversationId": 13,
+            "MiddleConversationId": 13,
             "OnegaiId": 17,
             "RewardId": 8
         }

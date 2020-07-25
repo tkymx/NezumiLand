@@ -12,7 +12,6 @@ namespace NL {
         public uint AppearOnegaiCharacterDirectorId;
         public uint PlayerAppearCharacterReserveId;
         public bool IsReceiveReward;
-        public bool IsCancel;
     }
 
     public interface IPlayerAppearOnegaiCharacterDirectorRepository 
@@ -47,9 +46,7 @@ namespace NL {
             return new PlayerAppearOnegaiCharacterDirectorModel(
                 entry.Id,
                 appearOnegaiCharacterDirectorModel,
-                playerAppearCharacterReserveModel,
-                new AppearCharactorWithReward(entry.IsReceiveReward),
-                entry.IsCancel
+                playerAppearCharacterReserveModel
             );
         }
 
@@ -75,8 +72,7 @@ namespace NL {
                 Id = id,
                 AppearOnegaiCharacterDirectorId = appearOnegaiCharacterDirectorModel.Id,
                 PlayerAppearCharacterReserveId = playerAppearCharacterReserveModel.Id,
-                IsReceiveReward = false /*はじめはまだ受け取っていない*/,
-                IsCancel = false /*初回はキャンセルではない*/
+                IsReceiveReward = false /*はじめはまだ受け取っていない*/
             };
             this.entrys.Add(entry);
             PlayerContextMap.WriteEntry (this.entrys);
@@ -90,9 +86,7 @@ namespace NL {
                 this.entrys[index] = new PlayerAppearOnegaiCharacterDirectorEntry () {
                     Id = PlayerAppearOnegaiCharacterDirectorModel.Id,
                     AppearOnegaiCharacterDirectorId = PlayerAppearOnegaiCharacterDirectorModel.AppearOnegaiCharacterDirectorModel.Id,
-                    PlayerAppearCharacterReserveId = PlayerAppearOnegaiCharacterDirectorModel.PlayerAppearCharacterReserveModel.Id,
-                    IsReceiveReward = PlayerAppearOnegaiCharacterDirectorModel.AppearCharactorWithReward.IsReceiveReward,
-                    IsCancel = PlayerAppearOnegaiCharacterDirectorModel.IsCancel
+                    PlayerAppearCharacterReserveId = PlayerAppearOnegaiCharacterDirectorModel.PlayerAppearCharacterReserveModel.Id
                 };
             } else {
                 Debug.Assert(false,"要素が存在しません : " + PlayerAppearOnegaiCharacterDirectorModel.Id.ToString());

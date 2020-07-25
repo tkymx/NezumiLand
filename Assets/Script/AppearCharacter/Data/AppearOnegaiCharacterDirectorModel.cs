@@ -11,7 +11,7 @@ namespace NL
     {
         public ConversationModel AfterConversationModel { get; private set; }
         public ConversationModel BeforeConversationModel { get; private set; }
-        public ConversationModel CancelConversationModel { get; private set; }
+        public ConversationModel MiddleConversationModel { get; private set; }
         public OnegaiModel OnegaiModel { get; private set; }
         public RewardModel RewardModel { get; private set; }
 
@@ -20,7 +20,7 @@ namespace NL
             AppearCharacterModel appearCharacterModel,
             ConversationModel afterConversationModel,
             ConversationModel beforeConversationModel,
-            ConversationModel cancelConversationModel,
+            ConversationModel middleConversationModel,
             OnegaiModel onegaiModel,
             RewardModel rewardModel
         )
@@ -29,7 +29,7 @@ namespace NL
             this.AppearCharacterModel = appearCharacterModel;
             this.AfterConversationModel = afterConversationModel;
             this.BeforeConversationModel = beforeConversationModel;
-            this.CancelConversationModel = cancelConversationModel;
+            this.MiddleConversationModel = middleConversationModel;
             this.OnegaiModel = onegaiModel;
             this.RewardModel = rewardModel;
         }

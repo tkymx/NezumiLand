@@ -40,6 +40,10 @@ namespace NL {
             return this.OnegaiState == OnegaiState.Lock;
         }
 
+        public bool IsUnLock() {
+            return this.OnegaiState == OnegaiState.UnLock;
+        }
+
         public float CloseTime () {
             if (!HasSchedule()) {
                 return this.OnegaiModel.CloseTime();

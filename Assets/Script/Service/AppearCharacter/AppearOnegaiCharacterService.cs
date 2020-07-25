@@ -13,12 +13,5 @@ namespace NL
         {
             this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;         
         }
-
-        // onegai
-        public void Cancel(PlayerAppearOnegaiCharacterDirectorModel playerAppearOnegaiCharacterDirectorModel) {
-            playerAppearOnegaiCharacterDirectorModel.Cancel();
-            playerAppearOnegaiCharacterDirectorRepository.Store(playerAppearOnegaiCharacterDirectorModel);            
-        }
-
     }   
 }

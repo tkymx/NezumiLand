@@ -13,10 +13,12 @@ namespace NL {
 
     public interface IPlayerOnegaiRepository {
         IEnumerable<PlayerOnegaiModel> GetAll ();
+        IEnumerable<PlayerOnegaiModel> GetAll (OnegaiState onegaiState);
         IEnumerable<PlayerOnegaiModel> GetAlreadyClose ();
 
         PlayerOnegaiModel GetCurrentMain ();
         IEnumerable<PlayerOnegaiModel> GetSub (OnegaiState onegaiState);
+        IEnumerable<PlayerOnegaiModel> GetFromType (OnegaiType onegaiType, OnegaiState onegaiState);
 
         PlayerOnegaiModel GetById (uint id);
         List<PlayerOnegaiModel> GetByIds (List<uint> ids);
@@ -49,6 +51,12 @@ namespace NL {
                 .Select (entry => GeneratePlayerOnegaiModel(entry));
         }
 
+        public IEnumerable<PlayerOnegaiModel> GetAll (OnegaiState onegaiState) {
+            return this.entrys
+                .Where(entry => entry.OnegaiState == onegaiState.ToString())
+                .Select (entry => GeneratePlayerOnegaiModel(entry));
+        }
+
         public IEnumerable<PlayerOnegaiModel> GetAlreadyClose () {
             return this.entrys
                 .Where(entry => entry.OnegaiState != OnegaiState.Lock.ToString())
@@ -75,8 +83,16 @@ namespace NL {
             return this.entrys
                 .Where(entry => entry.OnegaiState == onegaiState.ToString())
                 .Select (entry => GeneratePlayerOnegaiModel(entry))
-                .Where (model => model.OnegaiModel.Type == OnegaiType.Sub || model.OnegaiModel.Type == OnegaiType.Person /*person の行き場がみつかるまで*/);
+                .Where (model => model.OnegaiModel.Type == OnegaiType.Sub);
         }
+
+        public IEnumerable<PlayerOnegaiModel> GetFromType (OnegaiType onegaiType, OnegaiState onegaiState)
+        {
+            return this.entrys
+                .Where(entry => entry.OnegaiState == onegaiState.ToString())
+                .Select (entry => GeneratePlayerOnegaiModel(entry))
+                .Where (model => model.OnegaiModel.Type == onegaiType);
+        }        
 
         public PlayerOnegaiModel GetById (uint id) {
             var foundEntry = this.GetEntry(id);

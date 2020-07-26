@@ -16,9 +16,12 @@ namespace NL {
         private OnegaiListPresenter onegaiListPresenter = null;
 
         public TypeObservable<PlayerOnegaiModel> OnCellClick { get; private set ; }
+        public TypeObservable<int> OnClearButtonClick { get; private set; }
 
         public void Initialize (IPlayerOnegaiRepository playerOnegaiRepository) {
             this.OnCellClick = new TypeObservable<PlayerOnegaiModel>();
+            this.OnClearButtonClick = new TypeObservable<int>();
+
             this.playerOnegaiRepository = playerOnegaiRepository;
 
             this.onegaiTabView.Initialize();
@@ -28,18 +31,22 @@ namespace NL {
                 this.OnCellClick.Execute(playerOnegaiModel);
             }));
 
-            this.disposables.Add(this.onegaiTabView.OnTapTabObservable.Subscribe(onegaiState => {
-                this.SelectTab (onegaiState);
+            this.disposables.Add(this.onegaiTabView.OnTapTabObservable.Subscribe(onegaiType => {
+                this.SelectTab (onegaiType);
+            }));
+
+            this.disposables.Add(this.onegaiTabView.OnClearObservable.Subscribe(_ => {
+                this.OnClearButtonClick.Execute(0);
             }));
         }
 
-        private void SelectTab (OnegaiState onegaiState) {
-            var displayableOnegais = playerOnegaiRepository.GetSub(onegaiState).ToList();
+        private void SelectTab (OnegaiType onegaiType) {
+            var displayableOnegais = playerOnegaiRepository.GetFromType(onegaiType, OnegaiState.UnLock).ToList();
             this.onegaiListPresenter.SetElement (displayableOnegais);
         }
 
         public void ReLoad () {
-            this.SelectTab (OnegaiState.UnLock);
+            this.SelectTab (OnegaiType.Sub);
             this.onegaiTabView.Tap(0);
             onegaiListPresenter.ReLoad ();
         }

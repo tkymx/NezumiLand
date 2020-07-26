@@ -70,6 +70,10 @@ namespace NL {
         public ImagePresenter ImagePresenter => imagePresenter;
 
         [SerializeField]
+        private OnegaiListModelPresenter onegaiListModelPresenter = null;
+        public OnegaiListModelPresenter OnegaiListModelPresenter => onegaiListModelPresenter;
+
+        [SerializeField]
         private ArrangementModeUIPresenter arrangementModeUIPresenter = null;
         public ArrangementModeUIPresenter ArrangementModeUIPresenter => arrangementModeUIPresenter;
 
@@ -109,6 +113,7 @@ namespace NL {
             this.toolBarmanager.Initialize();
             this.onegaiConditionNotificationPresenter.Initialize();
             this.imagePresenter.Initialize ();
+            this.onegaiListModelPresenter.Initialize(playerOnegaiRepository);
             this.arrangementModeUIPresenter.Initialize();
             this.selectModeUIPresenter.Initialize();
             this.removeArrangementModeUIPresenter.Initialize();

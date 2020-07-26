@@ -38,14 +38,20 @@ namespace NL {
             this.closeButton.onClick.AddListener (() => {
                 this.Close ();
                 this.CloseDetail();
+                this.CloseClearOnegaiList();
             });
 
             this.disposables.Add(this.mainCellView.OnClick.Subscribe(_ => {
                 this.ShowDetail(this.mainPlayerOnegaiModel);
             }));
 
+            this.disposables.Add(this.onegaiTabPresenter.OnClearButtonClick.Subscribe(_ => {
+                this.ShowClearOnegaiList();
+            }));
+
             this.Close ();
             this.CloseDetail();
+            this.CloseClearOnegaiList();
         }
 
         private void ShowDetail(PlayerOnegaiModel playerOnegaiModel)
@@ -61,6 +67,17 @@ namespace NL {
         private void CloseDetail()
         {
             GameManager.Instance.GameUIManager.OnegaiDetailPresenter.Close();
+        }
+
+        private void ShowClearOnegaiList()
+        {
+            GameManager.Instance.GameUIManager.OnegaiListModelPresenter.SetContentAll(OnegaiState.Clear, "クリア済みお願い");
+            GameManager.Instance.GameUIManager.OnegaiListModelPresenter.Show();
+        }
+
+        private void CloseClearOnegaiList()
+        {
+            GameManager.Instance.GameUIManager.OnegaiListModelPresenter.Close();
         }
 
         private void ReLoadCurrentMain()
@@ -92,6 +109,7 @@ namespace NL {
         public override void onPrepareClose() {
             base.onPrepareClose();
             this.CloseDetail();
+            this.CloseClearOnegaiList();
         }
     }
 }

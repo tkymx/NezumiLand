@@ -17,7 +17,8 @@ namespace NL
     {
         None,
         Conversation,
-        Onegai
+        Onegai,
+        Playing
     }
 
     public class PlayerAppearCharacterViewModel : ModelBase

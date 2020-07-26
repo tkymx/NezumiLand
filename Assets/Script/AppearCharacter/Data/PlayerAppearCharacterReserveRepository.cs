@@ -38,14 +38,17 @@ namespace NL {
 
         private readonly IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository;
         private readonly IAppearOnegaiCharacterDirectorRepository appearOnegaiCharacterDirectorRepository;
+        private readonly IAppearPlayingCharacterDirectorRepository appearPlayingCharacterDirectorRepository;
 
         public PlayerAppearCharacterReserveRepository (
             IAppearConversationCharacterDirectorRepository appearConversationCharacterDirectorRepository,
             IAppearOnegaiCharacterDirectorRepository appearOnegaiCharacterDirectorRepository,
+            IAppearPlayingCharacterDirectorRepository appearPlayingCharacterDirectorRepository,
             PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterReserveEntrys) 
         {
             this.appearConversationCharacterDirectorRepository = appearConversationCharacterDirectorRepository;
             this.appearOnegaiCharacterDirectorRepository = appearOnegaiCharacterDirectorRepository;
+            this.appearPlayingCharacterDirectorRepository = appearPlayingCharacterDirectorRepository;
         }
 
         private PlayerAppearCharacterReserveModel CreateByEntry (PlayerAppearCharacterReserveEntry entry) {
@@ -69,6 +72,12 @@ namespace NL {
                     Debug.Assert(appearCharacterDirectorModelBase != null, "Onegaiのモデルが 存在しません" + entry.AppearCharacterDirectorId);
                     break;
                 }
+                case AppearCharacterLifeDirectorType.Playing:
+                {
+                    appearCharacterDirectorModelBase = this.appearPlayingCharacterDirectorRepository.Get(entry.AppearCharacterDirectorId);
+                    Debug.Assert(appearCharacterDirectorModelBase != null, "Playingのモデルが 存在しません" + entry.AppearCharacterDirectorId);
+                    break;
+                }                
                 default: 
                 {
                     Debug.Assert(false, "存在しないタイプが指定されました。 " + lifeType.ToString());

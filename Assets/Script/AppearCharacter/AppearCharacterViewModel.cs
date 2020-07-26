@@ -44,28 +44,7 @@ namespace NL {
                 Debug.Assert(false, "ありえない状態" + appearCharacterState.ToString());
             }
         }
-
-        private IAppearCharacterLifeDirector CreateDirector(PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
-        {
-            if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation) 
-            {
-                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearConversationCharacterDirectorModel;
-                Debug.Assert(directerModel != null, "AppearConversationCharacterDirectorModel ではありません");
-                return new ReserveAppearCharacterLifeDirector(directerModel);
-            } 
-            else if (playerAppearCharacterViewModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Onegai) 
-            {
-                var directerModel = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase as PlayerAppearOnegaiCharacterDirectorModel;
-                Debug.Assert(directerModel != null, "PlayerAppearOnegaiCharacterDirectorModel ではありません");
-                return new AppearOnegaiCharacterLifeDirector(directerModel);
-            } 
-            else 
-            {
-                Debug.Assert(false, "ありえない状態" + playerAppearCharacterViewModel.AppearCharacterLifeDirectorType.ToString());
-            }
-            return null;
-        }
-
+        
         public AppearCharacterViewModel(AppearCharacterView appearCharacterView, PlayerAppearCharacterViewModel playerAppearCharacterViewModel)
         {
             this.appearCharacterView = appearCharacterView;            
@@ -76,8 +55,8 @@ namespace NL {
                 GameManager.Instance.AppearCharacterManager.ChangeState(playerAppearCharacterViewModel, state);
             }));
 
-            // Director の作成
-            this.appearCharacterLifeDirector = CreateDirector(playerAppearCharacterViewModel);
+            // Director の作成（LifeDirecterの作成処理を委譲しすぎた感じはする）
+            this.appearCharacterLifeDirector = playerAppearCharacterViewModel.PlayerAppearCharacterDirectorModelBase.GetLifeDirectorFromViewModel(this);
 
             // 遊んでいた時間を適応
             this.playeringTime = playerAppearCharacterViewModel.CurrentPlayingTime;

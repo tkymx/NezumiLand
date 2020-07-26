@@ -136,6 +136,15 @@
             "RewardId": 6
         },
         {
+            "Id": 16,
+            "EventConditionIds": [
+                1
+            ],
+            "EventContentsId": 14,
+            "EventRepeatType": "Once",
+            "RewardId": 6
+        },
+        {
             "Id": 17,
             "EventConditionIds": [
                 1

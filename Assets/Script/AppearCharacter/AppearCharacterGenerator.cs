@@ -11,7 +11,8 @@ namespace NL
         }
 
         public AppearCharacterViewModel GenerateFromReserve(PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) {
-            //TODO:　予約時の座標のとり方正常化
+
+            // 初期座標
             MovePath movePath = new MovePath(GetInitialPosition(), GetInitialPosition() );
 
             var modelPrefab = ResourceLoader.LoadModel(playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase.AppearCharacterModel.Name);
@@ -19,28 +20,14 @@ namespace NL
             var appearCharacterView = appearCharacterInstance.GetComponent<AppearCharacterView>();
 
             // ViewModel 用のプレイヤーデータを作成
-            PlayerAppearCharacterViewModel playerAppearCharacterViewModel = null;
-            if (playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Conversation)
-            {
-                playerAppearCharacterViewModel = GameManager.Instance.AppearCharacterManager.CreateWithConversationDirector(
-                    appearCharacterView.transform, 
-                    movePath,
-                    playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase as AppearConversationCharacterDirectorModel,
-                    playerAppearCharacterReserveModel);
-            }
-            else if (playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType == AppearCharacterLifeDirectorType.Onegai)
-            {
-                playerAppearCharacterViewModel = GameManager.Instance.AppearCharacterManager.CreateWithOnegaiDirector(
-                    appearCharacterView.transform, 
-                    movePath,
-                    playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase as AppearOnegaiCharacterDirectorModel,
-                    playerAppearCharacterReserveModel);
-            }
-            else
-            {
-                Debug.Assert(playerAppearCharacterViewModel != null, "AppearCharacterLifeDirectorType のタイプがありません");
-            }
+            var playerAppearCharacterViewModel = GameManager.Instance.AppearCharacterManager.Create(
+                appearCharacterView.transform, 
+                movePath,
+                playerAppearCharacterReserveModel.AppearCharacterLifeDirectorType,
+                playerAppearCharacterReserveModel.AppearCharacterDirectorModelBase,
+                playerAppearCharacterReserveModel);
 
+            // ViewModel の作成
             var generatedAppearCharacterViewModel = new AppearCharacterViewModel(
                 appearCharacterView,
                 playerAppearCharacterViewModel

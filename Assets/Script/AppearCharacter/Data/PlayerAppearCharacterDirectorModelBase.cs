@@ -7,8 +7,14 @@ namespace NL
     /// <summary>
     /// プレイヤーキャラクタの動き情報ベース
     /// </summary>
-    public class PlayerAppearCharacterDirectorModelBase : ModelBase
+    public abstract class PlayerAppearCharacterDirectorModelBase : ModelBase
     {
+        /// <summary>
+        /// ディレクターを取得するクラス
+        /// ディレクターは派生クラスごとに異なるため抽象化した
+        /// </summary>
+        /// <returns>ディレクター</returns>
+        public abstract IAppearCharacterLifeDirector GetLifeDirectorFromViewModel(AppearCharacterViewModel appearCharacterViewModel);
     }
 }
 

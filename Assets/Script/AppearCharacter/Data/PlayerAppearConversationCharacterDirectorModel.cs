@@ -36,5 +36,9 @@ namespace NL
             this.AppearCharactorWithReward = appearCharactorWithReward;
         }
 
+        public override IAppearCharacterLifeDirector GetLifeDirectorFromViewModel(AppearCharacterViewModel appearCharacterViewModel)
+        {
+            return new ReserveAppearCharacterLifeDirector(this);
+        }
     }   
 }

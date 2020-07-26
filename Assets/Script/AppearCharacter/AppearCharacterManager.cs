@@ -27,7 +27,8 @@ namespace NL {
             GameObject root, 
             IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository, 
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
-            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository)
+            IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
+            IPlayerAppearPlayingCharacterDirectorRepository playerAppearPlayingCharacterDirectorRepository)
         {
             this.root = root;
 
@@ -35,7 +36,7 @@ namespace NL {
             this.reservedRegisterModels = new List<AppearCharacterViewModel>();
             this.reservedRemovableModels = new List<AppearCharacterViewModel>();
 
-            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository, playerAppearCharacterViewRepository);
+            this.appearCharacterCreateService = new AppearCharacterCreateService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository, playerAppearPlayingCharacterDirectorRepository, playerAppearCharacterViewRepository);
             this.appearCharacterRemoveService = new AppearCharacterRemoveService(playerAppearCharacterViewRepository);
             this.appearCharacterReceiveRewardsService = new AppearCharacterReceiveRewardsService(playerAppearConversationCharacterDirectorRepository, playerAppearOnegaiCharacterDirectorRepository);
             this.appearCharacterChangeStateService = new AppearCharacterChangeStateService(playerAppearCharacterViewRepository);
@@ -68,37 +69,23 @@ namespace NL {
             this.reservedRemovableModels.Clear();
         }
 
-        public PlayerAppearCharacterViewModel CreateWithConversationDirector (
+        public PlayerAppearCharacterViewModel Create (
             Transform view,
             MovePath movePath,
-            AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel,
+            AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
+            AppearCharacterDirectorModelBase appearCharacterDirectorModelBase,
             PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) 
         {
-            return this.appearCharacterCreateService.ExecuteWithConversatoinDirector(
-                appearConversationCharacterDirectorModel.AppearCharacterModel,
+            return this.appearCharacterCreateService.Execute(
+                appearCharacterDirectorModelBase.AppearCharacterModel,
                 view.position,
                 view.rotation.eulerAngles,
                 movePath,
-                appearConversationCharacterDirectorModel,
+                appearCharacterLifeDirectorType,
+                appearCharacterDirectorModelBase,
                 playerAppearCharacterReserveModel
             );
-        }
-
-        public PlayerAppearCharacterViewModel CreateWithOnegaiDirector (
-            Transform view,
-            MovePath movePath,
-            AppearOnegaiCharacterDirectorModel appearOnegaiCharacterDirectorModel,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel) 
-        {
-            return this.appearCharacterCreateService.ExecuteWithOnegaiDirector(
-                appearOnegaiCharacterDirectorModel.AppearCharacterModel,
-                view.position,
-                view.rotation.eulerAngles,
-                movePath,
-                appearOnegaiCharacterDirectorModel,
-                playerAppearCharacterReserveModel
-            );
-        }        
+        }     
 
 #region 登録消去周り
 

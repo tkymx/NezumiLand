@@ -96,6 +96,14 @@
             ]
         },
         { 
+            "Id": 14,
+            "EventContentsType": "AppearPlayingCharacter",
+            "Arg": [
+                1,
+                0.5
+            ]
+        },
+        { 
             "Id": 15,
             "EventContentsType": "AppearOnegaiCharacter",
             "Arg": [

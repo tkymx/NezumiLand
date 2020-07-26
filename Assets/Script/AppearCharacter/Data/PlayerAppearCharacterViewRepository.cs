@@ -49,6 +49,7 @@ namespace NL {
         // Director
         private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
         private readonly IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository;
+        private readonly IPlayerAppearPlayingCharacterDirectorRepository playerAppearPlayingCharacterDirectorRepository;
 
         public PlayerAppearCharacterViewRepository (
             AppearCharacterRepository appearCharacterRepository, 
@@ -56,6 +57,7 @@ namespace NL {
             IPlayerArrangementTargetRepository playerArrangementTargetRepository, 
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository,
             IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
+            IPlayerAppearPlayingCharacterDirectorRepository playerAppearPlayingCharacterDirectorRepository,
             PlayerContextMap playerContextMap) : base (playerContextMap.PlayerAppearCharacterViewEntrys)     
         {
             this.appearCharacterRepository = appearCharacterRepository;
@@ -63,6 +65,7 @@ namespace NL {
             this.playerArrangementTargetRepository = playerArrangementTargetRepository;         
             this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
             this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;
+            this.playerAppearPlayingCharacterDirectorRepository = playerAppearPlayingCharacterDirectorRepository;
         }
 
         private PlayerAppearCharacterViewModel CreateByEntry (PlayerAppearCharacterViewEntry entry) {
@@ -87,19 +90,31 @@ namespace NL {
             }
 
             PlayerAppearCharacterDirectorModelBase directorModel = null;
-            if (type == AppearCharacterLifeDirectorType.Conversation) 
+            switch(type)
             {
-                directorModel = this.playerAppearConversationCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
-                Debug.Assert(directorModel != null, "PlayerAppearConversationCharacterDirector が存在しません。");
-            }
-            else if (type == AppearCharacterLifeDirectorType.Onegai)
-            {
-                directorModel = this.playerAppearOnegaiCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
-                Debug.Assert(directorModel != null, "playerAppearOnegaiCharacterDirector が存在しません ");
-            }
-            else 
-            {
-                Debug.Assert(false, "未確認のタイプです。" + type.ToString() );
+                case AppearCharacterLifeDirectorType.Conversation : 
+                {
+                    directorModel = this.playerAppearConversationCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                    Debug.Assert(directorModel != null, "PlayerAppearConversationCharacterDirector が存在しません。");
+                    break;
+                }
+                case AppearCharacterLifeDirectorType.Onegai : 
+                {
+                    directorModel = this.playerAppearOnegaiCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                    Debug.Assert(directorModel != null, "playerAppearOnegaiCharacterDirector が存在しません ");
+                    break;
+                }
+                case AppearCharacterLifeDirectorType.Playing : 
+                {
+                    directorModel = this.playerAppearPlayingCharacterDirectorRepository.Get(entry.PlayerAppearCharacterLifeDirectorModelId);
+                    Debug.Assert(directorModel != null, "playerAppearPlayingCharacterDirector が存在しません ");
+                    break;
+                }
+                default :
+                {
+                    Debug.Assert(false, "未確認のタイプです。" + type.ToString() );
+                    break;
+                }
             }
 
             return new PlayerAppearCharacterViewModel(

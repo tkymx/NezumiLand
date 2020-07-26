@@ -10,6 +10,7 @@ namespace NL {
         AppearConversationCharacter,
         AppearConversationCharacterNormal,
         AppearOnegaiCharacter,
+        AppearPlayingCharacter,
         ScreenImages
     }
 

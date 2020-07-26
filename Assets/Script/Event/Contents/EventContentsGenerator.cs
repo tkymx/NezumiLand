@@ -18,6 +18,9 @@ namespace NL {
             if (playerEventModel.EventModel.EventContentsModel.EventContentsType == EventContentsType.AppearOnegaiCharacter) {
                 return new NL.EventContents.AppearOnegaiCharacter(playerEventModel);
             }
+            if (playerEventModel.EventModel.EventContentsModel.EventContentsType == EventContentsType.AppearPlayingCharacter) {
+                return new NL.EventContents.AppearPlayingCharacter(playerEventModel);
+            }
             if (playerEventModel.EventModel.EventContentsModel.EventContentsType == EventContentsType.ScreenImages) {
                 return new NL.EventContents.ScreenImages(playerEventModel);
             }

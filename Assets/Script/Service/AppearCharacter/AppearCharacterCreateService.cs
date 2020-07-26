@@ -8,15 +8,18 @@ namespace NL
     {
         private readonly IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository;
         private readonly IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository;
+        private readonly IPlayerAppearPlayingCharacterDirectorRepository playerAppearPlayingCharacterDirectorRepository;
         private readonly IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository;
 
         public AppearCharacterCreateService(
             IPlayerAppearConversationCharacterDirectorRepository playerAppearConversationCharacterDirectorRepository, 
             IPlayerAppearOnegaiCharacterDirectorRepository playerAppearOnegaiCharacterDirectorRepository,
+            IPlayerAppearPlayingCharacterDirectorRepository playerAppearPlayingCharacterDirectorRepository,
             IPlayerAppearCharacterViewRepository playerAppearCharacterViewRepository)
         {
             this.playerAppearConversationCharacterDirectorRepository = playerAppearConversationCharacterDirectorRepository;
             this.playerAppearOnegaiCharacterDirectorRepository = playerAppearOnegaiCharacterDirectorRepository;
+            this.playerAppearPlayingCharacterDirectorRepository = playerAppearPlayingCharacterDirectorRepository;
             this.playerAppearCharacterViewRepository = playerAppearCharacterViewRepository;            
         }
 
@@ -24,62 +27,58 @@ namespace NL
             AppearCharacterModel appearCharacterModel,
             Vector3 position,
             Vector3 rotation,
+            MovePath movePath,
             AppearCharacterLifeDirectorType appearCharacterLifeDirectorType,
-            PlayerAppearCharacterDirectorModelBase playerAppearCharacterDirectorModelBase,
-            MovePath movePath
+            AppearCharacterDirectorModelBase appearCharacterDirectorModel,
+            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel
         ) {
+            
+            PlayerAppearCharacterDirectorModelBase directorModel = null;
+            switch(appearCharacterLifeDirectorType)
+            {
+                case AppearCharacterLifeDirectorType.Conversation :
+                {
+                    var appearConversationCharacterDirectorModel = appearCharacterDirectorModel as AppearConversationCharacterDirectorModel;
+                    if (appearConversationCharacterDirectorModel != null)
+                    {
+                        directorModel = this.playerAppearConversationCharacterDirectorRepository.Create(
+                            appearConversationCharacterDirectorModel,
+                            playerAppearCharacterReserveModel);
+                    }
+                    break;
+                }
+                case AppearCharacterLifeDirectorType.Onegai :
+                {
+                    var appearOnegaiCharacterDirectorModel = appearCharacterDirectorModel as AppearOnegaiCharacterDirectorModel;
+                    if (appearOnegaiCharacterDirectorModel != null)
+                    {
+                        directorModel = this.playerAppearOnegaiCharacterDirectorRepository.Create(
+                            appearOnegaiCharacterDirectorModel,
+                            playerAppearCharacterReserveModel);
+                    }
+                    break;
+                }
+                case AppearCharacterLifeDirectorType.Playing :
+                {
+                    var appearPlayingCharacterDirectorModel = appearCharacterDirectorModel as AppearPlayingCharacterDirectorModel;
+                    if (appearPlayingCharacterDirectorModel != null)
+                    {
+                        directorModel = this.playerAppearPlayingCharacterDirectorRepository.Create(
+                            appearPlayingCharacterDirectorModel,
+                            playerAppearCharacterReserveModel);
+                    }
+                    break;
+                }
+            }
+
             return playerAppearCharacterViewRepository.Create(
                 appearCharacterModel,
                 position,
                 rotation,
                 appearCharacterLifeDirectorType,
-                playerAppearCharacterDirectorModelBase,
-                movePath
-            );
-        }
-
-        public PlayerAppearCharacterViewModel ExecuteWithConversatoinDirector(
-            AppearCharacterModel appearCharacterModel,
-            Vector3 position,
-            Vector3 rotation,
-            MovePath movePath,
-            AppearConversationCharacterDirectorModel appearConversationCharacterDirectorModel,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel
-        ) {
-            var directorModel = this.playerAppearConversationCharacterDirectorRepository.Create(
-                appearConversationCharacterDirectorModel,
-                playerAppearCharacterReserveModel);
-
-            return playerAppearCharacterViewRepository.Create(
-                appearCharacterModel,
-                position,
-                rotation,
-                AppearCharacterLifeDirectorType.Conversation,
                 directorModel,
                 movePath
             );
-        }
-
-        public PlayerAppearCharacterViewModel ExecuteWithOnegaiDirector(
-            AppearCharacterModel appearCharacterModel,
-            Vector3 position,
-            Vector3 rotation,
-            MovePath movePath,
-            AppearOnegaiCharacterDirectorModel appearOnegaiCharacterDirectorModel,
-            PlayerAppearCharacterReserveModel playerAppearCharacterReserveModel
-        ) {
-            var directorModel = this.playerAppearOnegaiCharacterDirectorRepository.Create(
-                appearOnegaiCharacterDirectorModel,
-                playerAppearCharacterReserveModel);
-
-            return playerAppearCharacterViewRepository.Create(
-                appearCharacterModel,
-                position,
-                rotation,
-                AppearCharacterLifeDirectorType.Onegai,
-                directorModel,
-                movePath
-            );
-        }
+        }       
     }   
 }
